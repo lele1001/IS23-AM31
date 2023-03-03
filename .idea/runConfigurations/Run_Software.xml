@@ -1,0 +1,9 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Run Software" type="Application" factoryName="Application">
+    <option name="MAIN_CLASS_NAME" value="it.polimi.ingsw.App" />
+    <module name="IS23-AM31" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>
