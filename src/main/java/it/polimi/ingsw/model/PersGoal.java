@@ -32,7 +32,7 @@ public enum PersGoal {
         }
     }
 
-    // Calcola il punteggio scorrendo sulla mappa e valutandone
+    // Calcola il punteggio valutando, sulla libreria, gli indici presenti nella mappa
     public int calcScore (Library l) {
         int score = 0; int numberofDone = 0;
         for(int i : positions.keySet()) {

@@ -16,4 +16,14 @@ public class ItemCard {
     public ItemNumber getMyNum() {
         return itemNumber;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ItemCard itemCard = (ItemCard) o;
+        return houseItem == itemCard.houseItem && itemNumber == itemCard.itemNumber;
+    }
+
+
 }
