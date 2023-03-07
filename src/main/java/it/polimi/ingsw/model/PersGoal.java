@@ -8,8 +8,8 @@ import static it.polimi.ingsw.model.HouseItem.*;
 public enum PersGoal {
     Card1(new ArrayList<>(List.of(2,14,23,31,52,0)), new ArrayList<>(List.of(Frame, Cat, Books, Games, Trophy, Plants))),
     Card2(new ArrayList<>(List.of(54,20,34,22,43,11)), new ArrayList<>(List.of(Frame, Cat, Books, Games, Trophy, Plants))),
-    Card3(new ArrayList<>(List.of(10,20,50,31,34,22)), new ArrayList<>(List.of(Frame, Cat, Books, Games, Trophy, Plants))),
-    Card4(new ArrayList<>(List.of(32,52,51,4,30,43)), new ArrayList<>(List.of(Frame, Cat, Books, Games, Trophy, Plants))),
+    Card3(new ArrayList<>(List.of(10,31,50,13,34,22)), new ArrayList<>(List.of(Frame, Cat, Books, Games, Trophy, Plants))),
+    Card4(new ArrayList<>(List.of(22,42,41,4,20,33)), new ArrayList<>(List.of(Frame, Cat, Books, Games, Trophy, Plants))),
     Card5(new ArrayList<>(List.of(31,53,32,50,11,44)), new ArrayList<>(List.of(Frame, Cat, Books, Games, Trophy, Plants))),
     Card6(new ArrayList<>(List.of(43,4,23,41,2,50)), new ArrayList<>(List.of(Frame, Cat, Books, Games, Trophy, Plants))),
     Card7(new ArrayList<>(List.of(13,0,52,44,30,21)), new ArrayList<>(List.of(Frame, Cat, Books, Games, Trophy, Plants))),
@@ -38,10 +38,9 @@ public enum PersGoal {
         for(int i : positions.keySet()) {
             if(l.get(i/10, i%10).getMyItem() == positions.get(i)) {
                 numberofDone++;
-                score += scoreList.get(numberofDone);
             }
         }
-        return score;
+        return scoreList.get(numberofDone);
     }
 
 }

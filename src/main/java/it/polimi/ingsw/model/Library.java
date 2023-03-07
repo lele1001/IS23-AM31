@@ -30,9 +30,7 @@ public class Library {
             if(library[i][column]==null)
                 break;
         }
-        if((i<0)||(i-num<-1))
-            return false;
-        return true;
+        return (i >= 0) && (i - num >= -1);
     }
 
     public ItemCard get(int x, int y) {
@@ -41,4 +39,51 @@ public class Library {
         }
         return library[x][y];
     }
+
+    public int calcScore() {
+        boolean[][] matrix = new boolean[6][5];
+        int score = 0;
+        for(int i = 0; i < 6; i++)
+            for(int j=0; j<5; j++)
+                matrix[i][j] = false;
+
+        for(int i = 0; i<6; i++) {
+            for(int j=0; j<5; j++) {
+                if(!matrix[i][j]) {
+                    switch(calc(matrix, i, j)) {
+                        case 1, 2:
+                            break;
+                        case 3: score += 2;
+                        break;
+                        case 4: score += 3;
+                        break;
+                        case 5: score+=5;
+                        break;
+                        default: score+=8;
+                    }
+//                    System.out.println("Riga "+i+" Colonna "+j+": "+score);
+                }
+            }
+        }
+        return score;
+    }
+
+    private int calc(boolean[][] matrix, int i, int j) {
+        int num = 1;
+        matrix[i][j] = true;
+        if((j!=0) && (library[i][j-1].getMyItem() == library[i][j].getMyItem()) && (!matrix[i][j - 1]))
+            num += calc(matrix, i, j-1);
+        if((j!=4) && (library[i][j+1].getMyItem() == library[i][j].getMyItem()) && (!matrix[i][j + 1]))
+            num += calc(matrix, i, j+1);
+        if((i!=5) && (library[i+1][j].getMyItem() == library[i][j].getMyItem()) && (!matrix[i + 1][j]))
+            num += calc(matrix, i+1, j);
+        if((i!=0) && (library[i-1][j].getMyItem() == library[i][j].getMyItem()) && (!matrix[i-1][j]))
+            num += calc(matrix, i-1, j);
+
+        return num;
+    }
+
+
+
+
 }

@@ -50,34 +50,34 @@ class LibraryTest {
         l.insertCard(new ArrayList<>(List.of(new ItemCard(Cat, First), new ItemCard(Frame, Second), new ItemCard(Books, Third), new ItemCard(Cat, First), new ItemCard(Frame, Second), new ItemCard(Books, Third))), 2);
         l.insertCard(new ArrayList<>(List.of(new ItemCard(Cat, First), new ItemCard(Frame, Second), new ItemCard(Books, Third), new ItemCard(Cat, First), new ItemCard(Frame, Second), new ItemCard(Books, Third))), 3);
         l.insertCard(new ArrayList<>(List.of(new ItemCard(Cat, First), new ItemCard(Frame, Second), new ItemCard(Books, Third), new ItemCard(Cat, First), new ItemCard(Frame, Second), new ItemCard(Books, Third))), 4);
-        assertEquals(l.checkSpace(0, 1), false);
-        assertEquals(l.checkSpace(0, 3), false);
-        assertEquals(l.checkSpace(1, 1), false);
-        assertEquals(l.checkSpace(1, 3), false);
-        assertEquals(l.checkSpace(2, 1), false);
-        assertEquals(l.checkSpace(2, 2), false);
-        assertEquals(l.checkSpace(3, 1), false);
-        assertEquals(l.checkSpace(3, 6), false);
-        assertEquals(l.checkSpace(4, 1), false);
-        assertEquals(l.checkSpace(4, 3), false);
-        assertEquals(l.checkSpace(5, 1), false);
-        assertEquals(l.checkSpace(5, 2), false);
+        assertFalse(l.checkSpace(0, 1));
+        assertFalse(l.checkSpace(0, 3));
+        assertFalse(l.checkSpace(1, 1));
+        assertFalse(l.checkSpace(1, 3));
+        assertFalse(l.checkSpace(2, 1));
+        assertFalse(l.checkSpace(2, 2));
+        assertFalse(l.checkSpace(3, 1));
+        assertFalse(l.checkSpace(3, 6));
+        assertFalse(l.checkSpace(4, 1));
+        assertFalse(l.checkSpace(4, 3));
+        assertFalse(l.checkSpace(5, 1));
+        assertFalse(l.checkSpace(5, 2));
     }
 
     // Empty library, always returns true
     @Test
     void checkSpace2() {
         Library l = new Library();
-        assertEquals(l.checkSpace(0, 1), true);
-        assertEquals(l.checkSpace(0, 3), true);
-        assertEquals(l.checkSpace(1, 1), true);
-        assertEquals(l.checkSpace(1, 2), true);
-        assertEquals(l.checkSpace(2, 1), true);
-        assertEquals(l.checkSpace(2, 3), true);
-        assertEquals(l.checkSpace(3, 2), true);
-        assertEquals(l.checkSpace(3, 3), true);
-        assertEquals(l.checkSpace(4, 1), true);
-        assertEquals(l.checkSpace(4, 2), true);
+        assertTrue(l.checkSpace(0, 1));
+        assertTrue(l.checkSpace(0, 3));
+        assertTrue(l.checkSpace(1, 1));
+        assertTrue(l.checkSpace(1, 2));
+        assertTrue(l.checkSpace(2, 1));
+        assertTrue(l.checkSpace(2, 3));
+        assertTrue(l.checkSpace(3, 2));
+        assertTrue(l.checkSpace(3, 3));
+        assertTrue(l.checkSpace(4, 1));
+        assertTrue(l.checkSpace(4, 2));
     }
 
     @Test
@@ -85,4 +85,38 @@ class LibraryTest {
     }
 
 
+    @Test
+    void calcScore1() {
+        Library l = new Library();
+        l.insertCard(new ArrayList<>(List.of(new ItemCard(Frame, First), new ItemCard(Games, First), new ItemCard(Cat, First))), 0);
+        l.insertCard(new ArrayList<>(List.of(new ItemCard(Cat, First), new ItemCard(Plants, First), new ItemCard(Games, First))), 0);
+        l.insertCard(new ArrayList<>(List.of(new ItemCard(Trophy, First), new ItemCard(Trophy, First), new ItemCard(Cat, First))), 1);
+        l.insertCard(new ArrayList<>(List.of(new ItemCard(Cat, First), new ItemCard(Games, First), new ItemCard(Plants, First))), 1);
+        l.insertCard(new ArrayList<>(List.of(new ItemCard(Trophy, First), new ItemCard(Cat, First), new ItemCard(Plants, First))), 2);
+        l.insertCard(new ArrayList<>(List.of(new ItemCard(Games, First), new ItemCard(Books, First), new ItemCard(Books, First))), 2);
+        l.insertCard(new ArrayList<>(List.of(new ItemCard(Trophy, First), new ItemCard(Trophy, First), new ItemCard(Plants, First))), 3);
+        l.insertCard(new ArrayList<>(List.of(new ItemCard(Plants, First), new ItemCard(Books, First), new ItemCard(Cat, First))), 3);
+        l.insertCard(new ArrayList<>(List.of(new ItemCard(Trophy, First), new ItemCard(Trophy, First), new ItemCard(Plants, First))), 4);
+        l.insertCard(new ArrayList<>(List.of(new ItemCard(Plants, First), new ItemCard(Cat, First), new ItemCard(Books, First))), 4);
+
+        assertEquals(l.calcScore(), 18);
+
+    }
+
+    @Test
+    void calcScore2() {
+        Library l = new Library();
+        l.insertCard(new ArrayList<>(List.of(new ItemCard(Cat, First), new ItemCard(Books, First), new ItemCard(Frame, First))), 0);
+        l.insertCard(new ArrayList<>(List.of(new ItemCard(Frame, First), new ItemCard(Frame, First), new ItemCard(Books, First))), 0);
+        l.insertCard(new ArrayList<>(List.of(new ItemCard(Books, First), new ItemCard(Books, First), new ItemCard(Books, First))), 1);
+        l.insertCard(new ArrayList<>(List.of(new ItemCard(Frame, First), new ItemCard(Games, First), new ItemCard(Games, First))), 1);
+        l.insertCard(new ArrayList<>(List.of(new ItemCard(Games, First), new ItemCard(Books, First), new ItemCard(Trophy, First))), 2);
+        l.insertCard(new ArrayList<>(List.of(new ItemCard(Trophy, First), new ItemCard(Trophy, First), new ItemCard(Trophy, First))), 2);
+        l.insertCard(new ArrayList<>(List.of(new ItemCard(Cat, First), new ItemCard(Trophy, First), new ItemCard(Trophy, First))), 3);
+        l.insertCard(new ArrayList<>(List.of(new ItemCard(Plants, First), new ItemCard(Cat, First), new ItemCard(Plants, First))), 3);
+        l.insertCard(new ArrayList<>(List.of(new ItemCard(Games, First), new ItemCard(Trophy, First), new ItemCard(Trophy, First))), 4);
+        l.insertCard(new ArrayList<>(List.of(new ItemCard(Trophy, First), new ItemCard(Cat, First), new ItemCard(Cat, First))), 4);
+
+        assertEquals(l.calcScore(), 18);
+    }
 }
