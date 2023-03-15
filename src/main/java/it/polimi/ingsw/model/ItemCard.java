@@ -4,7 +4,7 @@ public class ItemCard {
     private final HouseItem houseItem;
     private final ItemNumber itemNumber;
 
-    public ItemCard (HouseItem myItem, ItemNumber myNum) {
+    public ItemCard(HouseItem myItem, ItemNumber myNum) {
         this.houseItem = myItem;
         this.itemNumber = myNum;
     }
