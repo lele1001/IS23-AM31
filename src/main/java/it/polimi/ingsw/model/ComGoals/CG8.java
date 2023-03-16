@@ -1,7 +1,7 @@
 package it.polimi.ingsw.model.ComGoals;
 
+import it.polimi.ingsw.model.Bookshelf;
 import it.polimi.ingsw.model.HouseItem;
-import it.polimi.ingsw.model.Library;
 
 // Find four tiles of the same item at the corners of the bookshelf
 public class CG8 extends ComGoal {
@@ -10,7 +10,7 @@ public class CG8 extends ComGoal {
     }
 
     @Override
-    public int goalReached(Library l) {
+    public int goalReached(Bookshelf l) {
         int toReturn = 0;
         HouseItem myItem, it1, it2, it3;
         boolean cornersFound = false;

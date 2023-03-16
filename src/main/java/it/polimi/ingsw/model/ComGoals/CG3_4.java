@@ -1,7 +1,7 @@
 package it.polimi.ingsw.model.ComGoals;
 
+import it.polimi.ingsw.model.Bookshelf;
 import it.polimi.ingsw.model.HouseItem;
-import it.polimi.ingsw.model.Library;
 
 public class CG3_4 extends ComGoal {
     int multiplier;
@@ -12,7 +12,7 @@ public class CG3_4 extends ComGoal {
     }
 
     @Override
-    public int goalReached(Library l) {
+    public int goalReached(Bookshelf l) {
         int groupsFound = 0;
         int toReturn = 0;
         boolean[][] matrix = new boolean[6][5];
@@ -44,7 +44,7 @@ public class CG3_4 extends ComGoal {
     /**
      * Method used to cycle on all Cells near the selected one with the same Item-card using a DFS algorithm
      */
-    private int find(boolean[][] matrix, int i, int j, Library l) {
+    private int find(boolean[][] matrix, int i, int j, Bookshelf l) {
         int num = 1;
         matrix[i][j] = true;
         HouseItem myItem = l.get(i, j).getMyItem();

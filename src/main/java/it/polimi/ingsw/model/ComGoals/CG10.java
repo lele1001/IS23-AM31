@@ -9,7 +9,7 @@ public class CG10 extends ComGoal {
     }
 
     @Override
-    public int goalReached(Library l) {
+    public int goalReached(Bookshelf l) {
         int toReturn = 0;
         int r = 0;
         int c;

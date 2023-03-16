@@ -1,7 +1,7 @@
 package it.polimi.ingsw.model.ComGoals;
 
+import it.polimi.ingsw.model.Bookshelf;
 import it.polimi.ingsw.model.HouseItem;
-import it.polimi.ingsw.model.Library;
 
 /**
  * Find 5 tiles, which form a diagonal (and sometimes represent the same item).
@@ -15,7 +15,7 @@ public class CG11_12 extends ComGoal {
     }
 
     @Override
-    public int goalReached(Library l) {
+    public int goalReached(Bookshelf l) {
         boolean found = false;
         int direction = 0;  // if = 0 from left to right, if = 1 from right to left.
         int offset = 0;
@@ -46,7 +46,7 @@ public class CG11_12 extends ComGoal {
         return toReturn;
     }
 
-    private boolean checkDiagonal(Library l, int direction, int offset) {
+    private boolean checkDiagonal(Bookshelf l, int direction, int offset) {
         HouseItem myItem;
         int i;
         int itemCount = 0; // number of colors equal to the first one

@@ -1,7 +1,7 @@
 package it.polimi.ingsw.model.ComGoals;
 
 import it.polimi.ingsw.model.ItemCard;
-import it.polimi.ingsw.model.Library;
+import it.polimi.ingsw.model.Bookshelf;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -13,11 +13,11 @@ import static it.polimi.ingsw.model.ItemNumber.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 class CG9Test {
-    private final Library l0 = new Library();
-    private final Library l3 = new Library();
-    private final Library l5 = new Library();
-    private final Library l8 = new Library();
-    private final Library l9 = new Library();
+    private final Bookshelf l0 = new Bookshelf();
+    private final Bookshelf l3 = new Bookshelf();
+    private final Bookshelf l5 = new Bookshelf();
+    private final Bookshelf l8 = new Bookshelf();
+    private final Bookshelf l9 = new Bookshelf();
     private final ItemCard c1 = new ItemCard(Cat, First);
     private final ItemCard f1 = new ItemCard(Frame, First);
     private final ItemCard f2 = new ItemCard(Frame, Second);

@@ -1,7 +1,7 @@
 package it.polimi.ingsw.model.ComGoals;
 
 import it.polimi.ingsw.model.HouseItem;
-import it.polimi.ingsw.model.Library;
+import it.polimi.ingsw.model.Bookshelf;
 
 import java.util.ArrayList;
 
@@ -15,7 +15,7 @@ public class CG1 extends ComGoal {
     }
 
     @Override
-    public int goalReached(Library l) {
+    public int goalReached(Bookshelf l) {
         int r, c;
         long groupsFound;
         int toReturn = 0;

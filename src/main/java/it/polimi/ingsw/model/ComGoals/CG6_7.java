@@ -1,7 +1,7 @@
 package it.polimi.ingsw.model.ComGoals;
 
+import it.polimi.ingsw.model.Bookshelf;
 import it.polimi.ingsw.model.HouseItem;
-import it.polimi.ingsw.model.Library;
 
 import java.util.ArrayList;
 
@@ -17,7 +17,7 @@ public class CG6_7 extends ComGoal {
     }
 
     @Override
-    public int goalReached(Library l) {
+    public int goalReached(Bookshelf l) {
         int toReturn = 0;
 
         if (((numDiff == 5) && (lookDiff(l, numDiff) >= 2)) || ((numDiff == 3) && (lookDiff(l, numDiff) >= 4))) {
@@ -33,7 +33,7 @@ public class CG6_7 extends ComGoal {
      * Finds how many rows have numDiff >= this.numDiff
      * @return number of rows found
      */
-    private int lookDiff(Library l, int numDiff) {
+    private int lookDiff(Bookshelf l, int numDiff) {
         int r, c, i, initSize;
         long diffFound;
         int groupsFound = 0;

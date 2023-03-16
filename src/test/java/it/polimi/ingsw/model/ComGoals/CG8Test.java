@@ -1,7 +1,7 @@
 package it.polimi.ingsw.model.ComGoals;
 
+import it.polimi.ingsw.model.Bookshelf;
 import it.polimi.ingsw.model.ItemCard;
-import it.polimi.ingsw.model.Library;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -9,13 +9,13 @@ import java.util.List;
 
 import static it.polimi.ingsw.model.HouseItem.*;
 import static it.polimi.ingsw.model.ItemNumber.*;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class CG8Test {
-    private final Library l1 = new Library();
-    private final Library l2 = new Library();
-    private final Library l3 = new Library();
-    private final Library l4 = new Library();
+    private final Bookshelf l1 = new Bookshelf();
+    private final Bookshelf l2 = new Bookshelf();
+    private final Bookshelf l3 = new Bookshelf();
+    private final Bookshelf l4 = new Bookshelf();
 
     private final ItemCard c1 = new ItemCard(Cat, First);
     private final ItemCard c2 = new ItemCard(Cat, Second);
@@ -128,9 +128,9 @@ class CG8Test {
      */
     @Test
     void threePlayers_one() {
-        Library l1 = new Library();
-        Library l2 = new Library();
-        Library l3 = new Library();
+        Bookshelf l1 = new Bookshelf();
+        Bookshelf l2 = new Bookshelf();
+        Bookshelf l3 = new Bookshelf();
 
         ItemCard c1 = new ItemCard(Cat, First);
         ItemCard c2 = new ItemCard(Cat, Second);
@@ -335,10 +335,10 @@ class CG8Test {
      */
     @Test
     void fourPlayers_three() {
-        Library l1 = new Library();
-        Library l2 = new Library();
-        Library l3 = new Library();
-        Library l4 = new Library();
+        Bookshelf l1 = new Bookshelf();
+        Bookshelf l2 = new Bookshelf();
+        Bookshelf l3 = new Bookshelf();
+        Bookshelf l4 = new Bookshelf();
 
         ItemCard c1 = new ItemCard(Cat, First);
         ItemCard c2 = new ItemCard(Cat, Second);

@@ -1,8 +1,8 @@
 package it.polimi.ingsw.model.ComGoals;
 
-import it.polimi.ingsw.model.Library;
+import it.polimi.ingsw.model.Bookshelf;
 
-import java.util.*;
+import java.util.ArrayList;
 
 public abstract class ComGoal {
     ArrayList<Integer> score = new ArrayList<>();
@@ -29,5 +29,5 @@ public abstract class ComGoal {
      * @return score
      * the score is 0 if the goal is not reached, otherwise it is the max score available for the goal
      */
-    public abstract int goalReached(Library l);
+    public abstract int goalReached(Bookshelf l);
 }
