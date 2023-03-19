@@ -13,19 +13,20 @@ class BookshelfTest {
 
     @Test
     void insertCard() {
-        Bookshelf l = new Bookshelf(); int i;
+        Bookshelf l = new Bookshelf();
+        int i;
         l.insertCard(new ArrayList<>(List.of(new ItemCard(Cat, First), new ItemCard(Frame, Second))), 2);
-        assertEquals(l.get(5,2), new ItemCard(Cat, First));
+        assertEquals(l.get(5, 2), new ItemCard(Cat, First));
         assertEquals(l.get(4, 2), new ItemCard(Frame, Second));
 
         l.insertCard(new ArrayList<>(List.of(new ItemCard(Books, Third))), 2);
-        assertEquals(l.get(5,2), new ItemCard(Cat, First));
+        assertEquals(l.get(5, 2), new ItemCard(Cat, First));
         assertEquals(l.get(4, 2), new ItemCard(Frame, Second));
         assertEquals(l.get(3, 2), new ItemCard(Books, Third));
 
         l.insertCard(new ArrayList<>(List.of(new ItemCard(Books, Third))), 1);
         assertEquals(l.get(5, 1), new ItemCard(Books, Third));
-        for (i = 4; i>=0; i--)
+        for (i = 4; i >= 0; i--)
             assertNull(l.get(i, 1));
 
         l.insertCard(new ArrayList<>(List.of(new ItemCard(Cat, Second), new ItemCard(Books, First))), 4);

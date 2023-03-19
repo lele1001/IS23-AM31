@@ -59,7 +59,10 @@ public class CG11_12 extends ComGoal {
                     if (color && l.get(i + offset, i).getMyItem().equals(myItem)) {
                         itemCount++;
                     } else if (!color) {
-                        itemCount++;
+                        if ((i + offset == 0)) itemCount++;
+                        else if (l.get(i + offset - 1, i) == null) {
+                            itemCount++;
+                        }
                     }
                 }
             }
@@ -71,7 +74,10 @@ public class CG11_12 extends ComGoal {
                     if (color && l.get(5 - i - offset, i).getMyItem().equals(myItem)) {
                         itemCount++;
                     } else if (!color) {
-                        itemCount++;
+                        if ((5 - i - offset == 0)) itemCount++;
+                        else if (l.get(5 - i - offset - 1, i) == null) {
+                            itemCount++;
+                        }
                     }
                 }
             }

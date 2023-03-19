@@ -34,7 +34,7 @@ public class Player {
      * @return the total score of the player (as the sum of ComGoal score (saved in variable 'score'), bookshelf's adjacencies score, persGoal score).
      */
     public int calculateFinScore() {
-        return score+ myBookshelf.calcScore()+ persGoal.calcScore(myBookshelf);
+        return score + myBookshelf.calcScore() + persGoal.calcScore(myBookshelf);
     }
 
     /**

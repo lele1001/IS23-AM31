@@ -39,11 +39,11 @@ class CG111212Test {
         l1.insertCard(col1, 0);
         l1.insertCard(col2, 4);
 
-        l2.insertCard(col1, 0);
-        l2.insertCard(col5, 1);
-        l2.insertCard(col2, 2);
+        l2.insertCard(col2, 0);
+        l2.insertCard(col2, 1);
+        l2.insertCard(col3, 2);
         l2.insertCard(col4, 3);
-        l2.insertCard(col2, 4);
+        l2.insertCard(col5, 4);
 
         assertEquals(0, comG11.goalReached(l1));
         assertEquals(0, comG11.goalReached(l2));
@@ -64,10 +64,10 @@ class CG111212Test {
         l1.insertCard(col6, 4);
 
         l2.insertCard(col1, 0);
-        l2.insertCard(col5, 1);
-        l2.insertCard(col2, 2);
+        l2.insertCard(col1, 1);
+        l2.insertCard(col3, 2);
         l2.insertCard(col4, 3);
-        l2.insertCard(col2, 4);
+        l2.insertCard(col5, 4);
 
         assertEquals(8, comG11.goalReached(l1));
         assertEquals(0, comG11.goalReached(l2));
@@ -98,7 +98,7 @@ class CG111212Test {
     }
 
     /** Test with 3 players
-     * 1st player - only two columns: returns 0
+     * 1st player - empty library: returns 0
      * 2nd player - five mixed columns: returns 0
      * 3rd player - only three columns: returns 0
      */
@@ -106,14 +106,12 @@ class CG111212Test {
     void threePlayers_zero() {
         CG11_12 comG11 = new CG11_12(3, false);
 
-        l1.insertCard(col1, 0);
-        l1.insertCard(col2, 4);
 
-        l2.insertCard(col1, 0);
-        l2.insertCard(col5, 1);
-        l2.insertCard(col2, 2);
-        l2.insertCard(col4, 3);
-        l2.insertCard(col2, 4);
+        l2.insertCard(col4, 0);
+        l2.insertCard(col4, 1);
+        l2.insertCard(col4, 2);
+        l2.insertCard(col5, 3);
+        l2.insertCard(col6, 4);
 
         l3.insertCard(col1, 0);
         l3.insertCard(col2, 2);
@@ -139,11 +137,11 @@ class CG111212Test {
         l1.insertCard(col5, 3);
         l1.insertCard(col6, 4);
 
-        l2.insertCard(col1, 0);
+        l2.insertCard(col6, 0);
         l2.insertCard(col5, 1);
-        l2.insertCard(col2, 2);
-        l2.insertCard(col4, 3);
-        l2.insertCard(col2, 4);
+        l2.insertCard(col4, 2);
+        l2.insertCard(col3, 3);
+        l2.insertCard(col3, 4);
 
         l3.insertCard(col1, 0);
         l3.insertCard(col2, 2);
@@ -169,11 +167,11 @@ class CG111212Test {
         l1.insertCard(col5, 3);
         l1.insertCard(col6, 4);
 
-        l2.insertCard(col1, 0);
-        l2.insertCard(col5, 1);
-        l2.insertCard(col2, 2);
-        l2.insertCard(col4, 3);
-        l2.insertCard(col2, 4);
+        l2.insertCard(col6, 0);
+        l2.insertCard(col6, 1);
+        l2.insertCard(col6, 2);
+        l2.insertCard(col6, 3);
+        l2.insertCard(col6, 4);
 
         l3.insertCard(col5, 0);
         l3.insertCard(col4, 1);

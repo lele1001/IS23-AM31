@@ -7,15 +7,14 @@ public class Bookshelf {
 
 
     /**
-     * @requires checkSpace(column, cards.size())==TRUE && cards.size()<=3
+     * @requires checkSpace(column, cards.size ())==TRUE && cards.size()<=3
      * Insert cards in the bookshelf (at the indicated column)
      */
     public void insertCard(List<ItemCard> cards, int column) {
         int i;
 
         for (i = 5; i >= 0; i--) {
-            if (bookshelf[i][column] == null)
-                break;
+            if (bookshelf[i][column] == null) break;
         }
         for (ItemCard ic : cards) {
             bookshelf[i][column] = ic;
@@ -27,12 +26,10 @@ public class Bookshelf {
      * @return a boolean that indicates if there is space in the indicated column for 'num' elements
      */
     public boolean checkSpace(int column, int num) {
-        if ((num > 6) || (num <= 0) || (column < 0) || (column > 4))
-            return false;
+        if ((num > 6) || (num <= 0) || (column < 0) || (column > 4)) return false;
         int i;
         for (i = 5; i >= 0; i--) {
-            if (bookshelf[i][column] == null)
-                break;
+            if (bookshelf[i][column] == null) break;
         }
         return (i >= 0) && (i - num >= -1);
     }
