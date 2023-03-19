@@ -154,4 +154,23 @@ class BookshelfTest {
 
         assertEquals(l.calcScore(), 18);
     }
+
+    @Test
+    void calcScore3() {
+        Bookshelf l = new Bookshelf();
+        l.insertCard(new ArrayList<>(List.of(new ItemCard(Cat, First), new ItemCard(Cat, First), new ItemCard(Cat, First))), 0);
+        l.insertCard(new ArrayList<>(List.of(new ItemCard(Cat, First))), 0);
+        l.insertCard(new ArrayList<>(List.of(new ItemCard(Frame, First), new ItemCard(Frame, First), new ItemCard(Frame, First))), 1);
+        l.insertCard(new ArrayList<>(List.of(new ItemCard(Cat, First))), 1);
+        l.insertCard(new ArrayList<>(List.of(new ItemCard(Frame, First), new ItemCard(Frame, First), new ItemCard(Frame, First))), 2);
+        l.insertCard(new ArrayList<>(List.of(new ItemCard(Games, First), new ItemCard(Cat, First))), 2);
+        l.insertCard(new ArrayList<>(List.of(new ItemCard(Frame, First), new ItemCard(Frame, First), new ItemCard(Frame, First))), 3);
+        assertEquals(l.calcScore(), 13);
+
+        l.insertCard(new ArrayList<>(List.of(new ItemCard(Books, First), new ItemCard(Books, First), new ItemCard(Books, First))), 3);
+        l.insertCard(new ArrayList<>(List.of(new ItemCard(Trophy, First), new ItemCard(Cat, First), new ItemCard(Games, First))), 4);
+        l.insertCard(new ArrayList<>(List.of(new ItemCard(Books, First))), 4);
+        l.insertCard(new ArrayList<>(List.of(new ItemCard(Books, First))), 2);
+        assertEquals(l.calcScore(), 18);
+    }
 }

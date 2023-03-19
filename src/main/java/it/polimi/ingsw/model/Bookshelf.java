@@ -7,7 +7,7 @@ public class Bookshelf {
 
 
     /**
-     * @requires checkSpace(column, cards.size ())==TRUE && cards.size()<=3
+     * @requires checkSpace(column, cards.size())==TRUE && cards.size()<=3
      * Insert cards in the bookshelf (at the indicated column)
      */
     public void insertCard(List<ItemCard> cards, int column) {
@@ -58,7 +58,7 @@ public class Bookshelf {
                 matrix[i][j] = false;
         for (int i = 0; i < 6; i++) {
             for (int j = 0; j < 5; j++) {
-                if (!matrix[i][j]) {
+                if ((bookshelf[i][j] != null) && (!matrix[i][j])) {
                     switch (calc(matrix, i, j)) {
                         case 1, 2:
                             break;
@@ -87,13 +87,13 @@ public class Bookshelf {
     private int calc(boolean[][] matrix, int i, int j) {
         int num = 1;
         matrix[i][j] = true;
-        if ((j != 0) && (bookshelf[i][j - 1].getMyItem() == bookshelf[i][j].getMyItem()) && (!matrix[i][j - 1]))
+        if ((j != 0) && (bookshelf[i][j - 1] != null) && (bookshelf[i][j - 1].getMyItem() == bookshelf[i][j].getMyItem()) && (!matrix[i][j - 1]))
             num += calc(matrix, i, j - 1);
-        if ((j != 4) && (bookshelf[i][j + 1].getMyItem() == bookshelf[i][j].getMyItem()) && (!matrix[i][j + 1]))
+        if ((j != 4) && (bookshelf[i][j + 1] != null) && (bookshelf[i][j + 1].getMyItem() == bookshelf[i][j].getMyItem()) && (!matrix[i][j + 1]))
             num += calc(matrix, i, j + 1);
-        if ((i != 5) && (bookshelf[i + 1][j].getMyItem() == bookshelf[i][j].getMyItem()) && (!matrix[i + 1][j]))
+        if ((i != 5) && (bookshelf[i + 1][j] != null) && (bookshelf[i + 1][j].getMyItem() == bookshelf[i][j].getMyItem()) && (!matrix[i + 1][j]))
             num += calc(matrix, i + 1, j);
-        if ((i != 0) && (bookshelf[i - 1][j].getMyItem() == bookshelf[i][j].getMyItem()) && (!matrix[i - 1][j]))
+        if ((i != 0) && (bookshelf[i - 1][j] != null) && (bookshelf[i - 1][j].getMyItem() == bookshelf[i][j].getMyItem()) && (!matrix[i - 1][j]))
             num += calc(matrix, i - 1, j);
         return num;
     }
