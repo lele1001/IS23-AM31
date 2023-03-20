@@ -2,19 +2,27 @@ package it.polimi.ingsw.model;
 
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.Reader;
+import java.lang.reflect.Type;
 import java.util.*;
+
+import static it.polimi.ingsw.model.HouseItem.*;
 
 public enum PersGoal {
     Card1, Card2, Card3, Card4, Card5, Card6, Card7, Card8, Card9, Card10, Card11, Card12;
 
-    // An ordered list of different scores based on the number of correct ItemCard
+    /**
+     * An ordered list of different scores based on the number of correct ItemCard
+      */
     private final static List<Integer> scoreList = new ArrayList<>(List.of(0, 1, 2, 4, 6, 9, 12));
 
-    // For any position (the integer key) indicates the correct HouseItem
+    /**
+     * For any position (the integer key) indicates the correct HouseItem
+     */
     private final Map<Integer, HouseItem> positions = new HashMap<>();
 
 
@@ -32,13 +40,16 @@ public enum PersGoal {
             }
         }
         Gson gson = new Gson();
-        Map<String, Object> map = gson.fromJson(json, Map.class);
 
-        List<Integer> index = ((ArrayList<Double>) map.get(this.toString())).stream().map(Double::intValue).toList();
-        List<HouseItem> items = ((List<String>) map.get("OrderedHouseItem")).stream().map(HouseItem::valueOf).toList();
-        for (int i = 0; i < items.size(); i++) {
+        Type cardsType = new TypeToken<Map<String, ArrayList<Integer>>>() {
+        }.getType();
+        Map<String, ArrayList<Integer>> cards = gson.fromJson(json, cardsType);
+        List<Integer> index = cards.get(this.toString());
+
+        // Conventional order in which we read items from JsonConfiguration file.
+        List<HouseItem> items = new ArrayList<>(List.of(Frame, Cat, Books, Games, Trophy, Plants));
+        for (int i = 0; i < items.size(); i++)
             positions.put(index.get(i), items.get(i));
-        }
     }
 
     /**
@@ -48,7 +59,7 @@ public enum PersGoal {
         int score = 0;
         int numberofDone = 0;
         for (int i : positions.keySet()) {
-            if ((l.get(i / 10, i % 10) != null) && (l.get(i / 10, i % 10).getMyItem() == positions.get(i))) {
+            if ((l.get(Position.getrow(i), Position.getcolumn(i)) != null) && (l.get(Position.getrow(i), Position.getcolumn(i)).getMyItem() == positions.get(i))) {
                 numberofDone++;
             }
         }

@@ -1,9 +1,4 @@
 {
-  "name": "PersGoalConfiguration",
-  "version": "1.0.0",
-  "OrderedHouseItem": [
-    "Frame", "Cat", "Books", "Games", "Trophy", "Plants"
-  ],
   "Card1": [2,14,23,31,52,0],
   "Card2": [54,20,34,22,43,11],
   "Card3":[10,31,50,13,34,22],
