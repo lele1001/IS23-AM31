@@ -32,4 +32,14 @@ public abstract class ComGoal {
      * the score is 0 if the goal is not reached, otherwise it is the max score available for the goal
      */
     public abstract int goalReached(Bookshelf l);
+
+    public int getCurrScore(){
+        try{
+            return this.score.get(0);
+        } catch(NullPointerException | IndexOutOfBoundsException e){
+            return 0;
+        }
+
+    }
+
 }
