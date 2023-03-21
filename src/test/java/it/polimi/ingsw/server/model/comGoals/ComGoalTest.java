@@ -1,4 +1,4 @@
-package it.polimi.ingsw.model.ComGoals;
+package it.polimi.ingsw.server.model.comGoals;
 
 import org.junit.jupiter.api.Test;
 
