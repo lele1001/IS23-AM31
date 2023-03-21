@@ -1,6 +1,5 @@
-package it.polimi.ingsw.server.model.ComGoals;
+package it.polimi.ingsw.server.model.comGoals;
 
-import it.polimi.ingsw.server.model.comGoals.CG11_12;
 import it.polimi.ingsw.server.model.ItemCard;
 import it.polimi.ingsw.server.model.Bookshelf;
 import org.junit.jupiter.api.Test;
@@ -12,7 +11,7 @@ import static it.polimi.ingsw.server.model.HouseItem.*;
 import static it.polimi.ingsw.server.model.ItemNumber.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-class CG111211Test {
+class CG111212Test {
     private final Bookshelf l1 = new Bookshelf();
     private final Bookshelf l2 = new Bookshelf();
     private final Bookshelf l3 = new Bookshelf();
@@ -24,11 +23,10 @@ class CG111211Test {
     private final ItemCard t3 = new ItemCard(Trophy, Third);
     private final List<ItemCard> col1 = new ArrayList<>(List.of(t3));
     private final List<ItemCard> col2 = new ArrayList<>(List.of(c1, t3));
-    private final List<ItemCard> col3 = new ArrayList<>(List.of(c1, f2, t3));
+    private final List<ItemCard> col3 = new ArrayList<>(List.of(f2, f2, f2));
     private final List<ItemCard> col4 = new ArrayList<>(List.of(c1, f1, b1, t3));
-    private final List<ItemCard> col5 = new ArrayList<>(List.of(f2, t3, b1, f1, t3));
-    private final List<ItemCard> col5_2 = new ArrayList<>(List.of(f2, t3, b1, f1, b1));
-    private final List<ItemCard> col6 = new ArrayList<>(List.of(f2, t3, b1, f1, b1, t3));
+    private final List<ItemCard> col5 = new ArrayList<>(List.of(f1, t3, b1, f1, b1));
+    private final List<ItemCard> col6 = new ArrayList<>(List.of(f2, t3, b1, f1, b1, c1));
 
     /** Test with 2 players
      * 1st player - only two columns: returns 0
@@ -36,16 +34,16 @@ class CG111211Test {
      */
     @Test
     void twoPlayers_zero() {
-        CG11_12 comG11 = new CG11_12(2, true);
+        CG11_12 comG11 = new CG11_12(2, false);
 
         l1.insertCard(col1, 0);
         l1.insertCard(col2, 4);
 
-        l2.insertCard(col1, 0);
-        l2.insertCard(col5, 1);
-        l2.insertCard(col2, 2);
+        l2.insertCard(col2, 0);
+        l2.insertCard(col2, 1);
+        l2.insertCard(col3, 2);
         l2.insertCard(col4, 3);
-        l2.insertCard(col2, 4);
+        l2.insertCard(col5, 4);
 
         assertEquals(0, comG11.goalReached(l1));
         assertEquals(0, comG11.goalReached(l2));
@@ -53,11 +51,11 @@ class CG111211Test {
 
     /** Test with 2 players
      * 1st player - five ordered columns, offset 0, direction 1: returns 8
-     * 2nd player - five ordered columns, wrong color: returns 0
+     * 2nd player - five mixed columns: returns 0
      */
     @Test
     void twoPlayers_one() {
-        CG11_12 comG11 = new CG11_12(2, true);
+        CG11_12 comG11 = new CG11_12(2, false);
 
         l1.insertCard(col2, 0);
         l1.insertCard(col3, 1);
@@ -66,10 +64,10 @@ class CG111211Test {
         l1.insertCard(col6, 4);
 
         l2.insertCard(col1, 0);
-        l2.insertCard(col2, 1);
+        l2.insertCard(col1, 1);
         l2.insertCard(col3, 2);
         l2.insertCard(col4, 3);
-        l2.insertCard(col5_2, 4);
+        l2.insertCard(col5, 4);
 
         assertEquals(8, comG11.goalReached(l1));
         assertEquals(0, comG11.goalReached(l2));
@@ -81,7 +79,7 @@ class CG111211Test {
      */
     @Test
     void twoPlayers_two() {
-        CG11_12 comG11 = new CG11_12(2, true);
+        CG11_12 comG11 = new CG11_12(2, false);
 
         l1.insertCard(col2, 0);
         l1.insertCard(col3, 1);
@@ -100,22 +98,20 @@ class CG111211Test {
     }
 
     /** Test with 3 players
-     * 1st player - only two columns: returns 0
+     * 1st player - empty library: returns 0
      * 2nd player - five mixed columns: returns 0
      * 3rd player - only three columns: returns 0
      */
     @Test
     void threePlayers_zero() {
-        CG11_12 comG11 = new CG11_12(3, true);
+        CG11_12 comG11 = new CG11_12(3, false);
 
-        l1.insertCard(col1, 0);
-        l1.insertCard(col2, 4);
 
-        l2.insertCard(col1, 0);
-        l2.insertCard(col5, 1);
-        l2.insertCard(col2, 2);
-        l2.insertCard(col4, 3);
-        l2.insertCard(col2, 4);
+        l2.insertCard(col4, 0);
+        l2.insertCard(col4, 1);
+        l2.insertCard(col4, 2);
+        l2.insertCard(col5, 3);
+        l2.insertCard(col6, 4);
 
         l3.insertCard(col1, 0);
         l3.insertCard(col2, 2);
@@ -133,7 +129,7 @@ class CG111211Test {
      */
     @Test
     void threePlayers_one() {
-        CG11_12 comG11 = new CG11_12(3, true);
+        CG11_12 comG11 = new CG11_12(3, false);
 
         l1.insertCard(col2, 0);
         l1.insertCard(col3, 1);
@@ -141,11 +137,11 @@ class CG111211Test {
         l1.insertCard(col5, 3);
         l1.insertCard(col6, 4);
 
-        l2.insertCard(col1, 0);
+        l2.insertCard(col6, 0);
         l2.insertCard(col5, 1);
-        l2.insertCard(col2, 2);
-        l2.insertCard(col4, 3);
-        l2.insertCard(col2, 4);
+        l2.insertCard(col4, 2);
+        l2.insertCard(col3, 3);
+        l2.insertCard(col3, 4);
 
         l3.insertCard(col1, 0);
         l3.insertCard(col2, 2);
@@ -163,7 +159,7 @@ class CG111211Test {
      */
     @Test
     void threePlayers_two() {
-        CG11_12 comG11 = new CG11_12(3, true);
+        CG11_12 comG11 = new CG11_12(3, false);
 
         l1.insertCard(col2, 0);
         l1.insertCard(col3, 1);
@@ -171,11 +167,11 @@ class CG111211Test {
         l1.insertCard(col5, 3);
         l1.insertCard(col6, 4);
 
-        l2.insertCard(col1, 0);
-        l2.insertCard(col5, 1);
-        l2.insertCard(col2, 2);
-        l2.insertCard(col4, 3);
-        l2.insertCard(col2, 4);
+        l2.insertCard(col6, 0);
+        l2.insertCard(col6, 1);
+        l2.insertCard(col6, 2);
+        l2.insertCard(col6, 3);
+        l2.insertCard(col6, 4);
 
         l3.insertCard(col5, 0);
         l3.insertCard(col4, 1);
@@ -195,7 +191,7 @@ class CG111211Test {
      */
     @Test
     void threePlayers_three() {
-        CG11_12 comG11 = new CG11_12(3, true);
+        CG11_12 comG11 = new CG11_12(3, false);
 
         l1.insertCard(col2, 0);
         l1.insertCard(col3, 1);
@@ -228,7 +224,7 @@ class CG111211Test {
      */
     @Test
     void fourPlayers_zero() {
-        CG11_12 comG11 = new CG11_12(4, true);
+        CG11_12 comG11 = new CG11_12(4, false);
 
         l1.insertCard(col1, 0);
         l1.insertCard(col2, 4);
@@ -263,7 +259,7 @@ class CG111211Test {
      */
     @Test
     void fourPlayers_one() {
-        CG11_12 comG11 = new CG11_12(4, true);
+        CG11_12 comG11 = new CG11_12(4, false);
 
         l1.insertCard(col1, 0);
         l1.insertCard(col2, 4);
@@ -300,7 +296,7 @@ class CG111211Test {
      */
     @Test
     void fourPlayers_two() {
-        CG11_12 comG11 = new CG11_12(4, true);
+        CG11_12 comG11 = new CG11_12(4, false);
 
         l1.insertCard(col2, 0);
         l1.insertCard(col3, 1);
@@ -340,7 +336,7 @@ class CG111211Test {
      */
     @Test
     void fourPlayers_three() {
-        CG11_12 comG11 = new CG11_12(4, true);
+        CG11_12 comG11 = new CG11_12(4, false);
 
         l1.insertCard(col2, 0);
         l1.insertCard(col3, 1);
@@ -380,7 +376,7 @@ class CG111211Test {
      */
     @Test
     void fourPlayers_four() {
-        CG11_12 comG11 = new CG11_12(4, true);
+        CG11_12 comG11 = new CG11_12(4, false);
 
         l1.insertCard(col2, 0);
         l1.insertCard(col3, 1);

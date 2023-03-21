@@ -1,6 +1,5 @@
-package it.polimi.ingsw.server.model.ComGoals;
+package it.polimi.ingsw.server.model.comGoals;
 
-import it.polimi.ingsw.server.model.comGoals.CG9;
 import it.polimi.ingsw.server.model.ItemCard;
 import it.polimi.ingsw.server.model.Bookshelf;
 import org.junit.jupiter.api.Test;

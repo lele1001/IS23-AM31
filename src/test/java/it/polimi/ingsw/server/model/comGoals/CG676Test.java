@@ -1,6 +1,5 @@
-package it.polimi.ingsw.server.model.ComGoals;
+package it.polimi.ingsw.server.model.comGoals;
 
-import it.polimi.ingsw.server.model.comGoals.CG6_7;
 import it.polimi.ingsw.server.model.ItemCard;
 import it.polimi.ingsw.server.model.Bookshelf;
 import org.junit.jupiter.api.Test;
@@ -10,9 +9,9 @@ import java.util.List;
 
 import static it.polimi.ingsw.server.model.HouseItem.*;
 import static it.polimi.ingsw.server.model.ItemNumber.*;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
-class CG677Test {
+class CG676Test {
     private final Bookshelf l1 = new Bookshelf();
     private final Bookshelf l2 = new Bookshelf();
     private final Bookshelf l3 = new Bookshelf();
@@ -23,19 +22,19 @@ class CG677Test {
     private final ItemCard t3 = new ItemCard(Trophy, Third);
     private final ItemCard g1 = new ItemCard(Games, First);
     private final ItemCard p3 = new ItemCard(Plants, Third);
-    private final List<ItemCard> col1 = new ArrayList<>(List.of(t3, c1, c1, b1, f2, c1));
-    private final List<ItemCard> col2 = new ArrayList<>(List.of(g1, p3, c1, f2, p3, b1));
-    private final List<ItemCard> col3 = new ArrayList<>(List.of(t3, p3, f2, b1, t3));
-    private final List<ItemCard> col4 = new ArrayList<>(List.of(g1, t3, p3, f2, g1, f2));
-    private final List<ItemCard> col5 = new ArrayList<>(List.of(g1, c1, p3, t3, g1, b1));
+    private final List<ItemCard> col1 = new ArrayList<>(List.of(t3, b1, c1, c1, f2, c1));
+    private final List<ItemCard> col2 = new ArrayList<>(List.of(g1, t3, b1, f2, p3, c1));
+    private final List<ItemCard> col3 = new ArrayList<>(List.of(c1, t3, f2, b1, t3));
+    private final List<ItemCard> col4 = new ArrayList<>(List.of(b1, t3, p3, g1, g1, f2));
+    private final List<ItemCard> col5 = new ArrayList<>(List.of(f2, g1, t3, p3, g1, p3));
 
     /** Test with 2 players
      * 1st player - zero rows: returns 0
-     * 2nd player - zero rows: returns 0
+     * 2nd player - one rows: returns 0
      */
     @Test
     void twoPlayers_zero() {
-        CG6_7 comG7 = new CG6_7(2, 3);
+        CG6_7 comG6 = new CG6_7(2, 5);
 
         l1.insertCard(col1, 0);
         l1.insertCard(col2, 4);
@@ -44,17 +43,17 @@ class CG677Test {
         l2.insertCard(col3, 3);
         l2.insertCard(col2, 4);
 
-        assertEquals(0, comG7.goalReached(l1));
-        assertEquals(0, comG7.goalReached(l2));
+        assertEquals(0, comG6.goalReached(l1));
+        assertEquals(0, comG6.goalReached(l2));
     }
 
     /** Test with 2 players
-     * 1st player - four rows: returns 8
+     * 1st player - three rows: returns 8
      * 2nd player - zero rows: returns 0
      */
     @Test
     void twoPlayers_one() {
-        CG6_7 comG7 = new CG6_7(2, 3);
+        CG6_7 comG6 = new CG6_7(2, 5);
 
         l1.insertCard(col1, 0);
         l1.insertCard(col3, 1);
@@ -66,17 +65,17 @@ class CG677Test {
         l2.insertCard(col3, 3);
         l2.insertCard(col2, 4);
 
-        assertEquals(8, comG7.goalReached(l1));
-        assertEquals(0, comG7.goalReached(l2));
+        assertEquals(8, comG6.goalReached(l1));
+        assertEquals(0, comG6.goalReached(l2));
     }
 
     /** Test with 2 players
-     * 1st player - four rows: returns 8
-     * 2nd player - four rows: returns 4
+     * 1st player - three rows: returns 8
+     * 2nd player - three rows: returns 4
      */
     @Test
     void twoPlayers_two() {
-        CG6_7 comG7 = new CG6_7(2, 3);
+        CG6_7 comG6 = new CG6_7(2, 5);
 
         l1.insertCard(col2, 0);
         l1.insertCard(col3, 1);
@@ -90,8 +89,8 @@ class CG677Test {
         l2.insertCard(col3, 3);
         l2.insertCard(col2, 4);
 
-        assertEquals(8, comG7.goalReached(l1));
-        assertEquals(4, comG7.goalReached(l2));
+        assertEquals(8, comG6.goalReached(l1));
+        assertEquals(4, comG6.goalReached(l2));
     }
 
     /** Test with 3 players
@@ -101,7 +100,7 @@ class CG677Test {
      */
     @Test
     void threePlayers_zero() {
-        CG6_7 comG7 = new CG6_7(3, 3);
+        CG6_7 comG6 = new CG6_7(3, 5);
 
         l1.insertCard(col1, 0);
         l1.insertCard(col2, 4);
@@ -114,19 +113,19 @@ class CG677Test {
         l3.insertCard(col2, 2);
         l3.insertCard(col5, 4);
 
-        assertEquals(0, comG7.goalReached(l1));
-        assertEquals(0, comG7.goalReached(l2));
-        assertEquals(0, comG7.goalReached(l3));
+        assertEquals(0, comG6.goalReached(l1));
+        assertEquals(0, comG6.goalReached(l2));
+        assertEquals(0, comG6.goalReached(l3));
     }
 
     /** Test with 3 players
-     * 1st player - four rows: returns 8
+     * 1st player - three rows: returns 8
      * 2nd player - zero rows: returns 0
      * 3rd player - zero rows: returns 0
      */
     @Test
     void threePlayers_one() {
-        CG6_7 comG7 = new CG6_7(3, 3);
+        CG6_7 comG6 = new CG6_7(3, 5);
 
         l1.insertCard(col2, 0);
         l1.insertCard(col3, 1);
@@ -142,19 +141,19 @@ class CG677Test {
         l3.insertCard(col2, 2);
         l3.insertCard(col5, 4);
 
-        assertEquals(8, comG7.goalReached(l1));
-        assertEquals(0, comG7.goalReached(l2));
-        assertEquals(0, comG7.goalReached(l3));
+        assertEquals(8, comG6.goalReached(l1));
+        assertEquals(0, comG6.goalReached(l2));
+        assertEquals(0, comG6.goalReached(l3));
     }
 
     /** Test with 3 players
-     * 1st player - four rows: returns 8
+     * 1st player - three rows: returns 8
      * 2nd player - zero rows: returns 0
-     * 3rd player - four rows: returns 6
+     * 3rd player - three rows: returns 6
      */
     @Test
     void threePlayers_two() {
-        CG6_7 comG7 = new CG6_7(3, 3);
+        CG6_7 comG6 = new CG6_7(3, 5);
 
         l1.insertCard(col2, 0);
         l1.insertCard(col3, 1);
@@ -172,19 +171,19 @@ class CG677Test {
         l3.insertCard(col4, 3);
         l3.insertCard(col2, 4);
 
-        assertEquals(8, comG7.goalReached(l1));
-        assertEquals(0, comG7.goalReached(l2));
-        assertEquals(6, comG7.goalReached(l3));
+        assertEquals(8, comG6.goalReached(l1));
+        assertEquals(0, comG6.goalReached(l2));
+        assertEquals(6, comG6.goalReached(l3));
     }
 
     /** Test with 3 players
-     * 1st player - four rows: returns 8
-     * 2nd player - four rows: returns 6
-     * 3rd player - four rows: returns 4
+     * 1st player - three rows: returns 8
+     * 2nd player - three rows: returns 6
+     * 3rd player - three rows: returns 4
      */
     @Test
     void threePlayers_three() {
-        CG6_7 comG7 = new CG6_7(3, 3);
+        CG6_7 comG6 = new CG6_7(3, 5);
 
         l1.insertCard(col2, 0);
         l1.insertCard(col3, 1);
@@ -204,9 +203,9 @@ class CG677Test {
         l3.insertCard(col4, 3);
         l3.insertCard(col2, 4);
 
-        assertEquals(8, comG7.goalReached(l1));
-        assertEquals(6, comG7.goalReached(l2));
-        assertEquals(4, comG7.goalReached(l3));
+        assertEquals(8, comG6.goalReached(l1));
+        assertEquals(6, comG6.goalReached(l2));
+        assertEquals(4, comG6.goalReached(l3));
     }
 
     /** Test with 4 players
@@ -217,7 +216,7 @@ class CG677Test {
      */
     @Test
     void fourPlayers_zero() {
-        CG6_7 comG7 = new CG6_7(4, 3);
+        CG6_7 comG6 = new CG6_7(4, 5);
 
         l1.insertCard(col1, 0);
         l1.insertCard(col2, 4);
@@ -234,21 +233,21 @@ class CG677Test {
         l4.insertCard(col1, 1);
         l4.insertCard(col5, 4);
 
-        assertEquals(0, comG7.goalReached(l1));
-        assertEquals(0, comG7.goalReached(l2));
-        assertEquals(0, comG7.goalReached(l3));
-        assertEquals(0, comG7.goalReached(l4));
+        assertEquals(0, comG6.goalReached(l1));
+        assertEquals(0, comG6.goalReached(l2));
+        assertEquals(0, comG6.goalReached(l3));
+        assertEquals(0, comG6.goalReached(l4));
     }
 
     /** Test with 4 players
      * 1st player - zero rows: returns 0
      * 2nd player - zero rows: returns 0
-     * 3rd player - four rows: returns 8
+     * 3rd player - three rows: returns 8
      * 4th player - zero rows: returns 0
      */
     @Test
     void fourPlayers_one() {
-        CG6_7 comG7 = new CG6_7(4, 3);
+        CG6_7 comG6 = new CG6_7(4, 5);
 
         l1.insertCard(col1, 0);
         l1.insertCard(col2, 4);
@@ -267,21 +266,21 @@ class CG677Test {
         l4.insertCard(col1, 1);
         l4.insertCard(col5, 4);
 
-        assertEquals(0, comG7.goalReached(l1));
-        assertEquals(0, comG7.goalReached(l2));
-        assertEquals(8, comG7.goalReached(l3));
-        assertEquals(0, comG7.goalReached(l4));
+        assertEquals(0, comG6.goalReached(l1));
+        assertEquals(0, comG6.goalReached(l2));
+        assertEquals(8, comG6.goalReached(l3));
+        assertEquals(0, comG6.goalReached(l4));
     }
 
     /** Test with 4 players
-     * 1st player - four rows: returns 8
+     * 1st player - three rows: returns 8
      * 2nd player - zero rows: returns 0
-     * 3rd player - four rows: returns 6
+     * 3rd player - three rows: returns 6
      * 4th player - zero rows: returns 0
      */
     @Test
     void fourPlayers_two() {
-        CG6_7 comG7 = new CG6_7(4, 3);
+        CG6_7 comG6 = new CG6_7(4, 5);
 
         l1.insertCard(col2, 0);
         l1.insertCard(col3, 1);
@@ -303,21 +302,21 @@ class CG677Test {
         l4.insertCard(col1, 1);
         l4.insertCard(col5, 4);
 
-        assertEquals(8, comG7.goalReached(l1));
-        assertEquals(0, comG7.goalReached(l2));
-        assertEquals(6, comG7.goalReached(l3));
-        assertEquals(0, comG7.goalReached(l4));
+        assertEquals(8, comG6.goalReached(l1));
+        assertEquals(0, comG6.goalReached(l2));
+        assertEquals(6, comG6.goalReached(l3));
+        assertEquals(0, comG6.goalReached(l4));
     }
 
     /** Test with 4 players
-     * 1st player - four rows: returns 8
+     * 1st player - three rows: returns 8
      * 2nd player - zero rows: returns 0
-     * 3rd player - four rows: returns 6
-     * 4th player - four rows: returns 4
+     * 3rd player - three rows: returns 6
+     * 4th player - three rows: returns 4
      */
     @Test
     void fourPlayers_three() {
-        CG6_7 comG7 = new CG6_7(4, 3);
+        CG6_7 comG6 = new CG6_7(4, 5);
 
         l1.insertCard(col2, 0);
         l1.insertCard(col3, 1);
@@ -341,21 +340,21 @@ class CG677Test {
         l4.insertCard(col5, 3);
         l4.insertCard(col3, 4);
 
-        assertEquals(8, comG7.goalReached(l1));
-        assertEquals(0, comG7.goalReached(l2));
-        assertEquals(6, comG7.goalReached(l3));
-        assertEquals(4, comG7.goalReached(l4));
+        assertEquals(8, comG6.goalReached(l1));
+        assertEquals(0, comG6.goalReached(l2));
+        assertEquals(6, comG6.goalReached(l3));
+        assertEquals(4, comG6.goalReached(l4));
     }
 
     /** Test with 4 players
-     * 1st player - four rows: returns 8
-     * 2nd player - four rows: returns 6
-     * 3rd player - four rows: returns 4
-     * 4th player - four rows: returns 2
+     * 1st player - three rows: returns 8
+     * 2nd player - three rows: returns 6
+     * 3rd player - three rows: returns 4
+     * 4th player - three rows: returns 2
      */
     @Test
     void fourPlayers_four() {
-        CG6_7 comG7 = new CG6_7(4, 3);
+        CG6_7 comG6 = new CG6_7(4, 5);
 
         l1.insertCard(col2, 0);
         l1.insertCard(col3, 1);
@@ -381,9 +380,9 @@ class CG677Test {
         l4.insertCard(col5, 3);
         l4.insertCard(col3, 4);
 
-        assertEquals(8, comG7.goalReached(l1));
-        assertEquals(6, comG7.goalReached(l2));
-        assertEquals(4, comG7.goalReached(l3));
-        assertEquals(2, comG7.goalReached(l4));
+        assertEquals(8, comG6.goalReached(l1));
+        assertEquals(6, comG6.goalReached(l2));
+        assertEquals(4, comG6.goalReached(l3));
+        assertEquals(2, comG6.goalReached(l4));
     }
 }

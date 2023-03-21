@@ -31,7 +31,7 @@ public enum PersGoal {
         Reader json;
         {
             try {
-                json = new FileReader("src/main/java/it/polimi/ingsw/model/PersGoalConfiguration.json");
+                json = new FileReader("src/main/java/it/polimi/ingsw/server/model/PersGoalConfiguration.json");
             } catch (FileNotFoundException e) {
                 System.out.println("ERROR: No such PersGoalConfiguration file.");
                 return;

@@ -35,7 +35,7 @@ class BoardTest {
         }
         for (int i = 0; i < boardTest.board.length; i++) {
             for (int j = 0; j < boardTest.board[0].length; j++) {
-                assertEquals(player[i][j], boardTest.numminplayer[i][j]);
+                assertEquals(player[i][j], boardTest.numMinPlayer[i][j]);
             }
         }
         assertNotNull(boardTest.cardBag);
@@ -53,7 +53,7 @@ class BoardTest {
             boardTest1.fillBoard();
             for (int i = 0; i < boardTest1.board.length; i++) {
                 for (int j = 0; j < boardTest1.board[0].length; j++) {
-                    if (boardTest1.numminplayer[i][j] <= numPlayer)
+                    if (boardTest1.numMinPlayer[i][j] <= numPlayer)
                         assertNotNull(boardTest1.board[i][j]);
                     else assertNull(boardTest1.board[i][j]);
                 }
@@ -81,7 +81,7 @@ class BoardTest {
         assertEquals(prima, boardTest1.board[0][3]);
         for (int i = 0; i < boardTest1.board.length; i++) {
             for (int j = 0; j < boardTest1.board[0].length; j++) {
-                if (boardTest1.numminplayer[i][j] <= numPlayer) assertNotNull(boardTest1.board[i][j]);
+                if (boardTest1.numMinPlayer[i][j] <= numPlayer) assertNotNull(boardTest1.board[i][j]);
                 else assertNull(boardTest1.board[i][j]);
             }
         }
@@ -150,7 +150,7 @@ class BoardTest {
         assertEquals(prima.board[3][3], boardTest1.board[3][3]);
         for (int i = 0; i < boardTest1.board.length; i++) {
             for (int j = 0; j < boardTest1.board[0].length; j++) {
-                if (boardTest1.numminplayer[i][j] <= numPlayer) assertNotNull(boardTest1.board[i][j]);
+                if (boardTest1.numMinPlayer[i][j] <= numPlayer) assertNotNull(boardTest1.board[i][j]);
                 else assertNull(boardTest1.board[i][j]);
             }
         }
