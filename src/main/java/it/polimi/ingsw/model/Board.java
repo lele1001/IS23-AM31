@@ -4,20 +4,26 @@ import it.polimi.ingsw.ModelExceptions.EmptyCardBagException;
 import it.polimi.ingsw.ModelExceptions.NoRightItemCardSelection;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 
 
 public class Board {
     private static final int DIM_BOARD = 9;
-    Cell[][] board = new Cell[DIM_BOARD][DIM_BOARD];
+    ItemCard[][] board = new ItemCard[DIM_BOARD][DIM_BOARD];
     ArrayList<ItemCard> cardBag = new ArrayList<>();
     int numofplayers;
+    int[][] numminplayer= new int[][]{
+        {5, 5, 5, 3, 4, 5, 5, 5, 5},
+        {5, 5, 5, 2, 2, 4, 5, 5, 5},
+        {5, 5, 3, 2, 2, 2, 3, 5, 5},
+        {5, 4, 2, 2, 2, 2, 2, 2, 3},
+        {4, 2, 2, 2, 2, 2, 2, 2, 4},
+        {3, 2, 2, 2, 2, 2, 2, 4, 5},
+        {5, 5, 3, 2, 2, 2, 3, 5, 5},
+        {5, 5, 5, 4, 2, 2, 5, 5, 5},
+        {5, 5, 5, 5, 4, 3, 5, 5, 5}};
 
     //Arraylist used for creating the board using the minimum number of player to put an Itemcard in the Cell
-    private final ArrayList<Integer> numplayers2 = new ArrayList<>((Arrays.asList(13, 14, 23, 24, 25, 32, 33, 34, 35, 36, 37, 41, 42, 43, 44, 45, 46, 47, 51, 52, 53, 54, 55, 56, 63, 64, 65, 74, 75)));
-    private final ArrayList<Integer> Numplayers3 = new ArrayList<>(Arrays.asList(3, 22, 26, 38, 50, 62, 66, 85));
-    private final ArrayList<Integer> Numplayers4 = new ArrayList<>(Arrays.asList(4, 15, 31, 40, 48, 57, 73, 84));
 
     /**
      * Creation of the Board with Cells block containing the ItemCard and the minimum number of players to insert an Itemcard during the refill of the board
@@ -26,16 +32,6 @@ public class Board {
      */
     Board(int numofplayers) {
         this.numofplayers = numofplayers;
-        int numcell;
-        for (int i = 0; i < DIM_BOARD; i++) {
-            for (int j = 0; j < DIM_BOARD; j++) {
-                numcell = 10 * i + j;
-                if (Numplayers4.contains(numcell)) board[i][j] = new Cell(4);
-                else if (Numplayers3.contains(numcell)) board[i][j] = new Cell(3);
-                else if (numplayers2.contains(numcell)) board[i][j] = new Cell(2);
-                else board[i][j] = new Cell(5);
-            }
-        }
         this.createcardBag();
         Collections.shuffle(cardBag);
     }
@@ -47,9 +43,9 @@ public class Board {
 
         for (int i = 0; i < DIM_BOARD; i++) {
             for (int j = 0; j < DIM_BOARD; j++) {
-                if (board[i][j].itemCard == null) {
-                    if (board[i][j].numPlayermin <= numofplayers) {
-                        board[i][j].itemCard = cardBag.get(0);
+                if (board[i][j] == null) {
+                    if (numminplayer[i][j] <= numofplayers) {
+                        board[i][j] = cardBag.get(0);
                         cardBag.remove(0);
                         if (cardBag.isEmpty()) {
                             throw new EmptyCardBagException();
@@ -70,9 +66,9 @@ public class Board {
         boolean refill = true;
         for (int i = 0; i < DIM_BOARD && refill; i++) {
             for (int j = 0; j < DIM_BOARD && refill; j++) {
-                if (((i == 0 || i == 8) || (j == 0 || j == 8)) && board[i][j].itemCard != null && board[i][j].numPlayermin <= numofplayers)
+                if (((i == 0 || i == 8) || (j == 0 || j == 8)) && board[i][j] != null && numminplayer[i][j] <= numofplayers)
                     refill = checkSide(i, j);
-                else if (board[i][j].itemCard != null && board[i][j].numPlayermin <= numofplayers)
+                else if (board[i][j] != null && numminplayer[i][j] <= numofplayers)
                     refill = checkPosition(i, j);
             }
         }
@@ -92,19 +88,19 @@ public class Board {
 
     private boolean checkSide(int i, int j) {
         if (i == 0) {
-            if (board[i + 1][j].itemCard != null || board[i][j + 1].itemCard != null || board[i][j - 1].itemCard != null)
+            if (board[i + 1][j] != null || board[i][j + 1] != null || board[i][j - 1] != null)
                 return false;
         }
         if (i == 8) {
-            if (board[i - 1][j].itemCard != null || board[i][j + 1].itemCard != null || board[i][j - 1].itemCard != null)
+            if (board[i - 1][j] != null || board[i][j + 1] != null || board[i][j - 1] != null)
                 return false;
         }
         if (j == 0) {
-            if (board[i + 1][j].itemCard != null || board[i - 1][j].itemCard != null || board[i][j + 1].itemCard != null)
+            if (board[i + 1][j] != null || board[i - 1][j] != null || board[i][j + 1] != null)
                 return false;
         }
         if (j == 8) {
-            if (board[i + 1][j].itemCard != null || board[i - 1][j].itemCard != null || board[i][j - 1].itemCard != null)
+            if (board[i + 1][j] != null || board[i - 1][j] != null || board[i][j - 1] != null)
                 return false;
         }
         return true;
@@ -118,7 +114,7 @@ public class Board {
      * @return false if it finds an Itemcard near the one passed, true otherwise
      */
     private boolean checkPosition(int i, int j) {
-        return board[i + 1][j].itemCard == null && board[i - 1][j].itemCard == null && board[i][j - 1].itemCard == null && board[i][j + 1].itemCard == null;
+        return board[i + 1][j] == null && board[i - 1][j] == null && board[i][j - 1] == null && board[i][j + 1] == null;
     }
 
     /**
@@ -128,7 +124,7 @@ public class Board {
      * Called two separate methods to do other controls
      *
      * @param position number from which we can extract row and column
-     * @return
+     * @return true if the Itemcard can be deleted
      */
     public boolean checkSelection(ArrayList<Integer> position) {
         Collections.sort(position);
@@ -139,7 +135,7 @@ public class Board {
             }
         }
         for (Integer pos : position) {
-            if (board[Position.getrow(pos)][Position.getcolumn(pos)].itemCard == null) {
+            if (board[Position.getrow(pos)][Position.getcolumn(pos)] == null) {
                 return false;
             }
         }
@@ -151,7 +147,7 @@ public class Board {
      * Private method called by checkSelection that controls that all the tiles inb position have at least 1 clear side from other Itemcards
      *
      * @param position number from which we can extract row and column
-     * @return
+     * @return true if a side of an Itemcard is clear from others
      */
     private boolean checkClearSideSelection(ArrayList<Integer> position) {
         Collections.sort(position);
@@ -162,7 +158,7 @@ public class Board {
             i = Position.getrow(position.get(k));
             j = Position.getcolumn(position.get(k));
             if (i != 0 && i != 8 && j != 0 && j != 8) {
-                sideclear = board[i + 1][j].itemCard == null || board[i - 1][j].itemCard == null || board[i][j - 1].itemCard == null || board[i][j + 1].itemCard == null;
+                sideclear = board[i + 1][j] == null || board[i - 1][j] == null || board[i][j - 1] == null || board[i][j + 1] == null;
             }
         }
         return sideclear;
@@ -172,7 +168,7 @@ public class Board {
      * Private method called by checkSelection that controls that the selected Tiles for a straight Line (change of row_position or column_position)
      *
      * @param position number from which we can extract row and column
-     * @return
+     * @return true if the Itemcards are in a straight line
      */
     private boolean checkStraightSelection(ArrayList<Integer> position) {
         if (position.size() == 3) {
@@ -197,7 +193,7 @@ public class Board {
      * Delete Itemcards in the selected Cells only if all the checks are successful
      *
      * @param position number from which we can extract row and column
-     * @return
+     * @return an Arraylist with the selected ItemCards
      * @throws NoRightItemCardSelection if the selected itemcards don't pas the check selection
      */
 
@@ -208,8 +204,8 @@ public class Board {
             throw new NoRightItemCardSelection();
         }
         for (Integer pos : position) {
-            chosencard.add(board[Position.getrow(pos)][Position.getcolumn(pos)].itemCard);
-            board[Position.getrow(pos)][Position.getcolumn(pos)].itemCard = null;
+            chosencard.add(board[Position.getrow(pos)][Position.getcolumn(pos)]);
+            board[Position.getrow(pos)][Position.getcolumn(pos)] = null;
         }
         return chosencard;
     }
