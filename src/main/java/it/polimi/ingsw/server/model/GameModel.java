@@ -1,9 +1,10 @@
-package it.polimi.ingsw.model;
+package it.polimi.ingsw.server.model;
 
-import it.polimi.ingsw.ModelExceptions.EmptyCardBagException;
-import it.polimi.ingsw.ModelExceptions.NoBookshelfSpaceException;
-import it.polimi.ingsw.ModelExceptions.NoRightItemCardSelection;
-import it.polimi.ingsw.model.ComGoals.*;
+
+import it.polimi.ingsw.server.gameExceptions.EmptyCardBagException;
+import it.polimi.ingsw.server.gameExceptions.NoBookshelfSpaceException;
+import it.polimi.ingsw.server.gameExceptions.NoRightItemCardSelection;
+import it.polimi.ingsw.server.model.comGoals.*;
 
 import java.beans.PropertyChangeListener;
 import java.util.*;
