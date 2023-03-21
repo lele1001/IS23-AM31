@@ -284,7 +284,27 @@ class BoardTest {
     }
 
     @Test
-    void createcardBag() {
-    }
+    void createcardBag() {  //Da fare io: controllo che le carte siano effettivamente 22 e uguali
+        Board board = new Board(4);
+        ItemCard test;
+        int[] prova = new int[6];
+        for (int i = 0; i < 6; i++) {
+            prova[i] = 0;
+        }
+        for (int i = 0; i < 132; i++) {
+            assertNotNull(board.cardBag.get(0));
+            test = board.cardBag.get(0);
+            board.cardBag.remove(0);
+            if (test.getMyItem() == HouseItem.Cat) prova[0]++;
+            if (test.getMyItem() == HouseItem.Books) prova[1]++;
+            if (test.getMyItem() == HouseItem.Frame) prova[2]++;
+            if (test.getMyItem() == HouseItem.Plants) prova[3]++;
+            if (test.getMyItem() == HouseItem.Games) prova[4]++;
+            if (test.getMyItem() == HouseItem.Trophy) prova[5]++;
+        }
+        for (int i = 0; i < 6; i++) {
+            assertEquals(22, prova[i]);
+        }
 
+    }
 }

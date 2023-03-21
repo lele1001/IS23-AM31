@@ -216,8 +216,17 @@ public class Board {
 
     //Todo for Mila, already created ItemCard
     public void createcardBag() {
-        for (int i = 0; i < 132; i++) {
-            cardBag.add(new ItemCard(HouseItem.Cat, ItemNumber.First));
+
+        for (HouseItem item : HouseItem.values()) {
+            for (int i = 0; i < 8; i++) {
+                cardBag.add(new ItemCard(item, ItemNumber.First));
+            }
+            for (int i = 0; i < 7; i++) {
+                cardBag.add(new ItemCard(item, ItemNumber.Second));
+            }
+            for (int i = 0; i < 7; i++) {
+                cardBag.add(new ItemCard(item, ItemNumber.Third));
+            }
         }
     }
 }
