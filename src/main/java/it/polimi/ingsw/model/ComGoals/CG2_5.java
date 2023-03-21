@@ -10,7 +10,6 @@ import java.util.ArrayList;
  */
 public class CG2_5 extends ComGoal {
     int numDiff;
-
     public CG2_5(int playerNum, int numDiff) {
         super(playerNum);
         this.numDiff = numDiff;
@@ -40,7 +39,7 @@ public class CG2_5 extends ComGoal {
         HouseItem myItem;
         ArrayList<HouseItem> items = new ArrayList<>();
 
-        for (c = 0; c <= 4; c++) {
+        for (c = 0; c < BookshelfWidth; c++) {
             if (!items.isEmpty()) {
                 initSize = items.size();
 
@@ -49,7 +48,7 @@ public class CG2_5 extends ComGoal {
                 }
             }
 
-            for (r = 0; r <= 5; r++) {
+            for (r = 0; r < BookshelfHeight; r++) {
                 if (l.get(r, c) != null) {
                     myItem = l.get(r, c).getMyItem();
 

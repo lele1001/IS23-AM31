@@ -16,9 +16,9 @@ public class CG10 extends ComGoal {
         boolean found = false;
         HouseItem myItem, it1, it2, it3;
 
-        while ((r <= 3) && !found) {
+        while ((r < BookshelfHeight - 2) && !found) {
             c = 0;
-            while ((c <= 2) && !found) {
+            while ((c < BookshelfWidth - 2) && !found) {
                 if (l.get(r, c) != null) {
                     myItem = l.get(r, c).getMyItem();
 

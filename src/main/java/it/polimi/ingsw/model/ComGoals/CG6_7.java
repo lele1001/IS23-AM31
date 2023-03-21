@@ -41,7 +41,7 @@ public class CG6_7 extends ComGoal {
         HouseItem myItem;
         ArrayList<HouseItem> items = new ArrayList<>();
 
-        for (r = 0; r <= 5; r++) {
+        for (r = 0; r < BookshelfHeight; r++) {
             nullCell = false;
 
             if (!items.isEmpty()) {
@@ -52,7 +52,7 @@ public class CG6_7 extends ComGoal {
                 }
             }
 
-            for (c = 0; c <= 4; c++) {
+            for (c = 0; c < BookshelfWidth; c++) {
                 if (l.get(r, c) != null) {
                     myItem = l.get(r, c).getMyItem();
 

@@ -5,6 +5,8 @@ import it.polimi.ingsw.model.Bookshelf;
 import java.util.ArrayList;
 
 public abstract class ComGoal {
+    final static int BookshelfHeight = 6;
+    final static int BookshelfWidth = 5;
     ArrayList<Integer> score = new ArrayList<>();
 
     public ComGoal(int playerNum) {
@@ -26,7 +28,7 @@ public abstract class ComGoal {
     /**
      * checks if the player reached the common goals
      *
-     * @return score
+     * @return score assigned to the player
      * the score is 0 if the goal is not reached, otherwise it is the max score available for the goal
      */
     public abstract int goalReached(Bookshelf l);

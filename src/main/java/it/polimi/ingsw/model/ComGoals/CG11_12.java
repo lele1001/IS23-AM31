@@ -54,7 +54,7 @@ public class CG11_12 extends ComGoal {
         if ((direction == 0) && (l.get(offset, 0) != null)) {
             myItem = l.get(offset, 0).getMyItem();
 
-            for (i = 0; i < 5; i++) {
+            for (i = 0; i < BookshelfHeight - 1; i++) {
                 if (l.get(i + offset, i) != null) {
                     if (color && l.get(i + offset, i).getMyItem().equals(myItem)) {
                         itemCount++;
@@ -66,16 +66,16 @@ public class CG11_12 extends ComGoal {
                     }
                 }
             }
-        } else if ((direction == 1) && (l.get(5 - offset, 0) != null)) {
-            myItem = l.get(5 - offset, 0).getMyItem();
+        } else if ((direction == 1) && (l.get(BookshelfWidth - offset, 0) != null)) {
+            myItem = l.get(BookshelfWidth - offset, 0).getMyItem();
 
-            for (i = 0; i < 5; i++) {
+            for (i = 0; i < BookshelfHeight - 1; i++) {
                 if (l.get(5 - i - offset, i) != null) {
-                    if (color && l.get(5 - i - offset, i).getMyItem().equals(myItem)) {
+                    if (color && l.get(BookshelfWidth - i - offset, i).getMyItem().equals(myItem)) {
                         itemCount++;
                     } else if (!color) {
-                        if ((5 - i - offset == 0)) itemCount++;
-                        else if (l.get(5 - i - offset - 1, i) == null) {
+                        if ((BookshelfWidth - i - offset == 0)) itemCount++;
+                        else if (l.get(BookshelfWidth - i - offset - 1, i) == null) {
                             itemCount++;
                         }
                     }
@@ -83,10 +83,6 @@ public class CG11_12 extends ComGoal {
             }
         }
 
-        if (itemCount == 5) {
-            return true;
-        } else {
-            return false;
-        }
+        return itemCount == 5;
     }
 }

@@ -20,11 +20,11 @@ public class CG1 extends ComGoal {
         long groupsFound;
         int toReturn = 0;
         HouseItem myItem, it1;
-        int[][] fakeLib = new int[5][6];
+        int[][] fakeLib = new int[BookshelfWidth][BookshelfHeight];
         ArrayList<HouseItem> items = new ArrayList<>();
 
-        for (c = 0; c < 4; c++) {
-            for (r = 0; r < 5; r++) {
+        for (c = 0; c < BookshelfWidth - 1; c++) {
+            for (r = 0; r < BookshelfHeight - 1; r++) {
                 if ((l.get(r, c) != null) && (fakeLib[r][c] != 1)) {
                     myItem = l.get(r, c).getMyItem();
 

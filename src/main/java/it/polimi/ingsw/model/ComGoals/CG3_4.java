@@ -17,14 +17,14 @@ public class CG3_4 extends ComGoal {
         int toReturn = 0;
         boolean[][] matrix = new boolean[6][5];
 
-        for (int i = 0; i < 6; i++) {
-            for (int j = 0; j < 5; j++) {
+        for (int i = 0; i < BookshelfHeight; i++) {
+            for (int j = 0; j < BookshelfWidth; j++) {
                 matrix[i][j] = false;
             }
         }
 
-        for (int i = 0; i < 6; i++) {
-            for (int j = 0; j < 5; j++) {
+        for (int i = 0; i < BookshelfHeight; i++) {
+            for (int j = 0; j < BookshelfWidth; j++) {
                 if (!matrix[i][j] && (l.get(i, j) != null)) {
                     groupsFound += (find(matrix, i, j, l) / (2 * multiplier));
 //                    System.out.println("Riga "+i+" Colonna "+j+": "+score);

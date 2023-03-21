@@ -17,11 +17,11 @@ public class CG9 extends ComGoal {
         int r, c, i;
         int toReturn = 0;
         HouseItem myItem;
-        int[] itemsCount = new int[6];
+        int[] itemsCount = new int[BookshelfHeight];
         ArrayList<HouseItem> items = new ArrayList<>();
 
-        for (r = 5; r >= 0; r--) {
-            for (c = 0; c <= 4; c++) {
+        for (r = BookshelfHeight - 1; r >= 0; r--) {
+            for (c = 0; c < BookshelfWidth; c++) {
                 if (l.get(r, c) != null) {
                     myItem = l.get(r, c).getMyItem();
 
