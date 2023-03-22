@@ -92,7 +92,7 @@ public class GameModel {
      * calculates all the players' final score and sends it to each of them
      * @return returns the nickname of the winner
      */
-    public String calcFinalScore() { //su tutit i player sulla mappa devo chiamare il metodo per calcolare il punteggio
+    public String calcFinalScore() { //su tutti i player sulla mappa devo chiamare il metodo per calcolare il punteggio
         //salvo punteggio e confronto quello più alto
         //return nickname di quello col punteggio più alto
         int temp;
