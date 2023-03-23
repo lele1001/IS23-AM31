@@ -26,26 +26,16 @@ class CG343Test {
     private final List<ItemCard> colA = new ArrayList<>(List.of(p3, t3, p3, p3, p3, p3));
     private final List<ItemCard> colB = new ArrayList<>(List.of(t3, p3, g1, f2, t3, b1));
     private final List<ItemCard> colC = new ArrayList<>(List.of(g1, t3, t3, t3, t3));
-    private final List<ItemCard> colD = new ArrayList<>(List.of(g1, t3, f2, f2, t3));
+    private final List<ItemCard> colD = new ArrayList<>(List.of(g1, g1, f2, f2, t3));
     private final List<ItemCard> colE = new ArrayList<>(List.of(f2, g1, t3));
-    private final List<ItemCard> colF = new ArrayList<>(List.of(t3, p3, c1, t3, t3, t3));
-    private final List<ItemCard> colG = new ArrayList<>(List.of(t3, t3, b1, t3));
-    private final List<ItemCard> colH = new ArrayList<>(List.of(t3, t3, g1, t3, t3));
-    private final List<ItemCard> colI = new ArrayList<>(List.of(f2, b1, b1, t3, t3));
-    private final List<ItemCard> colJ = new ArrayList<>(List.of(t3, c1, c1, c1, c1, t3));
-    private final List<ItemCard> colK = new ArrayList<>(List.of(t3, g1, p3, f2, b1, t3));
-    private final List<ItemCard> colL = new ArrayList<>(List.of(t3, p3, t3, t3, t3, b1));
-    private final List<ItemCard> colM = new ArrayList<>(List.of(t3, c1, t3, f2, t3, g1));
-    private final List<ItemCard> colN = new ArrayList<>(List.of(t3, t3, t3, c1, t3, t3));
-    private final List<ItemCard> colO = new ArrayList<>(List.of(t3, t3, t3, t3, t3));
-    private final List<ItemCard> colP = new ArrayList<>(List.of(t3, t3, t3, c1));
-    private final List<ItemCard> colQ = new ArrayList<>(List.of(c1, g1, p3, f2, b1, c1));
-    private final List<ItemCard> colR = new ArrayList<>(List.of(p3, b1, t3, g1,t3));
-    private final List<ItemCard> colS = new ArrayList<>(List.of(t3, t3, t3, c1, t3));
+    private final List<ItemCard> colF = new ArrayList<>(List.of(t3, p3, c1, c1, c1, c1));
+    private final List<ItemCard> colG = new ArrayList<>(List.of(g1, g1, b1, t3));
+    private final List<ItemCard> colH = new ArrayList<>(List.of(t3, t3, g1, f2, f2));
+    private final List<ItemCard> colI = new ArrayList<>(List.of(f2, b1, b1, b1, b1));
 
     /** Test with 2 players
      * 1st player - two groups: returns 0
-     * 2nd player - three groups: returns 0
+     * 2nd player - two groups: returns 0
      */
     @Test
     void twoPlayers_zero() {
@@ -69,17 +59,17 @@ class CG343Test {
 
     /** Test with 2 players
      * 1st player - four groups: returns 8
-     * 2nd player - three groups: returns 0
+     * 2nd player - two groups: returns 0
      */
     @Test
     void twoPlayers_one() {
         CG3_4 comG3 = new CG3_4(2, 2);
 
-        l1.insertCard(colJ, 0);
-        l1.insertCard(colO, 1);
-        l1.insertCard(colC, 2);
-        l1.insertCard(colD, 3);
-        l1.insertCard(colE, 4);
+        l1.insertCard(colA, 0);
+        l1.insertCard(colG, 1);
+        l1.insertCard(colG, 2);
+        l1.insertCard(colI, 3);
+        l1.insertCard(colA, 4);
 
         l2.insertCard(colF, 0);
         l2.insertCard(colG, 1);
@@ -93,23 +83,23 @@ class CG343Test {
 
     /** Test with 2 players
      * 1st player - four groups: returns 8
-     * 2nd player - five groups: returns 4
+     * 2nd player - four groups: returns 4
      */
     @Test
     void twoPlayers_two() {
         CG3_4 comG3 = new CG3_4(2, 2);
 
-        l1.insertCard(colJ, 0);
-        l1.insertCard(colO, 1);
-        l1.insertCard(colC, 2);
-        l1.insertCard(colD, 3);
-        l1.insertCard(colE, 4);
+        l1.insertCard(colA, 0);
+        l1.insertCard(colG, 1);
+        l1.insertCard(colG, 2);
+        l1.insertCard(colI, 3);
+        l1.insertCard(colA, 4);
 
         l2.insertCard(colF, 0);
-        l2.insertCard(colG, 1);
-        l2.insertCard(colO, 2);
-        l2.insertCard(colO, 3);
-        l2.insertCard(colP, 4);
+        l2.insertCard(colC, 1);
+        l2.insertCard(colE, 2);
+        l2.insertCard(colD, 3);
+        l2.insertCard(colD, 4);
 
         assertEquals(8, comG3.goalReached(l1));
         assertEquals(4, comG3.goalReached(l2));
@@ -117,7 +107,7 @@ class CG343Test {
 
     /** Test with 3 players
      * 1st player - two groups: returns 0
-     * 2nd player - three groups: returns 0
+     * 2nd player - two groups: returns 0
      * 3rd player - three groups: returns 0
      */
     @Test
@@ -136,10 +126,10 @@ class CG343Test {
         l2.insertCard(colI, 3);
         l2.insertCard(colE, 4);
 
-        l3.insertCard(colQ, 0);
-        l3.insertCard(colC, 1);
-        l3.insertCard(colC, 2);
-        l3.insertCard(colC, 3);
+        l3.insertCard(colC, 0);
+        l3.insertCard(colB, 1);
+        l3.insertCard(colF, 2);
+        l3.insertCard(colI, 3);
 
         assertEquals(0, comG3.goalReached(l1));
         assertEquals(0, comG3.goalReached(l2));
@@ -148,18 +138,18 @@ class CG343Test {
 
     /** Test with 3 players
      * 1st player - four groups: returns 8
-     * 2nd player - three groups: returns 0
+     * 2nd player - two groups: returns 0
      * 3rd player - three groups: returns 0
      */
     @Test
     void threePlayers_one() {
         CG3_4 comG3 = new CG3_4(3, 2);
 
-        l1.insertCard(colJ, 0);
-        l1.insertCard(colO, 1);
-        l1.insertCard(colC, 2);
-        l1.insertCard(colD, 3);
-        l1.insertCard(colE, 4);
+        l1.insertCard(colA, 0);
+        l1.insertCard(colG, 1);
+        l1.insertCard(colG, 2);
+        l1.insertCard(colI, 3);
+        l1.insertCard(colA, 4);
 
         l2.insertCard(colF, 0);
         l2.insertCard(colG, 1);
@@ -167,10 +157,10 @@ class CG343Test {
         l2.insertCard(colI, 3);
         l2.insertCard(colE, 4);
 
-        l3.insertCard(colQ, 0);
-        l3.insertCard(colC, 1);
-        l3.insertCard(colC, 2);
-        l3.insertCard(colC, 3);
+        l3.insertCard(colC, 0);
+        l3.insertCard(colB, 1);
+        l3.insertCard(colF, 2);
+        l3.insertCard(colI, 3);
 
         assertEquals(8, comG3.goalReached(l1));
         assertEquals(0, comG3.goalReached(l2));
@@ -179,18 +169,18 @@ class CG343Test {
 
     /** Test with 3 players
      * 1st player - four groups: returns 8
-     * 2nd player - three groups: returns 0
-     * 3rd player - four groups: returns 6
+     * 2nd player - two groups: returns 0
+     * 3rd player - six groups: returns 6
      */
     @Test
     void threePlayers_two() {
         CG3_4 comG3 = new CG3_4(3, 2);
 
-        l1.insertCard(colJ, 0);
-        l1.insertCard(colO, 1);
-        l1.insertCard(colC, 2);
-        l1.insertCard(colD, 3);
-        l1.insertCard(colE, 4);
+        l1.insertCard(colA, 0);
+        l1.insertCard(colG, 1);
+        l1.insertCard(colG, 2);
+        l1.insertCard(colI, 3);
+        l1.insertCard(colA, 4);
 
         l2.insertCard(colF, 0);
         l2.insertCard(colG, 1);
@@ -198,11 +188,10 @@ class CG343Test {
         l2.insertCard(colI, 3);
         l2.insertCard(colE, 4);
 
-        l3.insertCard(colJ, 0);
-        l3.insertCard(colK, 1);
-        l3.insertCard(colK, 2);
-        l3.insertCard(colK, 3);
-        l3.insertCard(colJ, 4);
+        l3.insertCard(colB, 0);
+        l3.insertCard(colB, 1);
+        l3.insertCard(colB, 2);
+        l3.insertCard(colB, 3);
 
         assertEquals(8, comG3.goalReached(l1));
         assertEquals(0, comG3.goalReached(l2));
@@ -211,30 +200,29 @@ class CG343Test {
 
     /** Test with 3 players
      * 1st player - four groups: returns 8
-     * 2nd player - five groups: returns 6
-     * 3rd player - four groups: returns 4
+     * 2nd player - four groups: returns 6
+     * 3rd player - six groups: returns 4
      */
     @Test
     void threePlayers_three() {
         CG3_4 comG3 = new CG3_4(3, 2);
 
-        l1.insertCard(colJ, 0);
-        l1.insertCard(colO, 1);
-        l1.insertCard(colC, 2);
-        l1.insertCard(colD, 3);
-        l1.insertCard(colE, 4);
+        l1.insertCard(colA, 0);
+        l1.insertCard(colG, 1);
+        l1.insertCard(colG, 2);
+        l1.insertCard(colI, 3);
+        l1.insertCard(colA, 4);
 
         l2.insertCard(colF, 0);
-        l2.insertCard(colG, 1);
-        l2.insertCard(colO, 2);
-        l2.insertCard(colO, 3);
-        l2.insertCard(colP, 4);
+        l2.insertCard(colC, 1);
+        l2.insertCard(colE, 2);
+        l2.insertCard(colD, 3);
+        l2.insertCard(colD, 4);
 
-        l3.insertCard(colJ, 0);
-        l3.insertCard(colK, 1);
-        l3.insertCard(colK, 2);
-        l3.insertCard(colK, 3);
-        l3.insertCard(colJ, 4);
+        l3.insertCard(colB, 0);
+        l3.insertCard(colB, 1);
+        l3.insertCard(colB, 2);
+        l3.insertCard(colB, 3);
 
         assertEquals(8, comG3.goalReached(l1));
         assertEquals(6, comG3.goalReached(l2));
@@ -243,9 +231,9 @@ class CG343Test {
 
     /** Test with 4 players
      * 1st player - two groups: returns 0
-     * 2nd player - three groups: returns 0
+     * 2nd player - two groups: returns 0
      * 3rd player - three groups: returns 0
-     * 4th player - two groups: returns 0
+     * 4th player - zero groups: returns 0
      */
     @Test
     void fourPlayers_zero() {
@@ -263,16 +251,15 @@ class CG343Test {
         l2.insertCard(colI, 3);
         l2.insertCard(colE, 4);
 
-        l3.insertCard(colQ, 0);
-        l3.insertCard(colC, 1);
-        l3.insertCard(colC, 2);
-        l3.insertCard(colC, 3);
+        l3.insertCard(colC, 0);
+        l3.insertCard(colB, 1);
+        l3.insertCard(colF, 2);
+        l3.insertCard(colI, 3);
 
-        l4.insertCard(colM, 0);
-        l4.insertCard(colM, 1);
-        l4.insertCard(colB, 2);
-        l4.insertCard(colR, 3);
-        l4.insertCard(colS, 4);
+        l4.insertCard(colD, 0);
+        l4.insertCard(colE, 1);
+        l4.insertCard(colE, 3);
+        l4.insertCard(colE, 4);
 
         assertEquals(0, comG3.goalReached(l1));
         assertEquals(0, comG3.goalReached(l2));
@@ -282,9 +269,9 @@ class CG343Test {
 
     /** Test with 4 players
      * 1st player - two groups: returns 0
-     * 2nd player - three groups: returns 0
-     * 3rd player - four groups: returns 8
-     * 4th player - two groups: returns 0
+     * 2nd player - two groups: returns 0
+     * 3rd player - six groups: returns 8
+     * 4th player - zero groups: returns 0
      */
     @Test
     void fourPlayers_one() {
@@ -302,17 +289,15 @@ class CG343Test {
         l2.insertCard(colI, 3);
         l2.insertCard(colE, 4);
 
-        l3.insertCard(colJ, 0);
-        l3.insertCard(colK, 1);
-        l3.insertCard(colK, 2);
-        l3.insertCard(colK, 3);
-        l3.insertCard(colJ, 4);
+        l3.insertCard(colB, 0);
+        l3.insertCard(colB, 1);
+        l3.insertCard(colB, 2);
+        l3.insertCard(colB, 3);
 
-        l4.insertCard(colM, 0);
-        l4.insertCard(colM, 1);
-        l4.insertCard(colB, 2);
-        l4.insertCard(colR, 3);
-        l4.insertCard(colS, 4);
+        l4.insertCard(colD, 0);
+        l4.insertCard(colE, 1);
+        l4.insertCard(colE, 3);
+        l4.insertCard(colE, 4);
 
         assertEquals(0, comG3.goalReached(l1));
         assertEquals(0, comG3.goalReached(l2));
@@ -322,19 +307,19 @@ class CG343Test {
 
     /** Test with 4 players
      * 1st player - four groups: returns 8
-     * 2nd player - three groups: returns 0
-     * 3rd player - four groups: returns 6
-     * 4th player - two groups: returns 0
+     * 2nd player - two groups: returns 0
+     * 3rd player - six groups: returns 6
+     * 4th player - zero groups: returns 0
      */
     @Test
     void fourPlayers_two() {
         CG3_4 comG3 = new CG3_4(4, 2);
 
-        l1.insertCard(colJ, 0);
-        l1.insertCard(colO, 1);
-        l1.insertCard(colC, 2);
-        l1.insertCard(colD, 3);
-        l1.insertCard(colE, 4);
+        l1.insertCard(colA, 0);
+        l1.insertCard(colG, 1);
+        l1.insertCard(colG, 2);
+        l1.insertCard(colI, 3);
+        l1.insertCard(colA, 4);
 
         l2.insertCard(colF, 0);
         l2.insertCard(colG, 1);
@@ -342,17 +327,15 @@ class CG343Test {
         l2.insertCard(colI, 3);
         l2.insertCard(colE, 4);
 
-        l3.insertCard(colJ, 0);
-        l3.insertCard(colK, 1);
-        l3.insertCard(colK, 2);
-        l3.insertCard(colK, 3);
-        l3.insertCard(colJ, 4);
+        l3.insertCard(colB, 0);
+        l3.insertCard(colB, 1);
+        l3.insertCard(colB, 2);
+        l3.insertCard(colB, 3);
 
-        l4.insertCard(colM, 0);
-        l4.insertCard(colM, 1);
-        l4.insertCard(colB, 2);
-        l4.insertCard(colR, 3);
-        l4.insertCard(colS, 4);
+        l4.insertCard(colD, 0);
+        l4.insertCard(colE, 1);
+        l4.insertCard(colE, 3);
+        l4.insertCard(colE, 4);
 
         assertEquals(8, comG3.goalReached(l1));
         assertEquals(0, comG3.goalReached(l2));
@@ -362,19 +345,19 @@ class CG343Test {
 
     /** Test with 4 players
      * 1st player - four groups: returns 8
-     * 2nd player - three groups: returns 0
-     * 3rd player - four groups: returns 6
+     * 2nd player - two groups: returns 0
+     * 3rd player - six groups: returns 6
      * 4th player - four groups: returns 4
      */
     @Test
     void fourPlayers_three() {
         CG3_4 comG3 = new CG3_4(4, 2);
 
-        l1.insertCard(colJ, 0);
-        l1.insertCard(colO, 1);
-        l1.insertCard(colC, 2);
-        l1.insertCard(colD, 3);
-        l1.insertCard(colE, 4);
+        l1.insertCard(colA, 0);
+        l1.insertCard(colG, 1);
+        l1.insertCard(colG, 2);
+        l1.insertCard(colI, 3);
+        l1.insertCard(colA, 4);
 
         l2.insertCard(colF, 0);
         l2.insertCard(colG, 1);
@@ -382,17 +365,16 @@ class CG343Test {
         l2.insertCard(colI, 3);
         l2.insertCard(colE, 4);
 
-        l3.insertCard(colJ, 0);
-        l3.insertCard(colK, 1);
-        l3.insertCard(colK, 2);
-        l3.insertCard(colK, 3);
-        l3.insertCard(colJ, 4);
+        l3.insertCard(colB, 0);
+        l3.insertCard(colB, 1);
+        l3.insertCard(colB, 2);
+        l3.insertCard(colB, 3);
 
-        l4.insertCard(colL, 0);
-        l4.insertCard(colM, 1);
-        l4.insertCard(colM, 2);
-        l4.insertCard(colM, 3);
-        l4.insertCard(colN, 4);
+        l4.insertCard(colH, 0);
+        l4.insertCard(colH, 1);
+        l4.insertCard(colF, 2);
+        l4.insertCard(colD, 3);
+        l4.insertCard(colD, 4);
 
         assertEquals(8, comG3.goalReached(l1));
         assertEquals(0, comG3.goalReached(l2));
@@ -402,37 +384,36 @@ class CG343Test {
 
     /** Test with 4 players
      * 1st player - four groups: returns 8
-     * 2nd player - five groups: returns 6
-     * 3rd player - four groups: returns 4
+     * 2nd player - four groups: returns 6
+     * 3rd player - six groups: returns 4
      * 4th player - four groups: returns 2
      */
     @Test
     void fourPlayers_four() {
         CG3_4 comG3 = new CG3_4(4, 2);
 
-        l1.insertCard(colJ, 0);
-        l1.insertCard(colO, 1);
-        l1.insertCard(colC, 2);
-        l1.insertCard(colD, 3);
-        l1.insertCard(colE, 4);
+        l1.insertCard(colA, 0);
+        l1.insertCard(colG, 1);
+        l1.insertCard(colG, 2);
+        l1.insertCard(colI, 3);
+        l1.insertCard(colA, 4);
 
         l2.insertCard(colF, 0);
-        l2.insertCard(colG, 1);
-        l2.insertCard(colO, 2);
-        l2.insertCard(colO, 3);
-        l2.insertCard(colP, 4);
+        l2.insertCard(colC, 1);
+        l2.insertCard(colE, 2);
+        l2.insertCard(colD, 3);
+        l2.insertCard(colD, 4);
 
-        l3.insertCard(colJ, 0);
-        l3.insertCard(colK, 1);
-        l3.insertCard(colK, 2);
-        l3.insertCard(colK, 3);
-        l3.insertCard(colJ, 4);
+        l3.insertCard(colB, 0);
+        l3.insertCard(colB, 1);
+        l3.insertCard(colB, 2);
+        l3.insertCard(colB, 3);
 
-        l4.insertCard(colL, 0);
-        l4.insertCard(colM, 1);
-        l4.insertCard(colM, 2);
-        l4.insertCard(colM, 3);
-        l4.insertCard(colN, 4);
+        l4.insertCard(colH, 0);
+        l4.insertCard(colH, 1);
+        l4.insertCard(colF, 2);
+        l4.insertCard(colD, 3);
+        l4.insertCard(colD, 4);
 
         assertEquals(8, comG3.goalReached(l1));
         assertEquals(6, comG3.goalReached(l2));

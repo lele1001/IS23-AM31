@@ -34,11 +34,10 @@ class CG344Test {
     private final List<ItemCard> colJ = new ArrayList<>(List.of(b1, f2, f2));
     private final List<ItemCard> colK = new ArrayList<>(List.of(b1, b1, c1, f2));
     private final List<ItemCard> colL = new ArrayList<>(List.of(c1, c1, c1));
-    private final List<ItemCard> colM = new ArrayList<>(List.of(g1, c1));
 
     /** Test with 2 players
-     * 1st player - three groups: returns 0
-     * 2nd player - four groups: returns 0
+     * 1st player - four groups: returns 0
+     * 2nd player - three groups: returns 0
      */
     @Test
     void twoPlayers_zero() {
@@ -61,7 +60,7 @@ class CG344Test {
     }
 
     /** Test with 2 players
-     * 1st player - seven groups: returns 8
+     * 1st player - six groups: returns 8
      * 2nd player - three groups: returns 0
      */
     @Test
@@ -71,7 +70,8 @@ class CG344Test {
         l1.insertCard(colA, 0);
         l1.insertCard(colA, 1);
         l1.insertCard(colF, 2);
-        l1.insertCard(colM, 3);
+        l1.insertCard(colJ, 3);
+        l1.insertCard(colJ, 4);
 
         l2.insertCard(colA, 0);
         l2.insertCard(colF, 1);
@@ -84,7 +84,7 @@ class CG344Test {
     }
 
     /** Test with 2 players
-     * 1st player - seven groups: returns 8
+     * 1st player - six groups: returns 8
      * 2nd player - six groups: returns 4
      */
     @Test
@@ -94,10 +94,11 @@ class CG344Test {
         l1.insertCard(colA, 0);
         l1.insertCard(colA, 1);
         l1.insertCard(colF, 2);
-        l1.insertCard(colM, 3);
+        l1.insertCard(colJ, 3);
+        l1.insertCard(colJ, 4);
 
         l2.insertCard(colI, 0);
-        l2.insertCard(colJ, 1);
+        l2.insertCard(colI, 1);
         l2.insertCard(colG, 2);
         l2.insertCard(colH, 3);
         l2.insertCard(colK, 4);
@@ -107,9 +108,9 @@ class CG344Test {
     }
 
     /** Test with 3 players
-     * 1st player - three groups: returns 0
-     * 2nd player - four groups: returns 0
-     * 3rd player - five groups: returns 0
+     * 1st player - four groups: returns 0
+     * 2nd player - three groups: returns 0
+     * 3rd player - four groups: returns 0
      */
     @Test
     void threePlayers_zero() {
@@ -139,9 +140,9 @@ class CG344Test {
     }
 
     /** Test with 3 players
-     * 1st player - seven groups: returns 8
-     * 2nd player - four groups: returns 0
-     * 3rd player - five groups: returns 0
+     * 1st player - six groups: returns 8
+     * 2nd player - three groups: returns 0
+     * 3rd player - four groups: returns 0
      */
     @Test
     void threePlayers_one() {
@@ -150,7 +151,8 @@ class CG344Test {
         l1.insertCard(colA, 0);
         l1.insertCard(colA, 1);
         l1.insertCard(colF, 2);
-        l1.insertCard(colM, 3);
+        l1.insertCard(colJ, 3);
+        l1.insertCard(colJ, 4);
 
         l2.insertCard(colA, 0);
         l2.insertCard(colF, 1);
@@ -170,8 +172,8 @@ class CG344Test {
     }
 
     /** Test with 3 players
-     * 1st player - seven groups: returns 8
-     * 2nd player - four groups: returns 0
+     * 1st player - six groups: returns 8
+     * 2nd player - three groups: returns 0
      * 3rd player - six groups: returns 6
      */
     @Test
@@ -181,7 +183,8 @@ class CG344Test {
         l1.insertCard(colA, 0);
         l1.insertCard(colA, 1);
         l1.insertCard(colF, 2);
-        l1.insertCard(colM, 3);
+        l1.insertCard(colJ, 3);
+        l1.insertCard(colJ, 4);
 
         l2.insertCard(colA, 0);
         l2.insertCard(colF, 1);
@@ -189,11 +192,11 @@ class CG344Test {
         l2.insertCard(colH, 3);
         l2.insertCard(colE, 4);
 
-        l3.insertCard(colA, 0);
+        l3.insertCard(colC, 0);
         l3.insertCard(colC, 1);
-        l3.insertCard(colC, 2);
-        l3.insertCard(colL, 3);
-        l3.insertCard(colM, 4);
+        l3.insertCard(colL, 2);
+        l3.insertCard(colB, 3);
+        l3.insertCard(colB, 4);
 
         assertEquals(8, comG4.goalReached(l1));
         assertEquals(0, comG4.goalReached(l2));
@@ -201,7 +204,7 @@ class CG344Test {
     }
 
     /** Test with 3 players
-     * 1st player - seven groups: returns 8
+     * 1st player - six groups: returns 8
      * 2nd player - six groups: returns 6
      * 3rd player - six groups: returns 4
      */
@@ -212,19 +215,20 @@ class CG344Test {
         l1.insertCard(colA, 0);
         l1.insertCard(colA, 1);
         l1.insertCard(colF, 2);
-        l1.insertCard(colM, 3);
+        l1.insertCard(colJ, 3);
+        l1.insertCard(colJ, 4);
 
         l2.insertCard(colI, 0);
-        l2.insertCard(colJ, 1);
+        l2.insertCard(colI, 1);
         l2.insertCard(colG, 2);
         l2.insertCard(colH, 3);
         l2.insertCard(colK, 4);
 
-        l3.insertCard(colA, 0);
+        l3.insertCard(colC, 0);
         l3.insertCard(colC, 1);
-        l3.insertCard(colC, 2);
-        l3.insertCard(colL, 3);
-        l3.insertCard(colM, 4);
+        l3.insertCard(colL, 2);
+        l3.insertCard(colB, 3);
+        l3.insertCard(colB, 4);
 
         assertEquals(8, comG4.goalReached(l1));
         assertEquals(6, comG4.goalReached(l2));
@@ -232,9 +236,9 @@ class CG344Test {
     }
 
     /** Test with 4 players
-     * 1st player - three groups: returns 0
-     * 2nd player - four groups: returns 0
-     * 3rd player - five groups: returns 0
+     * 1st player - four groups: returns 0
+     * 2nd player - three groups: returns 0
+     * 3rd player - four groups: returns 0
      * 4th player - two groups: returns 0
      */
     @Test
@@ -271,8 +275,8 @@ class CG344Test {
     }
 
     /** Test with 4 players
-     * 1st player - three groups: returns 0
-     * 2nd player - four groups: returns 0
+     * 1st player - four groups: returns 0
+     * 2nd player - three groups: returns 0
      * 3rd player - six groups: returns 8
      * 4th player - two groups: returns 0
      */
@@ -292,11 +296,11 @@ class CG344Test {
         l2.insertCard(colH, 3);
         l2.insertCard(colE, 4);
 
-        l3.insertCard(colA, 0);
+        l3.insertCard(colC, 0);
         l3.insertCard(colC, 1);
-        l3.insertCard(colC, 2);
-        l3.insertCard(colL, 3);
-        l3.insertCard(colM, 4);
+        l3.insertCard(colL, 2);
+        l3.insertCard(colB, 3);
+        l3.insertCard(colB, 4);
 
         l4.insertCard(colG, 0);
         l4.insertCard(colH, 1);
@@ -310,8 +314,8 @@ class CG344Test {
     }
 
     /** Test with 4 players
-     * 1st player - seven groups: returns 8
-     * 2nd player - four groups: returns 0
+     * 1st player - six groups: returns 8
+     * 2nd player - three groups: returns 0
      * 3rd player - six groups: returns 6
      * 4th player - two groups: returns 0
      */
@@ -322,7 +326,8 @@ class CG344Test {
         l1.insertCard(colA, 0);
         l1.insertCard(colA, 1);
         l1.insertCard(colF, 2);
-        l1.insertCard(colM, 3);
+        l1.insertCard(colJ, 3);
+        l1.insertCard(colJ, 4);
 
         l2.insertCard(colA, 0);
         l2.insertCard(colF, 1);
@@ -330,11 +335,11 @@ class CG344Test {
         l2.insertCard(colH, 3);
         l2.insertCard(colE, 4);
 
-        l3.insertCard(colA, 0);
+        l3.insertCard(colC, 0);
         l3.insertCard(colC, 1);
-        l3.insertCard(colC, 2);
-        l3.insertCard(colL, 3);
-        l3.insertCard(colM, 4);
+        l3.insertCard(colL, 2);
+        l3.insertCard(colB, 3);
+        l3.insertCard(colB, 4);
 
         l4.insertCard(colG, 0);
         l4.insertCard(colH, 1);
@@ -348,10 +353,10 @@ class CG344Test {
     }
 
     /** Test with 4 players
-     * 1st player - seven groups: returns 8
-     * 2nd player - four groups: returns 0
+     * 1st player - six groups: returns 8
+     * 2nd player - three groups: returns 0
      * 3rd player - six groups: returns 6
-     * 4th player - eight groups: returns 4
+     * 4th player - six groups: returns 4
      */
     @Test
     void fourPlayers_three() {
@@ -360,7 +365,8 @@ class CG344Test {
         l1.insertCard(colA, 0);
         l1.insertCard(colA, 1);
         l1.insertCard(colF, 2);
-        l1.insertCard(colM, 3);
+        l1.insertCard(colJ, 3);
+        l1.insertCard(colJ, 4);
 
         l2.insertCard(colA, 0);
         l2.insertCard(colF, 1);
@@ -368,11 +374,11 @@ class CG344Test {
         l2.insertCard(colH, 3);
         l2.insertCard(colE, 4);
 
-        l3.insertCard(colA, 0);
+        l3.insertCard(colC, 0);
         l3.insertCard(colC, 1);
-        l3.insertCard(colC, 2);
-        l3.insertCard(colL, 3);
-        l3.insertCard(colM, 4);
+        l3.insertCard(colL, 2);
+        l3.insertCard(colB, 3);
+        l3.insertCard(colB, 4);
 
         l4.insertCard(colA, 0);
         l4.insertCard(colA, 1);
@@ -386,10 +392,10 @@ class CG344Test {
     }
 
     /** Test with 4 players
-     * 1st player - seven groups: returns 8
+     * 1st player - six groups: returns 8
      * 2nd player - six groups: returns 6
      * 3rd player - six groups: returns 4
-     * 4th player - eight groups: returns 2
+     * 4th player - six groups: returns 2
      */
     @Test
     void fourPlayers_four() {
@@ -398,19 +404,20 @@ class CG344Test {
         l1.insertCard(colA, 0);
         l1.insertCard(colA, 1);
         l1.insertCard(colF, 2);
-        l1.insertCard(colM, 3);
+        l1.insertCard(colJ, 3);
+        l1.insertCard(colJ, 4);
 
         l2.insertCard(colI, 0);
-        l2.insertCard(colJ, 1);
+        l2.insertCard(colI, 1);
         l2.insertCard(colG, 2);
         l2.insertCard(colH, 3);
         l2.insertCard(colK, 4);
 
-        l3.insertCard(colA, 0);
+        l3.insertCard(colC, 0);
         l3.insertCard(colC, 1);
-        l3.insertCard(colC, 2);
-        l3.insertCard(colL, 3);
-        l3.insertCard(colM, 4);
+        l3.insertCard(colL, 2);
+        l3.insertCard(colB, 3);
+        l3.insertCard(colB, 4);
 
         l4.insertCard(colA, 0);
         l4.insertCard(colA, 1);

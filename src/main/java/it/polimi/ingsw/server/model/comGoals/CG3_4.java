@@ -26,11 +26,15 @@ public class CG3_4 extends ComGoal {
         for (int i = 0; i < BookshelfHeight; i++) {
             for (int j = 0; j < BookshelfWidth; j++) {
                 if (!matrix[i][j] && (l.get(i, j) != null)) {
-                    groupsFound += (find(matrix, i, j, l) / (2 * multiplier));
+                    if (find(matrix, i, j, l) >= (2 * multiplier)) {
+                        groupsFound++;
+                    }
 //                    System.out.println("Riga "+i+" Colonna "+j+": "+score);
                 }
             }
         }
+
+        System.out.println("I found " + groupsFound + " groups");
 
         if (((multiplier == 1) && (groupsFound >= 6)) || ((multiplier == 2) && (groupsFound >= 4))) {
             //Player.score += this.score.get(0);

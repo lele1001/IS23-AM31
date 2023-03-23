@@ -19,8 +19,8 @@ public class CG1 extends ComGoal {
         int r, c;
         long groupsFound;
         int toReturn = 0;
-        HouseItem myItem, it1;
-        int[][] fakeLib = new int[BookshelfWidth][BookshelfHeight];
+        HouseItem myItem, it1, it2, it3, it4;
+        int[][] fakeLib = new int[BookshelfHeight][BookshelfWidth];
         ArrayList<HouseItem> items = new ArrayList<>();
 
         for (c = 0; c < BookshelfWidth - 1; c++) {
@@ -29,30 +29,56 @@ public class CG1 extends ComGoal {
                     myItem = l.get(r, c).getMyItem();
 
                     if ((myItem == l.get(r + 1, c).getMyItem()) && (l.get(r, c + 1) != null)) {
-                        it1 = l.get(r, c + 1).getMyItem();
-
-                        if ((myItem == it1) && l.get(r, c + 1).getMyItem() == myItem) {
+                        if ((myItem == l.get(r, c + 1).getMyItem()) && (myItem == l.get(r + 1, c + 1).getMyItem())) {
                             fakeLib[r][c] = 1;
                             fakeLib[r][c + 1] = 1;
                             fakeLib[r + 1][c] = 1;
                             fakeLib[r + 1][c + 1] = 1;
-                            items.add(myItem);
+
+                            // ensures that there
+                            if ((r < BookshelfHeight - 2) && (c < BookshelfWidth - 2)) {
+                                it1 = l.get(r + 2, c).getMyItem();
+                                it2 = l.get(r + 2, c + 1).getMyItem();
+
+                                if ((myItem != it1) && (myItem != it2)) {
+                                    if (l.get(r, c + 2) != null) {
+                                        it3 = l.get(r, c + 2).getMyItem();
+                                        it4 = l.get(r + 1, c + 2).getMyItem();
+
+                                        if ((myItem != it3) && (myItem != it4)) {
+                                            items.add(myItem);
+                                        }
+                                    }
+                                    else if (l.get(r + 1, c + 2) != null) {
+                                        it4 = l.get(r + 1, c + 2).getMyItem();
+
+                                        if (myItem != it4) {
+                                            items.add(myItem);
+                                        }
+                                    }
+                                    else {
+                                        items.add(myItem);
+                                    }
+                                }
+                            }
+                            else {
+                                items.add(myItem);
+                            }
                         }
                     }
                 }
             }
         }
 
-        for (HouseItem it : items) {
-            groupsFound = items.stream().filter(x -> x.equals(it)).count();
 
-            if (groupsFound >= 2) {
-                //Player.score += this.score.get(0);
-                toReturn = this.score.get(0);
-                this.score.remove(score.get(0));
+        groupsFound = items.size();
 
-                return toReturn;
-            }
+        System.out.println("I found " + groupsFound + " groups");
+
+        if (groupsFound >= 2) {
+            //Player.score += this.score.get(0);
+            toReturn = this.score.get(0);
+            this.score.remove(score.get(0));
         }
 
         return toReturn;
