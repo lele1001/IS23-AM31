@@ -6,6 +6,7 @@ import it.polimi.ingsw.server.gameExceptions.NoBookshelfSpaceException;
 import it.polimi.ingsw.server.gameExceptions.NoRightItemCardSelection;
 import it.polimi.ingsw.server.model.comGoals.*;
 
+import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.*;
 
@@ -48,14 +49,20 @@ public class GameModel {
      * tries to insert cards in nickname's bookshelf
      * @param nickname
      * @param cards
-     * @param column where cards have to be insert
-     * @throws NoBookshelfSpaceException if there's no space
+     * @param column where cards have to be inserted
+     * catch NoBookshelfSpaceException if there's no space
      */
-    public void InsertCard(String nickname, ArrayList<ItemCard> cards, int column) throws NoBookshelfSpaceException { //l'eccezione verrà gestita nel controller
+    public void InsertCard(String nickname, ArrayList<ItemCard> cards, int column) {
+        PropertyChangeEvent evt = null;
+        try {
             playerMap.get(nickname).insertCard(cards, column);
-            //PropertyChangeEvent evt = new PropertyChangeEvent(//da mettere);
-            //this.listener.properyChange(evt);
-
+            evt = new PropertyChangeEvent(nickname, "BOOKSHELF_CHANGED", null, playerMap.get(nickname).getBookshelfAsArrayList());
+        } catch (NoBookshelfSpaceException e) {
+            evt = new PropertyChangeEvent(nickname, "BOOKSHELF_INSERT_ERROR", null, null);
+        }
+        finally {
+            this.listener.propertyChange(evt);
+        }
     }
 
     /**
@@ -66,9 +73,9 @@ public class GameModel {
     public void selectCard(ArrayList<Integer> positions) throws NoRightItemCardSelection {  //anche questa eccezione verrà gestita nel controller
 
         ArrayList<ItemCard> deleted;
-           deleted = board.deleteSelection(positions);
-            //PropertyChangeEvent evt = new PropertyChangeEvent(//da mettere);
-            //this.listener.properyChange(evt);
+        deleted = board.deleteSelection(positions);
+/*        PropertyChangeEvent evt = new PropertyChangeEvent(, "BOARD_CHANGED", , board.getAsArrayList());
+        this.listener.propertyChange(evt);*/
     }
 
     /**

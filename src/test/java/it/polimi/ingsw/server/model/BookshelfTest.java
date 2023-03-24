@@ -11,6 +11,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class BookshelfTest {
 
+
     @Test
     void insertCard() {
         Bookshelf l = new Bookshelf();
@@ -38,6 +39,8 @@ class BookshelfTest {
         assertEquals(l.get(2, 4), new ItemCard(Books, Third));
         assertEquals(l.get(1, 4), new ItemCard(Cat, First));
         assertEquals(l.get(0, 4), new ItemCard(Plants, First));
+
+        //l.getAsArrayList().forEach(System.out::println);
 
     }
 

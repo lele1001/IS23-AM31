@@ -25,5 +25,11 @@ public class ItemCard {
         return houseItem == itemCard.houseItem && itemNumber == itemCard.itemNumber;
     }
 
-
+    @Override
+    public String toString() {
+        return "ItemCard{" +
+                "houseItem=" + houseItem +
+                ", itemNumber=" + itemNumber +
+                '}';
+    }
 }

@@ -23,6 +23,13 @@ public class Bookshelf {
     }
 
     /**
+     * @return the bookshelf as an ordered List, putting null where there is no ItemCard available.
+     */
+    public List<ItemCard> getAsArrayList() {
+        return Arrays.stream(bookshelf).sequential().toList().stream().flatMap(x -> Arrays.stream(x).sequential()).toList();
+    }
+
+    /**
      * @return a boolean that indicates if there is space in the indicated column for 'num' elements
      */
     public boolean checkSpace(int column, int num) {

@@ -31,6 +31,8 @@ public class GameController implements PropertyChangeListener {
         // creates the board, the bookshelves
         // assigns personalGoals and commonGoals
         gameModel = new GameModel(playersList);
+        // sets itself as a listener of the model
+        gameModel.setListener(this);
 
         // starts iterating on the players, waits for their actions and perform them after checking if they are correct
         run();
@@ -98,8 +100,18 @@ public class GameController implements PropertyChangeListener {
     // todo for Mila: check if the positions are adjacent and call the method to remove the ItemCards from the Board
     public void selectCard(ArrayList<Position> positions) {}
 
-    // todo for Mila
-    public void propertyChange(PropertyChangeEvent evt) {}
+    public void propertyChange(PropertyChangeEvent evt) {
+        if(evt.getPropertyName().matches("(.*)ERROR")) {
+            playersMap.get((String) evt.getSource()).onError(evt.getPropertyName());
+        }
+        else
+            switch(evt.getPropertyName()) {
+                case "BOOKSHELF_CHANGED":
+                    for(ConnectionControl cc : playersMap.values())
+                        cc.onBookshelfChanged((String) evt.getSource(), (ArrayList<ItemCard>) evt.getNewValue());
+                default:
+            }
+    }
     // todo for Mila: call the methods to check for ComGoal and to see if there is a winner
     public void endTurn(String nickname) {
         // used to avoid errors... to change...

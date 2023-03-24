@@ -80,6 +80,10 @@ public class Player {
         myBookshelf.insertCard(cards, column);
     }
 
+    public List<ItemCard> getBookshelfAsArrayList() {
+        return this.myBookshelf.getAsArrayList();
+    }
+
     public void changePlayerStatus() {
         isOnline = !isOnline;
     }

@@ -15,4 +15,16 @@ public class ConnectionControl {
         // to fix
         return null;
     }
+
+    public void onBoardChanged(List<ItemCard> newBoard) {
+
+    }
+
+    public void onBookshelfChanged(String nickname, List<ItemCard> newBookshelf) {
+
+    }
+
+    public void onError(String error) {
+        //genero il messaggio con la stringa di errore, che parserò lato client.
+    }
 }
