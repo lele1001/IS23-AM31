@@ -27,4 +27,18 @@ public class ConnectionControl {
     public void onError(String error) {
         //genero il messaggio con la stringa di errore, che parserò lato client.
     }
+
+    public void onCommonGoalCreated(HashMap<Integer, Integer> newComgoal) {
+    }
+    public void onEmptyCardBag() {
+    }
+
+    public void onPlayerPointUpdate(String source, int newValue) {
+    }
+
+    public void onCommonGoalDone(String source, HashMap<Integer, Integer> newValue) {
+    }
+
+    public void onPersGoalCreated(String newValue) {
+    }
 }

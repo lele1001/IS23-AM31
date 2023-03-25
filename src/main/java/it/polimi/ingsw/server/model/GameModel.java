@@ -23,24 +23,40 @@ public class GameModel {
      * @param players list of nicknames
      */
     public GameModel(ArrayList<String> players) {
+        PropertyChangeEvent evt=null;
 
         board = new Board(players.size());
+        try {
+            board.fillBoard();
+            evt = new PropertyChangeEvent("null", "BOARD_CHANGED", null, board.getAsArrayList());
+            this.listener.propertyChange(evt);
+        }
+        catch(EmptyCardBagException e){
+            System.out.println("Impossible State");
+        }
+
         Random random = new Random();
-        int firstGoal= 0;
-        int secondGoal = 0;
+        int firstGoal;
+        int secondGoal;
         do{
             firstGoal= random.nextInt(1, 12);
             secondGoal = random.nextInt(1, 12);
         } while(firstGoal != secondGoal);
 
         comGoals.add(selectComGoal(firstGoal, players.size()));
+        evt = new PropertyChangeEvent("null", "COM_GOAL_CREATED", null, new HashMap<Integer,Integer>(firstGoal,comGoals.get(0).getCurrScore()));
+        this.listener.propertyChange(evt);
         comGoals.add(selectComGoal(secondGoal, players.size()));
+        evt = new PropertyChangeEvent("null", "COM_GOAL_CREATED", null, new HashMap<>(secondGoal,comGoals.get(1).getCurrScore()));
+        this.listener.propertyChange(evt);
 
         ArrayList<PersGoal> persGoals = new ArrayList<>(Arrays.asList(PersGoal.values()));
         Collections.shuffle(persGoals);
         for(String s: players) {
             this.playerMap.put(s, new Player(s));
             playerMap.get(s).assignPersGoal(persGoals.get(0));
+            evt = new PropertyChangeEvent(s, "PERS_GOAL_CREATED", null, persGoals.get(0).toString());
+            this.listener.propertyChange(evt);
             persGoals.remove(0);
         }
     }
@@ -68,12 +84,19 @@ public class GameModel {
     /**
      * Select cards from the board
      * @param positions cards' positions
-     * @throws NoRightItemCardSelection if not all of the positions are available
      */
-    public void selectCard(ArrayList<Integer> positions) throws NoRightItemCardSelection {  //anche questa eccezione verrà gestita nel controller
+    public void selectCard(ArrayList<Integer> positions) {  //anche questa eccezione verrà gestita nel controller
 
-        ArrayList<ItemCard> deleted;
-        deleted = board.deleteSelection(positions);
+        PropertyChangeEvent evt = null;
+        try {
+            board.deleteSelection(positions);
+            evt = new PropertyChangeEvent("null", "BOARD_CHANGED", null, board.getAsArrayList());
+        } catch (NoRightItemCardSelection e) {
+            evt = new PropertyChangeEvent("null", "BOARD_SELECT_ERROR", null, null);
+        }
+        finally {
+            this.listener.propertyChange(evt);
+        }
 /*        PropertyChangeEvent evt = new PropertyChangeEvent(, "BOARD_CHANGED", , board.getAsArrayList());
         this.listener.propertyChange(evt);*/
     }
@@ -122,44 +145,51 @@ public class GameModel {
     }
 
     private ComGoal selectComGoal(int numComGoal, int numPlayers){
-
-        switch (numComGoal){
-            case 1:
-                return new CG1(numPlayers);
-            case 2:
-                return new CG2_5(numPlayers, 6);
-            case 3:
-                return new CG3_4(numPlayers, 2);
-            case 4:
-                return new CG3_4(numPlayers, 1);
-            case 5:
-                return new CG2_5(numPlayers, 3);
-            case 6:
-                return new CG6_7(numPlayers, 5);
-            case 7:
-                return new CG6_7(numPlayers, 3);
-            case 8:
-                return new CG8(numPlayers);
-            case 9:
-                return new CG9(numPlayers);
-            case 10:
-                return new CG10(numPlayers);
-            case 11:
-                return new CG11_12(numPlayers, true);
-            case 12:
-                return new CG11_12(numPlayers, false);
-            default:
-                return null;
-        }
+        return switch (numComGoal) {
+            case 1 -> new CG1(numPlayers);
+            case 2 -> new CG2_5(numPlayers, 6);
+            case 3 -> new CG3_4(numPlayers, 2);
+            case 4 -> new CG3_4(numPlayers, 1);
+            case 5 -> new CG2_5(numPlayers, 3);
+            case 6 -> new CG6_7(numPlayers, 5);
+            case 7 -> new CG6_7(numPlayers, 3);
+            case 8 -> new CG8(numPlayers);
+            case 9 -> new CG9(numPlayers);
+            case 10 -> new CG10(numPlayers);
+            case 11 -> new CG11_12(numPlayers, true);
+            case 12 -> new CG11_12(numPlayers, false);
+            default -> null;
+        };
     }
 
-    public void EndTurn(String nickname) throws EmptyCardBagException {
+    public void EndTurn(String nickname) {
         boolean ComGoalDone;
+        boolean playerPointUpdate=false;
+        PropertyChangeEvent evt = null;
         for(ComGoal c: comGoals) {
             ComGoalDone=playerMap.get(nickname).checkComGoal(c);
-            if(ComGoalDone); //if true listener update
+            if(ComGoalDone){
+                evt = new PropertyChangeEvent(nickname, "COM_GOAL_DONE", null, new HashMap<>(comGoals.indexOf(c),c.getCurrScore()));
+                this.listener.propertyChange(evt);
+                playerPointUpdate=true;
+            }
         }
-        board.checkRefill();
+        if(playerPointUpdate){
+            evt = new PropertyChangeEvent(nickname, "PLAYER_POINT_UPDATE", null, playerMap.get(nickname).getScore());
+            this.listener.propertyChange(evt);
+        }
+        try {
+            if(board.checkRefill())
+                evt = new PropertyChangeEvent("null", "BOARD_CHANGED", null, board.getAsArrayList());
+        } catch (EmptyCardBagException e) {
+            evt = new PropertyChangeEvent("null", "EMPTY_CARD_BAG", null, null); // posso anche unirlo a change board
+            this.listener.propertyChange(evt);
+            evt = new PropertyChangeEvent("null", "BOARD_CHANGED", null, board.getAsArrayList()); // faccio sempre anche se non modifica fa nulla
+        }
+        finally {
+            this.listener.propertyChange(evt);
+        }
+
     }
 }
 

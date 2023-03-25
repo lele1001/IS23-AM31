@@ -28,12 +28,12 @@ public class GameController implements PropertyChangeListener {
         playersList.addAll(playersMap.keySet());
         Collections.shuffle(playersList);
 
+
+        // sets itself as a listener of the model
+        gameModel.setListener(this);
         // creates the board, the bookshelves
         // assigns personalGoals and commonGoals
         gameModel = new GameModel(playersList);
-        // sets itself as a listener of the model
-        gameModel.setListener(this);
-
         // starts iterating on the players, waits for their actions and perform them after checking if they are correct
         run();
     }
@@ -109,6 +109,24 @@ public class GameController implements PropertyChangeListener {
                 case "BOOKSHELF_CHANGED":
                     for(ConnectionControl cc : playersMap.values())
                         cc.onBookshelfChanged((String) evt.getSource(), (ArrayList<ItemCard>) evt.getNewValue());
+                case "BOARD_CHANGED":
+                    for(ConnectionControl cc : playersMap.values())
+                        cc.onBoardChanged((ArrayList<ItemCard>) evt.getNewValue());
+                case "COM_GOAL_CREATED":
+                    for(ConnectionControl cc : playersMap.values())
+                        cc.onCommonGoalCreated((HashMap<Integer,Integer>) evt.getNewValue());
+                case "EMPTY_CARD_BAG":
+                    for(ConnectionControl cc : playersMap.values())
+                        cc.onEmptyCardBag();
+                case "PLAYER_POINT_UPDATE":
+                    for(ConnectionControl cc : playersMap.values())
+                        cc.onPlayerPointUpdate((String) evt.getSource(),(int)evt.getNewValue());
+                case "COM_GOAL_DONE":
+                    for(ConnectionControl cc : playersMap.values())
+                        cc.onCommonGoalDone((String) evt.getSource(),(HashMap<Integer,Integer>) evt.getNewValue());
+                case "PERS_GOAL_CREATED":
+                    for(ConnectionControl cc : playersMap.values())
+                        cc.onPersGoalCreated((String) evt.getNewValue());
                 default:
             }
     }

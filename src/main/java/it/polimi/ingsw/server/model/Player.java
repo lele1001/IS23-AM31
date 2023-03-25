@@ -91,4 +91,8 @@ public class Player {
     public boolean isOnline() {
         return isOnline;
     }
+
+    public int getScore() {
+        return score;
+    }
 }

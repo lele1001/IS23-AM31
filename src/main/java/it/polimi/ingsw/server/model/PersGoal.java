@@ -54,7 +54,6 @@ public enum PersGoal {
      * @return the score reached on the library it takes as a parameter.
      */
     public int calcScore(Bookshelf l) {
-        int score = 0;
         int numberofDone = 0;
         for (int i : positions.keySet()) {
             if ((l.get(Position.getRow(i), Position.getColumn(i)) != null) && (l.get(Position.getRow(i), Position.getColumn(i)).getMyItem() == positions.get(i))) {

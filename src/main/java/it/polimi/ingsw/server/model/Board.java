@@ -4,7 +4,9 @@ import it.polimi.ingsw.server.gameExceptions.EmptyCardBagException;
 import it.polimi.ingsw.server.gameExceptions.NoRightItemCardSelection;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 
 
 public class Board {
@@ -38,6 +40,7 @@ public class Board {
 
     /**
      * Method that fills the board with Itemcard if there is not in the correspondent Cell
+     * If the exception is thrown the Game controller has to be notified
      */
     public void fillBoard() throws EmptyCardBagException {
 
@@ -54,14 +57,14 @@ public class Board {
                 }
             }
         }
-        if (cardBag.isEmpty()) System.out.println("Finished Itemcard");
+        if (cardBag.isEmpty()) System.out.println("Finished Itemcard, cannot be reached");
     }
 
     /**
      * Check if there are only isolated card on the board
      * I cannot have an edge case because edges are always null
      */
-    public void checkRefill() throws EmptyCardBagException {
+    public boolean checkRefill() throws EmptyCardBagException {
         boolean refill = true;
         for (int i = 0; i < DIM_BOARD && refill; i++) {
             for (int j = 0; j < DIM_BOARD && refill; j++) {
@@ -75,6 +78,7 @@ public class Board {
             System.out.println("REFILLING THE BOARD");
             fillBoard();
         }
+        return (refill && !cardBag.isEmpty());
     }
 
     /**
@@ -196,17 +200,14 @@ public class Board {
      * @throws NoRightItemCardSelection if the selected itemcards don't pas the check selection
      */
 
-    public ArrayList<ItemCard> deleteSelection(ArrayList<Integer> position) throws NoRightItemCardSelection {
+    public void deleteSelection(ArrayList<Integer> position) throws NoRightItemCardSelection {
         Collections.sort(position);
-        ArrayList<ItemCard> chosencard = new ArrayList<>();
         if (!checkSelection(position)) {
             throw new NoRightItemCardSelection();
         }
         for (Integer pos : position) {
-            chosencard.add(board[Position.getRow(pos)][Position.getColumn(pos)]);
             board[Position.getRow(pos)][Position.getColumn(pos)] = null;
         }
-        return chosencard;
     }
 
     //Todo for Mila, already created ItemCard
@@ -223,5 +224,8 @@ public class Board {
                 cardBag.add(new ItemCard(item, ItemNumber.Third));
             }
         }
+    }
+    public List<ItemCard> getAsArrayList(){
+        return Arrays.stream(board).sequential().toList().stream().flatMap(x->Arrays.stream(x).sequential()).toList();
     }
 }

@@ -61,6 +61,21 @@ class BoardTest {
             if (numPlayer == 2) assertEquals(103, boardTest1.cardBag.size());
             if (numPlayer == 3) assertEquals(95, boardTest1.cardBag.size());
             if (numPlayer == 4) assertEquals(87, boardTest1.cardBag.size());
+            Board board = new Board(numPlayer);
+            List<ItemCard> Tile=boardTest1.getAsArrayList();
+            for (int i = 0; i < boardTest1.board.length; i++) {
+                for (int j = 0; j < boardTest1.board[0].length; j++) {
+                    board.board[i][j]=Tile.get(i*9+j);
+                    if(boardTest1.board[i][j]!=null){
+                    assertEquals(boardTest1.board[i][j].getMyItem(),board.board[i][j].getMyItem());
+                    assertEquals(boardTest1.board[i][j].getMyNum(),board.board[i][j].getMyNum());
+                    }
+                    else{
+                        assertNull(board.board[i][j]);
+                    }
+                }
+
+            }
         }
     }
 
@@ -235,18 +250,6 @@ class BoardTest {
         for (int i = 0; i < boardTest1.board.length; i++) {
             for (int j = 0; j < boardTest1.board[0].length; j++) {
                 assertEquals(prima.board[i][j], boardTest1.board[i][j]);
-            }
-        }
-        delete = boardTest1.deleteSelection(pos);
-        assertEquals(2, delete.size());
-        for (int i = 0; i < boardTest1.board.length; i++) {
-            for (int j = 0; j < boardTest1.board[0].length; j++) {
-                position = 10 * i + j;
-                if (!pos.contains(position)) {
-                    assertEquals(prima.board[i][j], boardTest1.board[i][j]);
-                } else {
-                    assertTrue(delete.contains(prima.board[i][j]));
-                }
             }
         }
 
