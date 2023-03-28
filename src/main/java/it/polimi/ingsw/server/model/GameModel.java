@@ -68,35 +68,29 @@ public class GameModel {
      * @param column where cards have to be inserted
      * catch NoBookshelfSpaceException if there's no space
      */
-    public void InsertCard(String nickname, ArrayList<ItemCard> cards, int column) {
+    public void InsertCard(String nickname, ArrayList<ItemCard> cards, int column) throws NoBookshelfSpaceException{
         PropertyChangeEvent evt = null;
-        try {
-            playerMap.get(nickname).insertCard(cards, column);
+            boolean a;
+            a = playerMap.get(nickname).insertCard(cards, column);
             evt = new PropertyChangeEvent(nickname, "BOOKSHELF_CHANGED", null, playerMap.get(nickname).getBookshelfAsArrayList());
-        } catch (NoBookshelfSpaceException e) {
-            evt = new PropertyChangeEvent(nickname, "BOOKSHELF_INSERT_ERROR", null, null);
-        }
-        finally {
             this.listener.propertyChange(evt);
-        }
+            if(a == true){
+                evt = new PropertyChangeEvent(nickname, "BOOKSHELF_COMPLETED", null, null);
+                this.listener.propertyChange(evt);
+            }
     }
 
     /**
      * Select cards from the board
      * @param positions cards' positions
      */
-    public void selectCard(ArrayList<Integer> positions) {  //anche questa eccezione verrà gestita nel controller
+    public void selectCard(ArrayList<Integer> positions) throws NoRightItemCardSelection{  //anche questa eccezione verrà gestita nel controller
 
         PropertyChangeEvent evt = null;
-        try {
             board.deleteSelection(positions);
             evt = new PropertyChangeEvent("null", "BOARD_CHANGED", null, board.getAsArrayList());
-        } catch (NoRightItemCardSelection e) {
-            evt = new PropertyChangeEvent("null", "BOARD_SELECT_ERROR", null, null);
-        }
-        finally {
             this.listener.propertyChange(evt);
-        }
+
 /*        PropertyChangeEvent evt = new PropertyChangeEvent(, "BOARD_CHANGED", , board.getAsArrayList());
         this.listener.propertyChange(evt);*/
     }
@@ -174,10 +168,11 @@ public class GameModel {
                 playerPointUpdate=true;
             }
         }
-        if(playerPointUpdate){
+ /*
+  if(playerPointUpdate){
             evt = new PropertyChangeEvent(nickname, "PLAYER_POINT_UPDATE", null, playerMap.get(nickname).getScore());
             this.listener.propertyChange(evt);
-        }
+        } */
         try {
             if(board.checkRefill())
                 evt = new PropertyChangeEvent("null", "BOARD_CHANGED", null, board.getAsArrayList());
