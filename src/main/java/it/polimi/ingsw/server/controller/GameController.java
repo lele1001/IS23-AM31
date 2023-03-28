@@ -1,5 +1,7 @@
 package it.polimi.ingsw.server.controller;
 
+import it.polimi.ingsw.server.gameExceptions.NoBookshelfSpaceException;
+import it.polimi.ingsw.server.gameExceptions.NoRightItemCardSelection;
 import it.polimi.ingsw.server.model.GameModel;
 import it.polimi.ingsw.server.model.ItemCard;
 import it.polimi.ingsw.server.model.Position;
@@ -14,6 +16,7 @@ public class GameController implements PropertyChangeListener {
     private String currPlayer;
     private boolean winner;
     private GameModel gameModel;
+    private TurnPhase turnPhase;
 
     public GameController(Map<String, ConnectionControl> playersMap) {
         this.playersMap = playersMap;
@@ -94,39 +97,76 @@ public class GameController implements PropertyChangeListener {
         }
     }
 
-    // todo for Mila: check if the number of ItemCards <= 3, put each ItemCard in the position of the Bookshelf given by the key (from bottom to top)
-    public void insertCard(String nickname, Map<Integer, ItemCard> cards) {}
+    /**
+     * The method tries to insert the cards selected
+     * @param nickname who wants to insert on the bookshelf
+     * @param cards to be inserted
+     * @param column positions on the bookshelf
+     */
+    public void insertCard(String nickname, ArrayList<ItemCard> cards, int column) {
 
-    // todo for Mila: check if the positions are adjacent and call the method to remove the ItemCards from the Board
-    public void selectCard(ArrayList<Position> positions) {}
+        if (nickname != currPlayer||turnPhase!=TurnPhase.INSERTCARDS) {
+            playersMap.get(nickname).SendError("NOT YOUR TURN");
+            return;
+        }
+        if(cards.size()>3||cards.isEmpty()){
+            playersMap.get(nickname).SendError("NUMBER NOT VALID");
+            return;
+        }
+        try {
+            gameModel.InsertCard(nickname, cards, column);
+        } catch (NoBookshelfSpaceException e) {
+            playersMap.get(nickname).SendError("NO BOOKSHELF SPACE");
+        }
+    }
 
+    /**
+     * The method tries to select cards from board
+     * @param nickname who wants to select
+     * @param positions of the cards to be deleted
+     */
+    public void selectCard(String nickname, ArrayList<Integer> positions) {
+        if (nickname != currPlayer||turnPhase!=TurnPhase.SELECTCARDS) {
+            playersMap.get(nickname).SendError("NOT YOUR TURN");
+            return;
+        }
+        try {
+            gameModel.selectCard(positions);
+        } catch (NoRightItemCardSelection e) {
+            playersMap.get(nickname).SendError("NO RIGHT BOARD SELECTION");
+        }
+
+    }
     public void propertyChange(PropertyChangeEvent evt) {
         if(evt.getPropertyName().matches("(.*)ERROR")) {
-            playersMap.get((String) evt.getSource()).onError(evt.getPropertyName());
+            playersMap.get((String) evt.getSource()).SendError(evt.getPropertyName());
         }
         else
             switch(evt.getPropertyName()) {
                 case "BOOKSHELF_CHANGED":
                     for(ConnectionControl cc : playersMap.values())
-                        cc.onBookshelfChanged((String) evt.getSource(), (ArrayList<ItemCard>) evt.getNewValue());
+                        cc.SendBookshelfChanged((String) evt.getSource(), (ArrayList<ItemCard>) evt.getNewValue());
                 case "BOARD_CHANGED":
                     for(ConnectionControl cc : playersMap.values())
-                        cc.onBoardChanged((ArrayList<ItemCard>) evt.getNewValue());
+                        cc.SendBoardChanged((ArrayList<ItemCard>) evt.getNewValue());
                 case "COM_GOAL_CREATED":
                     for(ConnectionControl cc : playersMap.values())
-                        cc.onCommonGoalCreated((HashMap<Integer,Integer>) evt.getNewValue());
+                        cc.SendCommonGoalCreated((HashMap<Integer,Integer>) evt.getNewValue());
                 case "EMPTY_CARD_BAG":
                     for(ConnectionControl cc : playersMap.values())
-                        cc.onEmptyCardBag();
+                        cc.SendEmptyCardBag();
                 case "PLAYER_POINT_UPDATE":
                     for(ConnectionControl cc : playersMap.values())
-                        cc.onPlayerPointUpdate((String) evt.getSource(),(int)evt.getNewValue());
+                        cc.SendPlayerPointUpdate((String) evt.getSource(),(int)evt.getNewValue());
                 case "COM_GOAL_DONE":
                     for(ConnectionControl cc : playersMap.values())
-                        cc.onCommonGoalDone((String) evt.getSource(),(HashMap<Integer,Integer>) evt.getNewValue());
+                        cc.SendCommonGoalDone((String) evt.getSource(),(HashMap<Integer,Integer>) evt.getNewValue());
                 case "PERS_GOAL_CREATED":
                     for(ConnectionControl cc : playersMap.values())
-                        cc.onPersGoalCreated((String) evt.getNewValue());
+                        cc.SendPersGoalCreated((String) evt.getNewValue());
+                case "BOOKSHELF_COMPLETED":
+                    for(ConnectionControl cc : playersMap.values())
+                        cc.SendBookshelfCompleted((String) evt.getSource());
                 default:
             }
     }
@@ -134,5 +174,6 @@ public class GameController implements PropertyChangeListener {
     public void endTurn(String nickname) {
         // used to avoid errors... to change...
         winner = true;
+        gameModel.EndTurn(nickname);
     }
 }

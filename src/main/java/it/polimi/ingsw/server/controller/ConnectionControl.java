@@ -16,29 +16,33 @@ public class ConnectionControl {
         return null;
     }
 
-    public void onBoardChanged(List<ItemCard> newBoard) {
+    public void SendBoardChanged(List<ItemCard> newBoard) {
 
     }
 
-    public void onBookshelfChanged(String nickname, List<ItemCard> newBookshelf) {
+    public void SendBookshelfChanged(String nickname, List<ItemCard> newBookshelf) {
 
     }
 
-    public void onError(String error) {
+    public void SendError(String error) {
         //genero il messaggio con la stringa di errore, che parserò lato client.
     }
 
-    public void onCommonGoalCreated(HashMap<Integer, Integer> newComgoal) {
+    public void SendCommonGoalCreated(HashMap<Integer, Integer> newComgoal) {
     }
-    public void onEmptyCardBag() {
-    }
-
-    public void onPlayerPointUpdate(String source, int newValue) {
+    public void SendEmptyCardBag() {
     }
 
-    public void onCommonGoalDone(String source, HashMap<Integer, Integer> newValue) {
+    public void SendPlayerPointUpdate(String source, int newValue) {
     }
 
-    public void onPersGoalCreated(String newValue) {
+    public void SendCommonGoalDone(String source, HashMap<Integer, Integer> newValue) {
+    }
+
+    public void SendPersGoalCreated(String newValue) {
+    }
+
+    public void SendBookshelfCompleted(String nickname){
+
     }
 }
