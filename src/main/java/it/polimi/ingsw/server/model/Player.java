@@ -13,6 +13,7 @@ public class Player {
     private PersGoal persGoal;
     private boolean isOnline;
     private final ArrayList<ComGoal> comGoalsReached;
+    private final static int BOOKSHELF_LENGTH = 5;
 
     public Player(String nickname) {
         this.nickname = nickname;
@@ -78,15 +79,15 @@ public class Player {
         if(!myBookshelf.checkSpace(column, cards.size()))
             throw new NoBookshelfSpaceException();
         myBookshelf.insertCard(cards, column);
-        for(int i = 0; i < 5; i++){
+        for(int i = 0; i < BOOKSHELF_LENGTH; i++){
             if(myBookshelf.checkSpace(i, 1))
                 return false;
         }
         return true;
     }
 
-    public List<ItemCard> getBookshelfAsArrayList() {
-        return this.myBookshelf.getAsArrayList();
+    public ItemCard[][] getBookshelfAsMatrix() {
+        return this.myBookshelf.getAsMatrix();
     }
 
     public void changePlayerStatus() {

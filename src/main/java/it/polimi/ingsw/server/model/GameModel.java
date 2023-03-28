@@ -72,9 +72,9 @@ public class GameModel {
         PropertyChangeEvent evt = null;
             boolean a;
             a = playerMap.get(nickname).insertCard(cards, column);
-            evt = new PropertyChangeEvent(nickname, "BOOKSHELF_CHANGED", null, playerMap.get(nickname).getBookshelfAsArrayList());
+            evt = new PropertyChangeEvent(nickname, "BOOKSHELF_CHANGED", null, playerMap.get(nickname).getBookshelfAsMatrix());
             this.listener.propertyChange(evt);
-            if(a == true){
+            if(a){
                 evt = new PropertyChangeEvent(nickname, "BOOKSHELF_COMPLETED", null, null);
                 this.listener.propertyChange(evt);
             }

@@ -20,7 +20,7 @@ public class ConnectionControl {
 
     }
 
-    public void SendBookshelfChanged(String nickname, List<ItemCard> newBookshelf) {
+    public void SendBookshelfChanged(String nickname, ItemCard[][] newBookshelf) {
 
     }
 

@@ -4,11 +4,13 @@ import it.polimi.ingsw.server.gameExceptions.NoBookshelfSpaceException;
 import it.polimi.ingsw.server.gameExceptions.NoRightItemCardSelection;
 import it.polimi.ingsw.server.model.GameModel;
 import it.polimi.ingsw.server.model.ItemCard;
-import it.polimi.ingsw.server.model.Position;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 public class GameController implements PropertyChangeListener {
     private final Map<String, ConnectionControl> playersMap;
@@ -75,7 +77,7 @@ public class GameController implements PropertyChangeListener {
      * Waits for the player's action caught by ConnectionControl and calls the method to check and perform it
      */
     private void playerTurn () {
-        ArrayList<Position> positions = ConnectionControl.askSelect(currPlayer);
+/*        ArrayList<Position> positions = ConnectionControl.askSelect(currPlayer);
         if (positions != null && !positions.isEmpty()) {
             selectCard(positions);
         }
@@ -83,7 +85,7 @@ public class GameController implements PropertyChangeListener {
         Map<Integer, ItemCard> cardsToInsert = ConnectionControl.askInsert(currPlayer);
         if(cardsToInsert != null && !cardsToInsert.isEmpty()) {
             insertCard(currPlayer, cardsToInsert);
-        }
+        }*/
 
         endTurn(currPlayer);
 
@@ -105,7 +107,7 @@ public class GameController implements PropertyChangeListener {
      */
     public void insertCard(String nickname, ArrayList<ItemCard> cards, int column) {
 
-        if (nickname != currPlayer||turnPhase!=TurnPhase.INSERTCARDS) {
+        if (!(nickname.equals(currPlayer))||(turnPhase!=TurnPhase.INSERTCARDS)) {
             playersMap.get(nickname).SendError("NOT YOUR TURN");
             return;
         }
@@ -126,7 +128,7 @@ public class GameController implements PropertyChangeListener {
      * @param positions of the cards to be deleted
      */
     public void selectCard(String nickname, ArrayList<Integer> positions) {
-        if (nickname != currPlayer||turnPhase!=TurnPhase.SELECTCARDS) {
+        if (!(nickname.equals(currPlayer))||(turnPhase!=TurnPhase.SELECTCARDS)) {
             playersMap.get(nickname).SendError("NOT YOUR TURN");
             return;
         }
@@ -145,7 +147,7 @@ public class GameController implements PropertyChangeListener {
             switch(evt.getPropertyName()) {
                 case "BOOKSHELF_CHANGED":
                     for(ConnectionControl cc : playersMap.values())
-                        cc.SendBookshelfChanged((String) evt.getSource(), (ArrayList<ItemCard>) evt.getNewValue());
+                        cc.SendBookshelfChanged((String) evt.getSource(), (ItemCard[][]) evt.getNewValue());
                 case "BOARD_CHANGED":
                     for(ConnectionControl cc : playersMap.values())
                         cc.SendBoardChanged((ArrayList<ItemCard>) evt.getNewValue());
