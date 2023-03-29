@@ -7,9 +7,11 @@ import java.util.ArrayList;
 public abstract class ComGoal {
     final static int BookshelfHeight = 6;
     final static int BookshelfWidth = 5;
+    final int CGID;
     ArrayList<Integer> score = new ArrayList<>();
 
-    public ComGoal(int playerNum) {
+    public ComGoal(int playerNum, int CGID) {
+        this.CGID = CGID;
         if (playerNum == 2) {
             score.add(0, 8);
             score.add(1, 4);

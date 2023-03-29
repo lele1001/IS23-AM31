@@ -88,7 +88,7 @@ class PlayerTest {
     void checkComGoal1() throws NoBookshelfSpaceException {
         // Creating the game
         Player p = new Player("Pippo");
-        ArrayList<ComGoal> comGoals = new ArrayList<>(List.of(new CG2_5(3, 6), new CG1(3)));
+        ArrayList<ComGoal> comGoals = new ArrayList<>(List.of(new CG2_5(3, 2), new CG1(3, 1)));
         p.assignPersGoal(PersGoal.Card6);
 
         // Creating player's bookshelf
@@ -104,10 +104,10 @@ class PlayerTest {
 
         assertEquals(20, p.calculateFinScore());
 
-        p.insertCard(new ArrayList<>(List.of(new ItemCard(Games, Third), new ItemCard(Books, First), new ItemCard(Books, Third))), 0);
-        p.insertCard(new ArrayList<>(List.of(new ItemCard(Books, Third), new ItemCard(Books, First), new ItemCard(Cat, Third))), 0);
+        p.insertCard(new ArrayList<>(List.of(new ItemCard(Games, Third), new ItemCard(Plants, First), new ItemCard(Plants, Third))), 0);
+        p.insertCard(new ArrayList<>(List.of(new ItemCard(Cat, Third), new ItemCard(Books, First), new ItemCard(Books, Third))), 0);
+        p.insertCard(new ArrayList<>(List.of(new ItemCard(Trophy, Third), new ItemCard(Plants, First), new ItemCard(Plants, Third))), 1);
         p.insertCard(new ArrayList<>(List.of(new ItemCard(Trophy, Third), new ItemCard(Books, First), new ItemCard(Books, Third))), 1);
-        p.insertCard(new ArrayList<>(List.of(new ItemCard(Books, Third), new ItemCard(Books, First), new ItemCard(Books, Third))), 1);
         assertTrue(p.checkComGoal(comGoals.get(1)));
         assertFalse(p.checkComGoal(comGoals.get(1)));
 
@@ -119,7 +119,7 @@ class PlayerTest {
         // Creating the game
         Player p = new Player("Luigi");
         Player p2 = new Player("Nico");
-        ArrayList<ComGoal> comGoals = new ArrayList<>(List.of(new CG8(4), new CG10(4)));
+        ArrayList<ComGoal> comGoals = new ArrayList<>(List.of(new CG8(4, 8), new CG10(4, 10)));
         p.assignPersGoal(PersGoal.Card11);
         p2.assignPersGoal(PersGoal.Card7);
 
@@ -166,7 +166,7 @@ class PlayerTest {
         // Creating the game
         Player p = new Player("Luigi");
         Player p2 = new Player("Nico");
-        ArrayList<ComGoal> comGoals = new ArrayList<>(List.of(new CG6_7(2, 5), new CG9(2)));
+        ArrayList<ComGoal> comGoals = new ArrayList<>(List.of(new CG6_7(2, 6), new CG9(2, 9)));
         p.assignPersGoal(PersGoal.Card1);
         p2.assignPersGoal(PersGoal.Card9);
 

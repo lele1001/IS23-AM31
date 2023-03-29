@@ -10,8 +10,8 @@ import java.util.ArrayList;
  * The tiles of the two groups should represent the same item.
  */
 public class CG1 extends ComGoal {
-    public CG1(int playerNum) {
-        super(playerNum);
+    public CG1(int playerNum, int CGID) {
+        super(playerNum, CGID);
     }
 
     @Override

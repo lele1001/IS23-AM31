@@ -35,7 +35,7 @@ class CG10Test {
      */
     @Test
     void twoPlayers_zero() {
-        CG10 comG10 = new CG10(2);
+        CG10 comG10 = new CG10(2, 10);
 
         l1.insertCard(col1, 0);
         l1.insertCard(col2, 4);
@@ -54,7 +54,7 @@ class CG10Test {
      */
     @Test
     void twoPlayers_one() {
-        CG10 comG10 = new CG10(2);
+        CG10 comG10 = new CG10(2, 10);
 
         l1.insertCard(col1, 0);
         l1.insertCard(col3, 1);
@@ -76,7 +76,7 @@ class CG10Test {
      */
     @Test
     void twoPlayers_two() {
-        CG10 comG10 = new CG10(2);
+        CG10 comG10 = new CG10(2, 10);
 
         l1.insertCard(col2, 0);
         l1.insertCard(col3, 1);
@@ -101,7 +101,7 @@ class CG10Test {
      */
     @Test
     void threePlayers_zero() {
-        CG10 comG10 = new CG10(3);
+        CG10 comG10 = new CG10(3, 10);
 
         l1.insertCard(col1, 0);
         l1.insertCard(col2, 4);
@@ -126,7 +126,7 @@ class CG10Test {
      */
     @Test
     void threePlayers_one() {
-        CG10 comG10 = new CG10(3);
+        CG10 comG10 = new CG10(3, 10);
 
         l1.insertCard(col2, 0);
         l1.insertCard(col3, 1);
@@ -154,7 +154,7 @@ class CG10Test {
      */
     @Test
     void threePlayers_two() {
-        CG10 comG10 = new CG10(3);
+        CG10 comG10 = new CG10(3, 10);
 
         l1.insertCard(col2, 0);
         l1.insertCard(col3, 1);
@@ -184,7 +184,7 @@ class CG10Test {
      */
     @Test
     void threePlayers_three() {
-        CG10 comG10 = new CG10(3);
+        CG10 comG10 = new CG10(3, 10);
 
         l1.insertCard(col2, 0);
         l1.insertCard(col3, 1);
@@ -217,7 +217,7 @@ class CG10Test {
      */
     @Test
     void fourPlayers_zero() {
-        CG10 comG10 = new CG10(4);
+        CG10 comG10 = new CG10(4, 10);
 
         l1.insertCard(col1, 0);
         l1.insertCard(col2, 4);
@@ -248,7 +248,7 @@ class CG10Test {
      */
     @Test
     void fourPlayers_one() {
-        CG10 comG10 = new CG10(4);
+        CG10 comG10 = new CG10(4, 10);
 
         l1.insertCard(col1, 0);
         l1.insertCard(col2, 4);
@@ -281,7 +281,7 @@ class CG10Test {
      */
     @Test
     void fourPlayers_two() {
-        CG10 comG10 = new CG10(4);
+        CG10 comG10 = new CG10(4, 10);
 
         l1.insertCard(col2, 0);
         l1.insertCard(col3, 1);
@@ -317,7 +317,7 @@ class CG10Test {
      */
     @Test
     void fourPlayers_three() {
-        CG10 comG10 = new CG10(4);
+        CG10 comG10 = new CG10(4, 10);
 
         l1.insertCard(col2, 0);
         l1.insertCard(col3, 1);
@@ -355,7 +355,7 @@ class CG10Test {
      */
     @Test
     void fourPlayers_four() {
-        CG10 comG10 = new CG10(4);
+        CG10 comG10 = new CG10(4, 10);
 
         l1.insertCard(col2, 0);
         l1.insertCard(col3, 1);

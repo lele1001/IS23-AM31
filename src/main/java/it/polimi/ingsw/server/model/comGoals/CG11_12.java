@@ -9,9 +9,15 @@ import it.polimi.ingsw.server.model.HouseItem;
 public class CG11_12 extends ComGoal {
     boolean color;
 
-    public CG11_12(int playerNum, boolean color) {
-        super(playerNum);
-        this.color = color;
+    public CG11_12(int playerNum, int CGID) {
+        super(playerNum, CGID);
+
+        if (CGID == 11) {
+            this.color = true;
+        }
+        else if (CGID == 12) {
+            this.color = false;
+        }
     }
 
     @Override

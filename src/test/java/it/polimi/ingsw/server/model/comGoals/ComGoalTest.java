@@ -8,7 +8,7 @@ class ComGoalTest {
 
     @Test
     void getCurrScore() {
-        ComGoal comGoal = new CG1(2);
+        ComGoal comGoal = new CG1(2, 1);
         assertEquals(8,comGoal.getCurrScore());
         comGoal.score.remove(0);
         assertEquals(4,comGoal.getCurrScore());

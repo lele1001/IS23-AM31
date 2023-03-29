@@ -40,7 +40,7 @@ class CG1Test {
      */
     @Test
     void twoPlayers_zero() {
-        CG1 comG1 = new CG1(2);
+        CG1 comG1 = new CG1(2, 1);
 
         l1.insertCard(colA, 0);
         l1.insertCard(colB, 1);
@@ -64,7 +64,7 @@ class CG1Test {
      */
     @Test
     void twoPlayers_one() {
-        CG1 comG1 = new CG1(2);
+        CG1 comG1 = new CG1(2, 1);
 
         l1.insertCard(colF, 0);
         l1.insertCard(colF, 1);
@@ -88,7 +88,7 @@ class CG1Test {
      */
     @Test
     void twoPlayers_two() {
-        CG1 comG1 = new CG1(2);
+        CG1 comG1 = new CG1(2, 1);
 
         l1.insertCard(colF, 0);
         l1.insertCard(colF, 1);
@@ -108,11 +108,11 @@ class CG1Test {
     /** Test with 3 players
      * 1st player - one square: returns 0
      * 2nd player - zero squares: returns 0
-     * 3rd player - one square in 3x3 config: returns 0
+     * 3rd player - one square in 3×3 config: returns 0
      */
     @Test
     void threePlayers_zero() {
-        CG1 comG1 = new CG1(3);
+        CG1 comG1 = new CG1(3, 1);
 
         l1.insertCard(colA, 0);
         l1.insertCard(colB, 1);
@@ -144,7 +144,7 @@ class CG1Test {
      */
     @Test
     void threePlayers_one() {
-        CG1 comG1 = new CG1(3);
+        CG1 comG1 = new CG1(3, 1);
 
         l1.insertCard(colF, 0);
         l1.insertCard(colF, 1);
@@ -176,7 +176,7 @@ class CG1Test {
      */
     @Test
     void threePlayers_two() {
-        CG1 comG1 = new CG1(3);
+        CG1 comG1 = new CG1(3, 1);
 
         l1.insertCard(colF, 0);
         l1.insertCard(colF, 1);
@@ -207,7 +207,7 @@ class CG1Test {
      */
     @Test
     void threePlayers_three() {
-        CG1 comG1 = new CG1(3);
+        CG1 comG1 = new CG1(3, 1);
 
         l1.insertCard(colF, 0);
         l1.insertCard(colF, 1);
@@ -238,7 +238,7 @@ class CG1Test {
      */
     @Test
     void fourPlayers_zero() {
-        CG1 comG1 = new CG1(4);
+        CG1 comG1 = new CG1(4, 1);
 
         l1.insertCard(colA, 0);
         l1.insertCard(colB, 1);
@@ -278,7 +278,7 @@ class CG1Test {
      */
     @Test
     void fourPlayers_one() {
-        CG1 comG1 = new CG1(4);
+        CG1 comG1 = new CG1(4, 1);
 
         l1.insertCard(colA, 0);
         l1.insertCard(colB, 1);
@@ -317,7 +317,7 @@ class CG1Test {
      */
     @Test
     void fourPlayers_two() {
-        CG1 comG1 = new CG1(4);
+        CG1 comG1 = new CG1(4, 1);
 
         l1.insertCard(colF, 0);
         l1.insertCard(colF, 1);
@@ -356,7 +356,7 @@ class CG1Test {
      */
     @Test
     void fourPlayers_three() {
-        CG1 comG1 = new CG1(4);
+        CG1 comG1 = new CG1(4, 1);
 
         l1.insertCard(colF, 0);
         l1.insertCard(colF, 1);
@@ -395,7 +395,7 @@ class CG1Test {
      */
     @Test
     void fourPlayers_four() {
-        CG1 comG1 = new CG1(4);
+        CG1 comG1 = new CG1(4, 1);
 
         l1.insertCard(colF, 0);
         l1.insertCard(colF, 1);

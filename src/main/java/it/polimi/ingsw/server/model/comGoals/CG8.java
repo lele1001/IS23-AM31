@@ -5,8 +5,8 @@ import it.polimi.ingsw.server.model.HouseItem;
 
 // Find four tiles of the same item at the corners of the bookshelf
 public class CG8 extends ComGoal {
-    public CG8(int playerNum) {
-        super(playerNum);
+    public CG8(int playerNum, int CGID) {
+        super(playerNum, CGID);
     }
 
     @Override

@@ -6,9 +6,15 @@ import it.polimi.ingsw.server.model.HouseItem;
 public class CG3_4 extends ComGoal {
     int multiplier;
 
-    public CG3_4(int playerNum, int multiplier) {
-        super(playerNum);
-        this.multiplier = multiplier;
+    public CG3_4(int playerNum, int CGID) {
+        super(playerNum, CGID);
+
+        if (CGID == 3) {
+            this.multiplier = 2;
+        }
+        else if (CGID == 4) {
+            this.multiplier = 1;
+        }
     }
 
     @Override

@@ -35,7 +35,7 @@ class CG252Test {
      */
     @Test
     void twoPlayers_zero() {
-        CG2_5 comG2 = new CG2_5(2, 6);
+        CG2_5 comG2 = new CG2_5(2, 2);
 
         l1.insertCard(col1, 0);
         l1.insertCard(col2, 4);
@@ -56,7 +56,7 @@ class CG252Test {
      */
     @Test
     void twoPlayers_one() {
-        CG2_5 comG2 = new CG2_5(2, 6);
+        CG2_5 comG2 = new CG2_5(2, 2);
 
         l1.insertCard(col2, 0);
         l1.insertCard(col3, 1);
@@ -80,7 +80,7 @@ class CG252Test {
      */
     @Test
     void twoPlayers_two() {
-        CG2_5 comG2 = new CG2_5(2, 6);
+        CG2_5 comG2 = new CG2_5(2, 2);
 
         l1.insertCard(col2, 0);
         l1.insertCard(col3, 1);
@@ -105,7 +105,7 @@ class CG252Test {
      */
     @Test
     void threePlayers_zero() {
-        CG2_5 comG2 = new CG2_5(3, 6);
+        CG2_5 comG2 = new CG2_5(3, 2);
 
         l1.insertCard(col1, 0);
         l1.insertCard(col2, 4);
@@ -132,7 +132,7 @@ class CG252Test {
      */
     @Test
     void threePlayers_one() {
-        CG2_5 comG2 = new CG2_5(3, 6);
+        CG2_5 comG2 = new CG2_5(3, 2);
 
         l1.insertCard(col2, 0);
         l1.insertCard(col3, 1);
@@ -162,7 +162,7 @@ class CG252Test {
      */
     @Test
     void threePlayers_two() {
-        CG2_5 comG2 = new CG2_5(3, 6);
+        CG2_5 comG2 = new CG2_5(3, 2);
 
         l1.insertCard(col2, 0);
         l1.insertCard(col3, 1);
@@ -194,7 +194,7 @@ class CG252Test {
      */
     @Test
     void threePlayers_three() {
-        CG2_5 comG2 = new CG2_5(3, 6);
+        CG2_5 comG2 = new CG2_5(3, 2);
 
         l1.insertCard(col2, 0);
         l1.insertCard(col3, 1);
@@ -227,7 +227,7 @@ class CG252Test {
      */
     @Test
     void fourPlayers_zero() {
-        CG2_5 comG2 = new CG2_5(4, 6);
+        CG2_5 comG2 = new CG2_5(4, 2);
 
         l1.insertCard(col1, 0);
         l1.insertCard(col2, 4);
@@ -262,7 +262,7 @@ class CG252Test {
      */
     @Test
     void fourPlayers_one() {
-        CG2_5 comG2 = new CG2_5(4, 6);
+        CG2_5 comG2 = new CG2_5(4, 2);
 
         l1.insertCard(col1, 0);
         l1.insertCard(col2, 4);
@@ -299,7 +299,7 @@ class CG252Test {
      */
     @Test
     void fourPlayers_two() {
-        CG2_5 comG2 = new CG2_5(4, 6);
+        CG2_5 comG2 = new CG2_5(4, 2);
 
         l1.insertCard(col2, 0);
         l1.insertCard(col3, 1);
@@ -339,7 +339,7 @@ class CG252Test {
      */
     @Test
     void fourPlayers_three() {
-        CG2_5 comG2 = new CG2_5(4, 6);
+        CG2_5 comG2 = new CG2_5(4, 2);
 
         l1.insertCard(col2, 0);
         l1.insertCard(col3, 1);
@@ -379,7 +379,7 @@ class CG252Test {
      */
     @Test
     void fourPlayers_four() {
-        CG2_5 comG2 = new CG2_5(4, 6);
+        CG2_5 comG2 = new CG2_5(4, 2);
 
         l1.insertCard(col2, 0);
         l1.insertCard(col3, 1);

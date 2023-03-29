@@ -6,12 +6,12 @@ import it.polimi.ingsw.server.model.Position;
 import java.util.*;
 
 public class ConnectionControl {
-    public static ArrayList<Position> askSelect(String currPlayer) {
+    public static ArrayList<Position> askSelect(String nickname) {
         // to fix
         return null;
     }
 
-    public static Map<Integer, ItemCard> askInsert(String currPlayer) {
+    public static Map<Integer, ItemCard> askInsert(String nickname) {
         // to fix
         return null;
     }

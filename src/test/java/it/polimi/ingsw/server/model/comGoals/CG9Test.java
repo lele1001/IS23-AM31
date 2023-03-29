@@ -37,7 +37,7 @@ class CG9Test {
      */
     @Test
     void twoPlayers_zero() {
-        CG9 comG9 = new CG9(2);
+        CG9 comG9 = new CG9(2, 9);
 
         l0.insertCard(col1, 0);
         l0.insertCard(col1, 4);
@@ -56,7 +56,7 @@ class CG9Test {
      */
     @Test
     void twoPlayers_one() {
-        CG9 comG9 = new CG9(2);
+        CG9 comG9 = new CG9(2, 9);
 
         l8.insertCard(col5, 0);
         l8.insertCard(col2, 1);
@@ -78,7 +78,7 @@ class CG9Test {
      */
     @Test
     void twoPlayers_two() {
-        CG9 comG9 = new CG9(2);
+        CG9 comG9 = new CG9(2, 9);
 
         l8.insertCard(col5, 0);
         l8.insertCard(col2, 1);
@@ -103,7 +103,7 @@ class CG9Test {
      */
     @Test
     void threePlayers_zero() {
-        CG9 comG9 = new CG9(3);
+        CG9 comG9 = new CG9(3, 9);
 
         l0.insertCard(col1, 0);
         l0.insertCard(col1, 4);
@@ -127,7 +127,7 @@ class CG9Test {
      */
     @Test
     void threePlayers_one() {
-        CG9 comG9 = new CG9(3);
+        CG9 comG9 = new CG9(3, 9);
 
         l8.insertCard(col5, 0);
         l8.insertCard(col2, 1);
@@ -154,7 +154,7 @@ class CG9Test {
      */
     @Test
     void threePlayers_two() {
-        CG9 comG9 = new CG9(3);
+        CG9 comG9 = new CG9(3, 9);
 
         l8.insertCard(col5, 0);
         l8.insertCard(col2, 1);
@@ -184,7 +184,7 @@ class CG9Test {
      */
     @Test
     void threePlayers_three() {
-        CG9 comG9 = new CG9(3);
+        CG9 comG9 = new CG9(3, 9);
 
         l8.insertCard(col5, 0);
         l8.insertCard(col2, 1);
@@ -211,7 +211,7 @@ class CG9Test {
      */
     @Test
     void fourPlayers_zero() {
-        CG9 comG9 = new CG9(4);
+        CG9 comG9 = new CG9(4, 9);
 
         l0.insertCard(col1, 0);
         l0.insertCard(col1, 4);
@@ -237,7 +237,7 @@ class CG9Test {
      */
     @Test
     void fourPlayers_one() {
-        CG9 comG9 = new CG9(4);
+        CG9 comG9 = new CG9(4, 9);
 
         l0.insertCard(col1, 0);
         l0.insertCard(col1, 4);
@@ -266,7 +266,7 @@ class CG9Test {
      */
     @Test
     void fourPlayers_two() {
-        CG9 comG9 = new CG9(4);
+        CG9 comG9 = new CG9(4, 9);
 
         l0.insertCard(col1, 0);
         l0.insertCard(col1, 4);
@@ -295,7 +295,7 @@ class CG9Test {
      */
     @Test
     void fourPlayers_three() {
-        CG9 comG9 = new CG9(4);
+        CG9 comG9 = new CG9(4, 9);
 
         l5.insertCard(col5, 1);
         l5.insertCard(col2, 3);
@@ -327,7 +327,7 @@ class CG9Test {
      */
     @Test
     void fourPlayers_four() {
-        CG9 comG9 = new CG9(4);
+        CG9 comG9 = new CG9(4, 9);
 
         l8.insertCard(col5, 0);
         l8.insertCard(col2, 1);

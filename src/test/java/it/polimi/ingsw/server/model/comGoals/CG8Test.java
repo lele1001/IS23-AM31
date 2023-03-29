@@ -32,7 +32,7 @@ class CG8Test {
      */
     @Test
     void twoPlayers_zero() {
-        CG8 comG8 = new CG8(2);
+        CG8 comG8 = new CG8(2, 8);
 
         List<ItemCard> col1_1 = new ArrayList<>(List.of(c1, c2, b1, b1, f1, c2));
         List<ItemCard> col1_2 = new ArrayList<>(List.of(c3, c2, f2, b1, f1, f1));
@@ -54,7 +54,7 @@ class CG8Test {
      */
     @Test
     void twoPlayers_one() {
-        CG8 comG8 = new CG8(2);
+        CG8 comG8 = new CG8(2, 8);
 
         List<ItemCard> col1_1 = new ArrayList<>(List.of(c1, c2, b1, b1, f1, c2));
         List<ItemCard> col1_2 = new ArrayList<>(List.of(c3, c2, f2, b1, f1, c3));
@@ -76,7 +76,7 @@ class CG8Test {
      */
     @Test
     void twoPlayers_two() {
-        CG8 comG8 = new CG8(2);
+        CG8 comG8 = new CG8(2, 8);
 
         List<ItemCard> col1_1 = new ArrayList<>(List.of(c1, c2, b1, b1, f1, c2));
         List<ItemCard> col1_2 = new ArrayList<>(List.of(c3, c2, f2, b1, f1, c3));
@@ -99,7 +99,7 @@ class CG8Test {
      */
     @Test
     void threePlayers_zero() {
-        CG8 comG8 = new CG8(3);
+        CG8 comG8 = new CG8(3, 8);
 
         List<ItemCard> col1_1 = new ArrayList<>(List.of(c1, c2, b1, b1, f1, c2));
         List<ItemCard> col1_2 = new ArrayList<>(List.of(c3, c2, b1, b1, f1, f1));
@@ -139,7 +139,7 @@ class CG8Test {
         ItemCard f2 = new ItemCard(Frame, Second);
         ItemCard b1 = new ItemCard(Books, Third);
 
-        CG8 comG8 = new CG8(3);
+        CG8 comG8 = new CG8(3, 8);
 
         List<ItemCard> col1_1 = new ArrayList<>(List.of(c1, c2, b1, b1, f1, c2));
         List<ItemCard> col1_2 = new ArrayList<>(List.of(c3, c2, b1, b1, f1, f1));
@@ -168,7 +168,7 @@ class CG8Test {
      */
     @Test
     void threePlayers_two() {
-        CG8 comG8 = new CG8(3);
+        CG8 comG8 = new CG8(3, 8);
 
         List<ItemCard> col1_1 = new ArrayList<>(List.of(c1, c2, b1, b1, f1, c2));
         List<ItemCard> col1_2 = new ArrayList<>(List.of(c3, c2, b1, b1, f1, c1));
@@ -197,7 +197,7 @@ class CG8Test {
      */
     @Test
     void threePlayers_three() {
-        CG8 comG8 = new CG8(3);
+        CG8 comG8 = new CG8(3, 8);
 
         List<ItemCard> col1_1 = new ArrayList<>(List.of(c1, c2, b1, b1, f1, c2));
         List<ItemCard> col1_2 = new ArrayList<>(List.of(c3, c2, b1, b1, f1, c1));
@@ -227,7 +227,7 @@ class CG8Test {
      */
     @Test
     void fourPlayers_zero() {
-        CG8 comG8 = new CG8(4);
+        CG8 comG8 = new CG8(4, 8);
 
         List<ItemCard> col1_1 = new ArrayList<>(List.of(c1, c2, b1, b1, f1, c2));
         List<ItemCard> col1_2 = new ArrayList<>(List.of(c3, c2, b1, b1, f1, f1));
@@ -263,7 +263,7 @@ class CG8Test {
      */
     @Test
     void fourPlayers_one() {
-        CG8 comG8 = new CG8(4);
+        CG8 comG8 = new CG8(4, 8);
 
         List<ItemCard> col1_1 = new ArrayList<>(List.of(c1, c2, b1, b1, f1, c2));
         List<ItemCard> col1_2 = new ArrayList<>(List.of(c3, c2, b1, b1, f1, f1));
@@ -299,7 +299,7 @@ class CG8Test {
      */
     @Test
     void fourPlayers_two() {
-        CG8 comG8 = new CG8(4);
+        CG8 comG8 = new CG8(4, 8);
 
         List<ItemCard> col1_1 = new ArrayList<>(List.of(c1, c2, b1, b1, f1, c2));
         List<ItemCard> col1_2 = new ArrayList<>(List.of(c3, c2, b1, b1, f1, c1));
@@ -349,7 +349,7 @@ class CG8Test {
         ItemCard t1 = new ItemCard(Trophy, First);
         ItemCard t3 = new ItemCard(Trophy, Third);
 
-        CG8 comG8 = new CG8(4);
+        CG8 comG8 = new CG8(4, 8);
 
         List<ItemCard> col1_1 = new ArrayList<>(List.of(c1, c2, b1, b1, f1, c2));
         List<ItemCard> col1_2 = new ArrayList<>(List.of(c3, c2, b1, b1, f1, c1));
@@ -385,7 +385,7 @@ class CG8Test {
      */
     @Test
     void fourPlayers_four() {
-        CG8 comG8 = new CG8(4);
+        CG8 comG8 = new CG8(4, 8);
 
         List<ItemCard> col1_1 = new ArrayList<>(List.of(c1, c2, b1, b1, f1, c2));
         List<ItemCard> col1_2 = new ArrayList<>(List.of(c3, c2, b1, b1, f1, c1));

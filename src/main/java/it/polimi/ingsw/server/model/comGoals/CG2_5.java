@@ -10,9 +10,15 @@ import java.util.ArrayList;
  */
 public class CG2_5 extends ComGoal {
     int numDiff;
-    public CG2_5(int playerNum, int numDiff) {
-        super(playerNum);
-        this.numDiff = numDiff;
+    public CG2_5(int playerNum, int CGID) {
+        super(playerNum, CGID);
+
+        if (CGID == 2) {
+            this.numDiff = 6;
+        }
+        else if (CGID == 5) {
+            this.numDiff = 3;
+        }
     }
 
     @Override

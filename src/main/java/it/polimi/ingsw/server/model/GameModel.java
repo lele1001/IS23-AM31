@@ -140,18 +140,18 @@ public class GameModel {
 
     private ComGoal selectComGoal(int numComGoal, int numPlayers){
         return switch (numComGoal) {
-            case 1 -> new CG1(numPlayers);
-            case 2 -> new CG2_5(numPlayers, 6);
-            case 3 -> new CG3_4(numPlayers, 2);
-            case 4 -> new CG3_4(numPlayers, 1);
-            case 5 -> new CG2_5(numPlayers, 3);
-            case 6 -> new CG6_7(numPlayers, 5);
-            case 7 -> new CG6_7(numPlayers, 3);
-            case 8 -> new CG8(numPlayers);
-            case 9 -> new CG9(numPlayers);
-            case 10 -> new CG10(numPlayers);
-            case 11 -> new CG11_12(numPlayers, true);
-            case 12 -> new CG11_12(numPlayers, false);
+            case 1 -> new CG1(numPlayers, 1);
+            case 2 -> new CG2_5(numPlayers, 2);
+            case 3 -> new CG3_4(numPlayers, 3);
+            case 4 -> new CG3_4(numPlayers, 4);
+            case 5 -> new CG2_5(numPlayers, 5);
+            case 6 -> new CG6_7(numPlayers, 6);
+            case 7 -> new CG6_7(numPlayers, 7);
+            case 8 -> new CG8(numPlayers, 8);
+            case 9 -> new CG9(numPlayers, 9);
+            case 10 -> new CG10(numPlayers, 10);
+            case 11 -> new CG11_12(numPlayers, 11);
+            case 12 -> new CG11_12(numPlayers, 12);
             default -> null;
         };
     }

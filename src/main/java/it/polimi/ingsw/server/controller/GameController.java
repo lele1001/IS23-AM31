@@ -83,7 +83,7 @@ public class GameController implements PropertyChangeListener {
         }
 
         Map<Integer, ItemCard> cardsToInsert = ConnectionControl.askInsert(currPlayer);
-        if(cardsToInsert != null && !cardsToInsert.isEmpty()) {
+        if (cardsToInsert != null && !cardsToInsert.isEmpty()) {
             insertCard(currPlayer, cardsToInsert);
         }*/
 

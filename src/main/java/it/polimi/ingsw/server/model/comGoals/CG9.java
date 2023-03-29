@@ -9,8 +9,8 @@ import java.util.ArrayList;
  * Finds eight tiles of the same type without any restriction on their position
  */
 public class CG9 extends ComGoal {
-    public CG9(int playerNum) {
-        super(playerNum);
+    public CG9(int playerNum, int CGID) {
+        super(playerNum, CGID);
     }
 
     @Override
