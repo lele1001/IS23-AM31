@@ -31,7 +31,8 @@ class CG9Test {
     private final List<ItemCard> col8 = new ArrayList<>(List.of(c1, t3, b1, t3));
     private final List<ItemCard> col9 = new ArrayList<>(List.of(t3, t3, t3));
 
-    /** Test with 2 players
+    /**
+     * Test with 2 players
      * 1st player - zero occurrences: returns 0
      * 2nd player - five occurrences: returns 0
      */
@@ -50,7 +51,8 @@ class CG9Test {
         assertEquals(0, comG9.goalReached(l5));
     }
 
-    /** Test with 2 players
+    /**
+     * Test with 2 players
      * 1st player - eight occurrences: returns 8
      * 2nd player - five occurrences: returns 0
      */
@@ -72,7 +74,8 @@ class CG9Test {
         assertEquals(0, comG9.goalReached(l5));
     }
 
-    /** Test with 2 players
+    /**
+     * Test with 2 players
      * 1st player - eight occurrences: returns 8
      * 2nd player - nine occurrences: returns 4
      */
@@ -96,7 +99,8 @@ class CG9Test {
         assertEquals(4, comG9.goalReached(l9));
     }
 
-    /** Test with 3 players
+    /**
+     * Test with 3 players
      * 1st player - zero occurrences: returns 0
      * 2nd player - five occurrences: returns 0
      * 3rd player - three occurrences: returns 0
@@ -120,7 +124,8 @@ class CG9Test {
         assertEquals(0, comG9.goalReached(l3));
     }
 
-    /** Test with 3 players
+    /**
+     * Test with 3 players
      * 1st player - eight occurrences: returns 8
      * 2nd player - five occurrences: returns 0
      * 3rd player - three occurrences: returns 0
@@ -147,7 +152,8 @@ class CG9Test {
         assertEquals(0, comG9.goalReached(l3));
     }
 
-    /** Test with 3 players
+    /**
+     * Test with 3 players
      * 1st player - eight occurrences: returns 8
      * 2nd player - five occurrences: returns 0
      * 3rd player - nine occurrences: returns 6
@@ -177,7 +183,8 @@ class CG9Test {
         assertEquals(6, comG9.goalReached(l9));
     }
 
-    /** Test with 3 players
+    /**
+     * Test with 3 players
      * 1st player - eight occurrences: returns 8
      * 2nd player - eight occurrences: returns 6
      * 3rd player - nine occurrences: returns 4
@@ -203,7 +210,8 @@ class CG9Test {
         assertEquals(4, comG9.goalReached(l9));
     }
 
-    /** Test with 4 players
+    /**
+     * Test with 4 players
      * 1st player - zero occurrences: returns 0
      * 2nd player - five occurrences: returns 0
      * 3rd player - three occurrences: returns 0
@@ -229,7 +237,8 @@ class CG9Test {
         assertEquals(0, comG9.goalReached(l0));
     }
 
-    /** Test with 4 players
+    /**
+     * Test with 4 players
      * 1st player - zero occurrences: returns 0
      * 2nd player - five occurrences: returns 0
      * 3rd player - eight occurrences: returns 8
@@ -258,7 +267,8 @@ class CG9Test {
         assertEquals(0, comG9.goalReached(l0));
     }
 
-    /** Test with 4 players
+    /**
+     * Test with 4 players
      * 1st player - eight occurrences: returns 8
      * 2nd player - five occurrences: returns 0
      * 3rd player - eight occurrences: returns 6
@@ -287,7 +297,8 @@ class CG9Test {
         assertEquals(0, comG9.goalReached(l0));
     }
 
-    /** Test with 4 players
+    /**
+     * Test with 4 players
      * 1st player - eight occurrences: returns 8
      * 2nd player - five occurrences: returns 0
      * 3rd player - eight occurrences: returns 6
@@ -319,7 +330,8 @@ class CG9Test {
         assertEquals(4, comG9.goalReached(l9));
     }
 
-    /** Test with 4 players
+    /**
+     * Test with 4 players
      * 1st player - eight occurrences: returns 8
      * 2nd player - nine occurrences: returns 6
      * 3rd player - eight occurrences: returns 4

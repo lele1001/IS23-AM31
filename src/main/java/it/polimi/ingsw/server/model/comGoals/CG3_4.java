@@ -3,6 +3,9 @@ package it.polimi.ingsw.server.model.comGoals;
 import it.polimi.ingsw.server.model.Bookshelf;
 import it.polimi.ingsw.server.model.HouseItem;
 
+/**
+ * Used for cards that looks for groups of cards (common goal number 3 and 4)
+ */
 public class CG3_4 extends ComGoal {
     int multiplier;
 
@@ -11,8 +14,7 @@ public class CG3_4 extends ComGoal {
 
         if (CGID == 3) {
             this.multiplier = 2;
-        }
-        else if (CGID == 4) {
+        } else if (CGID == 4) {
             this.multiplier = 1;
         }
     }
@@ -35,12 +37,9 @@ public class CG3_4 extends ComGoal {
                     if (find(matrix, i, j, l) >= (2 * multiplier)) {
                         groupsFound++;
                     }
-//                    System.out.println("Riga "+i+" Colonna "+j+": "+score);
                 }
             }
         }
-
-        System.out.println("I found " + groupsFound + " groups");
 
         if (((multiplier == 1) && (groupsFound >= 6)) || ((multiplier == 2) && (groupsFound >= 4))) {
             //Player.score += this.score.get(0);

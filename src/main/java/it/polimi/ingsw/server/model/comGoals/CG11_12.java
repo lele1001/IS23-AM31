@@ -14,8 +14,7 @@ public class CG11_12 extends ComGoal {
 
         if (CGID == 11) {
             this.color = true;
-        }
-        else if (CGID == 12) {
+        } else if (CGID == 12) {
             this.color = false;
         }
     }

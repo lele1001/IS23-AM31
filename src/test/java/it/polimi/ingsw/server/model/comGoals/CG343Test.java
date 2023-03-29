@@ -33,7 +33,8 @@ class CG343Test {
     private final List<ItemCard> colH = new ArrayList<>(List.of(t3, t3, g1, f2, f2));
     private final List<ItemCard> colI = new ArrayList<>(List.of(f2, b1, b1, b1, b1));
 
-    /** Test with 2 players
+    /**
+     * Test with 2 players
      * 1st player - two groups: returns 0
      * 2nd player - two groups: returns 0
      */
@@ -57,7 +58,8 @@ class CG343Test {
         assertEquals(0, comG3.goalReached(l2));
     }
 
-    /** Test with 2 players
+    /**
+     * Test with 2 players
      * 1st player - four groups: returns 8
      * 2nd player - two groups: returns 0
      */
@@ -81,7 +83,8 @@ class CG343Test {
         assertEquals(0, comG3.goalReached(l2));
     }
 
-    /** Test with 2 players
+    /**
+     * Test with 2 players
      * 1st player - four groups: returns 8
      * 2nd player - four groups: returns 4
      */
@@ -105,7 +108,8 @@ class CG343Test {
         assertEquals(4, comG3.goalReached(l2));
     }
 
-    /** Test with 3 players
+    /**
+     * Test with 3 players
      * 1st player - two groups: returns 0
      * 2nd player - two groups: returns 0
      * 3rd player - three groups: returns 0
@@ -136,7 +140,8 @@ class CG343Test {
         assertEquals(0, comG3.goalReached(l3));
     }
 
-    /** Test with 3 players
+    /**
+     * Test with 3 players
      * 1st player - four groups: returns 8
      * 2nd player - two groups: returns 0
      * 3rd player - three groups: returns 0
@@ -167,7 +172,8 @@ class CG343Test {
         assertEquals(0, comG3.goalReached(l3));
     }
 
-    /** Test with 3 players
+    /**
+     * Test with 3 players
      * 1st player - four groups: returns 8
      * 2nd player - two groups: returns 0
      * 3rd player - six groups: returns 6
@@ -198,7 +204,8 @@ class CG343Test {
         assertEquals(6, comG3.goalReached(l3));
     }
 
-    /** Test with 3 players
+    /**
+     * Test with 3 players
      * 1st player - four groups: returns 8
      * 2nd player - four groups: returns 6
      * 3rd player - six groups: returns 4
@@ -229,7 +236,8 @@ class CG343Test {
         assertEquals(4, comG3.goalReached(l3));
     }
 
-    /** Test with 4 players
+    /**
+     * Test with 4 players
      * 1st player - two groups: returns 0
      * 2nd player - two groups: returns 0
      * 3rd player - three groups: returns 0
@@ -267,7 +275,8 @@ class CG343Test {
         assertEquals(0, comG3.goalReached(l4));
     }
 
-    /** Test with 4 players
+    /**
+     * Test with 4 players
      * 1st player - two groups: returns 0
      * 2nd player - two groups: returns 0
      * 3rd player - six groups: returns 8
@@ -305,7 +314,8 @@ class CG343Test {
         assertEquals(0, comG3.goalReached(l4));
     }
 
-    /** Test with 4 players
+    /**
+     * Test with 4 players
      * 1st player - four groups: returns 8
      * 2nd player - two groups: returns 0
      * 3rd player - six groups: returns 6
@@ -343,7 +353,8 @@ class CG343Test {
         assertEquals(0, comG3.goalReached(l4));
     }
 
-    /** Test with 4 players
+    /**
+     * Test with 4 players
      * 1st player - four groups: returns 8
      * 2nd player - two groups: returns 0
      * 3rd player - six groups: returns 6
@@ -382,7 +393,8 @@ class CG343Test {
         assertEquals(4, comG3.goalReached(l4));
     }
 
-    /** Test with 4 players
+    /**
+     * Test with 4 players
      * 1st player - four groups: returns 8
      * 2nd player - four groups: returns 6
      * 3rd player - six groups: returns 4

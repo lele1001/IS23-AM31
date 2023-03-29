@@ -8,7 +8,6 @@ public class Bookshelf {
     private final ItemCard[][] bookshelf = new ItemCard[BOOKSHELF_HEIGHT][BOOKSHELF_LENGTH];
 
 
-
     /**
      * @requires checkSpace(column, cards.size ())==TRUE && cards.size()<=3
      * Insert cards in the bookshelf (at the indicated column)
@@ -16,7 +15,7 @@ public class Bookshelf {
     public void insertCard(List<ItemCard> cards, int column) {
         int i;
 
-        for (i = BOOKSHELF_HEIGHT-1; i >= 0; i--) {
+        for (i = BOOKSHELF_HEIGHT - 1; i >= 0; i--) {
             if (bookshelf[i][column] == null) break;
         }
         for (ItemCard ic : cards) {
@@ -30,19 +29,19 @@ public class Bookshelf {
      */
     public ItemCard[][] getAsMatrix() {
         ItemCard[][] toBeReturned = new ItemCard[BOOKSHELF_HEIGHT][BOOKSHELF_LENGTH];
-        for(int i=0; i<BOOKSHELF_HEIGHT; i++) {
+        for (int i = 0; i < BOOKSHELF_HEIGHT; i++) {
             System.arraycopy(bookshelf[i], 0, toBeReturned[i], 0, BOOKSHELF_LENGTH);
         }
         return toBeReturned;
     }
 
     /**
-     * @return a boolean that indicates if there is space in the indicated column for 'num' elements
+     * @return a boolean which indicates if there is space in the indicated column for 'num' elements
      */
     public boolean checkSpace(int column, int num) {
-        if ((num > BOOKSHELF_HEIGHT) || (num <= 0) || (column < 0) || (column > BOOKSHELF_LENGTH-1)) return false;
+        if ((num > BOOKSHELF_HEIGHT) || (num <= 0) || (column < 0) || (column > BOOKSHELF_LENGTH - 1)) return false;
         int i;
-        for (i = BOOKSHELF_HEIGHT-1; i >= 0; i--) {
+        for (i = BOOKSHELF_HEIGHT - 1; i >= 0; i--) {
             if (bookshelf[i][column] == null) break;
         }
         return (i >= 0) && (i - num >= -1);
@@ -52,7 +51,7 @@ public class Bookshelf {
      * @return the element in x, y position
      */
     public ItemCard get(int x, int y) {
-        if ((x < 0) || (y < 0) || (x > BOOKSHELF_HEIGHT-1) || (y > BOOKSHELF_LENGTH-1)) {
+        if ((x < 0) || (y < 0) || (x > BOOKSHELF_HEIGHT - 1) || (y > BOOKSHELF_LENGTH - 1)) {
             throw new ArrayIndexOutOfBoundsException();
         }
         return bookshelf[x][y];
@@ -100,9 +99,9 @@ public class Bookshelf {
         matrix[i][j] = true;
         if ((j != 0) && (bookshelf[i][j - 1] != null) && (bookshelf[i][j - 1].getMyItem() == bookshelf[i][j].getMyItem()) && (!matrix[i][j - 1]))
             num += calc(matrix, i, j - 1);
-        if ((j != BOOKSHELF_LENGTH-1) && (bookshelf[i][j + 1] != null) && (bookshelf[i][j + 1].getMyItem() == bookshelf[i][j].getMyItem()) && (!matrix[i][j + 1]))
+        if ((j != BOOKSHELF_LENGTH - 1) && (bookshelf[i][j + 1] != null) && (bookshelf[i][j + 1].getMyItem() == bookshelf[i][j].getMyItem()) && (!matrix[i][j + 1]))
             num += calc(matrix, i, j + 1);
-        if ((i != BOOKSHELF_HEIGHT-1) && (bookshelf[i + 1][j] != null) && (bookshelf[i + 1][j].getMyItem() == bookshelf[i][j].getMyItem()) && (!matrix[i + 1][j]))
+        if ((i != BOOKSHELF_HEIGHT - 1) && (bookshelf[i + 1][j] != null) && (bookshelf[i + 1][j].getMyItem() == bookshelf[i][j].getMyItem()) && (!matrix[i + 1][j]))
             num += calc(matrix, i + 1, j);
         if ((i != 0) && (bookshelf[i - 1][j] != null) && (bookshelf[i - 1][j].getMyItem() == bookshelf[i][j].getMyItem()) && (!matrix[i - 1][j]))
             num += calc(matrix, i - 1, j);

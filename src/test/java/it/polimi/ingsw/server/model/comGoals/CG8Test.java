@@ -26,7 +26,8 @@ class CG8Test {
     private final ItemCard t1 = new ItemCard(Trophy, First);
     private final ItemCard t3 = new ItemCard(Trophy, Third);
 
-    /** Test with 2 players
+    /**
+     * Test with 2 players
      * 1st player - three equals tiles out of four: returns 0
      * 2nd player - two equals tiles out of four: returns 0
      */
@@ -48,7 +49,8 @@ class CG8Test {
         assertEquals(0, comG8.goalReached(l2));
     }
 
-    /** Test with 2 players
+    /**
+     * Test with 2 players
      * 1st player - four equals tiles out of four: returns 8
      * 2nd player - two equals tiles out of four: returns 0
      */
@@ -70,7 +72,8 @@ class CG8Test {
         assertEquals(0, comG8.goalReached(l2));
     }
 
-    /** Test with 2 players
+    /**
+     * Test with 2 players
      * 1st player - four equals tiles out of four: returns 8
      * 2nd player - four equals tiles out of four: returns 4
      */
@@ -92,7 +95,8 @@ class CG8Test {
         assertEquals(4, comG8.goalReached(l2));
     }
 
-    /** Test with 3 players
+    /**
+     * Test with 3 players
      * 1st player - three equals tiles out of four: returns 0
      * 2nd player - one equals tiles out of four: returns 0
      * 3rd player - two equals tiles out of four: returns 0
@@ -121,7 +125,8 @@ class CG8Test {
         assertEquals(0, comG8.goalReached(l3));
     }
 
-    /** Test with 3 players
+    /**
+     * Test with 3 players
      * 1st player - three equals tiles out of four: returns 8
      * 2nd player - two equals tiles out of four: returns 0
      * 3rd player - four equals tiles out of four: returns 0
@@ -161,7 +166,8 @@ class CG8Test {
         assertEquals(8, comG8.goalReached(l3));
     }
 
-    /** Test with 3 players
+    /**
+     * Test with 3 players
      * 1st player - four equals tiles out of four: returns 8
      * 2nd player - two equals tiles out of four: returns 0
      * 3rd player - four equals tiles out of four: returns 6
@@ -190,7 +196,8 @@ class CG8Test {
         assertEquals(6, comG8.goalReached(l3));
     }
 
-    /** Test with 3 players
+    /**
+     * Test with 3 players
      * 1st player - four equals tiles out of four: returns 8
      * 2nd player - four equals tiles out of four: returns 6
      * 3rd player - four equals tiles out of four: returns 4
@@ -219,7 +226,8 @@ class CG8Test {
         assertEquals(4, comG8.goalReached(l3));
     }
 
-    /** Test with 4 players
+    /**
+     * Test with 4 players
      * 1st player - three equals tiles out of four: returns 0
      * 2nd player - one equals tiles out of four: returns 0
      * 3rd player - two equals tiles out of four: returns 0
@@ -255,7 +263,8 @@ class CG8Test {
         assertEquals(0, comG8.goalReached(l4));
     }
 
-    /** Test with 4 players
+    /**
+     * Test with 4 players
      * 1st player - three equals tiles out of four: returns 0
      * 2nd player - two equals tiles out of four: returns 0
      * 3rd player - four equals tiles out of four: returns 8
@@ -291,7 +300,8 @@ class CG8Test {
         assertEquals(0, comG8.goalReached(l4));
     }
 
-    /** Test with 4 players
+    /**
+     * Test with 4 players
      * 1st player - four equals tiles out of four: returns 8
      * 2nd player - two equals tiles out of four: returns 0
      * 3rd player - four equals tiles out of four: returns 6
@@ -327,7 +337,8 @@ class CG8Test {
         assertEquals(0, comG8.goalReached(l4));
     }
 
-    /** Test with 4 players
+    /**
+     * Test with 4 players
      * 1st player - four equals tiles out of four: returns 8
      * 2nd player - two equals tiles out of four: returns 0
      * 3rd player - four equals tiles out of four: returns 6
@@ -377,7 +388,8 @@ class CG8Test {
         assertEquals(4, comG8.goalReached(l4));
     }
 
-    /** Test with 4 players
+    /**
+     * Test with 4 players
      * 1st player - four equals tiles out of four: returns 8
      * 2nd player - four equals tiles out of four: returns 6
      * 3rd player - four equals tiles out of four: returns 4

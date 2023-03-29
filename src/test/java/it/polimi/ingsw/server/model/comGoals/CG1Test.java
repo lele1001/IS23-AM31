@@ -34,7 +34,8 @@ class CG1Test {
     private final List<ItemCard> colI = new ArrayList<>(List.of(b1, g3, g3, f2, g3, g3));
     private final List<ItemCard> colL = new ArrayList<>(List.of(t3, p2, p2, b1));
 
-    /** Test with 2 players
+    /**
+     * Test with 2 players
      * 1st player - one square: returns 0
      * 2nd player - zero squares: returns 0
      */
@@ -58,7 +59,8 @@ class CG1Test {
         assertEquals(0, comG1.goalReached(l2));
     }
 
-    /** Test with 2 players
+    /**
+     * Test with 2 players
      * 1st player - three squares: returns 8
      * 2nd player - zero squares: returns 0
      */
@@ -82,7 +84,8 @@ class CG1Test {
         assertEquals(0, comG1.goalReached(l2));
     }
 
-    /** Test with 2 players
+    /**
+     * Test with 2 players
      * 1st player - three squares: returns 8
      * 2nd player - two squares: returns 4
      */
@@ -105,7 +108,8 @@ class CG1Test {
         assertEquals(4, comG1.goalReached(l2));
     }
 
-    /** Test with 3 players
+    /**
+     * Test with 3 players
      * 1st player - one square: returns 0
      * 2nd player - zero squares: returns 0
      * 3rd player - one square in 3×3 config: returns 0
@@ -137,7 +141,8 @@ class CG1Test {
         assertEquals(0, comG1.goalReached(l3));
     }
 
-    /** Test with 3 players
+    /**
+     * Test with 3 players
      * 1st player - three squares: returns 8
      * 2nd player - zero squares: returns 0
      * 3rd player - zero squares: returns 0
@@ -169,7 +174,8 @@ class CG1Test {
         assertEquals(0, comG1.goalReached(l3));
     }
 
-    /** Test with 3 players
+    /**
+     * Test with 3 players
      * 1st player - three squares: returns 8
      * 2nd player - zero squares: returns 0
      * 3rd player - two squares: returns 6
@@ -200,7 +206,8 @@ class CG1Test {
         assertEquals(6, comG1.goalReached(l3));
     }
 
-    /** Test with 3 players
+    /**
+     * Test with 3 players
      * 1st player - three squares: returns 8
      * 2nd player - two squares: returns 6
      * 3rd player - two squares: returns 4
@@ -230,7 +237,8 @@ class CG1Test {
         assertEquals(4, comG1.goalReached(l3));
     }
 
-    /** Test with 4 players
+    /**
+     * Test with 4 players
      * 1st player - one square: returns 0
      * 2nd player - zero squares: returns 0
      * 3rd player - zero squares: returns 0
@@ -270,7 +278,8 @@ class CG1Test {
         assertEquals(0, comG1.goalReached(l4));
     }
 
-    /** Test with 4 players
+    /**
+     * Test with 4 players
      * 1st player - one square: returns 0
      * 2nd player - zero squares: returns 0
      * 3rd player - two squares: returns 8
@@ -309,7 +318,8 @@ class CG1Test {
         assertEquals(0, comG1.goalReached(l4));
     }
 
-    /** Test with 4 players
+    /**
+     * Test with 4 players
      * 1st player - three squares: returns 8
      * 2nd player - zero squares: returns 0
      * 3rd player - two squares: returns 6
@@ -348,7 +358,8 @@ class CG1Test {
         assertEquals(0, comG1.goalReached(l4));
     }
 
-    /** Test with 4 players
+    /**
+     * Test with 4 players
      * 1st player - three squares: returns 8
      * 2nd player - zero squares: returns 0
      * 3rd player - two squares: returns 6
@@ -387,7 +398,8 @@ class CG1Test {
         assertEquals(4, comG1.goalReached(l4));
     }
 
-    /** Test with 4 players
+    /**
+     * Test with 4 players
      * 1st player - three squares: returns 8
      * 2nd player - two squares: returns 6
      * 3rd player - two squares: returns 4

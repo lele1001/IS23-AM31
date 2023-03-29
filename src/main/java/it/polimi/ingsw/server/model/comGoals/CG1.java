@@ -48,20 +48,17 @@ public class CG1 extends ComGoal {
                                         if ((myItem != it3) && (myItem != it4)) {
                                             items.add(myItem);
                                         }
-                                    }
-                                    else if (l.get(r + 1, c + 2) != null) {
+                                    } else if (l.get(r + 1, c + 2) != null) {
                                         it4 = l.get(r + 1, c + 2).getMyItem();
 
                                         if (myItem != it4) {
                                             items.add(myItem);
                                         }
-                                    }
-                                    else {
+                                    } else {
                                         items.add(myItem);
                                     }
                                 }
-                            }
-                            else {
+                            } else {
                                 items.add(myItem);
                             }
                         }

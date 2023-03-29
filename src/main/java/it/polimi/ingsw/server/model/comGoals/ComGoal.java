@@ -28,17 +28,17 @@ public abstract class ComGoal {
     }
 
     /**
-     * checks if the player reached the common goals
+     * Checks if the player reached the common goals
      *
      * @return score assigned to the player
      * the score is 0 if the goal is not reached, otherwise it is the max score available for the goal
      */
     public abstract int goalReached(Bookshelf l);
 
-    public int getCurrScore(){
-        try{
+    public int getCurrScore() {
+        try {
             return this.score.get(0);
-        } catch(NullPointerException | IndexOutOfBoundsException e){
+        } catch (NullPointerException | IndexOutOfBoundsException e) {
             return 0;
         }
 

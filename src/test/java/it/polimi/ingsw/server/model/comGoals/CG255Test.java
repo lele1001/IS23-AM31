@@ -29,7 +29,8 @@ class CG255Test {
     private final List<ItemCard> col5 = new ArrayList<>(List.of(f2, g1, p3, f2, g1, p3)); //diff
     private final List<ItemCard> col6 = new ArrayList<>(List.of(f2, g1, f2, g1, g1, f2)); //diff
 
-    /** Test with 2 players
+    /**
+     * Test with 2 players
      * 1st player - zero columns: returns 0
      * 2nd player - one column: returns 0
      */
@@ -50,7 +51,8 @@ class CG255Test {
         assertEquals(0, comG5.goalReached(l2));
     }
 
-    /** Test with 2 players
+    /**
+     * Test with 2 players
      * 1st player - two columns: returns 8
      * 2nd player - one column: returns 0
      */
@@ -74,7 +76,8 @@ class CG255Test {
         assertEquals(0, comG5.goalReached(l2));
     }
 
-    /** Test with 2 players
+    /**
+     * Test with 2 players
      * 1st player - two columns: returns 8
      * 2nd player - three columns: returns 4
      */
@@ -98,7 +101,8 @@ class CG255Test {
         assertEquals(4, comG5.goalReached(l2));
     }
 
-    /** Test with 3 players
+    /**
+     * Test with 3 players
      * 1st player - zero columns: returns 0
      * 2nd player - one column: returns 0
      * 3rd player - zero columns: returns 0
@@ -125,7 +129,8 @@ class CG255Test {
         assertEquals(0, comG5.goalReached(l3));
     }
 
-    /** Test with 3 players
+    /**
+     * Test with 3 players
      * 1st player - two columns: returns 8
      * 2nd player - one column: returns 0
      * 3rd player - zero columns: returns 0
@@ -155,7 +160,8 @@ class CG255Test {
         assertEquals(0, comG5.goalReached(l3));
     }
 
-    /** Test with 3 players
+    /**
+     * Test with 3 players
      * 1st player - two columns: returns 8
      * 2nd player - one column: returns 0
      * 3rd player - five columns: returns 6
@@ -187,7 +193,8 @@ class CG255Test {
         assertEquals(6, comG5.goalReached(l3));
     }
 
-    /** Test with 3 players
+    /**
+     * Test with 3 players
      * 1st player - two columns: returns 8
      * 2nd player - three columns: returns 6
      * 3rd player - five columns: returns 4
@@ -219,7 +226,8 @@ class CG255Test {
         assertEquals(4, comG5.goalReached(l3));
     }
 
-    /** Test with 4 players
+    /**
+     * Test with 4 players
      * 1st player - zero columns: returns 0
      * 2nd player - one column: returns 0
      * 3rd player - zero columns: returns 0
@@ -254,7 +262,8 @@ class CG255Test {
         assertEquals(0, comG5.goalReached(l4));
     }
 
-    /** Test with 4 players
+    /**
+     * Test with 4 players
      * 1st player - zero columns: returns 0
      * 2nd player - one column: returns 0
      * 3rd player - five columns: returns 8
@@ -291,7 +300,8 @@ class CG255Test {
         assertEquals(0, comG5.goalReached(l4));
     }
 
-    /** Test with 4 players
+    /**
+     * Test with 4 players
      * 1st player - two columns: returns 8
      * 2nd player - one column: returns 0
      * 3rd player - five columns: returns 6
@@ -331,7 +341,8 @@ class CG255Test {
         assertEquals(0, comG5.goalReached(l4));
     }
 
-    /** Test with 4 players
+    /**
+     * Test with 4 players
      * 1st player - two columns: returns 8
      * 2nd player - one column: returns 0
      * 3rd player - five columns: returns 6
@@ -371,7 +382,8 @@ class CG255Test {
         assertEquals(4, comG5.goalReached(l4));
     }
 
-    /** Test with 4 players
+    /**
+     * Test with 4 players
      * 1st player - two columns: returns 8
      * 2nd player - three column: returns 6
      * 3rd player - five columns: returns 4

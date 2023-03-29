@@ -15,7 +15,7 @@ public enum PersGoal {
 
     /**
      * An ordered list of different scores based on the number of correct ItemCard
-      */
+     */
     private final static List<Integer> scoreList = new ArrayList<>(List.of(0, 1, 2, 4, 6, 9, 12));
 
     /**
@@ -54,12 +54,12 @@ public enum PersGoal {
      * @return the score reached on the library it takes as a parameter.
      */
     public int calcScore(Bookshelf l) {
-        int numberofDone = 0;
+        int numberOfDone = 0;
         for (int i : positions.keySet()) {
             if ((l.get(Position.getRow(i), Position.getColumn(i)) != null) && (l.get(Position.getRow(i), Position.getColumn(i)).getMyItem() == positions.get(i))) {
-                numberofDone++;
+                numberOfDone++;
             }
         }
-        return scoreList.get(numberofDone);
+        return scoreList.get(numberOfDone);
     }
 }

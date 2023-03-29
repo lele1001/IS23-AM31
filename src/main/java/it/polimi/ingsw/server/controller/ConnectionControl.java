@@ -28,8 +28,9 @@ public class ConnectionControl {
         //genero il messaggio con la stringa di errore, che parserò lato client.
     }
 
-    public void SendCommonGoalCreated(HashMap<Integer, Integer> newComgoal) {
+    public void SendCommonGoalCreated(HashMap<Integer, Integer> newComGoal) {
     }
+
     public void SendEmptyCardBag() {
     }
 
@@ -42,7 +43,7 @@ public class ConnectionControl {
     public void SendPersGoalCreated(String newValue) {
     }
 
-    public void SendBookshelfCompleted(String nickname){
+    public void SendBookshelfCompleted(String nickname) {
 
     }
 }

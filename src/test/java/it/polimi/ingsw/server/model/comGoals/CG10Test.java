@@ -29,7 +29,8 @@ class CG10Test {
     private final List<ItemCard> col4 = new ArrayList<>(List.of(b1, t3, p3, g1, g1, f2));
     private final List<ItemCard> col5 = new ArrayList<>(List.of(f2, p3, t3, p3, g1));
 
-    /** Test with 2 players
+    /**
+     * Test with 2 players
      * 1st player - zero groups: returns 0
      * 2nd player - zero groups: returns 0
      */
@@ -48,7 +49,8 @@ class CG10Test {
         assertEquals(0, comG10.goalReached(l2));
     }
 
-    /** Test with 2 players
+    /**
+     * Test with 2 players
      * 1st player - one group: returns 8
      * 2nd player - zero groups: returns 0
      */
@@ -70,7 +72,8 @@ class CG10Test {
         assertEquals(0, comG10.goalReached(l2));
     }
 
-    /** Test with 2 players
+    /**
+     * Test with 2 players
      * 1st player - one group: returns 8
      * 2nd player - one group: returns 4
      */
@@ -94,7 +97,8 @@ class CG10Test {
         assertEquals(4, comG10.goalReached(l2));
     }
 
-    /** Test with 3 players
+    /**
+     * Test with 3 players
      * 1st player - zero groups: returns 0
      * 2nd player - zero groups: returns 0
      * 3rd player - zero groups: returns 0
@@ -119,7 +123,8 @@ class CG10Test {
         assertEquals(0, comG10.goalReached(l3));
     }
 
-    /** Test with 3 players
+    /**
+     * Test with 3 players
      * 1st player - one group: returns 8
      * 2nd player - zero groups: returns 0
      * 3rd player - zero groups: returns 0
@@ -147,7 +152,8 @@ class CG10Test {
         assertEquals(0, comG10.goalReached(l3));
     }
 
-    /** Test with 3 players
+    /**
+     * Test with 3 players
      * 1st player - one group: returns 8
      * 2nd player - zero groups: returns 0
      * 3rd player - one group: returns 6
@@ -177,7 +183,8 @@ class CG10Test {
         assertEquals(6, comG10.goalReached(l3));
     }
 
-    /** Test with 3 players
+    /**
+     * Test with 3 players
      * 1st player - one group: returns 8
      * 2nd player - one group: returns 6
      * 3rd player - one group: returns 4
@@ -209,7 +216,8 @@ class CG10Test {
         assertEquals(4, comG10.goalReached(l3));
     }
 
-    /** Test with 4 players
+    /**
+     * Test with 4 players
      * 1st player - zero groups: returns 0
      * 2nd player - zero groups: returns 0
      * 3rd player - zero groups: returns 0
@@ -240,7 +248,8 @@ class CG10Test {
         assertEquals(0, comG10.goalReached(l4));
     }
 
-    /** Test with 4 players
+    /**
+     * Test with 4 players
      * 1st player - zero groups: returns 0
      * 2nd player - zero groups: returns 0
      * 3rd player - one group: returns 8
@@ -273,7 +282,8 @@ class CG10Test {
         assertEquals(0, comG10.goalReached(l4));
     }
 
-    /** Test with 4 players
+    /**
+     * Test with 4 players
      * 1st player - one group: returns 8
      * 2nd player - zero groups: returns 0
      * 3rd player - one group: returns 6
@@ -309,7 +319,8 @@ class CG10Test {
         assertEquals(0, comG10.goalReached(l4));
     }
 
-    /** Test with 4 players
+    /**
+     * Test with 4 players
      * 1st player - one group: returns 8
      * 2nd player - zero groups: returns 0
      * 3rd player - one group: returns 6
@@ -347,7 +358,8 @@ class CG10Test {
         assertEquals(4, comG10.goalReached(l4));
     }
 
-    /** Test with 4 players
+    /**
+     * Test with 4 players
      * 1st player - one group: returns 8
      * 2nd player - one group: returns 6
      * 3rd player - one group: returns 4

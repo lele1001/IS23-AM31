@@ -28,7 +28,8 @@ class CG676Test {
     private final List<ItemCard> col4 = new ArrayList<>(List.of(b1, t3, p3, g1, g1, f2));
     private final List<ItemCard> col5 = new ArrayList<>(List.of(f2, g1, t3, p3, g1, p3));
 
-    /** Test with 2 players
+    /**
+     * Test with 2 players
      * 1st player - zero rows: returns 0
      * 2nd player - one rows: returns 0
      */
@@ -47,7 +48,8 @@ class CG676Test {
         assertEquals(0, comG6.goalReached(l2));
     }
 
-    /** Test with 2 players
+    /**
+     * Test with 2 players
      * 1st player - three rows: returns 8
      * 2nd player - zero rows: returns 0
      */
@@ -69,7 +71,8 @@ class CG676Test {
         assertEquals(0, comG6.goalReached(l2));
     }
 
-    /** Test with 2 players
+    /**
+     * Test with 2 players
      * 1st player - three rows: returns 8
      * 2nd player - three rows: returns 4
      */
@@ -93,7 +96,8 @@ class CG676Test {
         assertEquals(4, comG6.goalReached(l2));
     }
 
-    /** Test with 3 players
+    /**
+     * Test with 3 players
      * 1st player - zero rows: returns 0
      * 2nd player - zero rows: returns 0
      * 3rd player - zero rows: returns 0
@@ -118,7 +122,8 @@ class CG676Test {
         assertEquals(0, comG6.goalReached(l3));
     }
 
-    /** Test with 3 players
+    /**
+     * Test with 3 players
      * 1st player - three rows: returns 8
      * 2nd player - zero rows: returns 0
      * 3rd player - zero rows: returns 0
@@ -146,7 +151,8 @@ class CG676Test {
         assertEquals(0, comG6.goalReached(l3));
     }
 
-    /** Test with 3 players
+    /**
+     * Test with 3 players
      * 1st player - three rows: returns 8
      * 2nd player - zero rows: returns 0
      * 3rd player - three rows: returns 6
@@ -176,7 +182,8 @@ class CG676Test {
         assertEquals(6, comG6.goalReached(l3));
     }
 
-    /** Test with 3 players
+    /**
+     * Test with 3 players
      * 1st player - three rows: returns 8
      * 2nd player - three rows: returns 6
      * 3rd player - three rows: returns 4
@@ -208,7 +215,8 @@ class CG676Test {
         assertEquals(4, comG6.goalReached(l3));
     }
 
-    /** Test with 4 players
+    /**
+     * Test with 4 players
      * 1st player - zero rows: returns 0
      * 2nd player - zero rows: returns 0
      * 3rd player - zero rows: returns 0
@@ -239,7 +247,8 @@ class CG676Test {
         assertEquals(0, comG6.goalReached(l4));
     }
 
-    /** Test with 4 players
+    /**
+     * Test with 4 players
      * 1st player - zero rows: returns 0
      * 2nd player - zero rows: returns 0
      * 3rd player - three rows: returns 8
@@ -272,7 +281,8 @@ class CG676Test {
         assertEquals(0, comG6.goalReached(l4));
     }
 
-    /** Test with 4 players
+    /**
+     * Test with 4 players
      * 1st player - three rows: returns 8
      * 2nd player - zero rows: returns 0
      * 3rd player - three rows: returns 6
@@ -308,7 +318,8 @@ class CG676Test {
         assertEquals(0, comG6.goalReached(l4));
     }
 
-    /** Test with 4 players
+    /**
+     * Test with 4 players
      * 1st player - three rows: returns 8
      * 2nd player - zero rows: returns 0
      * 3rd player - three rows: returns 6
@@ -346,7 +357,8 @@ class CG676Test {
         assertEquals(4, comG6.goalReached(l4));
     }
 
-    /** Test with 4 players
+    /**
+     * Test with 4 players
      * 1st player - three rows: returns 8
      * 2nd player - three rows: returns 6
      * 3rd player - three rows: returns 4

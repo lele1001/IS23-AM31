@@ -3,7 +3,9 @@ package it.polimi.ingsw.server.model.comGoals;
 import it.polimi.ingsw.server.model.Bookshelf;
 import it.polimi.ingsw.server.model.HouseItem;
 
-// Finds five tiles of the same type forming an X
+/**
+ * Finds five tiles of the same type forming an X
+ */
 public class CG10 extends ComGoal {
     public CG10(int playerNum, int CGID) {
         super(playerNum, CGID);
@@ -24,7 +26,7 @@ public class CG10 extends ComGoal {
                     myItem = l.get(r, c).getMyItem();
 
                     if (l.get(r + 2, c).getMyItem() == myItem) {
-                        if ((l.get(r , c + 2) != null) && (l.get(r + 1, c + 1) != null)) {
+                        if ((l.get(r, c + 2) != null) && (l.get(r + 1, c + 1) != null)) {
                             it1 = l.get(r, c + 2).getMyItem();
                             it2 = l.get(r + 2, c + 2).getMyItem();
                             it3 = l.get(r + 1, c + 1).getMyItem();

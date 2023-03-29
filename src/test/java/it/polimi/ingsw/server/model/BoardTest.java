@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class BoardTest {
     /**
-     * Testing the creation of the board: 
+     * Testing the creation of the board:
      * all the Cells have to be null, and the player pattern has to be correct
      */
     @Test
@@ -62,15 +62,14 @@ class BoardTest {
             if (numPlayer == 3) assertEquals(95, boardTest1.cardBag.size());
             if (numPlayer == 4) assertEquals(87, boardTest1.cardBag.size());
             Board board = new Board(numPlayer);
-            List<ItemCard> Tile=boardTest1.getAsArrayList();
+            List<ItemCard> Tile = boardTest1.getAsArrayList();
             for (int i = 0; i < boardTest1.board.length; i++) {
                 for (int j = 0; j < boardTest1.board[0].length; j++) {
-                    board.board[i][j]=Tile.get(i*9+j);
-                    if(boardTest1.board[i][j]!=null){
-                    assertEquals(boardTest1.board[i][j].getMyItem(),board.board[i][j].getMyItem());
-                    assertEquals(boardTest1.board[i][j].getMyNum(),board.board[i][j].getMyNum());
-                    }
-                    else{
+                    board.board[i][j] = Tile.get(i * 9 + j);
+                    if (boardTest1.board[i][j] != null) {
+                        assertEquals(boardTest1.board[i][j].getMyItem(), board.board[i][j].getMyItem());
+                        assertEquals(boardTest1.board[i][j].getMyNum(), board.board[i][j].getMyNum());
+                    } else {
                         assertNull(board.board[i][j]);
                     }
                 }
@@ -260,7 +259,7 @@ class BoardTest {
      * Caused by the not straight tiles position or because the Tiles have not a free side from other Tiles
      */
     @Test
-    void deleteSelectionTestBadSelection() throws  EmptyCardBagException {
+    void deleteSelectionTestBadSelection() throws EmptyCardBagException {
         int numPlayer = 2;
         Board boardTest1 = new Board(numPlayer);
         Board prima = new Board(numPlayer);

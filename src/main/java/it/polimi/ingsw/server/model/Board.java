@@ -15,15 +15,15 @@ public class Board {
     ArrayList<ItemCard> cardBag = new ArrayList<>();
     int numPlayers;
     int[][] numMinPlayer = new int[][]{
-        {5, 5, 5, 3, 4, 5, 5, 5, 5},
-        {5, 5, 5, 2, 2, 4, 5, 5, 5},
-        {5, 5, 3, 2, 2, 2, 3, 5, 5},
-        {5, 4, 2, 2, 2, 2, 2, 2, 3},
-        {4, 2, 2, 2, 2, 2, 2, 2, 4},
-        {3, 2, 2, 2, 2, 2, 2, 4, 5},
-        {5, 5, 3, 2, 2, 2, 3, 5, 5},
-        {5, 5, 5, 4, 2, 2, 5, 5, 5},
-        {5, 5, 5, 5, 4, 3, 5, 5, 5}};
+            {5, 5, 5, 3, 4, 5, 5, 5, 5},
+            {5, 5, 5, 2, 2, 4, 5, 5, 5},
+            {5, 5, 3, 2, 2, 2, 3, 5, 5},
+            {5, 4, 2, 2, 2, 2, 2, 2, 3},
+            {4, 2, 2, 2, 2, 2, 2, 2, 4},
+            {3, 2, 2, 2, 2, 2, 2, 4, 5},
+            {5, 5, 3, 2, 2, 2, 3, 5, 5},
+            {5, 5, 5, 4, 2, 2, 5, 5, 5},
+            {5, 5, 5, 5, 4, 3, 5, 5, 5}};
 
     //Arraylist used for creating the board using the minimum number of player to put an Itemcard in the Cell
 
@@ -123,7 +123,7 @@ public class Board {
     /**
      * Check if the Itemcard can be deleted
      * First check controls that the positions number are contained in the board
-     * Second check controls that in the selected Cells there are the Itemcards
+     * Second check controls that in the selected Cells there are the ItemCards
      * Called two separate methods to do other controls
      *
      * @param position number from which we can extract row and column
@@ -147,7 +147,8 @@ public class Board {
     }
 
     /**
-     * Private method called by checkSelection that controls that all the tiles inb position have at least 1 clear side from other Itemcards
+     * Private method called by checkSelection that controls that all the tiles
+     * in the ArrayList position have at least 1 clear side from other ItemCards
      *
      * @param position number from which we can extract row and column
      * @return true if a side of an Itemcard is clear from others
@@ -156,22 +157,23 @@ public class Board {
         Collections.sort(position);
         int i;
         int j;
-        boolean sideclear = true;
-        for (int k = 0; k < position.size() && sideclear; k++) {
+        boolean sideClear = true;
+        for (int k = 0; k < position.size() && sideClear; k++) {
             i = Position.getRow(position.get(k));
             j = Position.getColumn(position.get(k));
             if (i != 0 && i != 8 && j != 0 && j != 8) {
-                sideclear = board[i + 1][j] == null || board[i - 1][j] == null || board[i][j - 1] == null || board[i][j + 1] == null;
+                sideClear = board[i + 1][j] == null || board[i - 1][j] == null || board[i][j - 1] == null || board[i][j + 1] == null;
             }
         }
-        return sideclear;
+        return sideClear;
     }
 
     /**
-     * Private method called by checkSelection that controls that the selected Tiles for a straight Line (change of row_position or column_position)
+     * Private method called by checkSelection that controls that the selected tiles
+     * form a straight line (change of row_position or column_position)
      *
      * @param position number from which we can extract row and column
-     * @return true if the Itemcards are in a straight line
+     * @return true if the ItemCards are in a straight line
      */
     private boolean checkStraightSelection(ArrayList<Integer> position) {
         if (position.size() == 3) {
@@ -193,11 +195,10 @@ public class Board {
     }
 
     /**
-     * Delete Itemcards in the selected Cells only if all the checks are successful
+     * Delete ItemCards in the selected Cells only if all the checks are successful
      *
      * @param position number from which we can extract row and column
-     * @return an Arraylist with the selected ItemCards
-     * @throws NoRightItemCardSelection if the selected itemcards don't pas the check selection
+     * @throws NoRightItemCardSelection if the selected ItemCards don't pas the check selection
      */
 
     public void deleteSelection(ArrayList<Integer> position) throws NoRightItemCardSelection {
@@ -225,7 +226,8 @@ public class Board {
             }
         }
     }
-    public List<ItemCard> getAsArrayList(){
-        return Arrays.stream(board).sequential().toList().stream().flatMap(x->Arrays.stream(x).sequential()).toList();
+
+    public List<ItemCard> getAsArrayList() {
+        return Arrays.stream(board).sequential().toList().stream().flatMap(x -> Arrays.stream(x).sequential()).toList();
     }
 }

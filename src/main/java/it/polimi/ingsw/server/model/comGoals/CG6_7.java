@@ -16,8 +16,7 @@ public class CG6_7 extends ComGoal {
 
         if (CGID == 6) {
             this.numDiff = 5;
-        }
-        else if (CGID == 7) {
+        } else if (CGID == 7) {
             this.numDiff = 3;
         }
     }
@@ -37,6 +36,7 @@ public class CG6_7 extends ComGoal {
 
     /**
      * Finds how many rows have numDiff >= this.numDiff
+     *
      * @return number of rows found
      */
     private int lookDiff(Bookshelf l, int numDiff) {

@@ -29,7 +29,8 @@ class CG111211Test {
     private final List<ItemCard> col5_2 = new ArrayList<>(List.of(f2, t3, b1, f1, b1));
     private final List<ItemCard> col6 = new ArrayList<>(List.of(f2, t3, b1, f1, b1, t3));
 
-    /** Test with 2 players
+    /**
+     * Test with 2 players
      * 1st player - only two columns: returns 0
      * 2nd player - five mixed columns: returns 0
      */
@@ -50,7 +51,8 @@ class CG111211Test {
         assertEquals(0, comG11.goalReached(l2));
     }
 
-    /** Test with 2 players
+    /**
+     * Test with 2 players
      * 1st player - five ordered columns, offset 0, direction 1: returns 8
      * 2nd player - five ordered columns, wrong color: returns 0
      */
@@ -74,7 +76,8 @@ class CG111211Test {
         assertEquals(0, comG11.goalReached(l2));
     }
 
-    /** Test with 2 players
+    /**
+     * Test with 2 players
      * 1st player - five ordered columns, offset 0, direction 1: returns 8
      * 2nd player - five ordered columns, offset 1, direction 0: returns 4
      */
@@ -98,7 +101,8 @@ class CG111211Test {
         assertEquals(4, comG11.goalReached(l2));
     }
 
-    /** Test with 3 players
+    /**
+     * Test with 3 players
      * 1st player - only two columns: returns 0
      * 2nd player - five mixed columns: returns 0
      * 3rd player - only three columns: returns 0
@@ -125,7 +129,8 @@ class CG111211Test {
         assertEquals(0, comG11.goalReached(l3));
     }
 
-    /** Test with 3 players
+    /**
+     * Test with 3 players
      * 1st player - five ordered columns, offset 0, direction 1: returns 8
      * 2nd player - five mixed columns: returns 0
      * 3rd player - only three columns: returns 0
@@ -155,7 +160,8 @@ class CG111211Test {
         assertEquals(0, comG11.goalReached(l3));
     }
 
-    /** Test with 3 players
+    /**
+     * Test with 3 players
      * 1st player - five ordered columns, offset 0, direction 1: returns 8
      * 2nd player - five mixed column: returns 0
      * 3rd player - five ordered columns, offset 1, direction 0: returns 6
@@ -187,7 +193,8 @@ class CG111211Test {
         assertEquals(6, comG11.goalReached(l3));
     }
 
-    /** Test with 3 players
+    /**
+     * Test with 3 players
      * 1st player - five ordered columns, offset 0, direction 1: returns 8
      * 2nd player - five ordered columns, offset 0, direction 0: returns 6
      * 3rd player - five ordered columns, offset 1, direction 0: returns 4
@@ -219,7 +226,8 @@ class CG111211Test {
         assertEquals(4, comG11.goalReached(l3));
     }
 
-    /** Test with 4 players
+    /**
+     * Test with 4 players
      * 1st player - only two columns: returns 0
      * 2nd player - five mixed columns: returns 0
      * 3rd player - only three columns: returns 0
@@ -254,7 +262,8 @@ class CG111211Test {
         assertEquals(0, comG11.goalReached(l4));
     }
 
-    /** Test with 4 players
+    /**
+     * Test with 4 players
      * 1st player - only two columns: returns 0
      * 2nd player - five mixed columns: returns 0
      * 3rd player - five ordered columns, offset 1, direction 0: returns 8
@@ -291,7 +300,8 @@ class CG111211Test {
         assertEquals(0, comG11.goalReached(l4));
     }
 
-    /** Test with 4 players
+    /**
+     * Test with 4 players
      * 1st player - five ordered columns, offset 0, direction 1: returns 8
      * 2nd player - five mixed columns: returns 0
      * 3rd player - five ordered columns, offset 1, direction 0: returns 6
@@ -331,7 +341,8 @@ class CG111211Test {
         assertEquals(0, comG11.goalReached(l4));
     }
 
-    /** Test with 4 players
+    /**
+     * Test with 4 players
      * 1st player - five ordered columns, offset 0, direction 1: returns 8
      * 2nd player - five mixed columns: returns 0
      * 3rd player - five ordered columns, offset 1, direction 0: returns 6
@@ -371,7 +382,8 @@ class CG111211Test {
         assertEquals(4, comG11.goalReached(l4));
     }
 
-    /** Test with 4 players
+    /**
+     * Test with 4 players
      * 1st player - five ordered columns, offset 0, direction 1: returns 8
      * 2nd player - five ordered columns, offset 0, direction 0: returns 6
      * 3rd player - five ordered columns, offset 1, direction 0: returns 4

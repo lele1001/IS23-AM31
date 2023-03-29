@@ -24,6 +24,7 @@ public class Player {
 
     /**
      * Called at the beginning of the game
+     *
      * @param persGoal assigned to the player.
      */
     public void assignPersGoal(PersGoal persGoal) {
@@ -32,7 +33,8 @@ public class Player {
 
     /**
      * Called at the end of the game
-     * @return the total score of the player (as the sum of ComGoal score (saved in variable 'score'), bookshelf's adjacencies score, persGoal score).
+     *
+     * @return the total score of the player (sum of ComGoal score (saved in variable 'score'), bookshelf's adjacency score, persGoal score).
      */
     public int calculateFinScore() {
         return score + myBookshelf.calcScore() + persGoal.calcScore(myBookshelf);
@@ -40,16 +42,17 @@ public class Player {
 
     /**
      * Called by the GameModel at the end of the turn of the player to check if it has reached ComGoals.
+     *
      * @param comGoal available for the game
      * @return true if the player has reached the goal, false in other cases (goal not reached or already reached in other turns)
      */
     public boolean checkComGoal(ComGoal comGoal) {
-        for(ComGoal cg : comGoalsReached) {
-            if(cg == comGoal)
+        for (ComGoal cg : comGoalsReached) {
+            if (cg == comGoal)
                 return false;
         }
         int comGoalScore = comGoal.goalReached(myBookshelf);
-        if(comGoalScore > 0) {
+        if (comGoalScore > 0) {
             score += comGoalScore;
             comGoalsReached.add(comGoal);
             return true;
@@ -61,8 +64,8 @@ public class Player {
      * @return true if the bookshelf is full (so the game has to run the last turn)
      */
     public boolean checkEnd() {
-        for(int i=0; i<5; i++) {
-            if(myBookshelf.checkSpace(i, 1))
+        for (int i = 0; i < 5; i++) {
+            if (myBookshelf.checkSpace(i, 1))
                 return false;
         }
         return true;
@@ -70,17 +73,18 @@ public class Player {
 
     /**
      * Called by the GameModel, tries to insert cards in the player's bookshelf
-     * @requires cards.size() <= 3
-     * @param cards to be inserted
+     *
+     * @param cards  to be inserted
      * @param column of the bookshelf where cards have to be inserted
      * @throws NoBookshelfSpaceException if there's no such space in the column of the bookshelf for the cards
+     * @requires cards.size() <= 3
      */
     public boolean insertCard(List<ItemCard> cards, int column) throws NoBookshelfSpaceException {
-        if(!myBookshelf.checkSpace(column, cards.size()))
+        if (!myBookshelf.checkSpace(column, cards.size()))
             throw new NoBookshelfSpaceException();
         myBookshelf.insertCard(cards, column);
-        for(int i = 0; i < BOOKSHELF_LENGTH; i++){
-            if(myBookshelf.checkSpace(i, 1))
+        for (int i = 0; i < BOOKSHELF_LENGTH; i++) {
+            if (myBookshelf.checkSpace(i, 1))
                 return false;
         }
         return true;

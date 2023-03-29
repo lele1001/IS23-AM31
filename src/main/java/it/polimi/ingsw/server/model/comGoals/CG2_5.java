@@ -10,13 +10,13 @@ import java.util.ArrayList;
  */
 public class CG2_5 extends ComGoal {
     int numDiff;
+
     public CG2_5(int playerNum, int CGID) {
         super(playerNum, CGID);
 
         if (CGID == 2) {
             this.numDiff = 6;
-        }
-        else if (CGID == 5) {
+        } else if (CGID == 5) {
             this.numDiff = 3;
         }
     }
@@ -36,6 +36,7 @@ public class CG2_5 extends ComGoal {
 
     /**
      * Used for finding how many rows have numDiff >= this.numDiff
+     *
      * @return number of rows found
      */
     private int lookDiff(Bookshelf l, int numDiff) {

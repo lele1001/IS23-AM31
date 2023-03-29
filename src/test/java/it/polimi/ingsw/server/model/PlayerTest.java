@@ -24,15 +24,13 @@ class PlayerTest {
             p.insertCard(new ArrayList<>(List.of(new ItemCard(Cat, First), new ItemCard(Frame, Second))), 2);
             p.insertCard(new ArrayList<>(List.of(new ItemCard(Books, Third), new ItemCard(Frame, Second), new ItemCard(Cat, First))), 2);
             p.insertCard(new ArrayList<>(List.of(new ItemCard(Frame, Third), new ItemCard(Books, Second))), 2);
-        }
-        catch (NoBookshelfSpaceException e) {
+        } catch (NoBookshelfSpaceException e) {
             assertEquals(1, 1); // To be executed
         }
 
         try {
             p.insertCard(new ArrayList<>(List.of(new ItemCard(Frame, Second))), 2);
-        }
-        catch (NoBookshelfSpaceException e) {
+        } catch (NoBookshelfSpaceException e) {
             assertEquals(1, 2); // Not to be executed
         }
 
@@ -40,15 +38,13 @@ class PlayerTest {
             p.insertCard(new ArrayList<>(List.of(new ItemCard(Cat, First), new ItemCard(Frame, Second))), 1);
             p.insertCard(new ArrayList<>(List.of(new ItemCard(Books, Third), new ItemCard(Frame, Second), new ItemCard(Cat, First))), 1);
             p.insertCard(new ArrayList<>(List.of(new ItemCard(Frame, Third))), 1);
-        }
-        catch (NoBookshelfSpaceException e) {
+        } catch (NoBookshelfSpaceException e) {
             assertEquals(1, 2); // Not to be executed
         }
         try {
             p.insertCard(new ArrayList<>(List.of(new ItemCard(Cat, First))), 1);
-        }
-        catch (NoBookshelfSpaceException e) {
-            assertEquals(1,1);  // To be executed
+        } catch (NoBookshelfSpaceException e) {
+            assertEquals(1, 1);  // To be executed
         }
 
         try {
@@ -57,28 +53,24 @@ class PlayerTest {
             p.insertCard(new ArrayList<>(List.of(new ItemCard(Cat, Second))), 3);
             p.insertCard(new ArrayList<>(List.of(new ItemCard(Frame, First))), 3);
             p.insertCard(new ArrayList<>(List.of(new ItemCard(Cat, First))), 3);
-        }
-        catch (NoBookshelfSpaceException e) {
+        } catch (NoBookshelfSpaceException e) {
             assertEquals(1, 2);  // Not to be executed
         }
         try {
             p.insertCard(new ArrayList<>(List.of(new ItemCard(Books, Third), new ItemCard(Frame, Second), new ItemCard(Cat, First))), 3);
-        }
-        catch (NoBookshelfSpaceException e) {
+        } catch (NoBookshelfSpaceException e) {
             assertEquals(1, 1); // To be executed
         }
 
         try {
             p.insertCard(new ArrayList<>(List.of(new ItemCard(Cat, First), new ItemCard(Frame, Second), new ItemCard(Cat, Second))), 4);
             p.insertCard(new ArrayList<>(List.of(new ItemCard(Books, Third), new ItemCard(Frame, Second), new ItemCard(Cat, First))), 4);
-        }
-        catch (NoBookshelfSpaceException e) {
+        } catch (NoBookshelfSpaceException e) {
             assertEquals(1, 2); // Not to be executed
         }
         try {
             p.insertCard(new ArrayList<>(List.of(new ItemCard(Frame, Third))), 4);
-        }
-        catch (NoBookshelfSpaceException e) {
+        } catch (NoBookshelfSpaceException e) {
             assertEquals(1, 1); // To be executed
         }
 
