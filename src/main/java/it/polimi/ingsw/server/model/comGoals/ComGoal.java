@@ -44,4 +44,7 @@ public abstract class ComGoal {
 
     }
 
+    public int getCGID() {
+        return CGID;
+    }
 }

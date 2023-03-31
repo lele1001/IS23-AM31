@@ -4,9 +4,7 @@ import it.polimi.ingsw.server.gameExceptions.EmptyCardBagException;
 import it.polimi.ingsw.server.gameExceptions.NoRightItemCardSelection;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
-import java.util.List;
 
 
 public class Board {
@@ -227,7 +225,11 @@ public class Board {
         }
     }
 
-    public List<ItemCard> getAsArrayList() {
-        return Arrays.stream(board).sequential().toList().stream().flatMap(x -> Arrays.stream(x).sequential()).toList();
+    public ItemCard[][] getAsArrayList() {
+        ItemCard[][] toBeReturned = new ItemCard[DIM_BOARD][DIM_BOARD];
+        for(int i = 0; i<DIM_BOARD; i++){
+         System.arraycopy(board[i], 0, toBeReturned[i], 0, DIM_BOARD);
+        }
+        return toBeReturned;
     }
 }

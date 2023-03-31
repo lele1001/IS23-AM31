@@ -12,7 +12,7 @@ import java.util.*;
 public class GameModel {
 
     private final Map<String, Player> playerMap = new HashMap<>();
-    private final Board board;
+    private Board board;
 
     PropertyChangeListener listener;
 
@@ -21,14 +21,19 @@ public class GameModel {
     /**
      * Builds the game
      *
-     * @param players list of nicknames
+     *
      */
-    public GameModel(ArrayList<String> players) {
-        PropertyChangeEvent evt;
+    public GameModel() {
 
+    }
+
+    public void CreateGame(ArrayList<String> players){
+        PropertyChangeEvent evt;
         board = new Board(players.size());
+        System.out.println("Board Created");
         try {
             board.fillBoard();
+            System.out.println("Board Filled.");
             evt = new PropertyChangeEvent("null", "BOARD_CHANGED", null, board.getAsArrayList());
             this.listener.propertyChange(evt);
         } catch (EmptyCardBagException e) {
@@ -41,13 +46,14 @@ public class GameModel {
         do {
             firstGoal = random.nextInt(1, 12);
             secondGoal = random.nextInt(1, 12);
-        } while (firstGoal != secondGoal);
+        } while (firstGoal == secondGoal);
 
         comGoals.add(selectComGoal(firstGoal, players.size()));
-        evt = new PropertyChangeEvent("null", "COM_GOAL_CREATED", null, new HashMap<Integer, Integer>(firstGoal, comGoals.get(0).getCurrScore()));
+        System.out.println("ComGoals created: " + firstGoal +"," + secondGoal);
+        evt = new PropertyChangeEvent(firstGoal, "COM_GOAL_CREATED", null, comGoals.get(0).getCurrScore());
         this.listener.propertyChange(evt);
         comGoals.add(selectComGoal(secondGoal, players.size()));
-        evt = new PropertyChangeEvent("null", "COM_GOAL_CREATED", null, new HashMap<>(secondGoal, comGoals.get(1).getCurrScore()));
+        evt = new PropertyChangeEvent(secondGoal, "COM_GOAL_CREATED", null, comGoals.get(1).getCurrScore());
         this.listener.propertyChange(evt);
 
         ArrayList<PersGoal> persGoals = new ArrayList<>(Arrays.asList(PersGoal.values()));
@@ -55,6 +61,7 @@ public class GameModel {
         for (String s : players) {
             this.playerMap.put(s, new Player(s));
             playerMap.get(s).assignPersGoal(persGoals.get(0));
+            System.out.println("PersGoal " + persGoals.get(0) + " assigned to " + s);
             evt = new PropertyChangeEvent(s, "PERS_GOAL_CREATED", null, persGoals.get(0).toString());
             this.listener.propertyChange(evt);
             persGoals.remove(0);
@@ -166,12 +173,12 @@ public class GameModel {
         for (ComGoal c : comGoals) {
             ComGoalDone = playerMap.get(nickname).checkComGoal(c);
             if (ComGoalDone) {
-                evt = new PropertyChangeEvent(nickname, "COM_GOAL_DONE", null, new HashMap<>(comGoals.indexOf(c), c.getCurrScore()));
+                int[] toSend = {c.getCGID(), c.getCurrScore()};
+                evt = new PropertyChangeEvent(nickname, "COM_GOAL_DONE", null, toSend);
                 this.listener.propertyChange(evt);
-                playerPointUpdate = true;
+                //playerPointUpdate = true;
             }
         }
-
         /*
         if(playerPointUpdate){
             evt = new PropertyChangeEvent(nickname, "PLAYER_POINT_UPDATE", null, playerMap.get(nickname).getScore());

@@ -1,22 +1,17 @@
 package it.polimi.ingsw.server.controller;
 
 import it.polimi.ingsw.server.model.ItemCard;
-import it.polimi.ingsw.server.model.Position;
-
-import java.util.*;
 
 public class ConnectionControl {
-    public static ArrayList<Position> askSelect(String nickname) {
+    public void askSelect(String nickname) {
         // to fix
-        return null;
     }
 
-    public static Map<Integer, ItemCard> askInsert(String nickname) {
+    public void askInsert(String nickname) {
         // to fix
-        return null;
     }
 
-    public void SendBoardChanged(List<ItemCard> newBoard) {
+    public void SendBoardChanged(ItemCard[][] newBoard) {
 
     }
 
@@ -24,11 +19,11 @@ public class ConnectionControl {
 
     }
 
-    public void SendError(String error) {
+    public void SendError(String error, String nickname) {
         //genero il messaggio con la stringa di errore, che parserò lato client.
     }
 
-    public void SendCommonGoalCreated(HashMap<Integer, Integer> newComGoal) {
+    public void SendCommonGoalCreated(Integer comGoalID, Integer score) {
     }
 
     public void SendEmptyCardBag() {
@@ -37,7 +32,7 @@ public class ConnectionControl {
     public void SendPlayerPointUpdate(String source, int newValue) {
     }
 
-    public void SendCommonGoalDone(String source, HashMap<Integer, Integer> newValue) {
+    public void SendCommonGoalDone(String source, int[] newValue) {
     }
 
     public void SendPersGoalCreated(String newValue) {

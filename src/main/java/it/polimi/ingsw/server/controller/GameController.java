@@ -9,65 +9,79 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 
 public class GameController implements PropertyChangeListener {
-    private final Map<String, ConnectionControl> playersMap;
-    private final ArrayList<String> playersList = new ArrayList<>();
+
+    private ConnectionControl connectionControl;
+    private ArrayList<String> playersList = new ArrayList<>();
     private String currPlayer;
     private boolean winner;
     private GameModel gameModel;
     private TurnPhase turnPhase;
 
-    public GameController(Map<String, ConnectionControl> playersMap) {
-        this.playersMap = playersMap;
-        createGame();
+    public GameController(ConnectionControl connectionControl) {
+        this.connectionControl = connectionControl;
     }
 
     /**
      * Creates the game with all the necessary (board, bookshelves, ...) and starts it
      */
-    private void createGame() {
+    public void createGame() {
         // creates the list used to iterate on players
-        playersList.addAll(playersMap.keySet());
         Collections.shuffle(playersList);
-
-
+        gameModel = new GameModel();
         // sets itself as a listener of the model
         gameModel.setListener(this);
         // creates the board, the bookshelves
         // assigns personalGoals and commonGoals
-        gameModel = new GameModel(playersList);
+        gameModel.CreateGame(playersList);
         // starts iterating on the players, waits for their actions and perform them after checking if they are correct
-        run();
+        //run();
     }
 
     /**
      * Calls each player's turn until somebody completes his/her Bookshelf
      */
     public void run() {
-        winner = false;
-        currPlayer = playersList.get(0);
-
+        int i = 0;
         while (!winner) {
-            playerTurn();
+            currPlayer = playersList.get(i);
+            turnPhase = TurnPhase.SELECTCARDS;
+            connectionControl.askSelect(currPlayer);
+            while (gameModel.isPlayerOnline(currPlayer) && turnPhase != TurnPhase.ENDTURN) {
+                //da finire
+            }
+            if (turnPhase == TurnPhase.ENDTURN) {
+                gameModel.EndTurn(currPlayer);
+            } else {//riesumiamo la vecchia board
+            }
+            i++;
+            //se disconnesso, chiamare sul model metodo per avere la board vecchia
         }
+        runLastTurn(currPlayer);
 
-        System.out.println("Somebody completed his/her Bookshelf!");
-        runLastTurn();
+
     }
 
     /**
      * If the current player is not the first one, makes all the remaining one play their turn
      * Calls the method to calculate the final score and
      */
-    public void runLastTurn() {
-        // makes the remaining players play
-        while (playersList.indexOf(currPlayer) != 0) {
-            playerTurn();
+    public void runLastTurn(String nickname) {
+        int i = playersList.indexOf(nickname) + 1;
+        while (i < playersList.size()) {
+            currPlayer = playersList.get(i);
+            connectionControl.askSelect(currPlayer);
+            while (gameModel.isPlayerOnline(currPlayer) && turnPhase != TurnPhase.ENDTURN) {
+                //da finire
+            }
+            if (turnPhase == TurnPhase.ENDTURN) {
+                gameModel.EndTurn(currPlayer);
+            } else {//riesumiamo la vecchia board
+            }
+            i++;
         }
-
+        // makes the remaining players play
         // invokes all the controls to calculate the final score
         String gameWinner = gameModel.calcFinalScore();
         System.out.println("The winner of the game is " + gameWinner);
@@ -76,8 +90,7 @@ public class GameController implements PropertyChangeListener {
     /**
      * Waits for the player's action caught by ConnectionControl and calls the method to check and perform it
      */
-    private void playerTurn() {
-        /*
+    /*private void playerTurn() {
         ArrayList<Position> positions = ConnectionControl.askSelect(currPlayer);
         if (positions != null && !positions.isEmpty()) {
             selectCard(positions);
@@ -86,7 +99,7 @@ public class GameController implements PropertyChangeListener {
         Map<Integer, ItemCard> cardsToInsert = ConnectionControl.askInsert(currPlayer);
         if (cardsToInsert != null && !cardsToInsert.isEmpty()) {
             insertCard(currPlayer, cardsToInsert);
-        }*/
+        }
 
         endTurn(currPlayer);
 
@@ -97,7 +110,7 @@ public class GameController implements PropertyChangeListener {
         } else {
             currPlayer = playersList.get(0);
         }
-    }
+    } */
 
     /**
      * The method tries to insert the cards selected
@@ -109,17 +122,17 @@ public class GameController implements PropertyChangeListener {
     public void insertCard(String nickname, ArrayList<ItemCard> cards, int column) {
 
         if (!(nickname.equals(currPlayer)) || (turnPhase != TurnPhase.INSERTCARDS)) {
-            playersMap.get(nickname).SendError("NOT YOUR TURN");
+            connectionControl.SendError("NOT YOUR TURN", nickname);
             return;
         }
         if (cards.size() > 3 || cards.isEmpty()) {
-            playersMap.get(nickname).SendError("NUMBER NOT VALID");
+            connectionControl.SendError("NUMBER NOT VALID", nickname);
             return;
         }
         try {
             gameModel.InsertCard(nickname, cards, column);
         } catch (NoBookshelfSpaceException e) {
-            playersMap.get(nickname).SendError("NO BOOKSHELF SPACE");
+            connectionControl.SendError("NO BOOKSHELF SPACE", nickname);
         }
     }
 
@@ -131,54 +144,59 @@ public class GameController implements PropertyChangeListener {
      */
     public void selectCard(String nickname, ArrayList<Integer> positions) {
         if (!(nickname.equals(currPlayer)) || (turnPhase != TurnPhase.SELECTCARDS)) {
-            playersMap.get(nickname).SendError("NOT YOUR TURN");
+            connectionControl.SendError("NOT YOUR TURN", nickname);
             return;
         }
         try {
             gameModel.selectCard(positions);
         } catch (NoRightItemCardSelection e) {
-            playersMap.get(nickname).SendError("NO RIGHT BOARD SELECTION");
+            connectionControl.SendError("NO RIGHT BOARD SELECTION", nickname);
         }
 
     }
 
     public void propertyChange(PropertyChangeEvent evt) {
         if (evt.getPropertyName().matches("(.*)ERROR")) {
-            playersMap.get((String) evt.getSource()).SendError(evt.getPropertyName());
+            connectionControl.SendError(evt.getPropertyName(), (String) evt.getSource());
         } else
             switch (evt.getPropertyName()) {
-                case "BOOKSHELF_CHANGED":
-                    for (ConnectionControl cc : playersMap.values())
-                        cc.SendBookshelfChanged((String) evt.getSource(), (ItemCard[][]) evt.getNewValue());
-                case "BOARD_CHANGED":
-                    for (ConnectionControl cc : playersMap.values())
-                        cc.SendBoardChanged((ArrayList<ItemCard>) evt.getNewValue());
-                case "COM_GOAL_CREATED":
-                    for (ConnectionControl cc : playersMap.values())
-                        cc.SendCommonGoalCreated((HashMap<Integer, Integer>) evt.getNewValue());
-                case "EMPTY_CARD_BAG":
-                    for (ConnectionControl cc : playersMap.values())
-                        cc.SendEmptyCardBag();
-                case "PLAYER_POINT_UPDATE":
-                    for (ConnectionControl cc : playersMap.values())
-                        cc.SendPlayerPointUpdate((String) evt.getSource(), (int) evt.getNewValue());
-                case "COM_GOAL_DONE":
-                    for (ConnectionControl cc : playersMap.values())
-                        cc.SendCommonGoalDone((String) evt.getSource(), (HashMap<Integer, Integer>) evt.getNewValue());
-                case "PERS_GOAL_CREATED":
-                    for (ConnectionControl cc : playersMap.values())
-                        cc.SendPersGoalCreated((String) evt.getNewValue());
-                case "BOOKSHELF_COMPLETED":
-                    for (ConnectionControl cc : playersMap.values())
-                        cc.SendBookshelfCompleted((String) evt.getSource());
-                default:
+                case "BOOKSHELF_CHANGED" -> {
+                    connectionControl.SendBookshelfChanged((String) evt.getSource(), (ItemCard[][]) evt.getNewValue());
+                    turnPhase = TurnPhase.ENDTURN;
+                }
+                case "BOARD_CHANGED" -> {
+                    connectionControl.SendBoardChanged((ItemCard[][]) evt.getNewValue());
+                    if (turnPhase == TurnPhase.SELECTCARDS) {
+                        turnPhase = TurnPhase.INSERTCARDS;
+                    }
+                }
+                case "COM_GOAL_CREATED" ->
+                        connectionControl.SendCommonGoalCreated((Integer) evt.getSource(), (Integer) evt.getNewValue());
+                case "EMPTY_CARD_BAG" -> connectionControl.SendEmptyCardBag();
+                case "PLAYER_POINT_UPDATE" ->
+                        connectionControl.SendPlayerPointUpdate((String) evt.getSource(), (int) evt.getNewValue());
+                case "COM_GOAL_DONE" ->
+                        connectionControl.SendCommonGoalDone((String) evt.getSource(), (int[]) evt.getNewValue());
+                case "PERS_GOAL_CREATED" -> connectionControl.SendPersGoalCreated((String) evt.getNewValue());
+                case "BOOKSHELF_COMPLETED" -> connectionControl.SendBookshelfCompleted((String) evt.getSource());
+                default -> {
+                }
             }
     }
 
     // todo for Mila: call the methods to check for ComGoal and to see if there is a winner
-    public void endTurn(String nickname) {
+    /*public void endTurn(String nickname) {
         // used to avoid errors... to change...
         winner = true;
         gameModel.EndTurn(nickname);
+    }*/
+
+    public void addPlayer(String nickname) {
+
+        if (playersList.size() == 4) {
+            System.out.println("Too many players for this game");
+            return;
+        }
+        playersList.add(nickname);
     }
 }
