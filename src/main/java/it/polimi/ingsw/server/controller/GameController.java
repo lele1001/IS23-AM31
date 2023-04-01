@@ -4,6 +4,7 @@ import it.polimi.ingsw.server.gameExceptions.NoBookshelfSpaceException;
 import it.polimi.ingsw.server.gameExceptions.NoRightItemCardSelection;
 import it.polimi.ingsw.server.model.GameModel;
 import it.polimi.ingsw.server.model.ItemCard;
+import it.polimi.ingsw.server.model.ModelInterface;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -16,7 +17,7 @@ public class GameController implements PropertyChangeListener {
     private ArrayList<String> playersList = new ArrayList<>();
     private String currPlayer;
     private boolean winner;
-    private GameModel gameModel;
+    private ModelInterface gameModel;
     private TurnPhase turnPhase;
 
     public GameController(ConnectionControl connectionControl) {
@@ -44,8 +45,11 @@ public class GameController implements PropertyChangeListener {
      */
     public void run() {
         int i = 0;
+
         while (!winner) {
+            int tot=0;
             currPlayer = playersList.get(i);
+            System.out.println(playersList.get(i) + "'s turn");
             turnPhase = TurnPhase.SELECTCARDS;
             connectionControl.askSelect(currPlayer);
             while (gameModel.isPlayerOnline(currPlayer) && turnPhase != TurnPhase.ENDTURN) {
@@ -56,6 +60,11 @@ public class GameController implements PropertyChangeListener {
             } else {//riesumiamo la vecchia board
             }
             i++;
+            for(String player: playersList)
+                if(gameModel.isPlayerOnline(player)) tot++;
+            if(tot<2){
+                //stop the game
+            }
             //se disconnesso, chiamare sul model metodo per avere la board vecchia
         }
         runLastTurn(currPlayer);
@@ -193,10 +202,11 @@ public class GameController implements PropertyChangeListener {
 
     public void addPlayer(String nickname) {
 
-        if (playersList.size() == 4) {
+        if (playersList.size() > 4) {
             System.out.println("Too many players for this game");
             return;
         }
-        playersList.add(nickname);
+        else
+            playersList.add(nickname);
     }
 }

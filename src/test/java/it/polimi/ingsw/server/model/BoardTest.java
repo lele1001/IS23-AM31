@@ -238,10 +238,8 @@ class BoardTest {
         int numPlayer = 2;
         Board boardTest1 = new Board(numPlayer);
         Board prima = new Board(numPlayer);
-        int position;
-
         ArrayList<Integer> pos = new ArrayList<>(List.of(74, 75));
-        ArrayList<ItemCard> delete;
+        int position;
         boardTest1.fillBoard();
         for (int i = 0; i < boardTest1.board.length; i++) {
             System.arraycopy(boardTest1.board[i], 0, prima.board[i], 0, boardTest1.board[0].length);
@@ -249,6 +247,17 @@ class BoardTest {
         for (int i = 0; i < boardTest1.board.length; i++) {
             for (int j = 0; j < boardTest1.board[0].length; j++) {
                 assertEquals(prima.board[i][j], boardTest1.board[i][j]);
+            }
+        }
+        boardTest1.deleteSelection(pos);
+        for (int i = 0; i < boardTest1.board.length; i++) {
+            for (int j = 0; j < boardTest1.board[0].length; j++) {
+                position = 10 * i + j;
+                if (!pos.contains(position)) {
+                    assertEquals(prima.board[i][j], boardTest1.board[i][j]);
+                } else {
+                    assertNull(boardTest1.board[i][j]);
+                }
             }
         }
 

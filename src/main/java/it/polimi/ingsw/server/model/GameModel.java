@@ -9,7 +9,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.*;
 
-public class GameModel {
+public class GameModel implements ModelInterface {
 
     private final Map<String, Player> playerMap = new HashMap<>();
     private Board board;
@@ -20,7 +20,6 @@ public class GameModel {
 
     /**
      * Builds the game
-     *
      *
      */
     public GameModel() {
@@ -143,6 +142,11 @@ public class GameModel {
         return nome;
     }
 
+    @Override
+    public void ChangePlayerStatus(String nickname) {
+
+    }
+
     public void changePlayerStatus(String nickname) {
         playerMap.get(nickname).changePlayerStatus();
 
@@ -168,7 +172,7 @@ public class GameModel {
 
     public void EndTurn(String nickname) {
         boolean ComGoalDone;
-        boolean playerPointUpdate = false;
+        //boolean playerPointUpdate = false;
         PropertyChangeEvent evt = null;
         for (ComGoal c : comGoals) {
             ComGoalDone = playerMap.get(nickname).checkComGoal(c);
