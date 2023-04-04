@@ -43,7 +43,7 @@ public class ClientController {
         if(playersBookshelf.containsKey(nickname))
             playersBookshelf.replace(nickname,newBookshelf);
         else
-            playersBookshelf.put(nickname, new ItemCard[BOOKSHELF_HEIGHT][BOOKSHELF_LENGTH]);
+            playersBookshelf.put(nickname, newBookshelf);
         view.printBookshelf(playersBookshelf);
     }
 
