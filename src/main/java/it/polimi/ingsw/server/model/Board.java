@@ -10,6 +10,7 @@ import java.util.Collections;
 public class Board {
     private static final int DIM_BOARD = 9;
     ItemCard[][] board = new ItemCard[DIM_BOARD][DIM_BOARD];
+    private ItemCard[][] oldBoard = new ItemCard[DIM_BOARD][DIM_BOARD];
     ArrayList<ItemCard> cardBag = new ArrayList<>();
     int numPlayers;
     int[][] numMinPlayer = new int[][]{
@@ -55,6 +56,11 @@ public class Board {
                 }
             }
         }
+
+        for(int i=0; i<DIM_BOARD; i++) {
+            System.arraycopy(board[i], 0, oldBoard[i], 0, DIM_BOARD);
+        }
+
         if (cardBag.isEmpty()) System.out.println("Finished Itemcard, cannot be reached");
     }
 
@@ -204,10 +210,23 @@ public class Board {
         if (!checkSelection(position)) {
             throw new NoRightItemCardSelection();
         }
+
+        // Salvo una copia della vecchia board
+        for(int i=0; i<DIM_BOARD; i++) {
+            System.arraycopy(board[i], 0, oldBoard[i], 0, DIM_BOARD);
+        }
+
+        // Rimuovo dalla board le posizioni indicate
         for (Integer pos : position) {
             board[Position.getRow(pos)][Position.getColumn(pos)] = null;
         }
     }
+    public void resumeBoard() {
+        for(int i=0; i<DIM_BOARD; i++) {
+            System.arraycopy(oldBoard[i], 0, board[i], 0, DIM_BOARD);
+        }
+    }
+
 
     //Todo for Mila, already created ItemCard
     public void createcardBag() {

@@ -24,4 +24,6 @@ public interface ModelInterface {
     void EndTurn(String nickname);
 
     void CreateGame(ArrayList<String> playersList);
+
+    void resumeBoard();
 }

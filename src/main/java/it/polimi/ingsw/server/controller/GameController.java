@@ -47,7 +47,6 @@ public class GameController implements PropertyChangeListener {
         int i = 0;
 
         while (!winner) {
-            int tot=0;
             currPlayer = playersList.get(i);
             System.out.println(playersList.get(i) + "'s turn");
             turnPhase = TurnPhase.SELECTCARDS;
@@ -57,15 +56,15 @@ public class GameController implements PropertyChangeListener {
             }
             if (turnPhase == TurnPhase.ENDTURN) {
                 gameModel.EndTurn(currPlayer);
-            } else {//riesumiamo la vecchia board
+            } else {
+                connectionControl.sendErrorToEveryone("Player "+currPlayer+" disconnected from the game.");
+                gameModel.resumeBoard();
             }
             i++;
-            for(String player: playersList)
-                if(gameModel.isPlayerOnline(player)) tot++;
-            if(tot<2){
-                //stop the game
+
+            if(playersList.stream().map(x -> gameModel.isPlayerOnline(x)).filter(x -> x).count() < 2) {
+                //stop the game;
             }
-            //se disconnesso, chiamare sul model metodo per avere la board vecchia
         }
         runLastTurn(currPlayer);
 
@@ -86,21 +85,30 @@ public class GameController implements PropertyChangeListener {
             }
             if (turnPhase == TurnPhase.ENDTURN) {
                 gameModel.EndTurn(currPlayer);
-            } else {//riesumiamo la vecchia board
+            } else {
+                connectionControl.sendErrorToEveryone("Player "+currPlayer+" disconnected from the game.");
+                gameModel.resumeBoard();
             }
             i++;
+
+            if(playersList.stream().map(x -> gameModel.isPlayerOnline(x)).filter(x -> x).count() < 2) {
+                //stop the game;
+            }
         }
         // makes the remaining players play
         // invokes all the controls to calculate the final score
         String gameWinner = gameModel.calcFinalScore();
         System.out.println("The winner of the game is " + gameWinner);
+        // da inviare a tutti
     }
 
     /**
      * Waits for the player's action caught by ConnectionControl and calls the method to check and perform it
      */
-    /*private void playerTurn() {
-        ArrayList<Position> positions = ConnectionControl.askSelect(currPlayer);
+    private void playerTurn() {
+
+
+/*        ArrayList<Position> positions = ConnectionControl.askSelect(currPlayer);
         if (positions != null && !positions.isEmpty()) {
             selectCard(positions);
         }
@@ -118,8 +126,8 @@ public class GameController implements PropertyChangeListener {
             currPlayer = playersList.get(currIndex + 1);
         } else {
             currPlayer = playersList.get(0);
-        }
-    } */
+        }*/
+    }
 
     /**
      * The method tries to insert the cards selected
@@ -187,7 +195,11 @@ public class GameController implements PropertyChangeListener {
                 case "COM_GOAL_DONE" ->
                         connectionControl.SendCommonGoalDone((String) evt.getSource(), (int[]) evt.getNewValue());
                 case "PERS_GOAL_CREATED" -> connectionControl.SendPersGoalCreated((String) evt.getNewValue());
-                case "BOOKSHELF_COMPLETED" -> connectionControl.SendBookshelfCompleted((String) evt.getSource());
+                case "BOOKSHELF_COMPLETED" -> {
+                    winner = true;
+                    connectionControl.SendBookshelfCompleted((String) evt.getSource());
+                }
+
                 default -> {
                 }
             }

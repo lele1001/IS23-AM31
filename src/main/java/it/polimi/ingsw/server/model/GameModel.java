@@ -201,6 +201,12 @@ public class GameModel implements ModelInterface {
         }
 
     }
+
+    public void resumeBoard() {
+        board.resumeBoard();
+        PropertyChangeEvent evt = new PropertyChangeEvent("null", "BOARD_CHANGED", null, board.getAsArrayList());
+        this.listener.propertyChange(evt);
+    }
 }
 
 
