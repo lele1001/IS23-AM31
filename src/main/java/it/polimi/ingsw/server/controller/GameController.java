@@ -57,12 +57,12 @@ public class GameController implements PropertyChangeListener {
             if (turnPhase == TurnPhase.ENDTURN) {
                 gameModel.EndTurn(currPlayer);
             } else {
-                connectionControl.sendErrorToEveryone("Player "+currPlayer+" disconnected from the game.");
+                connectionControl.sendErrorToEveryone("Player " + currPlayer + " disconnected from the game.");
                 gameModel.resumeBoard();
             }
             i++;
 
-            if(playersList.stream().map(x -> gameModel.isPlayerOnline(x)).filter(x -> x).count() < 2) {
+            if (playersList.stream().map(x -> gameModel.isPlayerOnline(x)).filter(x -> x).count() < 2) {
                 //stop the game;
             }
         }
@@ -86,12 +86,12 @@ public class GameController implements PropertyChangeListener {
             if (turnPhase == TurnPhase.ENDTURN) {
                 gameModel.EndTurn(currPlayer);
             } else {
-                connectionControl.sendErrorToEveryone("Player "+currPlayer+" disconnected from the game.");
+                connectionControl.sendErrorToEveryone("Player " + currPlayer + " disconnected from the game.");
                 gameModel.resumeBoard();
             }
             i++;
 
-            if(playersList.stream().map(x -> gameModel.isPlayerOnline(x)).filter(x -> x).count() < 2) {
+            if (playersList.stream().map(x -> gameModel.isPlayerOnline(x)).filter(x -> x).count() < 2) {
                 //stop the game;
             }
         }
@@ -217,8 +217,7 @@ public class GameController implements PropertyChangeListener {
         if (playersList.size() > 4) {
             System.out.println("Too many players for this game");
             return;
-        }
-        else
+        } else
             playersList.add(nickname);
     }
 }

@@ -16,7 +16,7 @@ public class RMIInterface implements RMI {
         isFirst = true;
     }
 
-    public void selectCard (String nickname, ArrayList<Integer> positions) {
+    public void selectCard(String nickname, ArrayList<Integer> positions) {
         connectionControl.selectCard(nickname, positions);
     }
 
@@ -32,19 +32,18 @@ public class RMIInterface implements RMI {
             }
             ClientHandlerRmi clientHandlerRmi = new ClientHandlerRmi(); //deve passargli la classe dell'interfaccia rmi client
             this.connectionControl.addClient(clientHandlerRmi, nickname);
-            if ((isFirst)&&(server.getAvailablePlayers() == 1)) {
+            if ((isFirst) && (server.getAvailablePlayers() == 1)) {
                 //chiedo num giocatori e lo setto
                 server.setAvailablePlayers(2);
                 isFirst = false;
-            }
-            else
+            } else
                 server.decrementAvailablePlayers();
         }
         return true;
 
     }
 
-    public boolean loginExistingGame (String nickname) {
+    public boolean loginExistingGame(String nickname) {
         // chiede al server se c'è una partita con quel nickname
         // se non c'è
         return false;

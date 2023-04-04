@@ -64,7 +64,7 @@ public class ConnectionControl {
 
     public void SendCommonGoalDone(String source, int[] details) {
         for (ClientHandler clientHandler : clientHandlerMap.values()) {
-            clientHandler.sendError(source+" has reached ComGoal n."+details[0]+".");
+            clientHandler.sendError(source + " has reached ComGoal n." + details[0] + ".");
         }
     }
 
@@ -73,7 +73,7 @@ public class ConnectionControl {
 
     public void SendBookshelfCompleted(String nickname) {
         for (ClientHandler clientHandler : clientHandlerMap.values()) {
-            clientHandler.sendError(nickname+" has completed his Bookshelf. Let's go on for the last turn of the game.");
+            clientHandler.sendError(nickname + " has completed his Bookshelf. Let's go on for the last turn of the game.");
         }
     }
 }

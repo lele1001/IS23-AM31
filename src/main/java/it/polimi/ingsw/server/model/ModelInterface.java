@@ -21,6 +21,7 @@ public interface ModelInterface {
     String calcFinalScore();
 
     void ChangePlayerStatus(String nickname);
+
     void EndTurn(String nickname);
 
     void CreateGame(ArrayList<String> playersList);

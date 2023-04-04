@@ -58,11 +58,10 @@ public class ClientHandlerSocket extends ClientHandler implements Runnable {
                 sendError("Game not available.");
                 return false;
             }
-            if ((isFirst)&&(server.getAvailablePlayers() == 1)) {
+            if ((isFirst) && (server.getAvailablePlayers() == 1)) {
                 // è il primo: chiedo il numero di giocatori
 
-            }
-            else
+            } else
                 server.decrementAvailablePlayers();
         }
         return true;

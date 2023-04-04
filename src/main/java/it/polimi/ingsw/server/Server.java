@@ -41,7 +41,7 @@ public class Server {
     }
 
     public void start() {
-        if(startRMI()!=0) {
+        if (startRMI() != 0) {
             System.out.println("Error creating RMI interface.");
             return;
         }
@@ -94,7 +94,7 @@ public class Server {
                 Socket socket = serverSocket.accept();
                 ClientHandlerSocket clientHandlerSocket = new ClientHandlerSocket(socket, this, this.connectionControl);
                 executor.submit(clientHandlerSocket);
-            } catch(IOException e) {
+            } catch (IOException e) {
                 break;
             }
         }
@@ -107,9 +107,9 @@ public class Server {
         return availablePlayers;
     }
 
-    public void decrementAvailablePlayers (){
+    public void decrementAvailablePlayers() {
         this.availablePlayers--;
-        if(availablePlayers == 0) {
+        if (availablePlayers == 0) {
             // inizia il gioco.
         }
     }

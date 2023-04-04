@@ -20,13 +20,12 @@ public class GameModel implements ModelInterface {
 
     /**
      * Builds the game
-     *
      */
     public GameModel() {
 
     }
 
-    public void CreateGame(ArrayList<String> players){
+    public void CreateGame(ArrayList<String> players) {
         PropertyChangeEvent evt;
         board = new Board(players.size());
         System.out.println("Board Created");
@@ -48,7 +47,7 @@ public class GameModel implements ModelInterface {
         } while (firstGoal == secondGoal);
 
         comGoals.add(selectComGoal(firstGoal, players.size()));
-        System.out.println("ComGoals created: " + firstGoal +"," + secondGoal);
+        System.out.println("ComGoals created: " + firstGoal + "," + secondGoal);
         evt = new PropertyChangeEvent(firstGoal, "COM_GOAL_CREATED", null, comGoals.get(0).getCurrScore());
         this.listener.propertyChange(evt);
         comGoals.add(selectComGoal(secondGoal, players.size()));

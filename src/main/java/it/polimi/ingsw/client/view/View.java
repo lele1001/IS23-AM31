@@ -9,7 +9,7 @@ import java.util.Map;
 public interface View {
     void printBoard(ItemCard[][] board);
 
-    void printBookshelf(Map<String, ItemCard[][]> bookshelfs);
+    void printBookshelves(Map<String, ItemCard[][]> bookshelves);
 
     void printError(String error);
 
@@ -17,10 +17,9 @@ public interface View {
 
     void printPoints(int myPoint);
 
+    void printPersGoal(Map<Integer, HouseItem> myPersGoal);
 
     void print(String yourTurn);
 
     void printMyBookshelf(ItemCard[][] book);
-
-    void printPersGoal(Map<Integer, HouseItem> myPersGoal);
 }

@@ -57,7 +57,7 @@ public class Board {
             }
         }
 
-        for(int i=0; i<DIM_BOARD; i++) {
+        for (int i = 0; i < DIM_BOARD; i++) {
             System.arraycopy(board[i], 0, oldBoard[i], 0, DIM_BOARD);
         }
 
@@ -212,7 +212,7 @@ public class Board {
         }
 
         // Salvo una copia della vecchia board
-        for(int i=0; i<DIM_BOARD; i++) {
+        for (int i = 0; i < DIM_BOARD; i++) {
             System.arraycopy(board[i], 0, oldBoard[i], 0, DIM_BOARD);
         }
 
@@ -220,9 +220,10 @@ public class Board {
         for (Integer pos : position) {
             board[Position.getRow(pos)][Position.getColumn(pos)] = null;
         }
-    }// mi serve ritornare valori altrimenti non controllo che siano corretti una volta rimandati
+    }
+
     public void resumeBoard() {
-        for(int i=0; i<DIM_BOARD; i++) {
+        for (int i = 0; i < DIM_BOARD; i++) {
             System.arraycopy(oldBoard[i], 0, board[i], 0, DIM_BOARD);
         }
     }
@@ -246,8 +247,8 @@ public class Board {
 
     public ItemCard[][] getAsArrayList() {
         ItemCard[][] toBeReturned = new ItemCard[DIM_BOARD][DIM_BOARD];
-        for(int i = 0; i<DIM_BOARD; i++){
-         System.arraycopy(board[i], 0, toBeReturned[i], 0, DIM_BOARD);
+        for (int i = 0; i < DIM_BOARD; i++) {
+            System.arraycopy(board[i], 0, toBeReturned[i], 0, DIM_BOARD);
         }
         return toBeReturned;
     }

@@ -47,11 +47,11 @@ public class ClientController {
     }
 
     public void onBookshelfChanged(String nickname, ItemCard[][] newBookshelf) {
-        if(playersBookshelf.containsKey(nickname))
-            playersBookshelf.replace(nickname,newBookshelf);
+        if (playersBookshelf.containsKey(nickname))
+            playersBookshelf.replace(nickname, newBookshelf);
         else
             playersBookshelf.put(nickname, newBookshelf);
-        view.printBookshelf(playersBookshelf);
+        view.printBookshelves(playersBookshelf);
     }
 
     public void onError(String error) {
@@ -60,7 +60,7 @@ public class ClientController {
     }
 
     public void onCommonGoalCreated(Integer comGoalID, Integer score) {
-        playerComGoal.put(comGoalID,score);
+        playerComGoal.put(comGoalID, score);
         view.printCommonGoal(playerComGoal);
     }
 
@@ -76,7 +76,7 @@ public class ClientController {
     }
 
     public void onCommonGoalDone(String nickname, int[] newValue) {
-        playerComGoal.replace(newValue[0],newValue[1]);
+        playerComGoal.replace(newValue[0], newValue[1]);
 
     }
 
