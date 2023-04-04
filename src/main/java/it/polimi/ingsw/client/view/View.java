@@ -1,5 +1,6 @@
 package it.polimi.ingsw.client.view;
 
+import it.polimi.ingsw.server.model.HouseItem;
 import it.polimi.ingsw.server.model.ItemCard;
 
 import java.util.Map;
@@ -16,9 +17,10 @@ public interface View {
 
     void printPoints(int myPoint);
 
-    void printPersGoal(String myPersGoal);
 
     void print(String yourTurn);
 
     void printMyBookshelf(ItemCard[][] book);
+
+    void printPersGoal(Map<Integer, HouseItem> myPersGoal);
 }

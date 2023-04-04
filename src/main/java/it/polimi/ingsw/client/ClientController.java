@@ -1,8 +1,15 @@
 package it.polimi.ingsw.client;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import it.polimi.ingsw.client.view.View;
+import it.polimi.ingsw.server.model.HouseItem;
 import it.polimi.ingsw.server.model.ItemCard;
 
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.Reader;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -20,7 +27,7 @@ public class ClientController {
     List<ItemCard> selectedTiles = new ArrayList<>();
     int myPoint = 0;
     View view;
-    String myPersGoal;
+    private final Map<Integer, HouseItem> myPersGoal = new HashMap<>();
 
     public void onSelect(String currPlayer) {
         // to fix
@@ -74,7 +81,26 @@ public class ClientController {
     }
 
     public void onPersGoalCreated(String newValue) {
-        this.myPersGoal = newValue;
+                Reader json;
+        {
+            try {
+                json = new FileReader("src/main/java/it/polimi/ingsw/server/model/PersGoalConfiguration.json");
+            } catch (FileNotFoundException e) {
+                System.out.println("ERROR: No such PersGoalConfiguration file.");
+                return;
+            }
+        }
+        Gson gson = new Gson();
+
+        Type cardsType = new TypeToken<Map<String, ArrayList<Integer>>>() {
+        }.getType();
+        Map<String, ArrayList<Integer>> cards = gson.fromJson(json, cardsType);
+        List<Integer> index = cards.get(newValue);
+
+        // Conventional order in which we read items from JsonConfiguration file.
+        List<HouseItem> items = new ArrayList<>(List.of(HouseItem.Frame, HouseItem.Cat, HouseItem.Books, HouseItem.Games, HouseItem.Trophy, HouseItem.Plants));
+        for (int i = 0; i < items.size(); i++)
+            myPersGoal.put(index.get(i), items.get(i));
         view.printPersGoal(myPersGoal);
     }
 

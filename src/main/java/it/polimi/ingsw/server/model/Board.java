@@ -220,7 +220,7 @@ public class Board {
         for (Integer pos : position) {
             board[Position.getRow(pos)][Position.getColumn(pos)] = null;
         }
-    }
+    }// mi serve ritornare valori altrimenti non controllo che siano corretti una volta rimandati
     public void resumeBoard() {
         for(int i=0; i<DIM_BOARD; i++) {
             System.arraycopy(oldBoard[i], 0, board[i], 0, DIM_BOARD);
