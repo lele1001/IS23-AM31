@@ -72,40 +72,15 @@ public class Cli implements View {
 
     @Override
     public void printBoard(ItemCard[][] board) {
-        String colorCode = null;
-        char itemChar;
-
         System.out.println("    0   1   2   3   4   5   6   7   8");
 
         for (int i = 0; i < DIM_BOARD; i++) {
             for (int j = 0; j < DIM_BOARD; j++) {
                 if (j == 0) {
-                    System.out.print(i + " | ");
+                    System.out.print((char) 27 + "[39m" + i + " | ");
                 }
 
-                if (board[i][j] != null) {
-                    itemChar = board[i][j].getMyItem().toString().charAt(0);
-
-                    if (itemChar == 'C') {
-                        colorCode = "[32m";
-                    } else if (itemChar == 'F') {
-                        colorCode = "[34m";
-                    } else if (itemChar == 'G') {
-                        colorCode = "[33m";
-                    } else if (itemChar == 'B') {
-                        colorCode = "[37m";
-                    } else if (itemChar == 'P') {
-                        colorCode = "[35m";
-                    } else if (itemChar == 'T') {
-                        colorCode = "[36m";
-                    } else {
-                        colorCode = "[39m";
-                    }
-
-                    System.out.print((char) 27 + colorCode + itemChar);
-                } else {
-                    System.out.print(" ");
-                }
+                printLine(board, i, j);
 
                 if (j < DIM_BOARD - 1) {
                     System.out.print((char) 27 + "[39m" + " | ");
@@ -117,7 +92,57 @@ public class Cli implements View {
 
     @Override
     public void printBookshelves(Map<String, ItemCard[][]> bookshelves) {
+        if (!bookshelves.isEmpty()) {
+            for (String s : bookshelves.keySet()) {
+                printMyBookshelf(bookshelves.get(s));
+                System.out.println(s);
+            }
+        }
+    }
 
+    @Override
+    public void printMyBookshelf(ItemCard[][] bookshelf) {
+        System.out.println("    0   1   2   3   4   5");
+
+        for (int i = 0; i < BOOKSHELF_HEIGHT; i++) {
+            for (int j = 0; j < BOOKSHELF_LENGTH; j++) {
+                printLine(bookshelf, i, j);
+
+                if (j < BOOKSHELF_LENGTH - 1) {
+                    System.out.print((char) 27 + "[39m" + " | ");
+                }
+            }
+
+            System.out.println();
+        }
+    }
+
+    private void printLine(ItemCard[][] matrix, int i, int j) {
+        if (matrix[i][j] != null) {
+            char itemChar = matrix[i][j].getMyItem().toString().charAt(0);
+
+            System.out.print((char) 27 + chooseColorCode(itemChar) + itemChar);
+        } else {
+            System.out.print(" ");
+        }
+    }
+
+    private String chooseColorCode(char itemChar) {
+        if (itemChar == 'C') {
+            return "[32m";
+        } else if (itemChar == 'F') {
+            return "[34m";
+        } else if (itemChar == 'G') {
+            return "[33m";
+        } else if (itemChar == 'B') {
+            return "[37m";
+        } else if (itemChar == 'P') {
+            return "[35m";
+        } else if (itemChar == 'T') {
+            return "[36m";
+        } else {
+            return "[39m";
+        }
     }
 
     @Override
@@ -127,7 +152,11 @@ public class Cli implements View {
 
     @Override
     public void printCommonGoal(Map<Integer, Integer> playerComGoal) {
-
+        if (!playerComGoal.isEmpty()) {
+            for (Integer i : playerComGoal.keySet()) {
+                playerComGoal.get(i);
+            }
+        }
     }
 
     @Override
@@ -144,10 +173,4 @@ public class Cli implements View {
     public void print(String yourTurn) {
 
     }
-
-    @Override
-    public void printMyBookshelf(ItemCard[][] book) {
-
-    }
 }
-
