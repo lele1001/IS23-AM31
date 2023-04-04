@@ -2,6 +2,7 @@ package it.polimi.ingsw.server.model;
 
 import it.polimi.ingsw.server.gameExceptions.NoBookshelfSpaceException;
 import it.polimi.ingsw.server.gameExceptions.NoRightItemCardSelection;
+import it.polimi.ingsw.server.gameExceptions.NotSameSelectedException;
 
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
@@ -9,7 +10,7 @@ import java.util.ArrayList;
 public interface ModelInterface {
 
 
-    void InsertCard(String nickname, ArrayList<ItemCard> cards, int column) throws NoBookshelfSpaceException;
+    void InsertCard(String nickname, ArrayList<ItemCard> cards, int column) throws NoBookshelfSpaceException, NotSameSelectedException;
 
     void selectCard(ArrayList<Integer> positions) throws NoRightItemCardSelection; //chiedo conferma che sia la stessa eccezione
 
@@ -20,7 +21,7 @@ public interface ModelInterface {
 
     String calcFinalScore();
 
-    void ChangePlayerStatus(String nickname);
+    void changePlayerStatus(String nickname);
 
     void EndTurn(String nickname);
 

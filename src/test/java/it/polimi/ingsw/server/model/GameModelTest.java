@@ -1,10 +1,50 @@
 package it.polimi.ingsw.server.model;
 
+import it.polimi.ingsw.server.controller.ConnectionControl;
+import it.polimi.ingsw.server.controller.GameController;
+import it.polimi.ingsw.server.gameExceptions.NoBookshelfSpaceException;
+import it.polimi.ingsw.server.gameExceptions.NoRightItemCardSelection;
+import it.polimi.ingsw.server.gameExceptions.NotSameSelectedException;
 import org.junit.jupiter.api.Test;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 class GameModelTest {
 
     @Test
     void insertCard() {
+        GameModel gameModel = new GameModel();
+        ConnectionControl connectionControl = new ConnectionControl();
+        GameController gameController = new GameController(connectionControl);
+
+        gameModel.setListener(gameController);
+        gameModel.CreateGame(new ArrayList<>(List.of("Luca", "Filippo", "Giovanni", "Topolino")));
+        System.out.println(Arrays.deepToString(gameModel.board.getAsArrayList()));
+
+        try {
+            gameModel.selectCard(new ArrayList<>(List.of(32, 33)));
+        } catch (NoRightItemCardSelection e) {
+            System.out.println("Eccezione");;
+        }
+        try {
+            gameModel.selectCard(new ArrayList<>(List.of(3, 4)));
+        } catch (NoRightItemCardSelection e) {
+            System.out.println("Eccezione");;
+        }
+
+        try {
+            gameModel.InsertCard("Luca", new ArrayList<>(List.of(new ItemCard(HouseItem.Games, ItemNumber.Third), new ItemCard(HouseItem.Books, ItemNumber.Second))), 2);
+        } catch (NoBookshelfSpaceException e) {
+            throw new RuntimeException(e);
+        } catch (NotSameSelectedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
+    @Test
+    void selectCard() {
     }
 }

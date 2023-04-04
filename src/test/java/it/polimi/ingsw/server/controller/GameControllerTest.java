@@ -2,6 +2,9 @@ package it.polimi.ingsw.server.controller;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+import java.util.List;
+
 class GameControllerTest {
 
     @Test
@@ -10,35 +13,47 @@ class GameControllerTest {
         System.out.println("Case: 2 players");
 
         GameController gameController2 = new GameController(new ConnectionControl());
-        gameController2.addPlayer("Giacomo");
-        gameController2.addPlayer("Nicolas");
-        gameController2.createGame();
+        gameController2.createGame(new ArrayList<>(List.of("Giacomo", "Nicolas")));
 
         System.out.println("Case: 3 players");
 
         GameController gameController3 = new GameController(new ConnectionControl());
-        gameController3.addPlayer("Andrea");
-        gameController3.addPlayer("Luca");
-        gameController3.addPlayer("Alice");
-        gameController3.createGame();
+        gameController3.createGame(new ArrayList<>(List.of("Andrea", "Luca", "Alice")));
 
 
         System.out.println("Case: 4 players");
 
         GameController gameController4 = new GameController(new ConnectionControl());
-        gameController4.addPlayer("Topolino");
-        gameController4.addPlayer("Eleonora");
-        gameController4.addPlayer("Luigi");
-        gameController4.addPlayer("Niccolò");
-        gameController4.createGame();
+        gameController4.createGame(new ArrayList<>(List.of("Topolino", "Eleonora", "Luigi", "Niccolò")));
 
         System.out.println("Case: 5 players");
 
         GameController gameController5 = new GameController(new ConnectionControl());
-        gameController5.addPlayer("Riccardo");
-        gameController5.addPlayer("Eleonora");
-        gameController5.addPlayer("Alice");
-        gameController5.addPlayer("Topolino");
-        gameController5.addPlayer("Andrea");
+        gameController5.createGame(new ArrayList<>(List.of("Riccardo", "Eleonora", "Alice", "Topolino", "Andrea")));
+    }
+
+    @Test
+    void run() {
+        GameController gameController4 = new GameController(new ConnectionControl());
+        gameController4.createGame(new ArrayList<>(List.of("Topolino", "Eleonora", "Luigi", "Niccolò")));
+        new Thread(() -> {
+            gameController4.run();
+        }
+        ).start();
+        gameController4.selectCard("Topolino", new ArrayList<>(List.of(3,4)));
+        gameController4.selectCard("Topolino", new ArrayList<>(List.of(3,4)));
+        gameController4.selectCard("Topolino", new ArrayList<>(List.of(3,4)));
+        gameController4.selectCard("Topolino", new ArrayList<>(List.of(3,4)));
+        gameController4.selectCard("Topolino", new ArrayList<>(List.of(3,4)));
+        gameController4.selectCard("Topolino", new ArrayList<>(List.of(3,4)));
+        gameController4.selectCard("Topolino", new ArrayList<>(List.of(3,4)));
+        gameController4.selectCard("Topolino", new ArrayList<>(List.of(3,4)));
+        gameController4.selectCard("Topolino", new ArrayList<>(List.of(3,4)));
+        gameController4.selectCard("Topolino", new ArrayList<>(List.of(3,4)));
+
+
+
+
+
     }
 }

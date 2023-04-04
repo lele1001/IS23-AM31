@@ -3,6 +3,7 @@ package it.polimi.ingsw.server.model;
 import it.polimi.ingsw.server.gameExceptions.EmptyCardBagException;
 import it.polimi.ingsw.server.gameExceptions.NoBookshelfSpaceException;
 import it.polimi.ingsw.server.gameExceptions.NoRightItemCardSelection;
+import it.polimi.ingsw.server.gameExceptions.NotSameSelectedException;
 import it.polimi.ingsw.server.model.comGoals.*;
 
 import java.beans.PropertyChangeEvent;
@@ -12,11 +13,12 @@ import java.util.*;
 public class GameModel implements ModelInterface {
 
     private final Map<String, Player> playerMap = new HashMap<>();
-    private Board board;
+    public Board board;
 
     PropertyChangeListener listener;
 
     private final ArrayList<ComGoal> comGoals = new ArrayList<>();
+    private ArrayList<ItemCard> selected = new ArrayList<>();
 
     /**
      * Builds the game
@@ -74,7 +76,17 @@ public class GameModel implements ModelInterface {
      * @param column   where cards have to be inserted
      *                 catches NoBookshelfSpaceException if there is no space
      */
-    public void InsertCard(String nickname, ArrayList<ItemCard> cards, int column) throws NoBookshelfSpaceException {
+    public void InsertCard(String nickname, ArrayList<ItemCard> cards, int column) throws NoBookshelfSpaceException, NotSameSelectedException {
+        // controllo se vuole inserire quelle che aveva selezionato
+        for (ItemCard itemCard : cards) {
+            if(selected.stream().map(x -> x.equals(itemCard)).count() != cards.stream().map(x -> x.equals(itemCard)).count())
+                throw new NotSameSelectedException();
+        }
+        for (ItemCard itemCard : selected) {
+            if(selected.stream().map(x -> x.equals(itemCard)).count() != cards.stream().map(x -> x.equals(itemCard)).count())
+                throw new NotSameSelectedException();
+        }
+
         PropertyChangeEvent evt;
         boolean a;
         a = playerMap.get(nickname).insertCard(cards, column);
@@ -94,12 +106,9 @@ public class GameModel implements ModelInterface {
     public void selectCard(ArrayList<Integer> positions) throws NoRightItemCardSelection {  //anche questa eccezione verrà gestita nel controller
 
         PropertyChangeEvent evt;
-        board.deleteSelection(positions);
+        selected = board.deleteSelection(positions);
         evt = new PropertyChangeEvent("null", "BOARD_CHANGED", null, board.getAsArrayList());
         this.listener.propertyChange(evt);
-
-/*        PropertyChangeEvent evt = new PropertyChangeEvent(, "BOARD_CHANGED", , board.getAsArrayList());
-        this.listener.propertyChange(evt);*/
     }
 
     /**
@@ -131,20 +140,20 @@ public class GameModel implements ModelInterface {
         int max = 0;
         String nome = null;
 
-        for (String s : playerMap.keySet()) {//ciclo per ogni giocatore {
-            temp = playerMap.get(s).calculateFinScore(); //da inviare a ogni singolo player
+        for (String s : playerMap.keySet()) {
+            temp = playerMap.get(s).calculateFinScore();
+            PropertyChangeEvent evt = new PropertyChangeEvent(s, "FINAL_SCORE", null, temp);
+            listener.propertyChange(evt);
             if (temp > max) {
                 max = temp;
                 nome = s;
             }
+
         }
         return nome;
     }
 
-    @Override
-    public void ChangePlayerStatus(String nickname) {
 
-    }
 
     public void changePlayerStatus(String nickname) {
         playerMap.get(nickname).changePlayerStatus();

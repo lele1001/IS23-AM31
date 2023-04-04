@@ -205,7 +205,7 @@ public class Board {
      * @throws NoRightItemCardSelection if the selected ItemCards don't pas the check selection
      */
 
-    public void deleteSelection(ArrayList<Integer> position) throws NoRightItemCardSelection {
+    public ArrayList<ItemCard> deleteSelection(ArrayList<Integer> position) throws NoRightItemCardSelection {
         Collections.sort(position);
         if (!checkSelection(position)) {
             throw new NoRightItemCardSelection();
@@ -216,10 +216,13 @@ public class Board {
             System.arraycopy(board[i], 0, oldBoard[i], 0, DIM_BOARD);
         }
 
+        ArrayList<ItemCard> toBeReturned = new ArrayList<>();
         // Rimuovo dalla board le posizioni indicate
         for (Integer pos : position) {
+            toBeReturned.add(board[Position.getRow(pos)][Position.getColumn(pos)]);
             board[Position.getRow(pos)][Position.getColumn(pos)] = null;
         }
+        return toBeReturned;
     }
 
     public void resumeBoard() {
@@ -227,6 +230,8 @@ public class Board {
             System.arraycopy(oldBoard[i], 0, board[i], 0, DIM_BOARD);
         }
     }
+
+
 
 
     //Todo for Mila, already created ItemCard

@@ -1,6 +1,7 @@
 package it.polimi.ingsw.server;
 
 import it.polimi.ingsw.server.controller.ConnectionControl;
+import it.polimi.ingsw.server.model.ItemCard;
 
 import java.io.IOException;
 import java.net.Socket;
@@ -52,7 +53,7 @@ public class ClientHandlerSocket extends ClientHandler implements Runnable {
     }
 
     private boolean initialize() {
-        synchronized (server) {
+        synchronized (server) {  //mila: il primo player blocca il serve, quindi non libererà serve finché non imposta il numero di giocatori, solo allora potranno uscire gli altri
             if (server.getAvailablePlayers() == 0) {
                 //non disponibile
                 sendError("Game not available.");
@@ -91,6 +92,36 @@ public class ClientHandlerSocket extends ClientHandler implements Runnable {
 
     @Override
     public void sendError(String error) {
+
+    }
+
+    @Override
+    public void SendBoardChanged(ItemCard[][] newBoard) {
+
+    }
+
+    @Override
+    public void SendCommonGoalCreated(Integer comGoalID, Integer score) {
+
+    }
+
+    @Override
+    public void SendPersGoalCreated(String nickname, String persGoal) {
+
+    }
+
+    @Override
+    public void SendBookshelfChanged(String nickname, ItemCard[][] newBookshelf) {
+
+    }
+
+    @Override
+    public void SendCommonGoalDone(String source, int[] details) {
+
+    }
+
+    @Override
+    public void SendDetailsEndGame(String winner, int score) {
 
     }
 }
