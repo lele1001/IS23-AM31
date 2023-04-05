@@ -4,7 +4,10 @@ import it.polimi.ingsw.server.model.Bookshelf;
 import it.polimi.ingsw.server.model.HouseItem;
 
 /**
- * Used for cards that looks for groups of cards (common goal number 3 and 4)
+ * CG3: Six groups each containing at least 2 tiles of the same type (not necessarily in the depicted shape).
+ * The tiles of one group can be different from those of another group.
+ * CG4: Four groups each containing at least 4 tiles of the same type (not necessarily in the depicted shape).
+ * The tiles of one group can be different from those of another group.
  */
 public class CG3_4 extends ComGoal {
     int multiplier;

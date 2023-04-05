@@ -5,7 +5,6 @@ import it.polimi.ingsw.server.model.ItemCard;
 
 import java.util.Map;
 
-
 public interface View {
     void printBoard(ItemCard[][] board);
 

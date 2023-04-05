@@ -6,7 +6,10 @@ import it.polimi.ingsw.server.model.HouseItem;
 import java.util.ArrayList;
 
 /**
- * Used for cards that looks for differences in columns (common goals number 2 and 5)
+ * CG2: Two columns each formed by 6 different types of tiles.
+ * One column can show the same or a different combination of the other column.
+ * CG5: Three columns each formed by 6 tiles of maximum three different types.
+ * One column can show the same or a different combination of another column.
  */
 public class CG2_5 extends ComGoal {
     int numDiff;

@@ -1,13 +1,13 @@
 package it.polimi.ingsw.server.model.comGoals;
 
-import it.polimi.ingsw.server.model.HouseItem;
 import it.polimi.ingsw.server.model.Bookshelf;
+import it.polimi.ingsw.server.model.HouseItem;
 
 import java.util.ArrayList;
 
 /**
- * Find two separate groups of 4 tiles of the same item and creates a 2x2 square.
- * The tiles of the two groups should represent the same item.
+ * Two separate groups each containing four tiles of the same type in a 2x2 square.
+ * The tiles of one square can be different from those of the other square.
  */
 public class CG1 extends ComGoal {
     public CG1(int playerNum, int CGID) {
@@ -67,10 +67,7 @@ public class CG1 extends ComGoal {
             }
         }
 
-
         groupsFound = items.size();
-
-        System.out.println("I found " + groupsFound + " groups");
 
         if (groupsFound >= 2) {
             //Player.score += this.score.get(0);

@@ -2,8 +2,9 @@ package it.polimi.ingsw.client;
 
 import it.polimi.ingsw.client.view.Cli;
 
+
 public class ClientMain {
-    private static ClientController clientController = new ClientController();
+    private static final ClientController clientController = new ClientController();
 
 
     public static void main(String[] args) {

@@ -4,7 +4,7 @@ import it.polimi.ingsw.server.model.Bookshelf;
 import it.polimi.ingsw.server.model.HouseItem;
 
 /**
- * Finds five tiles of the same type forming an X
+ * Five tiles of the same type forming an X
  */
 public class CG10 extends ComGoal {
     public CG10(int playerNum, int CGID) {

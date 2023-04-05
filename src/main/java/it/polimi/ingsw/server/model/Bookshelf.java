@@ -1,6 +1,6 @@
 package it.polimi.ingsw.server.model;
 
-import java.util.*;
+import java.util.List;
 
 public class Bookshelf {
     private static final int BOOKSHELF_HEIGHT = 6;

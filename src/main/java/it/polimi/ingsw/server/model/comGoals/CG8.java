@@ -4,7 +4,7 @@ import it.polimi.ingsw.server.model.Bookshelf;
 import it.polimi.ingsw.server.model.HouseItem;
 
 /**
- * Find four tiles of the same item at the corners of the bookshelf
+ * Four tiles of the same type in the four corners of the bookshelf.
  */
 public class CG8 extends ComGoal {
     public CG8(int playerNum, int CGID) {

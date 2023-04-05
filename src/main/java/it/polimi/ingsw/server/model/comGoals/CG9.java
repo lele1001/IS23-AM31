@@ -6,7 +6,7 @@ import it.polimi.ingsw.server.model.HouseItem;
 import java.util.ArrayList;
 
 /**
- * Finds eight tiles of the same type without any restriction on their position
+ * Eight tiles of the same type. There is no restriction about the position of these tiles.
  */
 public class CG9 extends ComGoal {
     public CG9(int playerNum, int CGID) {

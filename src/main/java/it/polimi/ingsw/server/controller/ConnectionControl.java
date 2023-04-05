@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ConnectionControl {
-    private Map<String, ClientHandler> clientHandlerMap = new HashMap<>();
+    private final Map<String, ClientHandler> clientHandlerMap = new HashMap<>();
     private GameController gameController;
 
     public void addClient(ClientHandler clientHandler, String nickname) {

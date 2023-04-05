@@ -13,14 +13,14 @@ import java.util.ArrayList;
 
 public class GameController implements PropertyChangeListener {
 
-    private ConnectionControl connectionControl;
+    private final ConnectionControl connectionControl;
     private ArrayList<String> playersList = new ArrayList<>();
     private String currPlayer;
     private boolean winner;
     private ModelInterface gameModel;
     private TurnPhase turnPhase;
 
-    private Object lock = new Object();
+    private final Object lock = new Object();
 
     private boolean gameIsActive;
 
@@ -76,7 +76,7 @@ public class GameController implements PropertyChangeListener {
     public void runLastTurn(String nickname) {
         int i = playersList.indexOf(nickname) + 1;
         while (i < playersList.size()) {
-           playerTurn(i);
+            playerTurn(i);
             i++;
         }
         String gameWinner = gameModel.calcFinalScore();
@@ -146,8 +146,7 @@ public class GameController implements PropertyChangeListener {
             gameModel.InsertCard(nickname, cards, column);
         } catch (NoBookshelfSpaceException e) {
             connectionControl.SendError("NO BOOKSHELF SPACE", nickname);
-        }
-        catch (NotSameSelectedException e) {
+        } catch (NotSameSelectedException e) {
             connectionControl.SendError("CARDS YOU WANT TO INSERT ARE NOT THE SAME YOU SELECTED", nickname);
         }
     }
@@ -189,17 +188,18 @@ public class GameController implements PropertyChangeListener {
                 case "COM_GOAL_CREATED" ->
                         connectionControl.SendCommonGoalCreated((Integer) evt.getSource(), (Integer) evt.getNewValue());
                 case "EMPTY_CARD_BAG" -> connectionControl.SendEmptyCardBag();
-              //  case "PLAYER_POINT_UPDATE" ->
-              //          connectionControl.SendPlayerPointUpdate((String) evt.getSource(), (int) evt.getNewValue());
+                //  case "PLAYER_POINT_UPDATE" ->
+                //          connectionControl.SendPlayerPointUpdate((String) evt.getSource(), (int) evt.getNewValue());
                 case "COM_GOAL_DONE" ->
                         connectionControl.SendCommonGoalDone((String) evt.getSource(), (int[]) evt.getNewValue());
-                case "PERS_GOAL_CREATED" -> connectionControl.SendPersGoalCreated((String) evt.getSource(), (String) evt.getNewValue());
+                case "PERS_GOAL_CREATED" ->
+                        connectionControl.SendPersGoalCreated((String) evt.getSource(), (String) evt.getNewValue());
                 case "BOOKSHELF_COMPLETED" -> {
                     winner = true;
                     connectionControl.SendBookshelfCompleted((String) evt.getSource());
                 }
                 case "FINAL_SCORE" ->
-                        connectionControl.SendDetailsEndGame((String) evt.getSource(),(int) evt.getNewValue());
+                        connectionControl.SendDetailsEndGame((String) evt.getSource(), (int) evt.getNewValue());
                 default -> {
                 }
             }

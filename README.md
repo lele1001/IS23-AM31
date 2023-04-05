@@ -26,11 +26,11 @@ The final version includes:
 ### Main functionalities
 | Functionality                    | Status |
 |:---------------------------------|:------:|
-| Basic rules                      | :arrows_counterclockwise: |
-| Complete rules                   | :arrows_counterclockwise: |
-| RMI                              |        |
-| Socket                           |        |
-| TUI _(Textual User Interface)_   |        |
+| Basic rules                      | ✅ |
+| Complete rules                   | ✅ |
+| RMI                              | :arrows_counterclockwise: |
+| Socket                           | :arrows_counterclockwise: |
+| TUI _(Textual User Interface)_   | :arrows_counterclockwise: |
 | GUI _(Graphical User Interface)_ |        |
 
 ### Advanced functionalities

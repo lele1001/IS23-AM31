@@ -81,7 +81,7 @@ public class ClientController {
     }
 
     public void onPersGoalCreated(String newValue) {
-                Reader json;
+        Reader json;
         {
             try {
                 json = new FileReader("src/main/java/it/polimi/ingsw/server/model/PersGoalConfiguration.json");

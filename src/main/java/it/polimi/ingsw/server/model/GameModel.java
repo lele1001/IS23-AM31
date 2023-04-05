@@ -79,11 +79,11 @@ public class GameModel implements ModelInterface {
     public void InsertCard(String nickname, ArrayList<ItemCard> cards, int column) throws NoBookshelfSpaceException, NotSameSelectedException {
         // controllo se vuole inserire quelle che aveva selezionato
         for (ItemCard itemCard : cards) {
-            if(selected.stream().map(x -> x.equals(itemCard)).count() != cards.stream().map(x -> x.equals(itemCard)).count())
+            if (selected.stream().map(x -> x.equals(itemCard)).count() != cards.stream().map(x -> x.equals(itemCard)).count())
                 throw new NotSameSelectedException();
         }
         for (ItemCard itemCard : selected) {
-            if(selected.stream().map(x -> x.equals(itemCard)).count() != cards.stream().map(x -> x.equals(itemCard)).count())
+            if (selected.stream().map(x -> x.equals(itemCard)).count() != cards.stream().map(x -> x.equals(itemCard)).count())
                 throw new NotSameSelectedException();
         }
 
@@ -152,7 +152,6 @@ public class GameModel implements ModelInterface {
         }
         return nome;
     }
-
 
 
     public void changePlayerStatus(String nickname) {

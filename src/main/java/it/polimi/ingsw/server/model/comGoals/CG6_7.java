@@ -6,7 +6,10 @@ import it.polimi.ingsw.server.model.HouseItem;
 import java.util.ArrayList;
 
 /**
- * Used for cards that looks for differences in rows (common goal number 6 and 7)
+ * CG6: Two lines each formed by 5 different types of tiles.
+ * One line can show the same or a different combination of the other line.
+ * CG7: Four lines each formed by 5 tiles of maximum three different types.
+ * One line can show the same or a different combination of another line.
  */
 public class CG6_7 extends ComGoal {
     int numDiff;

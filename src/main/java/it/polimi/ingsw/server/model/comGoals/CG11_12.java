@@ -4,7 +4,10 @@ import it.polimi.ingsw.server.model.Bookshelf;
 import it.polimi.ingsw.server.model.HouseItem;
 
 /**
- * Find 5 tiles, which form a diagonal (and sometimes represent the same item).
+ * CG11: Five tiles of the same item forming a diagonal.
+ * CG12: Five columns of increasing or decreasing height.
+ * Starting from the first column on the left or on the right, each next column must be made of exactly one more tile.
+ * Tiles can be of any type.
  */
 public class CG11_12 extends ComGoal {
     boolean color;

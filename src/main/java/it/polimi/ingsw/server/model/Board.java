@@ -6,11 +6,10 @@ import it.polimi.ingsw.server.gameExceptions.NoRightItemCardSelection;
 import java.util.ArrayList;
 import java.util.Collections;
 
-
 public class Board {
     private static final int DIM_BOARD = 9;
     ItemCard[][] board = new ItemCard[DIM_BOARD][DIM_BOARD];
-    private ItemCard[][] oldBoard = new ItemCard[DIM_BOARD][DIM_BOARD];
+    private final ItemCard[][] oldBoard = new ItemCard[DIM_BOARD][DIM_BOARD];
     ArrayList<ItemCard> cardBag = new ArrayList<>();
     int numPlayers;
     int[][] numMinPlayer = new int[][]{
@@ -107,8 +106,7 @@ public class Board {
                 return false;
         }
         if (j == 8) {
-            if (board[i + 1][j] != null || board[i - 1][j] != null || board[i][j - 1] != null)
-                return false;
+            return board[i + 1][j] == null && board[i - 1][j] == null && board[i][j - 1] == null;
         }
         return true;
     }
@@ -192,10 +190,7 @@ public class Board {
             if ((Position.getColumn(position.get(0)) == Position.getColumn(position.get(1)) - 1) && (Position.getRow(position.get(0)) == Position.getRow(position.get(1))))
                 return true;
         }
-        if (position.size() == 1) {
-            return true;
-        }
-        return false;
+        return position.size() == 1;
     }
 
     /**
@@ -230,8 +225,6 @@ public class Board {
             System.arraycopy(oldBoard[i], 0, board[i], 0, DIM_BOARD);
         }
     }
-
-
 
 
     //Todo for Mila, already created ItemCard

@@ -10,6 +10,6 @@ public abstract class Position {
     }
 
     public static int getNumber(int column, int row) {
-        return (Integer) row * 10 + column;
+        return row * 10 + column;
     }
 }
