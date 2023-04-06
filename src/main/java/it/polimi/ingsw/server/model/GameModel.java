@@ -86,12 +86,12 @@ public class GameModel implements ModelInterface {
             if (selected.stream().map(x -> x.equals(itemCard)).count() != cards.stream().map(x -> x.equals(itemCard)).count())
                 throw new NotSameSelectedException();
         }
-
         PropertyChangeEvent evt;
         boolean a;
         a = playerMap.get(nickname).insertCard(cards, column);
         evt = new PropertyChangeEvent(nickname, "BOOKSHELF_CHANGED", null, playerMap.get(nickname).getBookshelfAsMatrix());
         this.listener.propertyChange(evt);
+        System.out.println(a);
         if (a) {
             evt = new PropertyChangeEvent(nickname, "BOOKSHELF_COMPLETED", null, null);
             this.listener.propertyChange(evt);
@@ -197,14 +197,16 @@ public class GameModel implements ModelInterface {
         } */
 
         try {
-            if (board.checkRefill())
+            if (board.checkRefill()){
                 evt = new PropertyChangeEvent("null", "BOARD_CHANGED", null, board.getAsArrayList());
+                evt = new PropertyChangeEvent("null", "BOARD_CHANGED", null, board.getAsArrayList());
+            }
         } catch (EmptyCardBagException e) {
             evt = new PropertyChangeEvent("null", "EMPTY_CARD_BAG", null, null); // posso anche unirlo a change board
             this.listener.propertyChange(evt);
             evt = new PropertyChangeEvent("null", "BOARD_CHANGED", null, board.getAsArrayList()); // faccio sempre anche se non modifica fa nulla
-        } finally {
             this.listener.propertyChange(evt);
+        } finally {
         }
 
     }

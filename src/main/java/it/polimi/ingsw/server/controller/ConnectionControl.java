@@ -1,5 +1,6 @@
 package it.polimi.ingsw.server.controller;
 
+import it.polimi.ingsw.client.view.Cli;
 import it.polimi.ingsw.server.ClientHandler;
 import it.polimi.ingsw.server.model.ItemCard;
 
@@ -10,7 +11,10 @@ import java.util.Map;
 public class ConnectionControl {
     private final Map<String, ClientHandler> clientHandlerMap = new HashMap<>();
     private GameController gameController;
-
+    Cli c; //added only for testing purpose
+    public ConnectionControl(){
+        c=new Cli();
+    }
     public void addClient(ClientHandler clientHandler, String nickname) {
         this.clientHandlerMap.put(nickname, clientHandler);
     }
@@ -51,6 +55,7 @@ public class ConnectionControl {
             c.SendBoardChanged(newBoard);
         }
         System.out.println("Board has changed");
+        c.printBoard(newBoard);
     }
 
     public void SendBookshelfChanged(String nickname, ItemCard[][] newBookshelf) {
@@ -58,6 +63,7 @@ public class ConnectionControl {
             c.SendBookshelfChanged(nickname, newBookshelf);
         }
         System.out.println("Player " + nickname + " has changed the bookshelf");
+        c.printMyBookshelf(newBookshelf);
     }
 
     public void SendError(String error, String nickname) {

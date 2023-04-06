@@ -1,9 +1,13 @@
 package it.polimi.ingsw.server.controller;
 
+import it.polimi.ingsw.server.model.HouseItem;
+import it.polimi.ingsw.server.model.ItemCard;
+import it.polimi.ingsw.server.model.ItemNumber;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 class GameControllerTest {
 
@@ -33,23 +37,32 @@ class GameControllerTest {
     }
 
     @Test
-    void run() {
+    void run()  {
         GameController gameController4 = new GameController(new ConnectionControl());
         gameController4.createGame(new ArrayList<>(List.of("Topolino", "Eleonora", "Luigi", "Niccolò")));
         new Thread(() -> {
             gameController4.run();
         }
         ).start();
-        gameController4.selectCard("Topolino", new ArrayList<>(List.of(3,4)));
-        gameController4.selectCard("Topolino", new ArrayList<>(List.of(3,4)));
-        gameController4.selectCard("Topolino", new ArrayList<>(List.of(3,4)));
-        gameController4.selectCard("Topolino", new ArrayList<>(List.of(3,4)));
-        gameController4.selectCard("Topolino", new ArrayList<>(List.of(3,4)));
-        gameController4.selectCard("Topolino", new ArrayList<>(List.of(3,4)));
-        gameController4.selectCard("Topolino", new ArrayList<>(List.of(3,4)));
-        gameController4.selectCard("Topolino", new ArrayList<>(List.of(3,4)));
-        gameController4.selectCard("Topolino", new ArrayList<>(List.of(3,4)));
-        gameController4.selectCard("Topolino", new ArrayList<>(List.of(3,4)));
+        try {
+            TimeUnit.MILLISECONDS.sleep(10);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        gameController4.selectCard("Topolino", new ArrayList<>(List.of(3)));
+        gameController4.selectCard("Topolino", new ArrayList<>(List.of(3)));
+        gameController4.selectCard("Topolino", new ArrayList<>(List.of(3)));
+        gameController4.insertCard("Topolino", new ArrayList<>(List.of(new ItemCard(HouseItem.Cat, ItemNumber.First))),1);
+        try {
+            TimeUnit.MICROSECONDS.sleep(1);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        gameController4.selectCard("Topolino", new ArrayList<>(List.of(3)));
+        gameController4.selectCard("Eleonora", new ArrayList<>(List.of(3)));
+        gameController4.selectCard("Eleonora", new ArrayList<>(List.of(4)));
+        gameController4.insertCard("Eleonora", new ArrayList<>(List.of(new ItemCard(HouseItem.Cat, ItemNumber.First))),1);
+
 
 
 

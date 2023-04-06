@@ -14,13 +14,16 @@ public class Cli implements View {
     private static final int DIM_BOARD = 9;
     private static final int BOOKSHELF_HEIGHT = 6;
     private static final int BOOKSHELF_LENGTH = 5;
-    private final Scanner in = new Scanner(System.in);
+    Scanner in = new Scanner(System.in);
     ClientController clientController;
     ConnectionClient connectionClient;
     String username;
     String address;
     int port;
     int select = -1;
+    public Cli(){
+
+    }
 
     public Cli(ClientController clientController) {
 
@@ -29,6 +32,7 @@ public class Cli implements View {
         askUsername();
         askConnection();
         System.out.println("Write 0 for RMI, 1 for Socket");
+
         do {
             if (in.hasNextInt()) {
                 select = in.nextInt();
