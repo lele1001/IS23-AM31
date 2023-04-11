@@ -4,12 +4,16 @@ import it.polimi.ingsw.client.view.Cli;
 
 
 public class ClientMain {
-    private static final ClientController clientController = new ClientController();
+    //private static final ClientController clientController = new ClientController();
 
+    /**
+     * Start of the player side game
+     * @param args CLI or GUI
+     */
 
     public static void main(String[] args) {
         if (args.length > 0 && args[0].equalsIgnoreCase("CLI")) {
-            new Cli(clientController);
+            new Cli( new ClientController());
         } else {
             //Application.launch(Gui.class);
         }

@@ -1,9 +1,6 @@
 package it.polimi.ingsw.client.view;
 
 import it.polimi.ingsw.client.ClientController;
-import it.polimi.ingsw.client.connection.ConnectionClient;
-import it.polimi.ingsw.client.connection.ConnectionRMI;
-import it.polimi.ingsw.client.connection.ConnectionSocket;
 import it.polimi.ingsw.server.model.HouseItem;
 import it.polimi.ingsw.server.model.ItemCard;
 
@@ -16,62 +13,92 @@ public class Cli implements View {
     private static final int BOOKSHELF_LENGTH = 5;
     Scanner in = new Scanner(System.in);
     ClientController clientController;
-    ConnectionClient connectionClient;
+
     String username;
     String address;
-    int port;
+    int port = -1;
     int select = -1;
-    public Cli(){
+
+    public Cli() {
 
     }
 
+    /**
+     * Initialization of the client profile asking: username,type of connection, ip and port
+     * @param clientController define the direct contact with all the object containers send from the server
+     */
     public Cli(ClientController clientController) {
-
-
         this.clientController = clientController;
+        clientController.setView(this);
+
         askUsername();
         askConnection();
-        System.out.println("Write 0 for RMI, 1 for Socket");
-
-        do {
-            if (in.hasNextInt()) {
-                select = in.nextInt();
-            }
-        } while (select != 0 && select != 1);
         askIP();
         askPort();
-
-        System.out.println("Select Ip Address");
-        if (in.hasNextLine()) {
-            address = in.nextLine();
+        try{
+            clientController.startconnection(select,username,address,port);
         }
-        System.out.println("Select Ip Port");
-        if (in.hasNextInt()) {
-            port = in.nextInt();
+        catch(Exception e){
+            printError(e.getMessage());
+            disconnectionError();
         }
 
 
-        if (select == 0) {
-            connectionClient = new ConnectionRMI(clientController);
-        } else {
-            connectionClient = new ConnectionSocket(clientController);
-        }
     }
 
+    /**
+     * Asking the type of connection: 0 for RMI, 1 for Socket
+     */
     private void askConnection() {
-
+        do {
+            System.out.println("Write 0 for RMI, 1 for Socket");
+            if (in.hasNextInt()) {
+                select = in.nextInt();
+            } else if (in.hasNextLine()) {
+                in.nextLine();
+                System.out.println("Input error");
+            }
+        } while (select != 0 && select != 1);
     }
 
+    /**
+     * Ask the port of the server, running controls on the inserted integer
+     */
     private void askPort() {
+        do {
+            System.out.println("Select Ip Port");
+            if (in.hasNextInt()) {
+                port = in.nextInt();
+            } else if (in.hasNextLine()) {
+                in.nextLine();
+                System.out.println("Input error");
+            }
+        } while (port == -1);
+        System.out.println("The server IP port chosen is: " + port);
     }
-
+    /**
+     * Ask the IP address of the server, running controls on the inserted String
+     */
     private void askIP() {
-
+        in.nextLine();
+        do {
+            System.out.println("Select Ip Address");
+            if (in.hasNextLine()) {
+                address = in.nextLine();
+            }
+        } while (address.equals(""));
+        System.out.println("The server IP address chosen is: " + address);
     }
-
+    /**
+     * Ask the Username of the client
+     */
     void askUsername() {
-
-
+        do {
+            System.out.println("Select Username");
+            if (in.hasNextLine()) {
+                username = in.nextLine();
+            }
+        } while (username.equals(""));
     }
 
     /**
@@ -117,19 +144,23 @@ public class Cli implements View {
      */
     @Override
     public void printMyBookshelf(ItemCard[][] bookshelf) {
-        System.out.println("    0   1   2   3   4   5");
-
-        for (int i = 0; i < BOOKSHELF_HEIGHT; i++) {
-            for (int j = 0; j < BOOKSHELF_LENGTH; j++) {
-                printCell(bookshelf, i, j);
-
-                if (j < BOOKSHELF_LENGTH - 1) {
-                    System.out.print((char) 27 + "[39m" + " | ");
+        if (bookshelf != null) {
+            System.out.println("    0   1   2   3   4");
+            for (int i = 0; i < BOOKSHELF_HEIGHT; i++) {
+                for (int j = 0; j < BOOKSHELF_LENGTH; j++) {
+                    if (j == 0) {
+                        System.out.print((char) 27 + "[39m" + i + " | ");
+                    }
+                    printCell(bookshelf, i, j);
+                    if (j < BOOKSHELF_LENGTH - 1) {
+                        System.out.print((char) 27 + "[39m" + " | ");
+                    }
                 }
-            }
 
-            System.out.println();
+                System.out.println();
+            }
         }
+
     }
 
     /**
@@ -253,10 +284,16 @@ public class Cli implements View {
      */
     @Override
     public void printPersGoal(Map<Integer, HouseItem> myPersGoal) {
+        for (Integer i : myPersGoal.keySet()) {
+            System.out.println(i + " " + myPersGoal.get(i));
+        }
+        System.out.println("    0   1   2   3   4");
         for (int i = 0; i < BOOKSHELF_HEIGHT; i++) {
             for (int j = 0; j < BOOKSHELF_LENGTH; j++) {
                 int k = i * 10 + j;
-
+                if (j == 0) {
+                    System.out.print((char) 27 + "[39m" + i + " | ");
+                }
                 if (myPersGoal.containsKey(k)) {
                     char itemChar = myPersGoal.get(k).toString().charAt(0);
 
@@ -264,12 +301,25 @@ public class Cli implements View {
                 } else {
                     System.out.print(" ");
                 }
+                if (j < BOOKSHELF_LENGTH - 1) {
+                    System.out.print((char) 27 + "[39m" + " | ");
+                }
             }
+            System.out.println();
         }
+        System.out.println();
     }
 
     @Override
     public void print(String yourTurn) {
 
+    }
+    /**
+     * Disconnection of the Cli after the client is disconnected from the server
+     */
+    private void disconnectionError(){
+        System.out.println("\nPress ENTER to exit");
+        in.nextLine();
+        System.exit(1);
     }
 }
