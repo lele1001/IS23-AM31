@@ -1,5 +1,6 @@
 package it.polimi.ingsw.server.model;
 
+import it.polimi.ingsw.server.Server;
 import it.polimi.ingsw.server.controller.ConnectionControl;
 import it.polimi.ingsw.server.controller.GameController;
 import it.polimi.ingsw.server.gameExceptions.NoBookshelfSpaceException;
@@ -16,7 +17,7 @@ class GameModelTest {
     @Test
     void insertCard() {
         GameModel gameModel = new GameModel();
-        ConnectionControl connectionControl = new ConnectionControl();
+        ConnectionControl connectionControl = new ConnectionControl(new Server());
         GameController gameController = new GameController(connectionControl);
 
         gameModel.setListener(gameController);

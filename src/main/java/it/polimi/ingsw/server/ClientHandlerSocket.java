@@ -3,79 +3,111 @@ package it.polimi.ingsw.server;
 import it.polimi.ingsw.server.controller.ConnectionControl;
 import it.polimi.ingsw.server.model.ItemCard;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.net.Socket;
-import java.util.Scanner;
+import java.util.Optional;
 
 public class ClientHandlerSocket extends ClientHandler implements Runnable {
     private final Server server;
-    private final ConnectionControl connectionControl;  // per inviare messaggi ricevuti
-    private String nickname;
-    private boolean isFirst;
-    private boolean stop;
+    private boolean playerNumberAsked;
+    private boolean isConnected;
     private final Socket socket;
+    PrintWriter socketOut;
+
 
     public ClientHandlerSocket(Socket socket, Server server, ConnectionControl connectionControl) {
         this.socket = socket;
         this.server = server;
         this.connectionControl = connectionControl;
-        isFirst = true;
-        stop = false;
+        playerNumberAsked = false;
+        isConnected = true;
+        try {
+            socketOut = new PrintWriter(socket.getOutputStream());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 
     public void run() {
-        //chiedo nickname
+        nickname = null;
+        new Thread(this::listen).start();
+        //aspetto nickname
+        while (nickname == null) {
+            Thread.onSpinWait();
 
-        if (!initialize()) {
-            //chiudo la connessione
+        }
+
+        if (!connectionControl.tryAddInQueue(this, nickname)) {
+            // c'è già un gioco attivo e non sei dentro
+            // invio messaggio e chiudo
+            try {
+                socket.close();
+            } catch (IOException e) {
+                System.out.println("Error closing socket of client: " + nickname);
+            }
             return;
         }
 
-        //accettare messaggi in continuazione
+    }
+
+
+
+    public void listen() {
+        BufferedReader in;
         try {
-            Scanner in = new Scanner(socket.getInputStream());
-            while (!stop) {
-                String line = in.nextLine();
+            in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+        } catch (IOException e) {
+            System.out.println("Unable to read from client: " + nickname);
+            return;
+        }
+
+        // Accetta messaggi dal client e, eventualmente, si accorge della sua disconnessione.
+        while (true) {
+            try {
+                String line = in.readLine();
+                //System.out.println("Received: " + line);
                 onMessageReceived(line);
+            } catch (IOException e) {
+                System.out.println("Client: " + nickname + " disconnected.");
+                connectionControl.changePlayerStatus(nickname);
+                break;
             }
-            // Chiudo gli stream e il socket
+        }
+
+        try {
             in.close();
             socket.close();
         } catch (IOException e) {
-            System.err.println(e.getMessage());
+            System.out.println("Error closing socket of client: " + nickname);
         }
-
     }
 
-    public void stop() {
-        stop = true;
-    }
 
-    private boolean initialize() {
-        synchronized (server) {  //mila: il primo player blocca il serve, quindi non libererà serve finché non imposta il numero di giocatori, solo allora potranno uscire gli altri
-            if (server.getAvailablePlayers() == 0) {
-                //non disponibile
-                sendError("Game not available.");
-                return false;
-            }
-            if ((isFirst) && (server.getAvailablePlayers() == 1)) {
-                // è il primo: chiedo il numero di giocatori
-
-            } else
-                server.decrementAvailablePlayers();
+    @Override
+    public Optional<Integer> askPlayerNumber() {
+        if (!playerNumberAsked) {// non gliel'ho ancora chiesto: glielo chiedo
+            playerNumberAsked = true;
+            socketOut.println("Please, give me player number.");
+            socketOut.flush();
         }
-        return true;
+        return Optional.empty();
     }
 
     private void onMessageReceived(String JSONMessage) {
         // switch per parsare i messaggi e chiamare i metodi corretti sul connectioncontrol
         // attenzione ad accettare due tipologie di messaggi: nickname all'inizio se ancora non ce l'ho (nickname==null)
-        connectionControl.addClient(this, "Pippo"); // nickname da prendere dal client
+        if (JSONMessage.contains("nickname")) {
+            nickname = JSONMessage;
+            System.out.println(nickname + " is trying to enter the game.");
+        }
 
-        //e numgiocatori perché gliel'ho chiesto (isFirst==true)
-        server.setAvailablePlayers(2);
-        isFirst = false;
+        //e numgiocatori perché gliel'ho chiesto (playerNumberASked==true)
+/*        server.setAvailablePlayers(2);
+        playerNumberAsked = false;*/
 
     }
 
@@ -121,7 +153,17 @@ public class ClientHandlerSocket extends ClientHandler implements Runnable {
     }
 
     @Override
-    public void SendDetailsEndGame(String winner, int score) {
+    public void sendWinner(String winner) {
+
+    }
+
+    @Override
+    public void sendGameIsStarting() {
+
+    }
+
+    @Override
+    public void sendErrorGameNotAvailable() {
 
     }
 }

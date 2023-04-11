@@ -78,14 +78,8 @@ public class GameModel implements ModelInterface {
      */
     public void InsertCard(String nickname, ArrayList<ItemCard> cards, int column) throws NoBookshelfSpaceException, NotSameSelectedException {
         // controllo se vuole inserire quelle che aveva selezionato
-        for (ItemCard itemCard : cards) {
-            if (selected.stream().map(x -> x.equals(itemCard)).count() != cards.stream().map(x -> x.equals(itemCard)).count())
-                throw new NotSameSelectedException();
-        }
-        for (ItemCard itemCard : selected) {
-            if (selected.stream().map(x -> x.equals(itemCard)).count() != cards.stream().map(x -> x.equals(itemCard)).count())
-                throw new NotSameSelectedException();
-        }
+        if (!((cards.containsAll(selected)) && (selected.containsAll(cards))))
+            throw new NotSameSelectedException();
         PropertyChangeEvent evt;
         boolean a;
         a = playerMap.get(nickname).insertCard(cards, column);
@@ -197,7 +191,7 @@ public class GameModel implements ModelInterface {
         } */
 
         try {
-            if (board.checkRefill()){
+            if (board.checkRefill()) {
                 evt = new PropertyChangeEvent("null", "BOARD_CHANGED", null, board.getAsArrayList());
                 evt = new PropertyChangeEvent("null", "BOARD_CHANGED", null, board.getAsArrayList());
             }

@@ -1,11 +1,25 @@
 package it.polimi.ingsw.server;
 
+import it.polimi.ingsw.server.controller.ConnectionControl;
 import it.polimi.ingsw.server.model.ItemCard;
 
+import java.util.Optional;
+
 public abstract class ClientHandler {
+    protected volatile String nickname;
+    protected ConnectionControl connectionControl;
+
     public abstract void askSelect();
 
     public abstract void askInsert();
+
+//    public abstract void addToGame();
+
+    public abstract Optional<Integer> askPlayerNumber();
+
+    public abstract void sendErrorGameNotAvailable();
+
+    public abstract void sendGameIsStarting();
 
     public abstract void sendError(String error);
 
@@ -19,6 +33,6 @@ public abstract class ClientHandler {
 
     public abstract void SendBoardChanged(ItemCard[][] newBoard);
 
-    public abstract void SendDetailsEndGame(String winner, int score);
+    public abstract void sendWinner (String winner);
 
 }

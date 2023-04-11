@@ -4,65 +4,82 @@ import it.polimi.ingsw.server.controller.ConnectionControl;
 import it.polimi.ingsw.server.controller.GameController;
 
 import java.io.IOException;
-import java.net.ServerSocket;
-import java.net.Socket;
+import java.net.*;
 import java.rmi.AlreadyBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.ArrayList;
+import java.util.Scanner;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class Server {
-    private final int port;
+    private static int port;
     private int availablePlayers;
-    private final ConnectionControl connectionControl;
-    private final GameController gameController;
+    private ConnectionControl connectionControl;
+    private GameController gameController;
+    private ArrayList<String> queue;
+    private static boolean stop;
+    private RMIInterface rmiInterface;
 
-    public Server(int port) {
-        this.port = port;
-        availablePlayers = 1;
-        this.connectionControl = new ConnectionControl();
-        this.gameController = new GameController(this.connectionControl);
-        this.connectionControl.setGameController(gameController);
+
+    public Server() {
     }
 
     public static void main(String[] args) {
-        System.out.println("Starting server...");
-        if (args.length != 2) {
+        System.out.println("Hello! Starting server...");
+        System.out.println("Type \"stop\" to stop server.");
+        new Thread(Server::listen).start();
+        if (args.length != 1) {
             System.out.println("Error: missing parameters.");
             return;
         }
-        String hostName = args[0];
-        int portNumber = Integer.parseInt(args[1]);
-        Server server = new Server(portNumber);
+        Server.port = Integer.parseInt(args[0]);
+        Server server = new Server();
         server.start();
     }
 
+    public void initialize() {
+        stop = false;
+        availablePlayers = -1;
+        this.connectionControl = new ConnectionControl(this);
+        this.gameController = new GameController(this.connectionControl);
+        this.connectionControl.setGameController(gameController);
+        this.queue = new ArrayList<>();
+    }
+
     public void start() {
+        initialize();
+        new Thread(this::setGame).start();
         if (startRMI() != 0) {
             System.out.println("Error creating RMI interface.");
-            return;
         }
-        System.out.println("Server RMI is ready.");
+        else
+            System.out.println("Server RMI is ready.");
 
-        startSocket();
-        System.out.println("Closing server.");
+        try {
+            startSocket();
+        } catch (UnknownHostException e) {
+            throw new RuntimeException(e);
+        }
+        System.out.println("Server stopped.");
+        System.exit(0);
     }
 
     public int startRMI() {
-        RMIInterface rmiInterface = new RMIInterface(this, this.connectionControl);
+        rmiInterface = new RMIInterface(this.connectionControl);
         RMI stub = null;
         try {
             stub = (RMI) UnicastRemoteObject.exportObject(
-                    rmiInterface, port);
+                    rmiInterface, port+1);
         } catch (RemoteException e) {
             return -1;
         }
         Registry registry = null;
         try {
-            registry = LocateRegistry.createRegistry(port);
+            registry = LocateRegistry.createRegistry(port+1);
         } catch (RemoteException e) {
             return -1;
         }
@@ -74,47 +91,115 @@ public class Server {
         return 0;
     }
 
-    public void startSocket() {
+    public static void listen() {
+        Scanner in = new Scanner(System.in);
+        while(true) {
+            String s = in.nextLine();
+            if(s.equals("stop") || s.equals("STOP") || s.equals("Stop")) {
+                System.out.println("Stopping server...");
+                stop = true;
+                break;
+            }
+        }
+
+    }
+
+    public void startSocket() throws UnknownHostException {
         ExecutorService executor;
         try {
             executor = Executors.newCachedThreadPool();
         } catch (Exception e) {
-            System.out.println("Error: creating threads.");
+            System.out.println("Socket error: creating threads.");
             return;
         }
-        ServerSocket serverSocket;
+        ServerSocket serverSocket = null;
+        InetAddress address = InetAddress.getByAddress(InetAddress.getLocalHost().getAddress());
         try {
             serverSocket = new ServerSocket(port);
         } catch (Exception e) {
-            System.err.println("Error: the specified port is not available.");
+            System.err.println("Socket error: the specified port is not available.");
             return;
         }
-        while (true) {
+        System.out.println("Server socket is ready.");
+        while (!stop) {
             try {
                 Socket socket = serverSocket.accept();
+                System.out.println("There's a new client online!");
                 ClientHandlerSocket clientHandlerSocket = new ClientHandlerSocket(socket, this, this.connectionControl);
                 executor.submit(clientHandlerSocket);
             } catch (IOException e) {
+                System.err.println("Socket error: waiting for clients.");
                 break;
             }
         }
-        executor.shutdown();
-
-
-    }
-
-    public int getAvailablePlayers() {
-        return availablePlayers;
-    }
-
-    public void decrementAvailablePlayers() {
-        this.availablePlayers--;
-        if (availablePlayers == 0) {
-            // inizia il gioco.
+        try {
+            serverSocket.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
+        executor.shutdown();
     }
 
-    public void setAvailablePlayers(int availablePlayers) {
+
+    public synchronized void setAvailablePlayers(int availablePlayers) {
         this.availablePlayers = availablePlayers;
+        this.notifyAll();
+    }
+
+    public synchronized void addInQueue(String nickname) {
+        //System.out.println("Server: adding in queue.");
+        this.queue.add(nickname);
+        if (this.queue.size() == 1)
+            this.notifyAll();
+
+    }
+
+    public synchronized void removeFromQueue(String nickname) {
+        if(this.queue.indexOf(nickname)==0) {  // era il primo: notifico setGame()
+            this.queue.remove(nickname);
+            this.notifyAll();
+        }
+        else
+            this.queue.remove(nickname);
+    }
+
+    public synchronized void setGame() {
+        while (availablePlayers == -1) {
+            if (!this.queue.isEmpty()) {
+                this.connectionControl.askPlayerNumber(this.queue.get(0));
+            }
+            try {
+                //System.out.println("Waiting for the first.");
+                this.wait();
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        while (this.queue.size() < availablePlayers) {
+            try {
+                this.wait();
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        // dico ai giocatori in eccesso che non possono giocare
+        for (String s : queue) {
+            if (queue.indexOf(s) >= availablePlayers) {
+                connectionControl.SendError("Game not available.", s);
+                connectionControl.removeClient(s);
+                queue.remove(s);
+            }
+        }
+
+        this.gameController.createGame(queue);
+        new Thread(this.gameController::run).start();
+
+    }
+
+    public void onEndGame() {
+        initialize();
+        rmiInterface.setConnectionControl(connectionControl);
     }
 }
