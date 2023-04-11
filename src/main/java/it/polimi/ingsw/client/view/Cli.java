@@ -4,6 +4,7 @@ import it.polimi.ingsw.client.ClientController;
 import it.polimi.ingsw.server.model.HouseItem;
 import it.polimi.ingsw.server.model.ItemCard;
 
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -99,6 +100,85 @@ public class Cli implements View {
                 username = in.nextLine();
             }
         } while (username.equals(""));
+    }
+
+    /**
+     * Prints a menu on the screen to let the user choose what to do next
+     */
+    public void printMenu(String nickname) {
+        String choice = null;
+
+        if(in.hasNextLine() && in.nextLine().equalsIgnoreCase("@menu")) {
+            System.out.println("GAME MENU: type the corresponding command\n" +
+                    "@TAKE to choose from 1 to 3 tiles from the board, followed by the coordinates (xy) of the chosen tiles\n" +
+                    "@PUT to choose a column for putting the cards, followed by the column number\n" +
+                    "@CHAT to open the chat, followed by the nickname/all and the message" +
+                    "@QUIT to exit from the game");
+
+            if (in.hasNextLine()) {
+                choice = in.nextLine();
+            }
+        }
+
+        if (choice != null) {
+            String[] splitString = choice.split(" ");
+
+            if (splitString[0].equalsIgnoreCase("@TAKE")) {
+                ArrayList<Integer> coords = new ArrayList<Integer>();
+
+                for (int i = 1; i < splitString.length; i++) {
+                    coords.add(splitString[i].charAt(0) * 10 + splitString[i].charAt(1));
+                    //poi vediamo le altre cose da fare, intanto metto le coordinate in un'arraylist
+                }
+            }
+            else if (splitString[0].equalsIgnoreCase("@PUT")) {
+                if (splitString[1].length() > 1) {
+                    System.out.println("Column index out of range");
+                    // mandiamo un errore o qualcosa
+                }
+
+                int column = splitString[1].charAt(0);
+                if (column > BOOKSHELF_LENGTH) {
+                    System.out.println("Column index out of range");
+                    // mandiamo un errore o qualcosa
+                }
+                else {
+                    System.out.println("Putting your tiles into column " + column);
+                    // chiamiamo il metodo per inserire
+                }
+            }
+            else if (splitString[0].equalsIgnoreCase("@CHAT")) {
+                String dest = splitString[1];
+                if (dest == null) {
+                    System.out.println("No destination found");
+                    // mandiamo un errore o qualcosa
+                }
+                else if (dest.equalsIgnoreCase(nickname)) {
+                    System.out.println("You cannot send a message to yourself!");
+                    // mandiamo un errore o qualcosa
+                }
+
+                String msg = splitString[2];
+                if (msg == null) {
+                    System.out.println("No message found");
+                    // mandiamo un errore o qualcosa
+                }
+
+                //chiamiamo i metodi per la chat
+            }
+            else if (splitString[0].equalsIgnoreCase("@QUIT")) {
+                System.out.println("Closing the game");
+                //shut down the game
+            }
+            else {
+                System.out.println("Input not recognised... try again");
+                printMenu(nickname);
+            }
+        }
+        else {
+            System.out.println("Input not recognised... try again");
+            printMenu(nickname);
+        }
     }
 
     /**
@@ -310,9 +390,12 @@ public class Cli implements View {
         System.out.println();
     }
 
+    /**
+     * Tells the player if it is his turn
+     */
     @Override
     public void print(String yourTurn) {
-
+        System.out.println(yourTurn);
     }
     /**
      * Disconnection of the Cli after the client is disconnected from the server
