@@ -226,6 +226,11 @@ public class Board {
         }
     }
 
+    public void backupBoard() {
+        for (int i = 0; i < DIM_BOARD; i++) {
+            System.arraycopy(board[i], 0, oldBoard[i], 0, DIM_BOARD);
+        }
+    }
 
     //Todo for Mila, already created ItemCard
     public void createcardBag() {

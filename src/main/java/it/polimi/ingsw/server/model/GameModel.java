@@ -78,7 +78,7 @@ public class GameModel implements ModelInterface {
      */
     public void InsertCard(String nickname, ArrayList<ItemCard> cards, int column) throws NoBookshelfSpaceException, NotSameSelectedException {
         // controllo se vuole inserire quelle che aveva selezionato
-        if (!((cards.containsAll(selected)) && (selected.containsAll(cards))))
+        if (!((cards.containsAll(selected)) && (selected.containsAll(cards)) && (cards.size() == selected.size())))
             throw new NotSameSelectedException();
         PropertyChangeEvent evt;
         boolean a;
@@ -90,6 +90,7 @@ public class GameModel implements ModelInterface {
             evt = new PropertyChangeEvent(nickname, "BOOKSHELF_COMPLETED", null, null);
             this.listener.propertyChange(evt);
         }
+        board.backupBoard();    // Inserimento andato a buon fine.
     }
 
     /**

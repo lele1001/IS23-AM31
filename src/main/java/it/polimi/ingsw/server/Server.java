@@ -155,12 +155,14 @@ public class Server {
     }
 
     public synchronized void removeFromQueue(String nickname) {
-        if(this.queue.indexOf(nickname)==0) {  // era il primo: notifico setGame()
-            this.queue.remove(nickname);
-            this.notifyAll();
+        if(this.queue != null) {
+            if ((this.queue.indexOf(nickname) == 0)) {  // era il primo: notifico setGame()
+                this.queue.remove(nickname);
+                this.notifyAll();
+            } else {
+                this.queue.remove(nickname);
+            }
         }
-        else
-            this.queue.remove(nickname);
     }
 
     public synchronized void setGame() {
