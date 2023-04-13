@@ -7,6 +7,7 @@ import it.polimi.ingsw.server.model.ItemCard;
 
 import java.util.Map;
 import java.util.Scanner;
+import java.util.TimerTask;
 
 public class Cli implements View {
     private static final int DIM_BOARD = 9;
@@ -18,6 +19,7 @@ public class Cli implements View {
     ClientController clientController;
     String username;
     String address;
+    boolean gameStarted = false;
     int port = -1;
     int select = -1;
 
@@ -35,20 +37,42 @@ public class Cli implements View {
         clientController.setView(this);
         checkInput = new InputController(clientController);
 
+        System.out.println("Adding pippo to the game");
+        //clientController.onBookshelfChanged("pippo", null);
+
         askUsername();
-        clientController.playersBookshelf.put("pippo", null);
         askConnection();
         askIP();
         askPort();
 
-        try {
+        /*try {
             clientController.startconnection(select, username, address, port);
         } catch (Exception e) {
             printError(e.getMessage());
             disconnectionError();
-        }
+        }*/
 
-        listen();
+        TimerTask t = new TimerTask() {
+            @Override
+            public void run() {
+                try {
+                    Thread.sleep(10000);
+                } catch (InterruptedException e) {
+                }
+
+                gameStarted = true;
+            }
+        };
+
+        Thread menuThread = new Thread() {
+            @Override
+            public void run() {
+                t.run();
+            }
+        };
+
+        menuThread.start();
+        waitForGame();
     }
 
     /**
@@ -79,6 +103,8 @@ public class Cli implements View {
                 System.out.println("Input error");
             }
         } while (port == -1);
+
+        in.nextLine();
         System.out.println("The server IP port chosen is: " + port);
     }
 
@@ -108,13 +134,16 @@ public class Cli implements View {
         } while (username.equals(""));
     }
 
+    /**
+     * Reads the choice of the user
+     */
     public void listen() {
         String choice;
         String[] splitString;
         StringBuilder msg = new StringBuilder();
         String destNickname;
 
-        printMenu(clientController.getMyNickname());
+        printMenu();
 
         while (!stopListening) {
             if (in.hasNextLine()) {
@@ -126,11 +155,8 @@ public class Cli implements View {
                 }
 
                 switch (splitString[0]) {
-                    case "@quit" -> {
-                        System.out.println("Stopping CLI...");
-                        stopListening = true;
-                    }
-                    case "@menu" -> printMenu(clientController.getMyNickname());
+                    case "@menu" -> printMenu();
+                    case "@board" -> printBoard(clientController.board);
                     case "@take" -> {
                         if (!checkInput.checkTake(splitString)) {
                             System.out.println("Errore take");
@@ -138,6 +164,8 @@ public class Cli implements View {
                         //chiamo il metodo selectCards
 
                     }
+                    case "@myshelf" -> printMyBookshelf(clientController.playersBookshelf.get(clientController.getMyNickname()));
+                    case "@allshelves" -> printBookshelves(clientController.playersBookshelf);
                     case "@put" -> {
                         if (!checkInput.checkPut(splitString)) {
                             System.out.println("Errore put");
@@ -171,21 +199,77 @@ public class Cli implements View {
 
                         System.out.println("Sending " + msg + "to " + destNickname);
                     }
+                    case "@quit" -> {
+                        System.out.println("Stopping CLI...");
+                        stopListening = true;
+                    }
                     default -> System.out.println("Input not recognised... try again");
                 }
             }
+        }
+
+        disconnectionError();
+    }
+
+    /**
+     * Allows the user only to quit the game while waiting for it to start
+     */
+    public void waitForGame() {
+        String choice;
+        String[] splitString;
+
+        System.out.println("""
+                \nWaiting for other players to connect...
+                GAME MENU: type the corresponding command
+                \t@MENU to show again this menu
+                \t@QUIT to exit from the game""");
+
+        while (!gameStarted && !stopListening) {
+            if (in.hasNextLine()) {
+                System.out.println("the timer is " + gameStarted);
+                choice = in.nextLine();
+                splitString = choice.split(" ");
+
+                for (int i = 0; i < splitString.length; i++) {
+                    splitString[i] = splitString[i].toLowerCase();
+                }
+
+                if (splitString[0].equals("@quit")) {
+                    System.out.println("Stopping CLI...");
+                    stopListening = true;
+                } else if (splitString[0].equals("@menu")) {
+                    System.out.println("""
+                            GAME MENU: type the corresponding command
+                            \t@MENU to show again this menu
+                            \t@QUIT to exit from the game""");
+                } else {
+                    System.out.println("Input not recognised... try again");
+                }
+            }
+        }
+
+        if (stopListening) {
+            disconnectionError();
+        } else {
+            gameStarted = true;
+            listen();
         }
     }
 
     /**
      * Prints a menu on the screen to let the user choose what to do next
      */
-    public void printMenu(String nickname) {
+    public void printMenu() {
         System.out.println("""
                 GAME MENU: type the corresponding command
-                @TAKE to choose from 1 to 3 tiles from the board, followed by the coordinates (xy) of the chosen tiles
-                @PUT to choose a column for putting the cards, followed by the column number
-                @CHAT to open the chat, followed by the nickname/all and the message@QUIT to exit from the game""");
+                \t@MENU to show again this menu
+                \t@BOARD to print the game board
+                \t@TAKE to choose from 1 to 3 tiles from the board, followed by the coordinates (xy) of the chosen tiles
+                \t@MYSHELF to print you bookshelf
+                \t@ALLSHELVES to print the bookshelf of all the players
+                \t@PUT to choose a column for putting the cards, followed by the column number
+                \t@CHAT to open the chat, followed by the nickname/all and the message
+                \t@QUIT to exit from the game""");
     }
 
     /**
@@ -221,7 +305,10 @@ public class Cli implements View {
             System.out.println("    0   1   2   3   4");
             printMatrix(bookshelf, BOOKSHELF_HEIGHT, BOOKSHELF_LENGTH);
         }
-
+        else {
+            System.out.println("    0   1   2   3   4");
+            printMatrix(new ItemCard[BOOKSHELF_HEIGHT][BOOKSHELF_LENGTH], BOOKSHELF_HEIGHT, BOOKSHELF_LENGTH);
+        }
     }
 
     /**
@@ -247,7 +334,7 @@ public class Cli implements View {
      *
      * @param matrix is the representation of the bookshelf, or the board
      * @param height is the number of rows
-     * @param length    is the number of columns
+     * @param length is the number of columns
      */
     private void printMatrix(ItemCard[][] matrix, int height, int length) {
         for (int i = 0; i < height; i++) {
