@@ -1,10 +1,10 @@
 package it.polimi.ingsw.client.view;
 
 import it.polimi.ingsw.client.ClientController;
+import it.polimi.ingsw.client.InputController;
 import it.polimi.ingsw.server.model.HouseItem;
 import it.polimi.ingsw.server.model.ItemCard;
 
-import java.util.ArrayList;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -12,9 +12,10 @@ public class Cli implements View {
     private static final int DIM_BOARD = 9;
     private static final int BOOKSHELF_HEIGHT = 6;
     private static final int BOOKSHELF_LENGTH = 5;
+    private static boolean stopListening;
     Scanner in = new Scanner(System.in);
+    InputController checkInput;
     ClientController clientController;
-
     String username;
     String address;
     int port = -1;
@@ -26,25 +27,28 @@ public class Cli implements View {
 
     /**
      * Initialization of the client profile asking: username,type of connection, ip and port
+     *
      * @param clientController define the direct contact with all the object containers send from the server
      */
     public Cli(ClientController clientController) {
         this.clientController = clientController;
         clientController.setView(this);
+        checkInput = new InputController(clientController);
 
         askUsername();
+        clientController.playersBookshelf.put("pippo", null);
         askConnection();
         askIP();
         askPort();
-        try{
-            clientController.startconnection(select,username,address,port);
-        }
-        catch(Exception e){
+
+        try {
+            clientController.startconnection(select, username, address, port);
+        } catch (Exception e) {
             printError(e.getMessage());
             disconnectionError();
         }
 
-
+        listen();
     }
 
     /**
@@ -77,6 +81,7 @@ public class Cli implements View {
         } while (port == -1);
         System.out.println("The server IP port chosen is: " + port);
     }
+
     /**
      * Ask the IP address of the server, running controls on the inserted String
      */
@@ -90,6 +95,7 @@ public class Cli implements View {
         } while (address.equals(""));
         System.out.println("The server IP address chosen is: " + address);
     }
+
     /**
      * Ask the Username of the client
      */
@@ -102,83 +108,84 @@ public class Cli implements View {
         } while (username.equals(""));
     }
 
+    public void listen() {
+        String choice;
+        String[] splitString;
+        StringBuilder msg = new StringBuilder();
+        String destNickname;
+
+        printMenu(clientController.getMyNickname());
+
+        while (!stopListening) {
+            if (in.hasNextLine()) {
+                choice = in.nextLine();
+                splitString = choice.split(" ");
+
+                for (int i = 0; i < splitString.length; i++) {
+                    splitString[i] = splitString[i].toLowerCase();
+                }
+
+                switch (splitString[0]) {
+                    case "@quit" -> {
+                        System.out.println("Stopping CLI...");
+                        stopListening = true;
+                    }
+                    case "@menu" -> printMenu(clientController.getMyNickname());
+                    case "@take" -> {
+                        if (!checkInput.checkTake(splitString)) {
+                            System.out.println("Errore take");
+                        }
+                        //chiamo il metodo selectCards
+
+                    }
+                    case "@put" -> {
+                        if (!checkInput.checkPut(splitString)) {
+                            System.out.println("Errore put");
+                        }
+                        //chiamo il metodo putCards
+
+                    }
+                    case "@chat" -> {
+                        int dest = checkInput.checkChat(splitString);
+
+                        if (dest == 1) {
+                            destNickname = splitString[1];
+
+                            for (int i = 2; i < splitString.length; i++) {
+                                msg.append(splitString[i]).append(" ");
+                            }
+
+                            // metodo chat diretta
+                        } else if (dest == 2) {
+                            destNickname = "all";
+
+                            for (int i = 2; i < splitString.length; i++) {
+                                msg.append(splitString[i]).append(" ");
+                            }
+
+                            // metodo chat globale
+                        } else {
+                            System.out.println("Errore chat");
+                            break;
+                        }
+
+                        System.out.println("Sending " + msg + "to " + destNickname);
+                    }
+                    default -> System.out.println("Input not recognised... try again");
+                }
+            }
+        }
+    }
+
     /**
      * Prints a menu on the screen to let the user choose what to do next
      */
     public void printMenu(String nickname) {
-        String choice = null;
-
-        if(in.hasNextLine() && in.nextLine().equalsIgnoreCase("@menu")) {
-            System.out.println("GAME MENU: type the corresponding command\n" +
-                    "@TAKE to choose from 1 to 3 tiles from the board, followed by the coordinates (xy) of the chosen tiles\n" +
-                    "@PUT to choose a column for putting the cards, followed by the column number\n" +
-                    "@CHAT to open the chat, followed by the nickname/all and the message" +
-                    "@QUIT to exit from the game");
-
-            if (in.hasNextLine()) {
-                choice = in.nextLine();
-            }
-        }
-
-        if (choice != null) {
-            String[] splitString = choice.split(" ");
-
-            if (splitString[0].equalsIgnoreCase("@TAKE")) {
-                ArrayList<Integer> coords = new ArrayList<Integer>();
-
-                for (int i = 1; i < splitString.length; i++) {
-                    coords.add(splitString[i].charAt(0) * 10 + splitString[i].charAt(1));
-                    //poi vediamo le altre cose da fare, intanto metto le coordinate in un'arraylist
-                }
-            }
-            else if (splitString[0].equalsIgnoreCase("@PUT")) {
-                if (splitString[1].length() > 1) {
-                    System.out.println("Column index out of range");
-                    // mandiamo un errore o qualcosa
-                }
-
-                int column = splitString[1].charAt(0);
-                if (column > BOOKSHELF_LENGTH) {
-                    System.out.println("Column index out of range");
-                    // mandiamo un errore o qualcosa
-                }
-                else {
-                    System.out.println("Putting your tiles into column " + column);
-                    // chiamiamo il metodo per inserire
-                }
-            }
-            else if (splitString[0].equalsIgnoreCase("@CHAT")) {
-                String dest = splitString[1];
-                if (dest == null) {
-                    System.out.println("No destination found");
-                    // mandiamo un errore o qualcosa
-                }
-                else if (dest.equalsIgnoreCase(nickname)) {
-                    System.out.println("You cannot send a message to yourself!");
-                    // mandiamo un errore o qualcosa
-                }
-
-                String msg = splitString[2];
-                if (msg == null) {
-                    System.out.println("No message found");
-                    // mandiamo un errore o qualcosa
-                }
-
-                //chiamiamo i metodi per la chat
-            }
-            else if (splitString[0].equalsIgnoreCase("@QUIT")) {
-                System.out.println("Closing the game");
-                //shut down the game
-            }
-            else {
-                System.out.println("Input not recognised... try again");
-                printMenu(nickname);
-            }
-        }
-        else {
-            System.out.println("Input not recognised... try again");
-            printMenu(nickname);
-        }
+        System.out.println("""
+                GAME MENU: type the corresponding command
+                @TAKE to choose from 1 to 3 tiles from the board, followed by the coordinates (xy) of the chosen tiles
+                @PUT to choose a column for putting the cards, followed by the column number
+                @CHAT to open the chat, followed by the nickname/all and the message@QUIT to exit from the game""");
     }
 
     /**
@@ -187,21 +194,7 @@ public class Cli implements View {
     @Override
     public void printBoard(ItemCard[][] board) {
         System.out.println("    0   1   2   3   4   5   6   7   8");
-
-        for (int i = 0; i < DIM_BOARD; i++) {
-            for (int j = 0; j < DIM_BOARD; j++) {
-                if (j == 0) {
-                    System.out.print((char) 27 + "[39m" + i + " | ");
-                }
-
-                printCell(board, i, j);
-
-                if (j < DIM_BOARD - 1) {
-                    System.out.print((char) 27 + "[39m" + " | ");
-                }
-            }
-            System.out.println();
-        }
+        printMatrix(board, DIM_BOARD, DIM_BOARD);
     }
 
     /**
@@ -226,19 +219,7 @@ public class Cli implements View {
     public void printMyBookshelf(ItemCard[][] bookshelf) {
         if (bookshelf != null) {
             System.out.println("    0   1   2   3   4");
-            for (int i = 0; i < BOOKSHELF_HEIGHT; i++) {
-                for (int j = 0; j < BOOKSHELF_LENGTH; j++) {
-                    if (j == 0) {
-                        System.out.print((char) 27 + "[39m" + i + " | ");
-                    }
-                    printCell(bookshelf, i, j);
-                    if (j < BOOKSHELF_LENGTH - 1) {
-                        System.out.print((char) 27 + "[39m" + " | ");
-                    }
-                }
-
-                System.out.println();
-            }
+            printMatrix(bookshelf, BOOKSHELF_HEIGHT, BOOKSHELF_LENGTH);
         }
 
     }
@@ -255,8 +236,30 @@ public class Cli implements View {
             char itemChar = matrix[i][j].getMyItem().toString().charAt(0);
 
             System.out.print((char) 27 + chooseColorCode(itemChar) + itemChar);
+            System.out.print((char) 27 + "[39m" + " | ");
         } else {
             System.out.print(" ");
+        }
+    }
+
+    /**
+     * Private method that prints a cell from an ItemCard matrix (bookshelf or board)
+     *
+     * @param matrix is the representation of the bookshelf, or the board
+     * @param height is the number of rows
+     * @param length    is the number of columns
+     */
+    private void printMatrix(ItemCard[][] matrix, int height, int length) {
+        for (int i = 0; i < height; i++) {
+            for (int j = 0; j < length; j++) {
+                if (j == 0) {
+                    System.out.print((char) 27 + "[39m" + i + " | ");
+                }
+
+                printCell(matrix, i, j);
+            }
+
+            System.out.println();
         }
     }
 
@@ -339,9 +342,10 @@ public class Cli implements View {
                 } else if (i == 11) {
                     System.out.println("Five tiles of the same item forming a diagonal.");
                 } else if (i == 12) {
-                    System.out.println("Five columns of increasing or decreasing height. \n"
-                            + "Starting from the first column on the left or on the right, each next column must be made of exactly one more tile. \n"
-                            + "Tiles can be of any type.");
+                    System.out.println("""
+                            Five columns of increasing or decreasing height.\s
+                            Starting from the first column on the left or on the right, each next column must be made of exactly one more tile.\s
+                            Tiles can be of any type.""");
                 }
 
                 System.out.println("The maximum available score for this card is " + playerComGoal.get(i) + ".");
@@ -397,10 +401,11 @@ public class Cli implements View {
     public void print(String yourTurn) {
         System.out.println(yourTurn);
     }
+
     /**
      * Disconnection of the Cli after the client is disconnected from the server
      */
-    private void disconnectionError(){
+    private void disconnectionError() {
         System.out.println("\nPress ENTER to exit");
         in.nextLine();
         System.exit(1);

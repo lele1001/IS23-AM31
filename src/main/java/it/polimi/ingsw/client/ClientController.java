@@ -25,7 +25,7 @@ public class ClientController {
     private static final int BOOKSHELF_LENGTH = 5;
     private String myNickname;
     ItemCard[][] board = new ItemCard[DIM_BOARD][DIM_BOARD];
-    Map<String, ItemCard[][]> playersBookshelf = new HashMap<>();
+    public Map<String, ItemCard[][]> playersBookshelf = new HashMap<>();
     Map<Integer, Integer> playerComGoal = new HashMap<>();
     boolean myTurn = false;
     Map<Integer,ItemCard> selectedTiles = new HashMap<>();
