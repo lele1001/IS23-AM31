@@ -112,7 +112,7 @@ public class Server {
             System.out.println("Socket error: creating threads.");
             return;
         }
-        ServerSocket serverSocket = null;
+        ServerSocket serverSocket;
         InetAddress address = InetAddress.getByAddress(InetAddress.getLocalHost().getAddress());
         try {
             serverSocket = new ServerSocket(port);
@@ -121,6 +121,11 @@ public class Server {
             return;
         }
         System.out.println("Server socket is ready.");
+        try {
+            serverSocket.setSoTimeout(20);
+        } catch (SocketException e) {
+            throw new RuntimeException(e);
+        }
         while (!stop) {
             try {
                 Socket socket = serverSocket.accept();
@@ -128,8 +133,7 @@ public class Server {
                 ClientHandlerSocket clientHandlerSocket = new ClientHandlerSocket(socket, this, this.connectionControl);
                 executor.submit(clientHandlerSocket);
             } catch (IOException e) {
-                System.err.println("Socket error: waiting for clients.");
-                break;
+                //break;
             }
         }
         try {
