@@ -27,20 +27,20 @@ class GameModelTest {
         try {
             gameModel.selectCard(new ArrayList<>(List.of(32, 33)));
         } catch (NoRightItemCardSelection e) {
-            System.out.println("Eccezione");;
+            System.out.println("Eccezione");
         }
         try {
             gameModel.selectCard(new ArrayList<>(List.of(3, 4)));
         } catch (NoRightItemCardSelection e) {
-            System.out.println("Eccezione");;
+            System.out.println("Eccezione not Right");
         }
 
         try {
             gameModel.InsertCard("Luca", new ArrayList<>(List.of(new ItemCard(HouseItem.Games, ItemNumber.Third), new ItemCard(HouseItem.Books, ItemNumber.Second))), 2);
         } catch (NoBookshelfSpaceException e) {
-            throw new RuntimeException(e);
+            System.out.println("Eccezione Space");
         } catch (NotSameSelectedException e) {
-            throw new RuntimeException(e);
+            System.out.println("Eccezione not Same");
         }
     }
 

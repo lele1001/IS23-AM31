@@ -11,7 +11,6 @@ import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
 public class ConnectionControl {
     private final Map<String, ClientHandler> clientHandlerMap = new HashMap<>();
@@ -27,8 +26,9 @@ public class ConnectionControl {
 
     public void askPlayerNumber(String nickname) {
         System.out.println("Asking players number to " + nickname);
-        Optional<Integer> optional = this.clientHandlerMap.get(nickname).askPlayerNumber();
-        optional.ifPresent(server::setAvailablePlayers);
+        this.clientHandlerMap.get(nickname).askPlayerNumber();
+        //Optional<Integer> optional = this.clientHandlerMap.get(nickname).askPlayerNumber();
+        //optional.ifPresent(server::setAvailablePlayers);
     }
 
     public boolean tryAddInQueue(ClientHandler clientHandler, String nickname) {
@@ -177,7 +177,7 @@ public class ConnectionControl {
 
     public void SendPersGoalCreated(String nickname, String persGoal) {
         if (clientHandlerMap.containsKey(nickname))
-            clientHandlerMap.get(nickname).SendPersGoalCreated(nickname, persGoal);
+            clientHandlerMap.get(nickname).SendPersGoalCreated(persGoal);
         else
             System.out.println("No connection available for " + nickname);
     }

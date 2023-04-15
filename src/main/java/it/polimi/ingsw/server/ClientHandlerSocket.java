@@ -8,7 +8,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.util.Optional;
 
 public class ClientHandlerSocket extends ClientHandler implements Runnable {
     private final Server server;
@@ -55,7 +54,6 @@ public class ClientHandlerSocket extends ClientHandler implements Runnable {
     }
 
 
-
     public void listen() {
         BufferedReader in;
         try {
@@ -88,13 +86,13 @@ public class ClientHandlerSocket extends ClientHandler implements Runnable {
 
 
     @Override
-    public Optional<Integer> askPlayerNumber() {
+    public void askPlayerNumber() {
         if (!playerNumberAsked) {// non gliel'ho ancora chiesto: glielo chiedo
             playerNumberAsked = true;
             socketOut.println("Please, give me player number.");
             socketOut.flush();
         }
-        return Optional.empty();
+        //return Optional.empty();
     }
 
     private void onMessageReceived(String JSONMessage) {
@@ -138,7 +136,7 @@ public class ClientHandlerSocket extends ClientHandler implements Runnable {
     }
 
     @Override
-    public void SendPersGoalCreated(String nickname, String persGoal) {
+    public void SendPersGoalCreated(String persGoal) {
 
     }
 
