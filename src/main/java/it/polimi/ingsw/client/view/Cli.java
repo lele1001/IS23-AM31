@@ -328,6 +328,7 @@ public class Cli implements View {
             System.out.print((char) 27 + "[39m" + " | ");
         } else {
             System.out.print(" ");
+            System.out.print((char) 27 + "[39m" + " | ");
         }
     }
 
