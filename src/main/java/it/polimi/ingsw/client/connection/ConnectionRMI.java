@@ -10,34 +10,40 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 
-public class ConnectionRMI extends ConnectionClient implements RMIClientConnection{
+public class ConnectionRMI extends ConnectionClient implements RMIClientConnection {
     private RMI server;
+
     /**
      * Initialize the RMI connection to the server
+     *
      * @param controller ClientController on which it will call all the methods after the server request
-     * @param address IP address of the server
-     * @param port IP port of the server
+     * @param address    IP address of the server
+     * @param port       IP port of the server
      */
-    public ConnectionRMI(ClientController controller,String address,int port) {
-        super(controller,address,port);
+    public ConnectionRMI(ClientController controller, String address, int port) throws RemoteException{
+        super(controller, address, port);
     }
 
     /**
-     *
-     * @throws IOException throws if it has an error with input or output
+     * @throws IOException       throws if it has an error with input or output
      * @throws NotBoundException throws if it has an error with the connection
      */
     @Override
-    public void startconnection() throws IOException, NotBoundException {
-        boolean i=true;
+    public void startConnection() throws IOException, NotBoundException {
+        boolean i = true;
         System.out.println("locateregistry");
-        Registry registry= LocateRegistry.getRegistry(getAddress(),getPort());
+        Registry registry = LocateRegistry.getRegistry(getAddress(), getPort());
         System.out.println("locatelookup");
-        server=(RMI) registry.lookup("MyShelfieServer");
+        server = (RMI) registry.lookup("MyShelfieServer");
         //i=server.login(getController().getMyNickname());
-        if(i){
+        if (i) {
             System.out.println("login done");
         }
+    }
+
+    @Override
+    public void onPlayerNumber() throws RemoteException {
+
     }
 
     @Override
@@ -62,18 +68,14 @@ public class ConnectionRMI extends ConnectionClient implements RMIClientConnecti
 
     @Override
     public void onBookshelfChanged(String nickname, ItemCard[][] newBookshelf) throws RemoteException {
-        getController().onBookshelfChanged(nickname,newBookshelf);
+        getController().onBookshelfChanged(nickname, newBookshelf);
     }
 
     @Override
     public void onCommonGoalCreated(Integer comGoalID, Integer score) throws RemoteException {
-        getController().onCommonGoalCreated(comGoalID,score);
+        getController().onCommonGoalCreated(comGoalID, score);
     }
 
-    @Override
-    public void onEmptyCardBag() throws RemoteException {
-        getController().onEmptyCardBag();
-    }
     @Override
     public void onCommonGoalDone(String nickname, int[] newValue) throws RemoteException {
         getController().onCommonGoalDone(nickname, newValue);
@@ -87,5 +89,25 @@ public class ConnectionRMI extends ConnectionClient implements RMIClientConnecti
     @Override
     public void onChangeTurn(String nickname) throws RemoteException {
         getController().onChangeTurn(nickname);
+    }
+
+    @Override
+    public void onWinner(String winner) throws RemoteException {
+
+    }
+
+    @Override
+    public void onGameIsStarting() throws RemoteException {
+
+    }
+
+    @Override
+    public void onErrorGameNotAvailable() throws RemoteException {
+
+    }
+
+    @Override
+    public void ping() throws RemoteException {
+
     }
 }

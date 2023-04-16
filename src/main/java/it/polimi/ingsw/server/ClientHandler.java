@@ -3,8 +3,6 @@ package it.polimi.ingsw.server;
 import it.polimi.ingsw.server.controller.ConnectionControl;
 import it.polimi.ingsw.server.model.ItemCard;
 
-import java.util.Optional;
-
 public abstract class ClientHandler {
     protected volatile String nickname;
     protected ConnectionControl connectionControl;
@@ -15,7 +13,7 @@ public abstract class ClientHandler {
 
 //    public abstract void addToGame();
 
-    public abstract Optional<Integer> askPlayerNumber();
+    public abstract void askPlayerNumber();
 
     public abstract void sendErrorGameNotAvailable();
 
@@ -25,7 +23,7 @@ public abstract class ClientHandler {
 
     public abstract void SendCommonGoalDone(String source, int[] details);
 
-    public abstract void SendPersGoalCreated(String nickname, String persGoal);
+    public abstract void SendPersGoalCreated(String persGoal);
 
     public abstract void SendCommonGoalCreated(Integer comGoalID, Integer score);
 
@@ -33,6 +31,6 @@ public abstract class ClientHandler {
 
     public abstract void SendBoardChanged(ItemCard[][] newBoard);
 
-    public abstract void sendWinner (String winner);
+    public abstract void sendWinner(String winner);
 
 }

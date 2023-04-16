@@ -32,6 +32,7 @@ public class Cli implements View {
      *
      * @param clientController define the direct contact with all the object containers send from the server
      */
+
     public Cli(ClientController clientController) {
         this.clientController = clientController;
         clientController.setView(this);
@@ -46,7 +47,7 @@ public class Cli implements View {
         askPort();
 
         /*try {
-            clientController.startconnection(select, username, address, port);
+            clientController.startConnection(select, username, address, port);
         } catch (Exception e) {
             printError(e.getMessage());
             disconnectionError();
@@ -59,7 +60,8 @@ public class Cli implements View {
                     Thread.sleep(10000);
                 } catch (InterruptedException e) {
                 }
-
+                for(int i=0;i<5;i++)
+                    printBoard(clientController.board);
                 gameStarted = true;
             }
         };
@@ -326,6 +328,7 @@ public class Cli implements View {
             System.out.print((char) 27 + "[39m" + " | ");
         } else {
             System.out.print(" ");
+            System.out.print((char) 27 + "[39m" + " | ");
         }
     }
 

@@ -187,6 +187,7 @@ public class ClientController {
         if (view instanceof Cli) {
             System.out.println("Cli added to Client controller");
         }
+        //view.printMyBookshelf(playersBookshelf.get(myNickname));
     }
 
     /**
@@ -199,7 +200,7 @@ public class ClientController {
      * @param port     Port of the server
      * @throws Exception Called if ther is a connection problem, close the client
      */
-    public void startconnection(int select, String username, String address, int port) throws Exception {
+    public void startConnection(int select, String username, String address, int port) throws Exception {
         this.myNickname = username;
         System.out.println("Your nickname is" + myNickname);
         if (select == 0) {
@@ -209,7 +210,7 @@ public class ClientController {
             connectionClient = new ConnectionSocket(this, address, port);
             System.out.println("Created Socket connection!");
         }
-        connectionClient.startconnection();
+        connectionClient.startConnection();
     }
 
     /**

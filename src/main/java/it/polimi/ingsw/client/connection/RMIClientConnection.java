@@ -6,6 +6,7 @@ import java.rmi.Remote;
 import java.rmi.RemoteException;
 
 public interface RMIClientConnection extends Remote {
+    void onPlayerNumber() throws RemoteException;
 
     void onError(String error) throws RemoteException;
 
@@ -19,11 +20,13 @@ public interface RMIClientConnection extends Remote {
 
     void onCommonGoalCreated(Integer comGoalID, Integer score) throws RemoteException;
 
-    void onEmptyCardBag() throws RemoteException;
-
     void onCommonGoalDone(String nickname, int[] newValue) throws RemoteException;
 
     void onPersGoalCreated(String newValue) throws RemoteException;
 
     void onChangeTurn(String nickname) throws RemoteException;
+    void onWinner(String winner) throws RemoteException;
+    void onGameIsStarting() throws RemoteException;
+    void onErrorGameNotAvailable() throws RemoteException;
+    void ping() throws RemoteException;
 }
