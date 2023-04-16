@@ -69,23 +69,29 @@ public class Server {
     }
 
     public int startRMI() {
-        rmiInterface = new RMIInterface(this.connectionControl);
+        rmiInterface = new RMIInterface(this,this.connectionControl);
         RMI stub = null;
         try {
             stub = (RMI) UnicastRemoteObject.exportObject(
                     rmiInterface, port+1);
         } catch (RemoteException e) {
+            System.out.println("Error during stub");
+            e.printStackTrace();
             return -1;
         }
         Registry registry = null;
         try {
             registry = LocateRegistry.createRegistry(port+1);
         } catch (RemoteException e) {
+            System.out.println("Error during registry");
+            e.printStackTrace();
             return -1;
         }
         try {
             registry.bind("MyShelfieServer", stub);
         } catch (RemoteException | AlreadyBoundException e) {
+            System.out.println("Error during binding");
+            e.printStackTrace();
             return -1;
         }
         return 0;
@@ -181,7 +187,7 @@ public class Server {
                 throw new RuntimeException(e);
             }
         }
-
+        System.out.println("Setplayers");
         while (this.queue.size() < availablePlayers) {
             try {
                 this.wait();
@@ -189,7 +195,7 @@ public class Server {
                 throw new RuntimeException(e);
             }
         }
-
+        System.out.println("Past setplayers");
         // dico ai giocatori in eccesso che non possono giocare
         for (String s : queue) {
             if (queue.indexOf(s) >= availablePlayers) {

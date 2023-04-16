@@ -35,7 +35,7 @@ public class ConnectionRMI extends ConnectionClient implements RMIClientConnecti
         Registry registry = LocateRegistry.getRegistry(getAddress(), getPort());
         System.out.println("locatelookup");
         server = (RMI) registry.lookup("MyShelfieServer");
-        //i=server.login(getController().getMyNickname());
+        i=server.login(getController().getMyNickname(),this);
         if (i) {
             System.out.println("login done");
         }
@@ -43,7 +43,20 @@ public class ConnectionRMI extends ConnectionClient implements RMIClientConnecti
 
     @Override
     public void onPlayerNumber() throws RemoteException {
-
+        System.out.println("michiedonoplayernumber");
+        Thread t=new Thread(){
+            @Override
+            public void run() {
+                try {
+                    server.setPlayerNumber(2);
+                } catch (RemoteException e) {
+                    e.printStackTrace();
+                }
+                System.out.println("settato a 2");
+            }
+        };
+        t.start();
+        System.out.println("chiesto" );
     }
 
     @Override
@@ -93,21 +106,22 @@ public class ConnectionRMI extends ConnectionClient implements RMIClientConnecti
 
     @Override
     public void onWinner(String winner) throws RemoteException {
-
+        System.out.println("winner is" + winner);
     }
 
     @Override
     public void onGameIsStarting() throws RemoteException {
-
+        System.out.println("gamestarting");
+        getController().getView().setGameStarted(true);
     }
 
     @Override
     public void onErrorGameNotAvailable() throws RemoteException {
-
+        System.out.println("Gamenotavailable");
     }
 
     @Override
     public void ping() throws RemoteException {
-
+        System.out.println("Ping");
     }
 }

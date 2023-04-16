@@ -46,6 +46,16 @@ public class ClientHandlerRmi extends ClientHandler {
     }
 
     @Override
+    public void sendPlayerTurn(String nickname) {
+
+    }
+
+    @Override
+    public void disconnectPlayer() {
+
+    }
+
+    @Override
     public void askSelect() {
         //chiama il metodo sul client
         try {
@@ -116,6 +126,7 @@ public class ClientHandlerRmi extends ClientHandler {
             client.onBoardChanged(newBoard);
         } catch (RemoteException e) {
             System.out.println("Impossibile chiedere al client la board modificata");
+            e.printStackTrace();
         }
     }
 

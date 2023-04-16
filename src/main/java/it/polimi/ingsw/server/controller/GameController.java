@@ -21,8 +21,6 @@ public class GameController implements PropertyChangeListener {
     private ModelInterface gameModel;
     private TurnPhase turnPhase;
 
-    private final Object lock = new Object();
-
     private boolean gameIsActive;
 
     public GameController(ConnectionControl connectionControl) {
@@ -38,6 +36,7 @@ public class GameController implements PropertyChangeListener {
             System.out.println("Error: number of players not correct.");
             return;
         }
+        connectionControl.sendGameIsStarting();
         // creates the list used to iterate on players
         this.playersList = playersList;
         gameModel = new GameModel();
@@ -54,9 +53,7 @@ public class GameController implements PropertyChangeListener {
      */
     public void run() {
         gameIsActive = true;
-        connectionControl.sendGameIsStarting();
         int i = 0;
-
         while (!winner) {
             playerTurn(i);
             if (i < playersList.size() - 1)
@@ -101,6 +98,7 @@ public class GameController implements PropertyChangeListener {
         currPlayer = playersList.get(indexCurrPlayer);
         if (connectionControl.isOnline(currPlayer)) {
             System.out.println(playersList.get(indexCurrPlayer) + "'s turn");
+            connectionControl.sendPlayerTurn(currPlayer);
             turnPhase = TurnPhase.SELECTCARDS;
             connectionControl.askSelect(currPlayer);
 
@@ -109,23 +107,19 @@ public class GameController implements PropertyChangeListener {
                 Runnable r = new Runnable() {
                     @Override
                     public void run() {
-                        while(connectionControl.isOnline(currPlayer) && turnPhase != TurnPhase.ENDTURN);
+                        while (connectionControl.isOnline(currPlayer) && turnPhase != TurnPhase.ENDTURN) ;
                     }
                 };
                 Future<?> f = service.submit(r);
                 f.get(1, TimeUnit.MINUTES);     // attende il task per un minuto
-            }
-            catch (final InterruptedException e) {
+            } catch (final InterruptedException e) {
                 // The thread was interrupted during sleep, wait or join
-            }
-            catch (final TimeoutException e) {
+            } catch (final TimeoutException e) {
                 connectionControl.changePlayerStatus(currPlayer);
                 // Took too long!
-            }
-            catch (final ExecutionException e) {
+            } catch (final ExecutionException e) {
                 // An exception from within the Runnable task
-            }
-            finally {
+            } finally {
                 service.shutdown();
             }
 
