@@ -7,7 +7,6 @@ import it.polimi.ingsw.server.model.ItemCard;
 
 import java.util.Map;
 import java.util.Scanner;
-import java.util.TimerTask;
 
 public class Cli implements View {
     private static final int DIM_BOARD = 9;
@@ -19,12 +18,16 @@ public class Cli implements View {
     ClientController clientController;
     String username;
     String address;
-    boolean gameStarted = false;
+    public boolean gameStarted = false;
     int port = -1;
     int select = -1;
 
     public Cli() {
 
+    }
+
+    public void setGameStarted(boolean gameStarted) {
+        this.gameStarted = gameStarted;
     }
 
     /**
@@ -46,34 +49,34 @@ public class Cli implements View {
         askIP();
         askPort();
 
-        /*try {
+        try {
             clientController.startConnection(select, username, address, port);
         } catch (Exception e) {
             printError(e.getMessage());
             disconnectionError();
-        }*/
+        }
 
-        TimerTask t = new TimerTask() {
-            @Override
-            public void run() {
-                try {
-                    Thread.sleep(10000);
-                } catch (InterruptedException e) {
-                }
-                for(int i=0;i<5;i++)
-                    printBoard(clientController.board);
-                gameStarted = true;
-            }
-        };
-
-        Thread menuThread = new Thread() {
-            @Override
-            public void run() {
-                t.run();
-            }
-        };
-
-        menuThread.start();
+//        TimerTask t = new TimerTask() {
+//            @Override
+//            public void run() {
+//                try {
+//                    Thread.sleep(10000);
+//                } catch (InterruptedException e) {
+//                }
+//                for(int i=0;i<5;i++)
+//                    printBoard(clientController.board);
+//                gameStarted = true;
+//            }
+//        };
+//
+//        Thread menuThread = new Thread() {
+//            @Override
+//            public void run() {
+//                t.run();
+//            }
+//        };
+//
+//        menuThread.start();
         waitForGame();
     }
 

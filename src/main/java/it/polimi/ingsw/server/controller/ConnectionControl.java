@@ -46,12 +46,16 @@ public class ConnectionControl {
         }
         System.out.println(nickname + " added in queue.");
         this.clientHandlerMap.put(nickname, clientHandler);
+        System.out.println("put in handlermap");
         this.clientStatusMap.put(nickname, true);
+        System.out.println("put in status");
         server.addInQueue(nickname);
+        System.out.println("ritornato da addqueue");
         return true;
     }
 
     public void removeClient(String nickname) {
+        this.clientHandlerMap.get(nickname).disconnectPlayer();
         this.clientHandlerMap.remove(nickname);
         this.clientStatusMap.remove(nickname);
     }
@@ -78,7 +82,7 @@ public class ConnectionControl {
         this.clientStatusMap.put(nickname, false);
         sendErrorToEveryone(nickname + " is disconnected from the game.");
         server.removeFromQueue(nickname);   // se era in coda, lo rimuovo
-
+        this.clientHandlerMap.get(nickname).disconnectPlayer();
         // this.clientHandlerMap.remove(nickname);
         //gameController.changePlayerStatus(nickname);
 
@@ -196,7 +200,11 @@ public class ConnectionControl {
         }
         onEndGame();
     }
-
+    public void sendPlayerTurn(String nickname){
+        for (ClientHandler c : clientHandlerMap.values()) {
+            c.sendPlayerTurn(nickname);
+        }
+    }
 
     public boolean isOnline(String nickname) {
         return clientStatusMap.getOrDefault(nickname, true);

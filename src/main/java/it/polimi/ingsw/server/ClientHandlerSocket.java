@@ -95,6 +95,16 @@ public class ClientHandlerSocket extends ClientHandler implements Runnable {
         //return Optional.empty();
     }
 
+    @Override
+    public void sendPlayerTurn(String nickname) {
+
+    }
+
+    @Override
+    public void disconnectPlayer() {
+
+    }
+
     private void onMessageReceived(String JSONMessage) {
         // switch per parsare i messaggi e chiamare i metodi corretti sul connectioncontrol
         // attenzione ad accettare due tipologie di messaggi: nickname all'inizio se ancora non ce l'ho (nickname==null)

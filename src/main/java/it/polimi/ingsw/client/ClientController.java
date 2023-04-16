@@ -34,13 +34,14 @@ public class ClientController {
     private final Map<Integer, HouseItem> myPersGoal = new HashMap<>();
     ConnectionClient connectionClient;
     TurnPhase phase = NULL;
-
+// new methds for failed login
     /**
      * Method called from the server to ask for the selection of the itemcards to the client
      * Change turn phase and print the board to the client's view
      */
     public void onSelect() {
         phase = SELECTCARDS;
+        selectedTiles.clear();
         // to fix
         view.print("Choose the Tiles you want to get from the Board");
         view.printBoard(board);
@@ -76,11 +77,11 @@ public class ClientController {
      * @param newBookshelf The updated bookshelf
      */
     public void onBookshelfChanged(String nickname, ItemCard[][] newBookshelf) {
-        if (playersBookshelf.containsKey(nickname))
-            playersBookshelf.replace(nickname, newBookshelf);
-        else
-            playersBookshelf.put(nickname, newBookshelf);
+        playersBookshelf.put(nickname, newBookshelf);
         view.printBookshelves(playersBookshelf);
+    }
+    public View getView(){
+        return view;
     }
 
     /**
@@ -103,7 +104,8 @@ public class ClientController {
      */
     public void onCommonGoalCreated(Integer comGoalID, Integer score) {
         playerComGoal.put(comGoalID, score);
-        view.printCommonGoal(playerComGoal);
+        if(playerComGoal.size()>1)
+            view.printCommonGoal(playerComGoal);
     }
 
     /**

@@ -1,6 +1,8 @@
 package it.polimi.ingsw.server.model;
 
-public class ItemCard {
+import java.io.Serializable;
+
+public class ItemCard implements Serializable {
     private final HouseItem houseItem;
     private final ItemNumber itemNumber;
 
