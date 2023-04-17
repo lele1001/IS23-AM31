@@ -44,6 +44,9 @@ public class ConnectionControl {
             } else
                 return false;
         }
+        if (clientHandlerMap.containsKey(nickname)) {
+            return false;
+        }
         System.out.println(nickname + " added in queue.");
         this.clientHandlerMap.put(nickname, clientHandler);
         System.out.println("put in handlermap");
@@ -80,10 +83,10 @@ public class ConnectionControl {
 
     public void changePlayerStatus(String nickname) {
         this.clientStatusMap.put(nickname, false);
-        sendErrorToEveryone(nickname + " is disconnected from the game.");
         server.removeFromQueue(nickname);   // se era in coda, lo rimuovo
         this.clientHandlerMap.get(nickname).disconnectPlayer();
-        // this.clientHandlerMap.remove(nickname);
+        this.clientHandlerMap.remove(nickname);
+        sendErrorToEveryone(nickname + " is disconnected from the game.");
         //gameController.changePlayerStatus(nickname);
 
     }
@@ -194,7 +197,7 @@ public class ConnectionControl {
     }
 
     public void sendWinner(String winner) {
-        System.out.println("Sending winner's nickname.");
+        System.out.println("Sending winner's nickname...");
         for (ClientHandler c : clientHandlerMap.values()) {
             c.sendWinner(winner);
         }
@@ -214,5 +217,13 @@ public class ConnectionControl {
     private void onEndGame() {
         this.clientStatusMap.clear();
         this.clientHandlerMap.clear();
+        server.onEndGame();
+    }
+
+    public void disconnectAll() {
+        System.out.println("Connection control: disconnecting all players...");
+        for (ClientHandler c : clientHandlerMap.values()) {
+            c.disconnectPlayer();
+        }
     }
 }

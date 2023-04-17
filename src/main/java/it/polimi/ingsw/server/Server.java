@@ -23,6 +23,7 @@ public class Server {
     private ArrayList<String> queue;
     private static boolean stop;
     private RMIInterface rmiInterface;
+    private boolean playersNumberAsked = false;
 
 
     public Server() {
@@ -41,7 +42,11 @@ public class Server {
         server.start();
     }
 
+    /**
+     * Initializes server's attributes (not only at the beginning but also at the end of a game).
+     */
     public void initialize() {
+        System.out.println("Initializing server...");
         stop = false;
         availablePlayers = -1;
         this.connectionControl = new ConnectionControl(this);
@@ -50,52 +55,57 @@ public class Server {
         this.queue = new ArrayList<>();
     }
 
+    /**
+     * Starts server's features, creating RMI and Socket interfaces.
+     */
     public void start() {
         initialize();
         new Thread(this::setGame).start();
-        if (startRMI() != 0) {
+        if (!startRMI()) {
             System.out.println("Error creating RMI interface.");
         } else
             System.out.println("Server RMI is ready.");
-
-        try {
-            startSocket();
-        } catch (UnknownHostException e) {
-            throw new RuntimeException(e);
-        }
+        startSocket();
         System.out.println("Server stopped.");
         System.exit(0);
     }
 
-    public int startRMI() {
+    /**
+     * Opens RMI interface to accept connections with this technology.
+     * @return false if an error occurs.
+     */
+    public boolean startRMI() {
         rmiInterface = new RMIInterface(this, this.connectionControl);
-        RMI stub = null;
+        RMI stub;
         try {
             stub = (RMI) UnicastRemoteObject.exportObject(
                     rmiInterface, port + 1);
         } catch (RemoteException e) {
             System.out.println("Error during stub");
             e.printStackTrace();
-            return -1;
+            return false;
         }
-        Registry registry = null;
+        Registry registry;
         try {
             registry = LocateRegistry.createRegistry(port + 1);
         } catch (RemoteException e) {
             System.out.println("Error during registry");
             e.printStackTrace();
-            return -1;
+            return false;
         }
         try {
             registry.bind("MyShelfieServer", stub);
         } catch (RemoteException | AlreadyBoundException e) {
             System.out.println("Error during binding");
             e.printStackTrace();
-            return -1;
+            return false;
         }
-        return 0;
+        return true;
     }
 
+    /**
+     * A loop that always listens from server's terminal (useful if user wants to stop server).
+     */
     public static void listen() {
         Scanner in = new Scanner(System.in);
         while (true) {
@@ -109,7 +119,10 @@ public class Server {
 
     }
 
-    public void startSocket() throws UnknownHostException {
+    /**
+     * Opens socket interface, with the infinitive loop that accepts socket's connection (every 20 ms, while stop == false).
+     */
+    public void startSocket() {
         ExecutorService executor;
         try {
             executor = Executors.newCachedThreadPool();
@@ -118,7 +131,7 @@ public class Server {
             return;
         }
         ServerSocket serverSocket;
-        InetAddress address = InetAddress.getByAddress(InetAddress.getLocalHost().getAddress());
+        //InetAddress address = InetAddress.getByAddress(InetAddress.getLocalHost().getAddress());
         try {
             serverSocket = new ServerSocket(port);
         } catch (Exception e) {
@@ -129,18 +142,21 @@ public class Server {
         try {
             serverSocket.setSoTimeout(20);
         } catch (SocketException e) {
-            throw new RuntimeException(e);
+            System.err.println("Socket timeout error.");
+            stop = true;
         }
         while (!stop) {
             try {
                 Socket socket = serverSocket.accept();
-                System.out.println("There's a new client online!");
+                System.out.println("There's a new socket client online!");
                 ClientHandlerSocket clientHandlerSocket = new ClientHandlerSocket(socket, this, this.connectionControl);
                 executor.submit(clientHandlerSocket);
             } catch (IOException e) {
                 //break;
             }
         }
+        this.connectionControl.disconnectAll();
+        System.out.println("Closing socket...");
         try {
             serverSocket.close();
         } catch (IOException e) {
@@ -150,23 +166,37 @@ public class Server {
     }
 
 
+    /**
+     * Allows the first player to set number of available players. Notifies setGame() method that was waiting for the first.
+     *
+     * @param availablePlayers to set.
+     */
     public synchronized void setAvailablePlayers(int availablePlayers) {
         this.availablePlayers = availablePlayers;
         this.notifyAll();
+        System.out.println("Players' number set to " + availablePlayers);
     }
 
+    /**
+     * Adds a new client in the queue and notifies setGame() method that was waiting for clients.
+     *
+     * @param nickname of the new user.
+     */
     public synchronized void addInQueue(String nickname) {
-        //System.out.println("Server: adding in queue.");
+        System.out.println("Server: adding in queue.");
         this.queue.add(nickname);
-        if (this.queue.size() == 1)
-            this.notifyAll();
-
+        this.notifyAll();
     }
 
+    /**
+     * Removes a client from the queue. Useful at the beginning of the game: if game is not still started, the queue is used to manage clients that go out before the game.
+     * @param nickname of the client that has gone out.
+     */
     public synchronized void removeFromQueue(String nickname) {
         if (this.queue != null) {
             if ((this.queue.indexOf(nickname) == 0)) {  // era il primo: notifico setGame()
                 this.queue.remove(nickname);
+                playersNumberAsked = false;
                 this.notifyAll();
             } else {
                 this.queue.remove(nickname);
@@ -174,10 +204,15 @@ public class Server {
         }
     }
 
+    /**
+     * A loop used at the beginning of the game with the aim of waiting for the first (to ask him players' number) and for the other clients.
+     * When the game is complete (and all the clients are online), it starts the game, calling methods on GameController.
+     */
     public synchronized void setGame() {
         while (availablePlayers == -1) {
-            if (!this.queue.isEmpty()) {
+            if ((!this.queue.isEmpty()) && (!playersNumberAsked)) {
                 this.connectionControl.askPlayerNumber(this.queue.get(0));
+                playersNumberAsked = true;
             }
             try {
                 //System.out.println("Waiting for the first.");
@@ -186,7 +221,7 @@ public class Server {
                 throw new RuntimeException(e);
             }
         }
-        System.out.println("Setplayers");
+        //System.out.println("Setplayers");
         while (this.queue.size() < availablePlayers) {
             try {
                 this.wait();
@@ -194,16 +229,16 @@ public class Server {
                 throw new RuntimeException(e);
             }
         }
-        System.out.println("Past setplayers");
+        //System.out.println("Past setplayers");
         // dico ai giocatori in eccesso che non possono giocare
         for (String s : queue) {
             if (queue.indexOf(s) >= availablePlayers) {
                 connectionControl.SendError("Game not available.", s);
                 connectionControl.removeClient(s);
-                queue.remove(s);
+                //queue.remove(s);
             }
         }
-
+        queue.removeIf(x -> queue.indexOf(x)>=availablePlayers);
         this.gameController.createGame(queue);
         new Thread(this.gameController::run).start();
 

@@ -1,11 +1,21 @@
 package it.polimi.ingsw.client.connection;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import it.polimi.ingsw.client.ClientController;
+import it.polimi.ingsw.server.model.ItemCard;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.Socket;
 
 public class ConnectionSocket extends ConnectionClient {
     ClientController controller;
+    private PrintWriter socketOut = null;
+    private BufferedReader in;
+    private Socket socket;
 
     /**
      * Initialize the RMI connection to the server
@@ -19,7 +29,92 @@ public class ConnectionSocket extends ConnectionClient {
     }
 
     @Override
-    public void startConnection() {
+    public void startConnection() throws Exception {
+        try {
+            socket = new Socket(address, port);
+            socketOut = new PrintWriter(socket.getOutputStream());
+            in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+        } catch (Exception e) {
+            throw new Exception("Error establishing socket connection.");
+        }
+        System.out.println("Connection established.");
+        System.out.println("Sending nickname...");
+        send(generateStandardMessage("nickname", getController().getMyNickname()));
+        new Thread(this::listen).start();
+    }
 
+    private void send(JsonObject json) {
+        socketOut.println(json.toString());
+        socketOut.flush();
+    }
+
+    private JsonObject generateStandardMessage(String type, String value) {
+        JsonObject json = new JsonObject();
+        json.addProperty("Type", type);
+        json.addProperty("Value", value);
+        return json;
+    }
+
+    public void listen() {
+        while (true) {
+            try {
+                String line = in.readLine();
+                System.out.println("Received: " + line);
+                onMessageReceived(line);
+            } catch (IOException e) {
+                System.out.println("Server disconnected.");
+                break;
+            }
+        }
+        socketOut.close();
+        try {
+            in.close();
+            socket.close();
+        } catch (IOException e) {
+            System.out.println("Error closing socket interface.");
+        }
+        //chiamare disconnect
+    }
+
+    private void onMessageReceived(String json) {
+        JsonObject jsonObject = new JsonObject();
+        Gson gson = new Gson();
+        try {
+            jsonObject = gson.fromJson(json, jsonObject.getClass());
+            switch (jsonObject.get("Type").getAsString()) {
+                case "askPlayersNumber" -> {
+                }
+                case "disconnect" -> {
+
+                }
+                case "askSelect" -> getController().onSelect();
+
+                case "askInsert" -> getController().onInsert();
+
+                case "boardChanged" ->
+                        getController().onBoardChanged(gson.fromJson(jsonObject.get("Value").getAsString(), ItemCard[][].class));
+
+                case "bookshelfChanged" ->
+                        getController().onBookshelfChanged(jsonObject.get("nickname").toString(), gson.fromJson(jsonObject.get("Value").getAsString(), ItemCard[][].class));
+
+                case "error" -> getController().onError(jsonObject.get("Value").getAsString());
+
+                case "comGoalCreated" ->
+                        getController().onCommonGoalCreated(jsonObject.get("Value").getAsInt(), jsonObject.get("score").getAsInt());
+
+                case "persGoalCreated" -> getController().onPersGoalCreated(jsonObject.get("Value").getAsString());
+
+                case "changeTurn" -> getController().onChangeTurn(jsonObject.get("Value").getAsString());
+
+                case "gameStarted" -> {
+                    System.out.println("gameStarting");
+                    getController().getView().setGameStarted(true);
+                }
+                default -> System.out.println("Unknown message from server.");
+
+            }
+        } catch (Exception e) {
+            System.out.println("Unknown message from server.");
+        }
     }
 }

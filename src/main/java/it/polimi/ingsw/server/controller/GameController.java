@@ -10,6 +10,7 @@ import it.polimi.ingsw.server.model.ModelInterface;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.*;
 
 public class GameController implements PropertyChangeListener {
@@ -55,21 +56,41 @@ public class GameController implements PropertyChangeListener {
         gameIsActive = true;
         int i = 0;
         while (!winner) {
+            if (playersList.stream().filter(connectionControl::isOnline).count() < 2) {
+                System.out.println("Too many absents for this game.. waiting for players' returning in game.");
+                connectionControl.sendErrorToEveryone("Too many absents for this game.. waiting for players' returning in game.");
+                ExecutorService service = Executors.newSingleThreadExecutor();
+                try {
+                    Runnable r = () -> {
+                        while (playersList.stream().filter(connectionControl::isOnline).count() < 2)
+                            Thread.onSpinWait();
+                    };
+                    Future<?> f = service.submit(r);
+                    f.get(1, TimeUnit.MINUTES);     // attende per un minuto eventuali giocatori
+                } catch (final InterruptedException e) {
+                    // The thread was interrupted during sleep, wait or join
+                } catch (final TimeoutException e) {
+                    // Troppo tempo: l'eventuale giocatore rimasto è il vincitore.
+                    System.out.println("Took too long for returning... game is ending.");
+                    connectionControl.sendErrorToEveryone("Took too long for returning... game is ending.");
+                    if (playersList.stream().filter(connectionControl::isOnline).count() == 1) {
+                        List<String> remained = playersList.stream().filter(connectionControl::isOnline).toList();
+                        System.out.println("The winner of the game is " + remained.get(0));
+                        connectionControl.sendWinner(remained.get(0));
+                    }
+                } catch (final ExecutionException e) {
+                    // An exception from within the Runnable task
+                } finally {
+                    service.shutdown();
+                    service.close();
+                }
+            }
             playerTurn(i);
             if (i < playersList.size() - 1)
                 i++;
             else
                 i = 0;
-        /*    while(playersList.stream().map(x -> gameModel.isPlayerOnline(x)).filter(x -> x).count() < 2) {
-                if(playersList.stream().map(x -> gameModel.isPlayerOnline(x)).filter(x -> x).count() == 0 ){
 
-                }
-                try {
-                    lock.wait();
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
-            }*/
         }
         runLastTurn(currPlayer);
 
@@ -104,29 +125,30 @@ public class GameController implements PropertyChangeListener {
 
             ExecutorService service = Executors.newSingleThreadExecutor();
             try {
-                Runnable r = new Runnable() {
-                    @Override
-                    public void run() {
-                        while (connectionControl.isOnline(currPlayer) && turnPhase != TurnPhase.ENDTURN) ;
-                    }
+                Runnable r = () -> {
+                    while (connectionControl.isOnline(currPlayer) && turnPhase != TurnPhase.ENDTURN)
+                        Thread.onSpinWait();
                 };
                 Future<?> f = service.submit(r);
                 f.get(1, TimeUnit.MINUTES);     // attende il task per un minuto
             } catch (final InterruptedException e) {
                 // The thread was interrupted during sleep, wait or join
             } catch (final TimeoutException e) {
+                turnPhase = TurnPhase.NULL;
+                connectionControl.SendError("Timeout exceeded: took too long! Disconnecting you from the game...", currPlayer);
                 connectionControl.changePlayerStatus(currPlayer);
                 // Took too long!
             } catch (final ExecutionException e) {
                 // An exception from within the Runnable task
             } finally {
                 service.shutdown();
+                service.close();
             }
 
             if (turnPhase == TurnPhase.ENDTURN) {
                 gameModel.EndTurn(currPlayer);
             } else {
-                connectionControl.sendErrorToEveryone("Player " + currPlayer + " disconnected from the game. Resuming board...");
+                //connectionControl.sendErrorToEveryone("Player " + currPlayer + " disconnected from the game. Resuming board...");
                 gameModel.resumeBoard();
             }
         }
@@ -154,8 +176,10 @@ public class GameController implements PropertyChangeListener {
             gameModel.InsertCard(nickname, cards, column);
         } catch (NoBookshelfSpaceException e) {
             connectionControl.SendError("NO BOOKSHELF SPACE", nickname);
+            connectionControl.askInsert(nickname);
         } catch (NotSameSelectedException e) {
             connectionControl.SendError("CARDS YOU WANT TO INSERT ARE NOT THE SAME YOU SELECTED", nickname);
+            connectionControl.askInsert(nickname);
         }
     }
 
@@ -174,6 +198,7 @@ public class GameController implements PropertyChangeListener {
             gameModel.selectCard(positions);
         } catch (NoRightItemCardSelection e) {
             connectionControl.SendError("NO RIGHT BOARD SELECTION", nickname);
+            connectionControl.askSelect(nickname);
         }
 
     }
@@ -227,8 +252,8 @@ public class GameController implements PropertyChangeListener {
     }*/
 
 
-    public void changePlayerStatus(String nickname) {
+/*    public void changePlayerStatus(String nickname) {
         gameModel.changePlayerStatus(nickname);
-    }
+    }*/
 
 }
