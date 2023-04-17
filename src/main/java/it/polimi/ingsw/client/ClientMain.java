@@ -8,12 +8,13 @@ public class ClientMain {
 
     /**
      * Start of the player side game
+     *
      * @param args CLI or GUI
      */
 
     public static void main(String[] args) {
         if (args.length > 0 && args[0].equalsIgnoreCase("CLI")) {
-            new Cli( new ClientController());
+            new Cli(new ClientController());
         } else {
             //Application.launch(Gui.class);
         }

@@ -25,8 +25,12 @@ public interface RMIClientConnection extends Remote {
     void onPersGoalCreated(String newValue) throws RemoteException;
 
     void onChangeTurn(String nickname) throws RemoteException;
+
     void onWinner(String winner) throws RemoteException;
+
     void onGameIsStarting() throws RemoteException;
+
     void onErrorGameNotAvailable() throws RemoteException;
+
     void ping() throws RemoteException;
 }

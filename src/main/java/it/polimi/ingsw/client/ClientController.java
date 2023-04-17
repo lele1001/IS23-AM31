@@ -34,7 +34,8 @@ public class ClientController {
     private final Map<Integer, HouseItem> myPersGoal = new HashMap<>();
     ConnectionClient connectionClient;
     TurnPhase phase = NULL;
-// new methds for failed login
+// new methods for failed login
+
     /**
      * Method called from the server to ask for the selection of the itemcards to the client
      * Change turn phase and print the board to the client's view
@@ -62,7 +63,7 @@ public class ClientController {
      * Method called from the server when the board change
      * Save the new Board and print it to the client's view
      *
-     * @param newBoard Updated board from the server
+     * @param newBoard is the updated board from the server
      */
     public void onBoardChanged(ItemCard[][] newBoard) {
         this.board = newBoard;
@@ -80,18 +81,19 @@ public class ClientController {
         playersBookshelf.put(nickname, newBookshelf);
         view.printBookshelves(playersBookshelf);
     }
-    public View getView(){
+
+    public View getView() {
         return view;
     }
 
     /**
-     * Method called from the server when an error occurred
+     * Method called from the server when an error occurred,
      * Print the error to the client's view
      *
      * @param error String in which is saved the error
      */
     public void onError(String error) {
-        //genero il messaggio con la stringa di errore, che parserò lato client.
+        //creates the message with the error string that will be parsed by the client.
         view.printError(error);
     }
 
@@ -104,7 +106,7 @@ public class ClientController {
      */
     public void onCommonGoalCreated(Integer comGoalID, Integer score) {
         playerComGoal.put(comGoalID, score);
-        if(playerComGoal.size()>1)
+        if (playerComGoal.size() > 1)
             view.printCommonGoal(playerComGoal);
     }
 
@@ -136,7 +138,7 @@ public class ClientController {
      * Method called from the server when creating the PersonalGoal of the player
      * Create from the json file the PersonalGoal and print it to the client's view
      *
-     * @param newValue String that define the PersonalGoal
+     * @param newValue String that defines the PersonalGoal
      */
     public void onPersGoalCreated(String newValue) {
         Reader json;
@@ -164,7 +166,7 @@ public class ClientController {
 
     /**
      * Method called from the server after the end of a player's turn
-     * If it's my turn I update myTurn and print to the client's view that it's the client's turn
+     * If it is my turn I update myTurn and print to the client's view that it is the client's turn
      *
      * @param nickname the nickname of the player whose turn is
      */
@@ -200,7 +202,7 @@ public class ClientController {
      * @param username player's username
      * @param address  IP of the server
      * @param port     Port of the server
-     * @throws Exception Called if ther is a connection problem, close the client
+     * @throws Exception Called if there is a connection problem, close the client
      */
     public void startConnection(int select, String username, String address, int port) throws Exception {
         this.myNickname = username;

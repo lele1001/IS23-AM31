@@ -42,7 +42,7 @@ public class GameController implements PropertyChangeListener {
         gameModel = new GameModel();
         // sets itself as a listener of the model
         gameModel.setListener(this);
-        // creates the board, the bookshelves
+        // creates the board, and the bookshelves
         // assigns personalGoals and commonGoals
         gameModel.CreateGame(playersList);
 

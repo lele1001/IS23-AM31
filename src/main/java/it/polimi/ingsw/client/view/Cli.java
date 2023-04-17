@@ -31,7 +31,7 @@ public class Cli implements View {
     }
 
     /**
-     * Initialization of the client profile asking: username,type of connection, ip and port
+     * Initialization of the client profile asking: username, type of connection, ip and port
      *
      * @param clientController define the direct contact with all the object containers send from the server
      */
@@ -56,6 +56,8 @@ public class Cli implements View {
             disconnectionError();
         }
 
+        listen();
+
 //        TimerTask t = new TimerTask() {
 //            @Override
 //            public void run() {
@@ -77,7 +79,7 @@ public class Cli implements View {
 //        };
 //
 //        menuThread.start();
-        waitForGame();
+        //waitForGame();
     }
 
     /**
@@ -147,10 +149,25 @@ public class Cli implements View {
         String[] splitString;
         StringBuilder msg = new StringBuilder();
         String destNickname;
+        boolean justStarted = true;
 
-        printMenu();
+        if (!gameStarted) {
+            System.out.println("Waiting for other players to connect...");
+            waitForGameMenu();
+        } else {
+            System.out.println("Welcome " + clientController.getMyNickname() + "!");
+            System.out.println("You will play in a " + clientController.playersBookshelf.keySet().size() + " players game.");
+            printMenu();
+        }
 
         while (!stopListening) {
+            if (gameStarted && justStarted) {
+                System.out.println("Welcome " + clientController.getMyNickname() + "!");
+                System.out.println("You will play in a " + clientController.playersBookshelf.keySet().size() + " players game.");
+                printMenu();
+                justStarted = false;
+            }
+
             if (in.hasNextLine()) {
                 choice = in.nextLine();
                 splitString = choice.split(" ");
@@ -160,7 +177,15 @@ public class Cli implements View {
                 }
 
                 switch (splitString[0]) {
-                    case "@menu" -> printMenu();
+                    // only for testing
+                    case "@startgame" -> gameStarted = true;
+                    case "@menu" -> {
+                        if (gameStarted) {
+                            printMenu();
+                        } else {
+                            waitForGameMenu();
+                        }
+                    }
                     case "@board" -> printBoard(clientController.board);
                     case "@take" -> {
                         if (!checkInput.checkTake(splitString)) {
@@ -169,7 +194,8 @@ public class Cli implements View {
                         //chiamo il metodo selectCards
 
                     }
-                    case "@myshelf" -> printMyBookshelf(clientController.playersBookshelf.get(clientController.getMyNickname()));
+                    case "@myshelf" ->
+                            printMyBookshelf(clientController.playersBookshelf.get(clientController.getMyNickname()));
                     case "@allshelves" -> printBookshelves(clientController.playersBookshelf);
                     case "@put" -> {
                         if (!checkInput.checkPut(splitString)) {
@@ -219,46 +245,11 @@ public class Cli implements View {
     /**
      * Allows the user only to quit the game while waiting for it to start
      */
-    public void waitForGame() {
-        String choice;
-        String[] splitString;
-
+    public void waitForGameMenu() {
         System.out.println("""
-                \nWaiting for other players to connect...
                 GAME MENU: type the corresponding command
-                \t@MENU to show again this menu
-                \t@QUIT to exit from the game""");
-
-        while (!gameStarted && !stopListening) {
-            if (in.hasNextLine()) {
-                System.out.println("the timer is " + gameStarted);
-                choice = in.nextLine();
-                splitString = choice.split(" ");
-
-                for (int i = 0; i < splitString.length; i++) {
-                    splitString[i] = splitString[i].toLowerCase();
-                }
-
-                if (splitString[0].equals("@quit")) {
-                    System.out.println("Stopping CLI...");
-                    stopListening = true;
-                } else if (splitString[0].equals("@menu")) {
-                    System.out.println("""
-                            GAME MENU: type the corresponding command
-                            \t@MENU to show again this menu
-                            \t@QUIT to exit from the game""");
-                } else {
-                    System.out.println("Input not recognised... try again");
-                }
-            }
-        }
-
-        if (stopListening) {
-            disconnectionError();
-        } else {
-            gameStarted = true;
-            listen();
-        }
+                 \t@MENU to show again this menu
+                 \t@QUIT to exit from the game""");
     }
 
     /**
@@ -309,8 +300,7 @@ public class Cli implements View {
         if (bookshelf != null) {
             System.out.println("    0   1   2   3   4");
             printMatrix(bookshelf, BOOKSHELF_HEIGHT, BOOKSHELF_LENGTH);
-        }
-        else {
+        } else {
             System.out.println("    0   1   2   3   4");
             printMatrix(new ItemCard[BOOKSHELF_HEIGHT][BOOKSHELF_LENGTH], BOOKSHELF_HEIGHT, BOOKSHELF_LENGTH);
         }
@@ -328,10 +318,10 @@ public class Cli implements View {
             char itemChar = matrix[i][j].getMyItem().toString().charAt(0);
 
             System.out.print((char) 27 + chooseColorCode(itemChar) + itemChar);
-            System.out.print((char) 27 + "[39m" + " | ");
+            System.out.print((char) 27 + "[0;39m" + " | ");
         } else {
             System.out.print(" ");
-            System.out.print((char) 27 + "[39m" + " | ");
+            System.out.print((char) 27 + "[0;39m" + " | ");
         }
     }
 
@@ -346,7 +336,7 @@ public class Cli implements View {
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < length; j++) {
                 if (j == 0) {
-                    System.out.print((char) 27 + "[39m" + i + " | ");
+                    System.out.print((char) 27 + "[0;39m" + i + " | ");
                 }
 
                 printCell(matrix, i, j);
@@ -365,25 +355,25 @@ public class Cli implements View {
     private String chooseColorCode(char itemChar) {
         if (itemChar == 'C') {
             // Cats are green
-            return "[32m";
+            return "[1;92m";
         } else if (itemChar == 'F') {
             // Frames are blue
-            return "[34m";
+            return "[1;94m";
         } else if (itemChar == 'G') {
             // Games are yellow
-            return "[33m";
+            return "[1;93m";
         } else if (itemChar == 'B') {
             // Books are white
-            return "[37m";
+            return "[1;97m";
         } else if (itemChar == 'P') {
             // Plants are purple
-            return "[35m";
+            return "[1;95m";
         } else if (itemChar == 'T') {
             // Trophies are cyan
-            return "[36m";
+            return "[1;96m";
         } else {
             // Default color
-            return "[39m";
+            return "[0;39m";
         }
     }
 
@@ -405,31 +395,23 @@ public class Cli implements View {
         if (!playerComGoal.isEmpty()) {
             for (Integer i : playerComGoal.keySet()) {
                 if (i == 1) {
-                    System.out.println("Two separate groups each containing four tiles of the same type in a 2x2 square.\n"
-                            + "The tiles of one square can be different from those of the other square.");
+                    System.out.println("Two separate groups each containing four tiles of the same type in a 2x2 square.\n" + "The tiles of one square can be different from those of the other square.");
                 } else if (i == 2) {
-                    System.out.println("Two columns each formed by 6 different types of tiles.\n"
-                            + "One column can show the same or a different combination of the other column.");
+                    System.out.println("Two columns each formed by 6 different types of tiles.\n" + "One column can show the same or a different combination of the other column.");
                 } else if (i == 3) {
-                    System.out.println("Six groups each containing at least 2 tiles of the same type (not necessarily in the depicted shape).\n"
-                            + "The tiles of one group can be different from those of another group.");
+                    System.out.println("Six groups each containing at least 2 tiles of the same type (not necessarily in the depicted shape).\n" + "The tiles of one group can be different from those of another group.");
                 } else if (i == 4) {
-                    System.out.println("Four groups each containing at least 4 tiles of the same type (not necessarily in the depicted shape).\n"
-                            + "The tiles of one group can be different from those of another group.");
+                    System.out.println("Four groups each containing at least 4 tiles of the same type (not necessarily in the depicted shape).\n" + "The tiles of one group can be different from those of another group.");
                 } else if (i == 5) {
-                    System.out.println("Three columns each formed by 6 tiles of maximum three different types.\n"
-                            + "One column can show the same or a different combination of another column.");
+                    System.out.println("Three columns each formed by 6 tiles of maximum three different types.\n" + "One column can show the same or a different combination of another column.");
                 } else if (i == 6) {
-                    System.out.println("Two lines each formed by 5 different types of tiles.\n"
-                            + "One line can show the same or a different combination of the other line.");
+                    System.out.println("Two lines each formed by 5 different types of tiles.\n" + "One line can show the same or a different combination of the other line.");
                 } else if (i == 7) {
-                    System.out.println("Four lines each formed by 5 tiles of maximum three different types.\n"
-                            + "One line can show the same or a different combination of another line.");
+                    System.out.println("Four lines each formed by 5 tiles of maximum three different types.\n" + "One line can show the same or a different combination of another line.");
                 } else if (i == 8) {
                     System.out.println("Four tiles of the same type in the four corners of the bookshelf.");
                 } else if (i == 9) {
-                    System.out.println("Eight tiles of the same type.\n"
-                            + "There is no restriction about the position of these tiles.");
+                    System.out.println("Eight tiles of the same type.\n" + "There is no restriction about the position of these tiles.");
                 } else if (i == 10) {
                     System.out.println("Five tiles of the same type forming an X");
                 } else if (i == 11) {

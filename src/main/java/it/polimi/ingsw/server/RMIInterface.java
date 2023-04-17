@@ -7,11 +7,11 @@ import it.polimi.ingsw.server.model.ItemCard;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 
-public class RMIInterface  implements RMI {
+public class RMIInterface implements RMI {
     private final Server server;
     private ConnectionControl connectionControl;
 
-    public RMIInterface(Server server,ConnectionControl connectionControl)  {
+    public RMIInterface(Server server, ConnectionControl connectionControl) {
         this.server = server;
         this.connectionControl = connectionControl;
     }
@@ -19,6 +19,7 @@ public class RMIInterface  implements RMI {
     public void setConnectionControl(ConnectionControl connectionControl) {
         this.connectionControl = connectionControl;
     }
+
     @Override
     public void selectCard(String nickname, ArrayList<Integer> positions) {
         connectionControl.selectCard(nickname, positions);
@@ -26,7 +27,7 @@ public class RMIInterface  implements RMI {
 
     @Override
     public void setPlayerNumber(int number) throws RemoteException {
-        System.out.println("Settato player number a "+ number);
+        System.out.println("Settato player number a " + number);
         server.setAvailablePlayers(number);
     }
 
@@ -39,7 +40,7 @@ public class RMIInterface  implements RMI {
     public boolean login(String nickname, RMIClientConnection client) {        //deve prendere anche la classe del client
         ClientHandlerRmi clientHandlerRmi = new ClientHandlerRmi(connectionControl, nickname, client); //deve passargli la classe dell'interfaccia rmi client
         if (!connectionControl.tryAddInQueue(clientHandlerRmi, nickname)) {
-            // c'è già un gioco attivo e non sei dentrosd
+            // c'è già un gioco attivo e non sei dentro
             return false;
         }
         return true;

@@ -106,14 +106,14 @@ public class ClientHandlerSocket extends ClientHandler implements Runnable {
     }
 
     private void onMessageReceived(String JSONMessage) {
-        // switch per parsare i messaggi e chiamare i metodi corretti sul connectioncontrol
+        // switch per parsare i messaggi e chiamare i metodi corretti sul connectionControl
         // attenzione ad accettare due tipologie di messaggi: nickname all'inizio se ancora non ce l'ho (nickname==null)
         if (JSONMessage.contains("nickname")) {
             nickname = JSONMessage;
             System.out.println(nickname + " is trying to enter the game.");
         }
 
-        //e numgiocatori perché gliel'ho chiesto (playerNumberASked==true)
+        //e numGiocatori perché glie l'ho chiesto (playerNumberAsked==true)
 /*        server.setAvailablePlayers(2);
         playerNumberAsked = false;*/
 

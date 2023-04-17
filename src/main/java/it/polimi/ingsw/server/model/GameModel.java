@@ -108,8 +108,6 @@ public class GameModel implements ModelInterface {
 
     /**
      * Set the controller as listener
-     *
-     * @param listener
      */
     public void setListener(PropertyChangeListener listener) {
         this.listener = listener;
