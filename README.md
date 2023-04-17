@@ -1,20 +1,25 @@
 # MyShelfie Board Game - Software Engineering Project
-MyShelfie Board Game is the final test of **"Software Engineering"** course of **"Computer Science Engineering"** held at Politecnico di Milano (2022/2023).
+
+MyShelfie Board Game is the final test of **"Software Engineering"** course of **"Computer Science Engineering"** held
+at Politecnico di Milano (2022/2023).
 
 **Teacher**: Alessandro Margara
 
 ## The Team
+
 * [Niccolò Brembilla](https://github.com/BrembillaNiccolo)
 * [Luigi Bruzzese](https://github.com/luigibruzzese)
 * [Eleonora Cabai](https://github.com/lele1001)
 * [Milagros Adriana Casaperalta Garcia](https://github.com/MilagrosCasaperalta)
 
 ## Project specification
+
 The project consists of a Java version of the board game *MyShelfie*, made by Cranio Creations.
 
 <!-- Project requirements: [link](https://github.com/nicolozambon/ing-sw-2022-sciarrabba-sironi-zambon/blob/master/resources/requirements.pdf?raw=true). -->
 
 The final version includes:
+
 * Initial UML diagram.
 * Final UML diagram.
 * Working game implementation, which has to be rules compliant.
@@ -24,16 +29,18 @@ The final version includes:
 ## Implemented functionalities
 
 ### Main functionalities
-| Functionality                    | Status |
-|:---------------------------------|:------:|
-| Basic rules                      | ✅ |
-| Complete rules                   | ✅ |
+
+| Functionality                    |          Status           |
+|:---------------------------------|:-------------------------:|
+| Basic rules                      |             ✅             |
+| Complete rules                   |             ✅             |
 | RMI                              | :arrows_counterclockwise: |
 | Socket                           | :arrows_counterclockwise: |
 | TUI _(Textual User Interface)_   | :arrows_counterclockwise: |
-| GUI _(Graphical User Interface)_ |        |
+| GUI _(Graphical User Interface)_ |                           |
 
 ### Advanced functionalities
+
 | Functionality                | Status |
 |:-----------------------------|:------:|
 | Multiple simultaneous games  |        |

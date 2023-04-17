@@ -14,7 +14,7 @@ public class ClientHandlerRmi extends ClientHandler {
     public ClientHandlerRmi(ConnectionControl connectionControl, String nickname, RMIClientConnection client) {
         this.connectionControl = connectionControl;
         this.nickname = nickname;
-        this.client=client;
+        this.client = client;
 
     }
 
@@ -24,7 +24,7 @@ public class ClientHandlerRmi extends ClientHandler {
         } catch (RemoteException e) {
             // se si è disconnesso
             connectionControl.changePlayerStatus(nickname);
-            //todo disconnesione client
+            //todo client disconnection
         }
 
     }
@@ -96,7 +96,7 @@ public class ClientHandlerRmi extends ClientHandler {
     @Override
     public void SendCommonGoalDone(String source, int[] details) {
         try {
-            client.onCommonGoalDone(nickname,details);
+            client.onCommonGoalDone(nickname, details);
         } catch (RemoteException e) {
             System.out.println("Impossibile chiedere al client la bookshelf modificata");
         }
@@ -114,9 +114,9 @@ public class ClientHandlerRmi extends ClientHandler {
     @Override
     public void SendCommonGoalCreated(Integer comGoalID, Integer score) {
         try {
-            client.onCommonGoalCreated(comGoalID,score);
+            client.onCommonGoalCreated(comGoalID, score);
         } catch (RemoteException e) {
-            System.out.println("Impossibile chiedere al client il commongoal");
+            System.out.println("Impossibile chiedere al client il CommonGoal");
         }
     }
 
@@ -159,7 +159,7 @@ public class ClientHandlerRmi extends ClientHandler {
     }
 
     private class TaskTimer {
-        void run(){
+        void run() {
 
         }
     }

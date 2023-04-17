@@ -200,7 +200,8 @@ public class ConnectionControl {
         }
         onEndGame();
     }
-    public void sendPlayerTurn(String nickname){
+
+    public void sendPlayerTurn(String nickname) {
         for (ClientHandler c : clientHandlerMap.values()) {
             c.sendPlayerTurn(nickname);
         }

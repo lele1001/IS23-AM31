@@ -6,7 +6,8 @@ import it.polimi.ingsw.server.model.ItemCard;
 import java.util.Map;
 
 public interface View {
-    public void setGameStarted(boolean gameStarted);
+    void setGameStarted(boolean gameStarted);
+
     /**
      * Implementation for Cli and Gui of the printing/update of the board
      *
@@ -50,7 +51,7 @@ public interface View {
     void printPersGoal(Map<Integer, HouseItem> myPersGoal);
 
     /**
-     * Implementation for Cli and Gui of the printing if it's the player's turn
+     * Implementation for Cli and Gui of the printing if it is the player's turn
      *
      * @param yourTurn String to print
      */

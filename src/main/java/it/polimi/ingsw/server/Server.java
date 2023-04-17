@@ -55,8 +55,7 @@ public class Server {
         new Thread(this::setGame).start();
         if (startRMI() != 0) {
             System.out.println("Error creating RMI interface.");
-        }
-        else
+        } else
             System.out.println("Server RMI is ready.");
 
         try {
@@ -69,11 +68,11 @@ public class Server {
     }
 
     public int startRMI() {
-        rmiInterface = new RMIInterface(this,this.connectionControl);
+        rmiInterface = new RMIInterface(this, this.connectionControl);
         RMI stub = null;
         try {
             stub = (RMI) UnicastRemoteObject.exportObject(
-                    rmiInterface, port+1);
+                    rmiInterface, port + 1);
         } catch (RemoteException e) {
             System.out.println("Error during stub");
             e.printStackTrace();
@@ -81,7 +80,7 @@ public class Server {
         }
         Registry registry = null;
         try {
-            registry = LocateRegistry.createRegistry(port+1);
+            registry = LocateRegistry.createRegistry(port + 1);
         } catch (RemoteException e) {
             System.out.println("Error during registry");
             e.printStackTrace();
@@ -99,9 +98,9 @@ public class Server {
 
     public static void listen() {
         Scanner in = new Scanner(System.in);
-        while(true) {
+        while (true) {
             String s = in.nextLine();
-            if(s.equals("stop") || s.equals("STOP") || s.equals("Stop")) {
+            if (s.equals("stop") || s.equals("STOP") || s.equals("Stop")) {
                 System.out.println("Stopping server...");
                 stop = true;
                 break;
@@ -161,7 +160,7 @@ public class Server {
     }
 
     public synchronized void removeFromQueue(String nickname) {
-        if(this.queue != null) {
+        if (this.queue != null) {
             if ((this.queue.indexOf(nickname) == 0)) {  // era il primo: notifico setGame()
                 this.queue.remove(nickname);
                 this.notifyAll();

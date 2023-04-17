@@ -13,7 +13,7 @@ public abstract class ConnectionClient extends UnicastRemoteObject {
     /**
      * Initialize the connection to the server
      *
-     * @param controller ClientController on which it will call all the methods after the server request
+     * @param controller ClientController, on which it will call all the methods after the server request
      * @param address    IP address of the server
      * @param port       IP port of the server
      */

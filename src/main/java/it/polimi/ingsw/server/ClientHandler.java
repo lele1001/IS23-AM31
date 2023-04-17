@@ -12,8 +12,11 @@ public abstract class ClientHandler {
     public abstract void askInsert();
 
     public abstract void askPlayerNumber();
+
     public abstract void sendPlayerTurn(String nickname);
+
     public abstract void disconnectPlayer();
+
     public abstract void sendErrorGameNotAvailable();
 
     public abstract void sendGameIsStarting();

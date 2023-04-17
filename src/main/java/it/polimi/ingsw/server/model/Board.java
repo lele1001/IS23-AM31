@@ -23,7 +23,7 @@ public class Board {
             {5, 5, 5, 4, 2, 2, 5, 5, 5},
             {5, 5, 5, 5, 4, 3, 5, 5, 5}};
 
-    //Arraylist used for creating the board using the minimum number of player to put an Itemcard in the Cell
+    //Arraylist used for creating the board using the minimum number of players to put an Itemcard in the Cell
 
     /**
      * Creation of the Board with a matrix containing the minimum number of players to insert an Itemcard during the refill of the board
@@ -38,7 +38,7 @@ public class Board {
 
     /**
      * Method that fills the board with Itemcard if there is not in the correspondent Cell
-     * If the exception is thrown the Game controller has to be notified
+     * If the exception is thrown, the Game controller has to be notified
      */
     public void fillBoard() throws EmptyCardBagException {
 
@@ -64,7 +64,7 @@ public class Board {
     }
 
     /**
-     * Check if there are only isolated card on the board
+     * Check if there are only isolated cards on the board
      * I cannot have an edge case because edges are always null
      */
     public boolean checkRefill() throws EmptyCardBagException {
@@ -124,7 +124,7 @@ public class Board {
 
     /**
      * Check if the Itemcard can be deleted
-     * First check controls that the positions number are contained in the board
+     * First check controls that the position numbers are contained in the board
      * Second check controls that in the selected Cells there are the ItemCards
      * Called two separate methods to do other controls
      *
@@ -197,7 +197,7 @@ public class Board {
      * Delete ItemCards in the selected Cells only if all the checks are successful
      *
      * @param position number from which we can extract row and column
-     * @throws NoRightItemCardSelection if the selected ItemCards don't pas the check selection
+     * @throws NoRightItemCardSelection if the selected ItemCards do not pass the check selection
      */
 
     public ArrayList<ItemCard> deleteSelection(ArrayList<Integer> position) throws NoRightItemCardSelection {

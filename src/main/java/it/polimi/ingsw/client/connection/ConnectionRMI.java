@@ -16,11 +16,11 @@ public class ConnectionRMI extends ConnectionClient implements RMIClientConnecti
     /**
      * Initialize the RMI connection to the server
      *
-     * @param controller ClientController on which it will call all the methods after the server request
+     * @param controller ClientController, on which it will call all the methods after the server request
      * @param address    IP address of the server
      * @param port       IP port of the server
      */
-    public ConnectionRMI(ClientController controller, String address, int port) throws RemoteException{
+    public ConnectionRMI(ClientController controller, String address, int port) throws RemoteException {
         super(controller, address, port);
     }
 
@@ -31,11 +31,11 @@ public class ConnectionRMI extends ConnectionClient implements RMIClientConnecti
     @Override
     public void startConnection() throws IOException, NotBoundException {
         boolean i = true;
-        System.out.println("locateregistry");
+        System.out.println("locateRegistry");
         Registry registry = LocateRegistry.getRegistry(getAddress(), getPort());
-        System.out.println("locatelookup");
+        System.out.println("locateLookup");
         server = (RMI) registry.lookup("MyShelfieServer");
-        i=server.login(getController().getMyNickname(),this);
+        i = server.login(getController().getMyNickname(), this);
         if (i) {
             System.out.println("login done");
         }
@@ -44,7 +44,7 @@ public class ConnectionRMI extends ConnectionClient implements RMIClientConnecti
     @Override
     public void onPlayerNumber() throws RemoteException {
         System.out.println("michiedonoplayernumber");
-        Thread t=new Thread(){
+        Thread t = new Thread() {
             @Override
             public void run() {
                 try {
@@ -56,7 +56,7 @@ public class ConnectionRMI extends ConnectionClient implements RMIClientConnecti
             }
         };
         t.start();
-        System.out.println("chiesto" );
+        System.out.println("chiesto");
     }
 
     @Override
@@ -111,13 +111,13 @@ public class ConnectionRMI extends ConnectionClient implements RMIClientConnecti
 
     @Override
     public void onGameIsStarting() throws RemoteException {
-        System.out.println("gamestarting");
+        System.out.println("gameStarting");
         getController().getView().setGameStarted(true);
     }
 
     @Override
     public void onErrorGameNotAvailable() throws RemoteException {
-        System.out.println("Gamenotavailable");
+        System.out.println("GameNotAvailable");
     }
 
     @Override
