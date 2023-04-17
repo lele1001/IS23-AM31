@@ -34,5 +34,6 @@ public abstract class ClientHandler {
     public abstract void SendBoardChanged(ItemCard[][] newBoard);
 
     public abstract void sendWinner(String winner);
+    public abstract void chatToMe(String sender,String message);
 
 }

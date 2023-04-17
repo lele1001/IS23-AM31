@@ -9,6 +9,7 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.util.ArrayList;
 
 public class ConnectionRMI extends ConnectionClient implements RMIClientConnection {
     private RMI server;
@@ -35,6 +36,8 @@ public class ConnectionRMI extends ConnectionClient implements RMIClientConnecti
         Registry registry = LocateRegistry.getRegistry(getAddress(), getPort());
         System.out.println("locateLookup");
         server = (RMI) registry.lookup("MyShelfieServer");
+        System.out.println("Connection established.");
+        System.out.println("Sending nickname...");
         i = server.login(getController().getMyNickname(), this);
         if (i) {
             System.out.println("login done");
@@ -42,8 +45,28 @@ public class ConnectionRMI extends ConnectionClient implements RMIClientConnecti
     }
 
     @Override
+    public void selectCard(String nickname, ArrayList<Integer> cardsSelected) throws RemoteException {
+        server.selectCard(nickname, cardsSelected);
+    }
+
+    @Override
+    public void insertCard(String nickname, ArrayList<ItemCard> cards, int column) throws RemoteException {
+        server.insertCard(nickname, cards, column);
+    }
+
+    @Override
+    public void chatToAll(String nickname, String message) throws Exception {
+        server.chatToAll(nickname, message);
+    }
+
+    @Override
+    public void chatToPlayer(String sender, String receiver, String message) throws Exception {
+        server.chatToPlayer(sender, receiver, message);
+    }
+
+    @Override
     public void onPlayerNumber() throws RemoteException {
-        System.out.println("michiedonoplayernumber");
+        getController().onPlayerNumber();
         Thread t = new Thread() {
             @Override
             public void run() {
@@ -123,5 +146,10 @@ public class ConnectionRMI extends ConnectionClient implements RMIClientConnecti
     @Override
     public void ping() throws RemoteException {
         System.out.println("Ping");
+    }
+
+    @Override
+    public void chatToMe(String sender, String message) throws RemoteException {
+        getController().chatToMe(sender, message);
     }
 }

@@ -63,4 +63,8 @@ public interface View {
      * @param book player's bookshelf
      */
     void printMyBookshelf(ItemCard[][] book);
+
+    void chatToMe(String sender, String message);
+
+    void printAskPlayerNumber();
 }

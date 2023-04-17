@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.ArrayList;
 
 public class ConnectionSocket extends ConnectionClient {
     ClientController controller;
@@ -41,6 +42,26 @@ public class ConnectionSocket extends ConnectionClient {
         System.out.println("Sending nickname...");
         send(generateStandardMessage("nickname", getController().getMyNickname()));
         new Thread(this::listen).start();
+    }
+
+    @Override
+    public void selectCard(String nickname, ArrayList<Integer> cardsSelected) throws Exception {
+
+    }
+
+    @Override
+    public void insertCard(String nickname, ArrayList<ItemCard> cards, int column) throws Exception {
+
+    }
+
+    @Override
+    public void chatToAll(String nickname, String message) throws Exception {
+
+    }
+
+    @Override
+    public void chatToPlayer(String sender, String receiver, String message) throws Exception {
+
     }
 
     private void send(JsonObject json) {

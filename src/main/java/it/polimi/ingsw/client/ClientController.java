@@ -34,6 +34,7 @@ public class ClientController {
     private final Map<Integer, HouseItem> myPersGoal = new HashMap<>();
     ConnectionClient connectionClient;
     TurnPhase phase = NULL;
+    Boolean selectNumberOfPlayers = false;
 // new methods for failed login
 
     /**
@@ -97,6 +98,11 @@ public class ClientController {
         view.printError(error);
     }
 
+    public void onPlayerNumber() {
+        selectNumberOfPlayers = true;
+        view.printAskPlayerNumber();
+    }
+
     /**
      * Method called from the server when a CommonGoal is created
      * Print the CommonGoal to the client's view
@@ -108,14 +114,6 @@ public class ClientController {
         playerComGoal.put(comGoalID, score);
         if (playerComGoal.size() > 1)
             view.printCommonGoal(playerComGoal);
-    }
-
-    /**
-     * Method called from the server when the Card bag is empty
-     * Print the Empty CardBag error to the client's view
-     */
-    public void onEmptyCardBag() {
-        view.printError("CardBag out of Cards");
     }
 
     /**
@@ -215,6 +213,27 @@ public class ClientController {
             System.out.println("Created Socket connection!");
         }
         connectionClient.startConnection();
+    }
+
+    public void selectCard() throws Exception {
+        ArrayList<Integer> integerSelected = new ArrayList<>(selectedTiles.keySet());
+        connectionClient.selectCard(myNickname, integerSelected);
+    }
+
+    public void insertCard(ArrayList<ItemCard> selectedCards, int column) throws Exception {
+        connectionClient.insertCard(myNickname, selectedCards, column);
+    }
+
+    public void chatToAll(String message) throws Exception {
+        connectionClient.chatToAll(myNickname, message);
+    }
+
+    public void chatToPlayer(String receiver, String message) throws Exception {
+        connectionClient.chatToPlayer(myNickname, receiver, message);
+    }
+
+    public void chatToMe(String sender, String message) {
+        view.chatToMe(sender, message);
     }
 
     /**

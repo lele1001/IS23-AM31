@@ -306,6 +306,11 @@ public class Cli implements View {
         }
     }
 
+    @Override
+    public void chatToMe(String sender, String message) {
+        System.out.println("From" + sender + ": " + message);
+    }
+
     /**
      * Private method that prints a cell from an ItemCard matrix (bookshelf or board)
      *
@@ -323,6 +328,11 @@ public class Cli implements View {
             System.out.print(" ");
             System.out.print((char) 27 + "[0;39m" + " | ");
         }
+    }
+
+    @Override
+    public void printAskPlayerNumber() {
+        System.out.println("Write @Players (number of players)");
     }
 
     /**

@@ -139,6 +139,15 @@ public class ClientHandlerRmi extends ClientHandler {
         }
     }
 
+    @Override
+    public void chatToMe(String sender, String message) {
+        try {
+            client.chatToMe(sender, message);
+        } catch (RemoteException e) {
+            System.out.println("Impossibile mandare messaggio chat al client");
+        }
+    }
+
 
     @Override
     public void sendGameIsStarting() {

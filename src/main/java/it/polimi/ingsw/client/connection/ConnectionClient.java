@@ -1,9 +1,11 @@
 package it.polimi.ingsw.client.connection;
 
 import it.polimi.ingsw.client.ClientController;
+import it.polimi.ingsw.server.model.ItemCard;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.ArrayList;
 
 public abstract class ConnectionClient extends UnicastRemoteObject {
     ClientController controller;
@@ -23,9 +25,7 @@ public abstract class ConnectionClient extends UnicastRemoteObject {
         this.port = port;
     }
 
-    public void startConnection() throws Exception {
-
-    }
+    public abstract void startConnection() throws Exception;
 
     public ClientController getController() {
         return controller;
@@ -38,4 +38,12 @@ public abstract class ConnectionClient extends UnicastRemoteObject {
     public int getPort() {
         return port;
     }
+
+    public abstract void selectCard(String nickname, ArrayList<Integer> cardsSelected) throws Exception;
+
+    public abstract void insertCard(String nickname, ArrayList<ItemCard> cards, int column) throws Exception;
+
+    public abstract void chatToAll(String nickname, String message) throws Exception;
+
+    public abstract void chatToPlayer(String sender, String receiver, String message) throws Exception;
 }

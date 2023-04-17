@@ -215,6 +215,11 @@ public class ClientHandlerSocket extends ClientHandler implements Runnable {
     }
 
     @Override
+    public void chatToMe(String sender, String message) {
+
+    }
+
+    @Override
     public void sendGameIsStarting() {
         send(generateStandardMessage("gameStarted", null));
     }

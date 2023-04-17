@@ -32,6 +32,16 @@ public class RMIInterface implements RMI {
     }
 
     @Override
+    public void chatToAll(String nickname, String message) throws RemoteException {
+        connectionControl.chatToAll(nickname, message);
+    }
+
+    @Override
+    public void chatToPlayer(String sender, String receiver, String message) throws RemoteException {
+        connectionControl.chatToPlayer(sender, receiver, message);
+    }
+
+    @Override
     public void insertCard(String nickname, ArrayList<ItemCard> cards, int column) {
         connectionControl.insertCard(nickname, cards, column);
     }
