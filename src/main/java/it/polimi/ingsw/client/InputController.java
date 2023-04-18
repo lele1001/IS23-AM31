@@ -24,9 +24,7 @@ public class InputController {
             System.out.println("You can only take from 1 to 3 cards!");
             return false;
         }
-
-        coords = null;
-
+        coords.clear();
         // starts from 1 because input[0] == "@take"
         for (int i = 1; i < input.length; i++) {
             try {
@@ -58,7 +56,7 @@ public class InputController {
 
     public boolean checkPut(String[] input) {
         int column;
-        ArrayList<ItemCard> tilesToPut = null;
+        ArrayList<ItemCard> tilesToPut = new ArrayList<>();
 
         if (!clientController.isMyTurn()) {
             System.out.println("It is not your turn!");
@@ -69,8 +67,6 @@ public class InputController {
             System.out.println("You are trying to put more cards than expected!");
             return false;
         }
-
-        coords = null;
 
         try {
             column = Integer.parseInt(input[1]);
@@ -84,7 +80,7 @@ public class InputController {
             System.out.println("Wrong column range!");
             return false;
         }
-
+        coords.clear();
         // starts from 2 because input[0] == "@put" and input[1] = column
         for (int i = 2; i < input.length; i++) {
             try {

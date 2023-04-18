@@ -43,7 +43,7 @@ public class ClientController {
 // new methods for failed login
 
     /**
-     * Method called from the server to ask for the selection of the itemcards to the client
+     * Method called by the server to ask for the selection of the itemcards to the client
      * Change turn phase and print the board to the client's view
      */
     public void onSelect() {
@@ -55,7 +55,7 @@ public class ClientController {
     }
 
     /**
-     * Method called from the server to ask for the insertion of the itemcards to the client
+     * Method called by the server to ask for the insertion of the itemcards to the client
      * Change turn phase and print the client's bookshelf to the client's view
      */
     public void onInsert() {
@@ -66,7 +66,8 @@ public class ClientController {
     }
 
     /**
-     * Method called from the view to update the Tiles selected from the player (After the input check)
+     * Method called by the view to update the Tiles selected from the player (After the input check)
+     *
      * @param coords C oordinates of the Tiles selected from the player
      */
 
@@ -78,6 +79,7 @@ public class ClientController {
 
     /**
      * Method to get the selected tiles from the view for the insert method
+     *
      * @return the Tiles selected by the players during the
      */
     public Map<Integer, ItemCard> getSelectedTiles() {
@@ -85,7 +87,7 @@ public class ClientController {
     }
 
     /**
-     * Method called from the server when the board change
+     * Method called by the server when the board change
      * Save the new Board and print it to the client's view
      *
      * @param newBoard is the updated board from the server
@@ -96,7 +98,7 @@ public class ClientController {
     }
 
     /**
-     * Method called from the server when the nickname's client bookshelf change
+     * Method called by the server when the nickname's client bookshelf change
      * Save the new bookshelf and print all the bookshelves to the client's view
      *
      * @param nickname     nickname of the client whose bookshelf changed
@@ -109,6 +111,7 @@ public class ClientController {
 
     /**
      * Method called to get the Client's view
+     *
      * @return the Client's view (GUI or TUI)
      */
     public View getView() {
@@ -116,7 +119,7 @@ public class ClientController {
     }
 
     /**
-     * Method called from the server when an error occurred,
+     * Method called by the server when an error occurred,
      * Print the error to the client's view
      *
      * @param error String in which is saved the error
@@ -136,7 +139,7 @@ public class ClientController {
     }
 
     /**
-     * Method called from the server when a CommonGoal is created
+     * Method called by the server when a CommonGoal is created
      * Print the CommonGoal to the client's view
      *
      * @param comGoalID ID that references to the defined CommonGoal
@@ -149,7 +152,7 @@ public class ClientController {
     }
 
     /**
-     * Method called from the server when one CommonGoal is done by the player nickname
+     * Method called by the server when one CommonGoal is done by the player nickname
      *
      * @param nickname name of the player
      * @param newValue new value of the CommonGoal after a player has done it
@@ -166,7 +169,7 @@ public class ClientController {
     }
 
     /**
-     * Method called from the server when creating the PersonalGoal of the player
+     * Method called by the server when creating the PersonalGoal of the player
      * Create from the json file the PersonalGoal and print it to the client's view
      *
      * @param newValue String that defines the PersonalGoal
@@ -199,7 +202,7 @@ public class ClientController {
     }
 
     /**
-     * Method called from the server after the end of a player's turn
+     * Method called by the server after the end of a player's turn
      * If it is my turn I update myTurn and print to the client's view that it is the client's turn
      *
      * @param nickname the nickname of the player whose turn is
@@ -255,26 +258,29 @@ public class ClientController {
     }
 
     /**
-     * Methods called from the client that pass to the server the position of the Tiles selected by the client
+     * Method called by the client that pass to the server the position of the Tiles selected by the client
+     *
      * @throws Exception if an error occurred calling the server ( Socket or RMI )
      */
-
     public void selectCard() throws Exception {
         ArrayList<Integer> integerSelected = new ArrayList<>(selectedTiles.keySet());
         connectionClient.selectCard(myNickname, integerSelected);
     }
 
     /**
-     * Methods called from the client that pass to the server the Tiles inserted by the client and in which column he wants to put them
+     * Method called from the client that pass to the server the Tiles inserted by the client and in which column he wants to put them
+     *
      * @param selectedCards Tiles selected by the client in order
-     * @param column column where to put the Tiles
+     * @param column        column where to put the Tiles
      * @throws Exception if an error occurred calling the server ( Socket or RMI )
      */
     public void insertCard(ArrayList<ItemCard> selectedCards, int column) throws Exception {
         connectionClient.insertCard(myNickname, selectedCards, column);
     }
+
     /**
-     * Methods called from the client that pass to the server the chat message for all connected player of the game
+     * Method called by the client that pass to the server the chat message for all connected player of the game
+     *
      * @param message String to send to all the connected players
      * @throws Exception if an error occurred calling the server ( Socket or RMI )
      */
@@ -283,9 +289,10 @@ public class ClientController {
     }
 
     /**
-     * Methods called from the client that pass to the server he chat message for the receiver
+     * Method called by the client that pass to the server he chat message for the receiver
+     *
      * @param receiver player that receive the message
-     * @param message String to send to the receiver
+     * @param message  String to send to the receiver
      * @throws Exception if an error occurred calling the server ( Socket or RMI )
      */
     public void chatToPlayer(String receiver, String message) throws Exception {
@@ -293,11 +300,11 @@ public class ClientController {
     }
 
     /**
-     * Method called from the server to print the message
-     * @param sender Player that send the message
+     * Method called by the server to print the message
+     *
+     * @param sender  Player that send the message
      * @param message String sent by the sender
      */
-
     public void chatToMe(String sender, String message) {
         view.chatToMe(sender, message);
     }
@@ -311,6 +318,7 @@ public class ClientController {
 
     /**
      * Method called by the server for the start of the game
+     *
      * @param gameStarted Boolean to set the gamesStarted as true for the control in the view
      */
     public void setGameStarted(boolean gameStarted) {
@@ -319,16 +327,8 @@ public class ClientController {
     }
 
     /**
-     * @return true if game is started else false
-     */
-    public boolean getGameStarted() {
-        return this.gameStarted;
-    }
-
-    /**
      * @return the Board
      */
-
     public ItemCard[][] getBoard() {
         return board;
     }
@@ -336,7 +336,6 @@ public class ClientController {
     /**
      * @return the Map of all the Bookshelves
      */
-
     public Map<String, ItemCard[][]> getPlayersBookshelf() {
         return playersBookshelf;
     }
@@ -344,18 +343,66 @@ public class ClientController {
     /**
      * @return if it is my turn
      */
-
     public boolean isMyTurn() {
         return myTurn;
     }
 
     /**
-     * Metho called by the client only if he is the first connected to the server
+     * Method called by the client only if he is the first connected to the server
+     *
      * @param players number of players in the game
      * @throws Exception if an error occurred calling the server ( Socket or RMI )
      */
-
     public void setPlayersNumber(int players) throws Exception {
         connectionClient.setPlayersNumber(players);
+    }
+
+    /**
+     * @return the CommonGoals of the game
+     */
+    public Map<Integer, Integer> getPlayerComGoal() {
+        return playerComGoal;
+    }
+
+    /**
+     * @return the client's point
+     */
+    public int getMyPoint() {
+        return myPoint;
+    }
+
+    /**
+     * @return the client's personal goal
+     */
+    public Map<Integer, HouseItem> getMyPersGoal() {
+        return myPersGoal;
+    }
+
+    /**
+     * @return the game's turn phase if it's his turn, NULL all other times
+     */
+    public TurnPhase getPhase() {
+        return phase;
+    }
+
+    /**
+     * @return true if you can use the @player function on the Cli
+     */
+    public boolean isSelectNumberOfPlayers() {
+        return selectNumberOfPlayers;
+    }
+
+    /**
+     * @return true if game is started else false
+     */
+    public boolean isGameStarted() {
+        return gameStarted;
+    }
+
+    /**
+     * Method called by the server to disconnect the player
+     */
+    public void disconnectMe() {
+        view.disconnectionError();
     }
 }

@@ -26,6 +26,8 @@ public class ConnectionRMI extends ConnectionClient implements RMIClientConnecti
     }
 
     /**
+     * Start the connection and the login in RMI
+     *
      * @throws IOException       throws if it has an error with input or output
      * @throws NotBoundException throws if it has an error with the connection
      */
@@ -44,47 +46,70 @@ public class ConnectionRMI extends ConnectionClient implements RMIClientConnecti
         }
     }
 
+    /**
+     * Method called from the client that pass to the server the position of the Tiles selected by the client
+     *
+     * @param nickname      this client
+     * @param cardsSelected Tiles selected by the client
+     * @throws RemoteException if an error occurred calling the server ( Socket or RMI )
+     */
     @Override
     public void selectCard(String nickname, ArrayList<Integer> cardsSelected) throws RemoteException {
         server.selectCard(nickname, cardsSelected);
     }
 
+    /**
+     * Method called from the client that pass to the server the Tiles inserted by the client and in which column he wants to put them
+     *
+     * @param nickname this client
+     * @param cards    Tiles selected by the client in order
+     * @param column   column where to put the Tiles
+     * @throws RemoteException if an error occurred calling the server ( Socket or RMI )
+     */
     @Override
     public void insertCard(String nickname, ArrayList<ItemCard> cards, int column) throws RemoteException {
         server.insertCard(nickname, cards, column);
     }
 
+    /**
+     * Method called from the client that pass to the server the chat message for all connected player of the game
+     *
+     * @param nickname this client
+     * @param message  String to send to all the connected players
+     * @throws RemoteException if an error occurred calling the server ( Socket or RMI )
+     */
     @Override
-    public void chatToAll(String nickname, String message) throws Exception {
+    public void chatToAll(String nickname, String message) throws RemoteException {
         server.chatToAll(nickname, message);
     }
 
+    /**
+     * Method called from the client that pass to the server the chat message for the receiver
+     *
+     * @param sender   this client
+     * @param receiver player that receive the message
+     * @param message  String to send to the receiver
+     * @throws RemoteException if an error occurred calling the server ( Socket or RMI )
+     */
     @Override
-    public void chatToPlayer(String sender, String receiver, String message) throws Exception {
+    public void chatToPlayer(String sender, String receiver, String message) throws RemoteException {
         server.chatToPlayer(sender, receiver, message);
     }
 
+    /**
+     * Method called by the client only if he is the first connected to the server
+     *
+     * @param players number of players in the game
+     * @throws RemoteException if an error occurred calling the RMI server
+     */
     @Override
-    public void setPlayersNumber(int players) throws Exception {
+    public void setPlayersNumber(int players) throws RemoteException {
         server.setPlayerNumber(players);
     }
 
     @Override
     public void onPlayerNumber() throws RemoteException {
         getController().onPlayerNumber();
-        /*Thread t = new Thread() {
-            @Override
-            public void run() {
-                try {
-                    server.setPlayerNumber(2);
-                } catch (RemoteException e) {
-                    e.printStackTrace();
-                }
-                System.out.println("settato a 2");
-            }
-        };
-        t.start();
-        System.out.println("chiesto");*/
     }
 
     @Override
@@ -150,7 +175,7 @@ public class ConnectionRMI extends ConnectionClient implements RMIClientConnecti
 
     @Override
     public void ping() throws RemoteException {
-        System.out.println("Ping");
+
     }
 
     @Override
@@ -160,6 +185,7 @@ public class ConnectionRMI extends ConnectionClient implements RMIClientConnecti
 
     @Override
     public void disconnectMe() throws RemoteException {
-
+        server=null;
+        getController().disconnectMe();
     }
 }

@@ -67,4 +67,5 @@ public interface View {
     void chatToMe(String sender, String message);
 
     void printAskPlayerNumber();
+    void disconnectionError();
 }

@@ -36,9 +36,6 @@ public class Cli implements View {
         clientController.setView(this);
         checkInput = new InputController(clientController);
 
-        System.out.println("Adding pippo to the game");
-        //clientController.onBookshelfChanged("pippo", null);
-
         askUsername();
         askConnection();
         askIP();
@@ -50,32 +47,8 @@ public class Cli implements View {
             printError(e.getMessage());
             disconnectionError();
         }
-
-        listen();
-
-//        TimerTask t = new TimerTask() {
-//            @Override
-//            public void run() {
-//                try {
-//                    Thread.sleep(10000);
-//                } catch (InterruptedException e) {
-//                }
-//                for(int i=0;i<5;i++)
-//                    printBoard(clientController.board);
-//                gameStarted = true;
-//            }
-//        };
-//
-//        Thread menuThread = new Thread() {
-//            @Override
-//            public void run() {
-//                t.run();
-//            }
-//        };
-//
-//        menuThread.start();
-        //waitForGame();
-    }
+        new Thread(this::listen).start();
+}
 
     /**
      * Asking the type of connection: 0 for RMI, 1 for Socket
@@ -139,20 +112,20 @@ public class Cli implements View {
     /**
      * Reads the choice of the user
      */
-    public void listen() {
+    private void listen() {
         String choice;
         String[] splitString;
         StringBuilder msg = new StringBuilder();
         String destNickname;
         boolean justStarted = true;
 
-        if (!clientController.getGameStarted()) {
+        if (!clientController.isGameStarted()) {
             System.out.println("Waiting for other players to connect...");
             waitForGameMenu();
         }
 
         while (!stopListening) {
-            if (clientController.getGameStarted() && justStarted) {
+            if (clientController.isGameStarted() && justStarted) {
                 System.out.println("Welcome " + clientController.getMyNickname() + "!");
                 System.out.println("You will play in a " + clientController.getPlayersBookshelf().keySet().size() + " players game.");
                 printMenu();
@@ -182,7 +155,7 @@ public class Cli implements View {
                         }
                     }
                     case "@menu" -> {
-                        if (clientController.getGameStarted()) {
+                        if (clientController.isGameStarted()) {
                             printMenu();
                         } else {
                             waitForGameMenu();
@@ -509,7 +482,8 @@ public class Cli implements View {
     /**
      * Disconnection of the Cli after the client is disconnected from the server
      */
-    private void disconnectionError() {
+    @Override
+    public void disconnectionError() {
         System.out.println("\nPress ENTER to exit");
         in.nextLine();
         System.exit(1);

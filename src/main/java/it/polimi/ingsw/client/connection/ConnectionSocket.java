@@ -19,7 +19,7 @@ public class ConnectionSocket extends ConnectionClient {
     private Socket socket;
 
     /**
-     * Initialize the RMI connection to the server
+     * Initialize the Socket connection to the server
      *
      * @param controller ClientController, on which it will call all the methods after the server request
      * @param address    IP address of the server

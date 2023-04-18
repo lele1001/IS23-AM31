@@ -20,7 +20,6 @@ public class ClientHandlerRmi extends ClientHandler {
         TimerTask task = new TimerTask() {
             @Override
             public void run() {
-                System.out.println("ping a " + nickname);
                 ping();
             }
         };
@@ -60,7 +59,7 @@ public class ClientHandlerRmi extends ClientHandler {
         try {
             client.onChangeTurn(playername);
         } catch (RemoteException e) {
-            System.out.println("Impossibilile mandare il cambio turno a " + nickname);
+            System.out.println("Impossibile mandare il cambio turno a " + nickname);
         }
     }
 
@@ -144,7 +143,6 @@ public class ClientHandlerRmi extends ClientHandler {
             client.onBoardChanged(newBoard);
         } catch (RemoteException e) {
             System.out.println("Impossibile chiedere a " + nickname + " la board modificata");
-            e.printStackTrace();
         }
     }
 
