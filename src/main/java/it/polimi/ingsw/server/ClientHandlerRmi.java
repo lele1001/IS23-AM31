@@ -5,17 +5,26 @@ import it.polimi.ingsw.server.controller.ConnectionControl;
 import it.polimi.ingsw.server.model.ItemCard;
 
 import java.rmi.RemoteException;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class ClientHandlerRmi extends ClientHandler {
     RMIClientConnection client;
-    TaskTimer timer;
+    Timer timer = new Timer();
 
     // come attributo serve il riferimento all'interfaccia client
     public ClientHandlerRmi(ConnectionControl connectionControl, String nickname, RMIClientConnection client) {
         this.connectionControl = connectionControl;
         this.nickname = nickname;
         this.client = client;
-
+        TimerTask task = new TimerTask() {
+            @Override
+            public void run() {
+                System.out.println("ping a " + nickname);
+                ping();
+            }
+        };
+        timer.scheduleAtFixedRate(task, 0, 5000);
     }
 
     private void ping() {
@@ -24,7 +33,8 @@ public class ClientHandlerRmi extends ClientHandler {
         } catch (RemoteException e) {
             // se si è disconnesso
             connectionControl.changePlayerStatus(nickname);
-            //todo client disconnection
+            timer.cancel();
+            disconnectPlayer();
         }
 
     }
@@ -40,19 +50,27 @@ public class ClientHandlerRmi extends ClientHandler {
         try {
             client.onPlayerNumber();
         } catch (RemoteException e) {
-            System.out.println("Impossibile chiedere al client il numero di player");
+            System.out.println("Impossibile chiedere a " + nickname + " il numero di player");
         }
 
     }
 
     @Override
-    public void sendPlayerTurn(String nickname) {
-
+    public void sendPlayerTurn(String playername) {
+        try {
+            client.onChangeTurn(playername);
+        } catch (RemoteException e) {
+            System.out.println("Impossibilile mandare il cambio turno a " + nickname);
+        }
     }
 
     @Override
     public void disconnectPlayer() {
-
+        try {
+            client.disconnectMe();
+        } catch (RemoteException e) {
+            System.out.println("Impossibilile disconnetere il player " + nickname);
+        }
     }
 
     @Override
@@ -61,7 +79,7 @@ public class ClientHandlerRmi extends ClientHandler {
         try {
             client.onSelect();
         } catch (RemoteException e) {
-            System.out.println("Impossibile chiedere al client di selezionare");
+            System.out.println("Impossibile chiedere a " + nickname + " di selezionare");
         }
     }
 
@@ -70,7 +88,7 @@ public class ClientHandlerRmi extends ClientHandler {
         try {
             client.onInsert();
         } catch (RemoteException e) {
-            System.out.println("Impossibile chiedere al client di inserire le carte");
+            System.out.println("Impossibile chiedere a " + nickname + " di inserire le carte");
         }
     }
 
@@ -79,17 +97,17 @@ public class ClientHandlerRmi extends ClientHandler {
         try {
             client.onError(error);
         } catch (RemoteException e) {
-            System.out.print("Impossibile mandare al client l'errore: ");
+            System.out.print("Impossibile mandare a" + nickname + " l'errore: ");
             System.out.println(error);
         }
     }
 
     @Override
-    public void SendBookshelfChanged(String nickname, ItemCard[][] newBookshelf) {
+    public void SendBookshelfChanged(String playername, ItemCard[][] newBookshelf) {
         try {
-            client.onBookshelfChanged(nickname, newBookshelf);
+            client.onBookshelfChanged(playername, newBookshelf);
         } catch (RemoteException e) {
-            System.out.println("Impossibile chiedere al client la bookshelf modificata");
+            System.out.println("Impossibile chiedere a" + nickname + "la bookshelf modificata");
         }
     }
 
@@ -98,7 +116,7 @@ public class ClientHandlerRmi extends ClientHandler {
         try {
             client.onCommonGoalDone(nickname, details);
         } catch (RemoteException e) {
-            System.out.println("Impossibile chiedere al client la bookshelf modificata");
+            System.out.println("Impossibile chiedere a " + nickname + " la bookshelf modificata");
         }
     }
 
@@ -107,7 +125,7 @@ public class ClientHandlerRmi extends ClientHandler {
         try {
             client.onPersGoalCreated(persGoal);
         } catch (RemoteException e) {
-            System.out.println("Impossibile chiedere al client la bookshelf modificata");
+            System.out.println("Impossibile chiedere a " + nickname + " la bookshelf modificata");
         }
     }
 
@@ -116,7 +134,7 @@ public class ClientHandlerRmi extends ClientHandler {
         try {
             client.onCommonGoalCreated(comGoalID, score);
         } catch (RemoteException e) {
-            System.out.println("Impossibile chiedere al client il CommonGoal");
+            System.out.println("Impossibile chiedere a " + nickname + " il CommonGoal");
         }
     }
 
@@ -125,7 +143,7 @@ public class ClientHandlerRmi extends ClientHandler {
         try {
             client.onBoardChanged(newBoard);
         } catch (RemoteException e) {
-            System.out.println("Impossibile chiedere al client la board modificata");
+            System.out.println("Impossibile chiedere a " + nickname + " la board modificata");
             e.printStackTrace();
         }
     }
@@ -135,7 +153,7 @@ public class ClientHandlerRmi extends ClientHandler {
         try {
             client.onWinner(winner);
         } catch (RemoteException e) {
-            System.out.println("Impossibile dire al client il vincitore");
+            System.out.println("Impossibile dire a " + nickname + " il vincitore");
         }
     }
 
@@ -144,7 +162,7 @@ public class ClientHandlerRmi extends ClientHandler {
         try {
             client.chatToMe(sender, message);
         } catch (RemoteException e) {
-            System.out.println("Impossibile mandare messaggio chat al client");
+            System.out.println("Impossibile mandare messaggio chat a " + nickname);
         }
     }
 
@@ -154,7 +172,7 @@ public class ClientHandlerRmi extends ClientHandler {
         try {
             client.onGameIsStarting();
         } catch (RemoteException e) {
-            System.out.println("Impossibile dire al client che il game sta iniziando");
+            System.out.println("Impossibile dire a " + nickname + " che il game sta iniziando");
         }
     }
 
@@ -163,13 +181,8 @@ public class ClientHandlerRmi extends ClientHandler {
         try {
             client.onErrorGameNotAvailable();
         } catch (RemoteException e) {
-            System.out.println("Impossibile dire al client il vincitore");
+            System.out.println("Impossibile dire a " + nickname + " il vincitore");
         }
     }
 
-    private class TaskTimer {
-        void run() {
-
-        }
-    }
 }

@@ -157,4 +157,9 @@ public class ConnectionRMI extends ConnectionClient implements RMIClientConnecti
     public void chatToMe(String sender, String message) throws RemoteException {
         getController().chatToMe(sender, message);
     }
+
+    @Override
+    public void disconnectMe() throws RemoteException {
+
+    }
 }

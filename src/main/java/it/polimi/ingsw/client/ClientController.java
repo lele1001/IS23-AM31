@@ -65,12 +65,21 @@ public class ClientController {
         view.printMyBookshelf(playersBookshelf.get(myNickname));
     }
 
+    /**
+     * Method called from the view to update the Tiles selected from the player (After the input check)
+     * @param coords C oordinates of the Tiles selected from the player
+     */
+
     public void setSelectedTiles(ArrayList<Integer> coords) {
         for (Integer i : coords) {
             selectedTiles.put(i, board[Position.getRow(i)][Position.getColumn(i)]);
         }
     }
 
+    /**
+     * Method to get the selected tiles from the view for the insert method
+     * @return the Tiles selected by the players during the
+     */
     public Map<Integer, ItemCard> getSelectedTiles() {
         return selectedTiles;
     }
@@ -98,6 +107,10 @@ public class ClientController {
         view.printBookshelves(playersBookshelf);
     }
 
+    /**
+     * Method called to get the Client's view
+     * @return the Client's view (GUI or TUI)
+     */
     public View getView() {
         return view;
     }
@@ -113,6 +126,10 @@ public class ClientController {
         view.printError(error);
     }
 
+    /**
+     * Methods called by the server to the first player of the game asking the number of players he wants in the game
+     * Set selectNumberOfPlayers to true, so the Cli can accept the corresponding command
+     */
     public void onPlayerNumber() {
         selectNumberOfPlayers = true;
         view.printAskPlayerNumber();
@@ -237,22 +254,49 @@ public class ClientController {
         connectionClient.startConnection();
     }
 
+    /**
+     * Methods called from the client that pass to the server the position of the Tiles selected by the client
+     * @throws Exception if an error occurred calling the server ( Socket or RMI )
+     */
+
     public void selectCard() throws Exception {
         ArrayList<Integer> integerSelected = new ArrayList<>(selectedTiles.keySet());
         connectionClient.selectCard(myNickname, integerSelected);
     }
 
+    /**
+     * Methods called from the client that pass to the server the Tiles inserted by the client and in which column he wants to put them
+     * @param selectedCards Tiles selected by the client in order
+     * @param column column where to put the Tiles
+     * @throws Exception if an error occurred calling the server ( Socket or RMI )
+     */
     public void insertCard(ArrayList<ItemCard> selectedCards, int column) throws Exception {
         connectionClient.insertCard(myNickname, selectedCards, column);
     }
-
+    /**
+     * Methods called from the client that pass to the server the chat message for all connected player of the game
+     * @param message String to send to all the connected players
+     * @throws Exception if an error occurred calling the server ( Socket or RMI )
+     */
     public void chatToAll(String message) throws Exception {
         connectionClient.chatToAll(myNickname, message);
     }
 
+    /**
+     * Methods called from the client that pass to the server he chat message for the receiver
+     * @param receiver player that receive the message
+     * @param message String to send to the receiver
+     * @throws Exception if an error occurred calling the server ( Socket or RMI )
+     */
     public void chatToPlayer(String receiver, String message) throws Exception {
         connectionClient.chatToPlayer(myNickname, receiver, message);
     }
+
+    /**
+     * Method called from the server to print the message
+     * @param sender Player that send the message
+     * @param message String sent by the sender
+     */
 
     public void chatToMe(String sender, String message) {
         view.chatToMe(sender, message);
@@ -265,26 +309,51 @@ public class ClientController {
         return myNickname;
     }
 
+    /**
+     * Method called by the server for the start of the game
+     * @param gameStarted Boolean to set the gamesStarted as true for the control in the view
+     */
     public void setGameStarted(boolean gameStarted) {
         this.gameStarted = gameStarted;
         view.printMenu();
     }
 
+    /**
+     * @return true if game is started else false
+     */
     public boolean getGameStarted() {
         return this.gameStarted;
     }
+
+    /**
+     * @return the Board
+     */
 
     public ItemCard[][] getBoard() {
         return board;
     }
 
+    /**
+     * @return the Map of all the Bookshelves
+     */
+
     public Map<String, ItemCard[][]> getPlayersBookshelf() {
         return playersBookshelf;
     }
 
+    /**
+     * @return if it is my turn
+     */
+
     public boolean isMyTurn() {
         return myTurn;
     }
+
+    /**
+     * Metho called by the client only if he is the first connected to the server
+     * @param players number of players in the game
+     * @throws Exception if an error occurred calling the server ( Socket or RMI )
+     */
 
     public void setPlayersNumber(int players) throws Exception {
         connectionClient.setPlayersNumber(players);

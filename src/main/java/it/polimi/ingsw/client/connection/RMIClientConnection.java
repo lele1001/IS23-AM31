@@ -35,4 +35,6 @@ public interface RMIClientConnection extends Remote {
     void ping() throws RemoteException;
 
     void chatToMe(String sender, String message) throws RemoteException;
+
+    void disconnectMe() throws RemoteException;
 }

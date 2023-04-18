@@ -84,8 +84,10 @@ public class ConnectionControl {
     public void changePlayerStatus(String nickname) {
         this.clientStatusMap.put(nickname, false);
         server.removeFromQueue(nickname);   // se era in coda, lo rimuovo
-        this.clientHandlerMap.get(nickname).disconnectPlayer();
-        this.clientHandlerMap.remove(nickname);
+        if(clientHandlerMap.containsKey(nickname)){
+            this.clientHandlerMap.get(nickname).disconnectPlayer();
+            this.clientHandlerMap.remove(nickname);
+        }
         sendErrorToEveryone(nickname + " is disconnected from the game.");
         //gameController.changePlayerStatus(nickname);
 
