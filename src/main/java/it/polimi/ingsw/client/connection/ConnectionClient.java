@@ -46,4 +46,6 @@ public abstract class ConnectionClient extends UnicastRemoteObject {
     public abstract void chatToAll(String nickname, String message) throws Exception;
 
     public abstract void chatToPlayer(String sender, String receiver, String message) throws Exception;
+
+    public abstract void setPlayersNumber(int players) throws Exception;
 }

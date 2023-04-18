@@ -130,7 +130,7 @@ public class GameController implements PropertyChangeListener {
                         Thread.onSpinWait();
                 };
                 Future<?> f = service.submit(r);
-                f.get(1, TimeUnit.MINUTES);     // attende il task per un minuto
+                f.get(3, TimeUnit.MINUTES);     // attende il task per tre minuti
             } catch (final InterruptedException e) {
                 // The thread was interrupted during sleep, wait or join
             } catch (final TimeoutException e) {

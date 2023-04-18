@@ -28,17 +28,18 @@ public class ClientController {
     private static final int BOOKSHELF_HEIGHT = 6;
     private static final int BOOKSHELF_LENGTH = 5;
     private String myNickname;
-    public ItemCard[][] board = new ItemCard[DIM_BOARD][DIM_BOARD];
-    public Map<String, ItemCard[][]> playersBookshelf = new HashMap<>();
-    Map<Integer, Integer> playerComGoal = new HashMap<>();
-    boolean myTurn = false;
-    Map<Integer, ItemCard> selectedTiles = new HashMap<>();
-    int myPoint = 0;
-    View view;
+    private ItemCard[][] board = new ItemCard[DIM_BOARD][DIM_BOARD];
+    private Map<String, ItemCard[][]> playersBookshelf = new HashMap<>();
+    private Map<Integer, Integer> playerComGoal = new HashMap<>();
+    private boolean myTurn = false;
+    private Map<Integer, ItemCard> selectedTiles = new HashMap<>();
+    private int myPoint = 0;
+    private View view;
     private final Map<Integer, HouseItem> myPersGoal = new HashMap<>();
-    ConnectionClient connectionClient;
-    TurnPhase phase = NULL;
-    Boolean selectNumberOfPlayers = false;
+    private ConnectionClient connectionClient;
+    private TurnPhase phase = NULL;
+    private boolean selectNumberOfPlayers = false;
+    private boolean gameStarted = false;
 // new methods for failed login
 
     /**
@@ -65,7 +66,7 @@ public class ClientController {
     }
 
     public void setSelectedTiles(ArrayList<Integer> coords) {
-        for (Integer i: coords) {
+        for (Integer i : coords) {
             selectedTiles.put(i, board[Position.getRow(i)][Position.getColumn(i)]);
         }
     }
@@ -141,6 +142,7 @@ public class ClientController {
             myPoint += playerComGoal.get(newValue[0]);
             view.printPoints(myPoint);
         }
+
         playerComGoal.replace(newValue[0], newValue[1]);
         view.print(nickname + " has completed the CommonGoal n° " + newValue[0]);
         view.print("The new value of CommonGoal n° " + newValue[0] + " is " + newValue[1]);
@@ -162,6 +164,7 @@ public class ClientController {
                 return;
             }
         }
+
         Gson gson = new Gson();
 
         Type cardsType = new TypeToken<Map<String, ArrayList<Integer>>>() {
@@ -171,8 +174,10 @@ public class ClientController {
 
         // Conventional order in which we read items from JsonConfiguration file.
         List<HouseItem> items = new ArrayList<>(List.of(HouseItem.Frame, HouseItem.Cat, HouseItem.Books, HouseItem.Games, HouseItem.Trophy, HouseItem.Plants));
-        for (int i = 0; i < items.size(); i++)
+        for (int i = 0; i < items.size(); i++) {
             myPersGoal.put(index.get(i), items.get(i));
+        }
+
         view.printPersGoal(myPersGoal);
     }
 
@@ -200,6 +205,7 @@ public class ClientController {
      */
     public void setView(View view) {
         this.view = view;
+
         if (view instanceof Cli) {
             System.out.println("Cli added to Client controller");
         }
@@ -219,6 +225,7 @@ public class ClientController {
     public void startConnection(int select, String username, String address, int port) throws Exception {
         this.myNickname = username;
         System.out.println("Your nickname is " + myNickname);
+
         if (select == 0) {
             connectionClient = new ConnectionRMI(this, address, port);
             System.out.println("Created RMI connection!");
@@ -226,6 +233,7 @@ public class ClientController {
             connectionClient = new ConnectionSocket(this, address, port);
             System.out.println("Created Socket connection!");
         }
+
         connectionClient.startConnection();
     }
 
@@ -255,5 +263,30 @@ public class ClientController {
      */
     public String getMyNickname() {
         return myNickname;
+    }
+
+    public void setGameStarted(boolean gameStarted) {
+        this.gameStarted = gameStarted;
+        view.printMenu();
+    }
+
+    public boolean getGameStarted() {
+        return this.gameStarted;
+    }
+
+    public ItemCard[][] getBoard() {
+        return board;
+    }
+
+    public Map<String, ItemCard[][]> getPlayersBookshelf() {
+        return playersBookshelf;
+    }
+
+    public boolean isMyTurn() {
+        return myTurn;
+    }
+
+    public void setPlayersNumber(int players) throws Exception {
+        connectionClient.setPlayersNumber(players);
     }
 }

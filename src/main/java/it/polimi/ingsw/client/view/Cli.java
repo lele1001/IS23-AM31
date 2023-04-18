@@ -18,16 +18,11 @@ public class Cli implements View {
     ClientController clientController;
     String username;
     String address;
-    public boolean gameStarted = false;
     int port = -1;
     int select = -1;
 
     public Cli() {
 
-    }
-
-    public void setGameStarted(boolean gameStarted) {
-        this.gameStarted = gameStarted;
     }
 
     /**
@@ -151,19 +146,15 @@ public class Cli implements View {
         String destNickname;
         boolean justStarted = true;
 
-        if (!gameStarted) {
+        if (!clientController.getGameStarted()) {
             System.out.println("Waiting for other players to connect...");
             waitForGameMenu();
-        } else {
-            System.out.println("Welcome " + clientController.getMyNickname() + "!");
-            System.out.println("You will play in a " + clientController.playersBookshelf.keySet().size() + " players game.");
-            printMenu();
         }
 
         while (!stopListening) {
-            if (gameStarted && justStarted) {
+            if (clientController.getGameStarted() && justStarted) {
                 System.out.println("Welcome " + clientController.getMyNickname() + "!");
-                System.out.println("You will play in a " + clientController.playersBookshelf.keySet().size() + " players game.");
+                System.out.println("You will play in a " + clientController.getPlayersBookshelf().keySet().size() + " players game.");
                 printMenu();
                 justStarted = false;
             }
@@ -179,16 +170,25 @@ public class Cli implements View {
                 }
 
                 switch (splitString[0]) {
-                    // only for testing
-                    case "@startgame" -> gameStarted = true;
+                    case "@players" -> {
+                        int players = checkInput.checkPlayers(splitString);
+
+                        if (players != 0) {
+                            try {
+                                clientController.setPlayersNumber(players);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
                     case "@menu" -> {
-                        if (gameStarted) {
+                        if (clientController.getGameStarted()) {
                             printMenu();
                         } else {
                             waitForGameMenu();
                         }
                     }
-                    case "@board" -> printBoard(clientController.board);
+                    case "@board" -> printBoard(clientController.getBoard());
                     case "@take" -> {
                         if (!checkInput.checkTake(splitString)) {
                             System.out.println("Errore take");
@@ -201,8 +201,8 @@ public class Cli implements View {
                         }
                     }
                     case "@myshelf" ->
-                            printMyBookshelf(clientController.playersBookshelf.get(clientController.getMyNickname()));
-                    case "@allshelves" -> printBookshelves(clientController.playersBookshelf);
+                            printMyBookshelf(clientController.getPlayersBookshelf().get(clientController.getMyNickname()));
+                    case "@allshelves" -> printBookshelves(clientController.getPlayersBookshelf());
                     case "@put" -> {
                         if (!checkInput.checkPut(splitString)) {
                             System.out.println("Errore put");
@@ -273,9 +273,9 @@ public class Cli implements View {
     /**
      * Prints a menu on the screen to let the user choose what to do next
      */
+    @Override
     public void printMenu() {
-        //if (clientController.myTurn) {
-            System.out.println("""
+        System.out.println("""
                 GAME MENU: type the corresponding command
                 \t@MENU to show again this menu
                 \t@BOARD to print the game board
@@ -285,17 +285,6 @@ public class Cli implements View {
                 \t@PUT to choose a column for putting the cards, followed by the column number and the board coordinates of the tiles (from bottom to top)
                 \t@CHAT to open the chat, followed by the nickname/all and the message
                 \t@QUIT to exit from the game""");
-        /*} else {
-            System.out.println("""
-                    GAME MENU: type the corresponding command
-                    \t@MENU to show again this menu
-                    \t@BOARD to print the game board
-                    \t@MYSHELF to print you bookshelf
-                    \t@ALLSHELVES to print the bookshelf of all the players
-                    \t@CHAT to open the chat, followed by the nickname/all and the message
-                    \t@QUIT to exit from the game""");
-        }
-        */
     }
 
     /**

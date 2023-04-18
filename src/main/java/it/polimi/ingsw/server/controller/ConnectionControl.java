@@ -100,17 +100,19 @@ public class ConnectionControl {
         System.out.println(nickname + " wants to insert cards: " + cards + " in column: " + column);
         gameController.insertCard(nickname, cards, column);
     }
-    public void chatToAll(String nickname,String message){
-        System.out.println(nickname + " send to everyone: " + message );
-        for(String player:clientHandlerMap.keySet()){
-            if(!player.equals(nickname))
-                this.clientHandlerMap.get(player).chatToMe(nickname,message);
+
+    public void chatToAll(String nickname, String message) {
+        System.out.println(nickname + " send to everyone: " + message);
+        for (String player : clientHandlerMap.keySet()) {
+            if (!player.equals(nickname))
+                this.clientHandlerMap.get(player).chatToMe(nickname, message);
         }
     }
-    public void chatToPlayer(String sender,String receiver,String message){
-        System.out.println(sender + " send to " + receiver + ": " + message );
-        if(clientHandlerMap.containsKey(receiver))
-            this.clientHandlerMap.get(receiver).chatToMe(sender,message);
+
+    public void chatToPlayer(String sender, String receiver, String message) {
+        System.out.println(sender + " send to " + receiver + ": " + message);
+        if (clientHandlerMap.containsKey(receiver))
+            this.clientHandlerMap.get(receiver).chatToMe(sender, message);
     }
 
     public void askSelect(String nickname) {

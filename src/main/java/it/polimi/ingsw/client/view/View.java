@@ -6,14 +6,14 @@ import it.polimi.ingsw.server.model.ItemCard;
 import java.util.Map;
 
 public interface View {
-    void setGameStarted(boolean gameStarted);
-
     /**
      * Implementation for Cli and Gui of the printing/update of the board
      *
      * @param board updated by the server
      */
     void printBoard(ItemCard[][] board);
+
+    void printMenu();
 
     /**
      * Implementation for Cli and Gui of the printing/update of one of the bookshelves

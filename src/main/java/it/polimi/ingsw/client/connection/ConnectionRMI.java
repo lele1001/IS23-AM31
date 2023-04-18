@@ -65,9 +65,14 @@ public class ConnectionRMI extends ConnectionClient implements RMIClientConnecti
     }
 
     @Override
+    public void setPlayersNumber(int players) throws Exception {
+        server.setPlayerNumber(players);
+    }
+
+    @Override
     public void onPlayerNumber() throws RemoteException {
         getController().onPlayerNumber();
-        Thread t = new Thread() {
+        /*Thread t = new Thread() {
             @Override
             public void run() {
                 try {
@@ -79,7 +84,7 @@ public class ConnectionRMI extends ConnectionClient implements RMIClientConnecti
             }
         };
         t.start();
-        System.out.println("chiesto");
+        System.out.println("chiesto");*/
     }
 
     @Override
@@ -135,7 +140,7 @@ public class ConnectionRMI extends ConnectionClient implements RMIClientConnecti
     @Override
     public void onGameIsStarting() throws RemoteException {
         System.out.println("gameStarting");
-        getController().getView().setGameStarted(true);
+        getController().setGameStarted(true);
     }
 
     @Override

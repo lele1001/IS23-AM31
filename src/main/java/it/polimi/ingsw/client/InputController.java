@@ -15,7 +15,7 @@ public class InputController {
     }
 
     public boolean checkTake(String[] input) {
-        if (!clientController.myTurn) {
+        if (!clientController.isMyTurn()) {
             System.out.println("It is not your turn!");
             return false;
         }
@@ -60,12 +60,12 @@ public class InputController {
         int column;
         ArrayList<ItemCard> tilesToPut = null;
 
-        if (!clientController.myTurn) {
+        if (!clientController.isMyTurn()) {
             System.out.println("It is not your turn!");
             return false;
         }
 
-        if (input.length != clientController.selectedTiles.size() + 2) {
+        if (input.length != clientController.getSelectedTiles().size() + 2) {
             System.out.println("You are trying to put more cards than expected!");
             return false;
         }
@@ -133,7 +133,7 @@ public class InputController {
         if (input[1].equals(clientController.getMyNickname())) {
             System.out.println("You can not send a message to yourself!");
             return 0;
-        } else if (clientController.playersBookshelf.containsKey(input[1])) {
+        } else if (clientController.getPlayersBookshelf().containsKey(input[1])) {
             return 1;
         } else if (input[1].equalsIgnoreCase("all")) {
             return 2;
@@ -141,6 +141,29 @@ public class InputController {
 
         System.out.println("Recipient not accepted!");
         return 0;
+    }
+
+    public int checkPlayers(String[] input) {
+        if (input.length > 2) {
+            System.out.println("You should only write the number of players!");
+            return 0;
+        }
+
+        int playersNum = 0;
+
+        try {
+            playersNum = Integer.parseInt(input[1]);
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
+
+        // checks only input[1] because input[0] == "@players"
+        if (playersNum < 2 || playersNum > 4) {
+            System.out.println("Players number not accepted!");
+            return 0;
+        }
+
+        return playersNum;
 
     }
 }

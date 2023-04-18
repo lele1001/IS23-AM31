@@ -64,6 +64,11 @@ public class ConnectionSocket extends ConnectionClient {
 
     }
 
+    @Override
+    public void setPlayersNumber(int players) throws Exception {
+
+    }
+
     private void send(JsonObject json) {
         socketOut.println(json.toString());
         socketOut.flush();
@@ -129,7 +134,7 @@ public class ConnectionSocket extends ConnectionClient {
 
                 case "gameStarted" -> {
                     System.out.println("gameStarting");
-                    getController().getView().setGameStarted(true);
+                    getController().setGameStarted(true);
                 }
                 default -> System.out.println("Unknown message from server.");
 
