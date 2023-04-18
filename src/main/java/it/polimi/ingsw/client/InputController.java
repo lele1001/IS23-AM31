@@ -1,9 +1,14 @@
 package it.polimi.ingsw.client;
 
+import it.polimi.ingsw.server.model.ItemCard;
+import it.polimi.ingsw.server.model.Position;
+
 import java.util.ArrayList;
 
 public class InputController {
     private final ClientController clientController;
+    ArrayList<Integer> coords = new ArrayList<>();
+    int coord;
 
     public InputController(ClientController clientController) {
         this.clientController = clientController;
@@ -20,8 +25,7 @@ public class InputController {
             return false;
         }
 
-        ArrayList<Integer> coords = new ArrayList<>();
-        int coord;
+        coords = null;
 
         // starts from 1 because input[0] == "@take"
         for (int i = 1; i < input.length; i++) {
@@ -33,18 +37,29 @@ public class InputController {
                 return false;
             }
 
-            if (coord / 10 > 8 || coord % 10 > 8) {
-                System.out.println("The requested cell does not exists!");
-                return false;
-            } else {
-                coords.add(coord);
-            }
+           if (!checkPosition(coord)) {
+               return false;
+           }
         }
 
+        clientController.setSelectedTiles(coords);
+        return true;
+    }
+
+    private boolean checkPosition (int coord) {
+        if (Position.getRow(coord) > 8 || Position.getColumn(coord) > 8) {
+            System.out.println("The requested cell does not exists!");
+            return false;
+        }
+
+        coords.add(coord);
         return true;
     }
 
     public boolean checkPut(String[] input) {
+        int column;
+        ArrayList<ItemCard> tilesToPut = null;
+
         if (!clientController.myTurn) {
             System.out.println("It is not your turn!");
             return false;
@@ -55,11 +70,23 @@ public class InputController {
             return false;
         }
 
-        ArrayList<Integer> coords = new ArrayList<>();
-        int coord;
+        coords = null;
 
-        // starts from 1 because input[0] == "@put"
-        for (int i = 1; i < input.length; i++) {
+        try {
+            column = Integer.parseInt(input[1]);
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+            System.out.println("Parse exception!");
+            return false;
+        }
+
+        if (column < 0 || column > 4) {
+            System.out.println("Wrong column range!");
+            return false;
+        }
+
+        // starts from 2 because input[0] == "@put" and input[1] = column
+        for (int i = 2; i < input.length; i++) {
             try {
                 coord = Integer.parseInt(input[i]);
             } catch (NumberFormatException e) {
@@ -68,18 +95,29 @@ public class InputController {
                 return false;
             }
 
-            // item 1 represent the bookshelf column
-            if (i == 1 && (coord < 0 || coord > 4)) {
-                System.out.println("Wrong column range!");
+            if (!checkPosition(coord)) {
                 return false;
             }
-            // items from 2 to 5 represent the items order (1st, 2nd or 3rd)
-            else if (i != 1 && (coord < 0 || coord > 2)) {
-                System.out.println("Wrong items order!");
-                return false;
-            } else {
-                coords.add(coord);
+
+        }
+
+        if (!clientController.getSelectedTiles().keySet().containsAll(coords)) {
+            return false;
+        }
+
+        for (Integer i : coords) {
+            if (clientController.getSelectedTiles().containsKey(i)) {
+                tilesToPut.add(clientController.getSelectedTiles().get(i));
             }
+            else {
+                return false;
+            }
+        }
+
+        try {
+            clientController.insertCard(tilesToPut, column);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
         return true;

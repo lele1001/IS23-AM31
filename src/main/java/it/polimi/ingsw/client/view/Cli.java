@@ -172,6 +172,8 @@ public class Cli implements View {
                 choice = in.nextLine();
                 splitString = choice.split(" ");
 
+                echo(choice);
+
                 for (int i = 0; i < splitString.length; i++) {
                     splitString[i] = splitString[i].toLowerCase();
                 }
@@ -191,8 +193,12 @@ public class Cli implements View {
                         if (!checkInput.checkTake(splitString)) {
                             System.out.println("Errore take");
                         }
-                        //chiamo il metodo selectCards
 
+                        try {
+                            clientController.selectCard();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                     }
                     case "@myshelf" ->
                             printMyBookshelf(clientController.playersBookshelf.get(clientController.getMyNickname()));
@@ -201,28 +207,36 @@ public class Cli implements View {
                         if (!checkInput.checkPut(splitString)) {
                             System.out.println("Errore put");
                         }
-                        //chiamo il metodo putCards
+
+                        //clientController.insertCard();
 
                     }
                     case "@chat" -> {
                         int dest = checkInput.checkChat(splitString);
 
+                        // creating the message to send
+                        for (int i = 2; i < splitString.length; i++) {
+                            msg.append(splitString[i]).append(" ");
+                        }
+
+                        String message = msg.toString();
+
                         if (dest == 1) {
                             destNickname = splitString[1];
 
-                            for (int i = 2; i < splitString.length; i++) {
-                                msg.append(splitString[i]).append(" ");
+                            try {
+                                clientController.chatToPlayer(destNickname, message);
+                            } catch (Exception e) {
+                                e.printStackTrace();
                             }
-
-                            // metodo chat diretta
                         } else if (dest == 2) {
                             destNickname = "all";
 
-                            for (int i = 2; i < splitString.length; i++) {
-                                msg.append(splitString[i]).append(" ");
+                            try {
+                                clientController.chatToAll(message);
+                            } catch (Exception e) {
+                                e.printStackTrace();
                             }
-
-                            // metodo chat globale
                         } else {
                             System.out.println("Errore chat");
                             break;
@@ -242,6 +256,10 @@ public class Cli implements View {
         disconnectionError();
     }
 
+    private void echo(String s) {
+        System.out.println(s);
+    }
+
     /**
      * Allows the user only to quit the game while waiting for it to start
      */
@@ -256,16 +274,28 @@ public class Cli implements View {
      * Prints a menu on the screen to let the user choose what to do next
      */
     public void printMenu() {
-        System.out.println("""
+        //if (clientController.myTurn) {
+            System.out.println("""
                 GAME MENU: type the corresponding command
                 \t@MENU to show again this menu
                 \t@BOARD to print the game board
                 \t@TAKE to choose from 1 to 3 tiles from the board, followed by the coordinates (xy) of the chosen tiles
                 \t@MYSHELF to print you bookshelf
                 \t@ALLSHELVES to print the bookshelf of all the players
-                \t@PUT to choose a column for putting the cards, followed by the column number
+                \t@PUT to choose a column for putting the cards, followed by the column number and the board coordinates of the tiles (from bottom to top)
                 \t@CHAT to open the chat, followed by the nickname/all and the message
                 \t@QUIT to exit from the game""");
+        /*} else {
+            System.out.println("""
+                    GAME MENU: type the corresponding command
+                    \t@MENU to show again this menu
+                    \t@BOARD to print the game board
+                    \t@MYSHELF to print you bookshelf
+                    \t@ALLSHELVES to print the bookshelf of all the players
+                    \t@CHAT to open the chat, followed by the nickname/all and the message
+                    \t@QUIT to exit from the game""");
+        }
+        */
     }
 
     /**

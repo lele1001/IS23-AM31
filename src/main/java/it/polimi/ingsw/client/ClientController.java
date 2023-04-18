@@ -10,12 +10,16 @@ import it.polimi.ingsw.client.view.View;
 import it.polimi.ingsw.server.controller.TurnPhase;
 import it.polimi.ingsw.server.model.HouseItem;
 import it.polimi.ingsw.server.model.ItemCard;
+import it.polimi.ingsw.server.model.Position;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.Reader;
 import java.lang.reflect.Type;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static it.polimi.ingsw.server.controller.TurnPhase.*;
 
@@ -58,6 +62,16 @@ public class ClientController {
         // to fix
         view.print("Choose int which order and where you want to put the Tiles");
         view.printMyBookshelf(playersBookshelf.get(myNickname));
+    }
+
+    public void setSelectedTiles(ArrayList<Integer> coords) {
+        for (Integer i: coords) {
+            selectedTiles.put(i, board[Position.getRow(i)][Position.getColumn(i)]);
+        }
+    }
+
+    public Map<Integer, ItemCard> getSelectedTiles() {
+        return selectedTiles;
     }
 
     /**
@@ -204,7 +218,7 @@ public class ClientController {
      */
     public void startConnection(int select, String username, String address, int port) throws Exception {
         this.myNickname = username;
-        System.out.println("Your nickname is" + myNickname);
+        System.out.println("Your nickname is " + myNickname);
         if (select == 0) {
             connectionClient = new ConnectionRMI(this, address, port);
             System.out.println("Created RMI connection!");
@@ -243,5 +257,3 @@ public class ClientController {
         return myNickname;
     }
 }
-
-
