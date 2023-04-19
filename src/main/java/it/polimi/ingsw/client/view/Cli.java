@@ -2,6 +2,7 @@ package it.polimi.ingsw.client.view;
 
 import it.polimi.ingsw.client.ClientController;
 import it.polimi.ingsw.client.InputController;
+import it.polimi.ingsw.server.controller.TurnPhase;
 import it.polimi.ingsw.server.model.HouseItem;
 import it.polimi.ingsw.server.model.ItemCard;
 
@@ -50,7 +51,7 @@ public class Cli implements View {
         }
 
         new Thread(this::listen).start();
-}
+    }
 
     /**
      * Asking the type of connection: 0 for RMI, 1 for Socket
@@ -157,8 +158,7 @@ public class Cli implements View {
                                     e.printStackTrace();
                                 }
                             }
-                        }
-                        else {
+                        } else {
                             System.out.println("You can not choose the number of players!");
                         }
                     }
@@ -177,7 +177,7 @@ public class Cli implements View {
                         }
                     }
                     case "@take" -> {
-                        if (clientController.isMyTurn() && clientController.isGameStarted()) {
+                        if (clientController.isMyTurn() && clientController.isGameStarted() && clientController.getPhase().equals(TurnPhase.SELECTCARDS)) {
                             take(splitString);
                         } else {
                             System.out.println("It is not your turn!");
@@ -187,15 +187,13 @@ public class Cli implements View {
                             printMyBookshelf(clientController.getPlayersBookshelf().get(clientController.getMyNickname()));
                     case "@allshelves" -> printBookshelves(clientController.getPlayersBookshelf());
                     case "@put" -> {
-                        if (clientController.isMyTurn() && clientController.isGameStarted()) {
+                        if (clientController.isMyTurn() && clientController.isGameStarted() && clientController.getPhase().equals(TurnPhase.INSERTCARDS)) {
                             put(splitString);
                         } else {
                             System.out.println("It is not your turn!");
                         }
                     }
-                    case "@chat" -> {
-                        chat(splitString);
-                    }
+                    case "@chat" -> chat(splitString);
                     case "@quit" -> {
                         System.out.println("Stopping CLI...");
                         stopListening = true;
