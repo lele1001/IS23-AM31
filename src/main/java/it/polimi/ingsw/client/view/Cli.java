@@ -5,6 +5,7 @@ import it.polimi.ingsw.client.InputController;
 import it.polimi.ingsw.server.model.HouseItem;
 import it.polimi.ingsw.server.model.ItemCard;
 
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -47,6 +48,7 @@ public class Cli implements View {
             printError(e.getMessage());
             disconnectionError();
         }
+
         new Thread(this::listen).start();
 }
 
@@ -115,19 +117,22 @@ public class Cli implements View {
     private void listen() {
         String choice;
         String[] splitString;
-        StringBuilder msg = new StringBuilder();
-        String destNickname;
         boolean justStarted = true;
 
         if (!clientController.isGameStarted()) {
-            System.out.println("Waiting for other players to connect...");
-            waitForGameMenu();
+            synchronized (this) {
+                System.out.println("Waiting for other players to connect...");
+                waitForGameMenu();
+            }
         }
 
         while (!stopListening) {
             if (clientController.isGameStarted() && justStarted) {
-                System.out.println("Welcome " + clientController.getMyNickname() + "!");
-                System.out.println("You will play in a " + clientController.getPlayersBookshelf().keySet().size() + " players game.");
+                synchronized (this) {
+                    System.out.println("Welcome " + clientController.getMyNickname() + "!");
+                    System.out.println("You will play in a " + clientController.getPlayersBookshelf().keySet().size() + " players game.");
+                }
+
                 printMenu();
                 justStarted = false;
             }
@@ -136,22 +141,25 @@ public class Cli implements View {
                 choice = in.nextLine();
                 splitString = choice.split(" ");
 
-                echo(choice);
-
                 for (int i = 0; i < splitString.length; i++) {
                     splitString[i] = splitString[i].toLowerCase();
                 }
 
                 switch (splitString[0]) {
                     case "@players" -> {
-                        int players = checkInput.checkPlayers(splitString);
+                        if (clientController.isSelectNumberOfPlayers()) {
+                            int players = checkInput.checkPlayers(splitString);
 
-                        if (players != 0) {
-                            try {
-                                clientController.setPlayersNumber(players);
-                            } catch (Exception e) {
-                                e.printStackTrace();
+                            if (players != 0) {
+                                try {
+                                    clientController.setPlayersNumber(players);
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
                             }
+                        }
+                        else {
+                            System.out.println("You can not choose the number of players!");
                         }
                     }
                     case "@menu" -> {
@@ -161,61 +169,32 @@ public class Cli implements View {
                             waitForGameMenu();
                         }
                     }
-                    case "@board" -> printBoard(clientController.getBoard());
-                    case "@take" -> {
-                        if (!checkInput.checkTake(splitString)) {
-                            System.out.println("Errore take");
+                    case "@comgoal" -> printCommonGoal(clientController.getPlayerComGoal());
+                    case "@persgoal" -> printPersGoal(clientController.getMyPersGoal());
+                    case "@board" -> {
+                        if (clientController.isGameStarted()) {
+                            printBoard(clientController.getBoard());
                         }
-
-                        try {
-                            clientController.selectCard();
-                        } catch (Exception e) {
-                            e.printStackTrace();
+                    }
+                    case "@take" -> {
+                        if (clientController.isMyTurn() && clientController.isGameStarted()) {
+                            take(splitString);
+                        } else {
+                            System.out.println("It is not your turn!");
                         }
                     }
                     case "@myshelf" ->
                             printMyBookshelf(clientController.getPlayersBookshelf().get(clientController.getMyNickname()));
                     case "@allshelves" -> printBookshelves(clientController.getPlayersBookshelf());
                     case "@put" -> {
-                        if (!checkInput.checkPut(splitString)) {
-                            System.out.println("Errore put");
+                        if (clientController.isMyTurn() && clientController.isGameStarted()) {
+                            put(splitString);
+                        } else {
+                            System.out.println("It is not your turn!");
                         }
-
-                        //clientController.insertCard();
-
                     }
                     case "@chat" -> {
-                        int dest = checkInput.checkChat(splitString);
-
-                        // creating the message to send
-                        for (int i = 2; i < splitString.length; i++) {
-                            msg.append(splitString[i]).append(" ");
-                        }
-
-                        String message = msg.toString();
-
-                        if (dest == 1) {
-                            destNickname = splitString[1];
-
-                            try {
-                                clientController.chatToPlayer(destNickname, message);
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                        } else if (dest == 2) {
-                            destNickname = "all";
-
-                            try {
-                                clientController.chatToAll(message);
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                        } else {
-                            System.out.println("Errore chat");
-                            break;
-                        }
-
-                        System.out.println("Sending " + msg + "to " + destNickname);
+                        chat(splitString);
                     }
                     case "@quit" -> {
                         System.out.println("Stopping CLI...");
@@ -229,8 +208,82 @@ public class Cli implements View {
         disconnectionError();
     }
 
-    private void echo(String s) {
-        System.out.println(s);
+    /**
+     * Checks the positions of the chosen tiles and, if they are accepted, sends them to the client controller
+     */
+    private void take(String[] splitString) {
+        ArrayList<Integer> coords = checkInput.checkTake(splitString);
+
+        if (coords != null) {
+            clientController.setSelectedTiles(coords);
+        }
+
+        try {
+            clientController.selectCard();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Checks the column index and if the cards to put are the same as the selected ones
+     * If they are accepted, sends them to the client controller
+     */
+    private void put(String[] splitString) {
+        ArrayList<ItemCard> tilesToPut = checkInput.checkPut(splitString);
+        int column = 0;
+
+        if (tilesToPut != null) {
+            try {
+                column = Integer.parseInt(splitString[1]);
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
+            }
+
+            try {
+                clientController.insertCard(tilesToPut, column);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        }
+    }
+
+    /**
+     * Checks the recipient, and the message
+     * If accepted sends them to the client controller
+     */
+    private void chat(String[] splitString) {
+        StringBuilder msg = new StringBuilder();
+        String destNickname = null;
+        int dest = checkInput.checkChat(splitString);
+
+        // creating the message to send
+        for (int i = 2; i < splitString.length; i++) {
+            msg.append(splitString[i]).append(" ");
+        }
+
+        String message = msg.toString();
+
+        if (dest == 1) {
+            destNickname = splitString[1];
+
+            try {
+                clientController.chatToPlayer(destNickname, message);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else if (dest == 2) {
+            destNickname = "all";
+
+            try {
+                clientController.chatToAll(message);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        System.out.println("Sending " + msg + "to " + destNickname);
     }
 
     /**
@@ -251,6 +304,8 @@ public class Cli implements View {
         System.out.println("""
                 GAME MENU: type the corresponding command
                 \t@MENU to show again this menu
+                \t@COMGOAL to print the Common Goal of this game
+                \t@PERSGOAL to print your Personal Goal
                 \t@BOARD to print the game board
                 \t@TAKE to choose from 1 to 3 tiles from the board, followed by the coordinates (xy) of the chosen tiles
                 \t@MYSHELF to print you bookshelf
@@ -264,7 +319,7 @@ public class Cli implements View {
      * Prints the current board
      */
     @Override
-    public void printBoard(ItemCard[][] board) {
+    public synchronized void printBoard(ItemCard[][] board) {
         System.out.println("    0   1   2   3   4   5   6   7   8");
         printMatrix(board, DIM_BOARD, DIM_BOARD);
     }
@@ -288,7 +343,7 @@ public class Cli implements View {
      * Prints the bookshelf of a given player
      */
     @Override
-    public void printMyBookshelf(ItemCard[][] bookshelf) {
+    public synchronized void printMyBookshelf(ItemCard[][] bookshelf) {
         if (bookshelf != null) {
             System.out.println("    0   1   2   3   4");
             printMatrix(bookshelf, BOOKSHELF_HEIGHT, BOOKSHELF_LENGTH);
@@ -322,9 +377,12 @@ public class Cli implements View {
         }
     }
 
+    /**
+     * If the player is the first, allows it to choose the number of players
+     */
     @Override
     public void printAskPlayerNumber() {
-        System.out.println("Write @Players (number of players)");
+        System.out.println("Write @PLAYERS followed by the number of players for this game");
     }
 
     /**
@@ -396,6 +454,7 @@ public class Cli implements View {
     public void printCommonGoal(Map<Integer, Integer> playerComGoal) {
         if (!playerComGoal.isEmpty()) {
             for (Integer i : playerComGoal.keySet()) {
+                System.out.println("Common Goal number " + i + ": ");
                 if (i == 1) {
                     System.out.println("Two separate groups each containing four tiles of the same type in a 2x2 square.\n" + "The tiles of one square can be different from those of the other square.");
                 } else if (i == 2) {
@@ -425,7 +484,7 @@ public class Cli implements View {
                             Tiles can be of any type.""");
                 }
 
-                System.out.println("The maximum available score for this card is " + playerComGoal.get(i) + ".");
+                System.out.println("The maximum available score for this card is " + playerComGoal.get(i) + ".\n");
             }
         }
     }
@@ -445,6 +504,7 @@ public class Cli implements View {
      */
     @Override
     public void printPersGoal(Map<Integer, HouseItem> myPersGoal) {
+        System.out.println("My personal goal is: ");
         for (Integer i : myPersGoal.keySet()) {
             System.out.println(i + " " + myPersGoal.get(i));
         }
