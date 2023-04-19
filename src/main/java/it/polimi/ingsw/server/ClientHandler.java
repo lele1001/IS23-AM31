@@ -3,6 +3,8 @@ package it.polimi.ingsw.server;
 import it.polimi.ingsw.server.controller.ConnectionControl;
 import it.polimi.ingsw.server.model.ItemCard;
 
+import java.util.ArrayList;
+
 public abstract class ClientHandler {
     protected volatile String nickname;
     protected ConnectionControl connectionControl;
@@ -19,7 +21,7 @@ public abstract class ClientHandler {
 
     public abstract void sendErrorGameNotAvailable();
 
-    public abstract void sendGameIsStarting();
+    public abstract void sendGameIsStarting(ArrayList<String> playersList);
 
     public abstract void sendError(String error);
 

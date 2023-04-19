@@ -152,6 +152,7 @@ public class GameModel implements ModelInterface {
 
     }
 
+
     private ComGoal selectComGoal(int numComGoal, int numPlayers) {
         return switch (numComGoal) {
             case 1 -> new CG1(numPlayers, 1);
@@ -192,14 +193,13 @@ public class GameModel implements ModelInterface {
         try {
             if (board.checkRefill()) {
                 evt = new PropertyChangeEvent("null", "BOARD_CHANGED", null, board.getAsArrayList());
-                evt = new PropertyChangeEvent("null", "BOARD_CHANGED", null, board.getAsArrayList());
+                this.listener.propertyChange(evt);
             }
         } catch (EmptyCardBagException e) {
             evt = new PropertyChangeEvent("null", "EMPTY_CARD_BAG", null, null); // posso anche unirlo a change board
             this.listener.propertyChange(evt);
             evt = new PropertyChangeEvent("null", "BOARD_CHANGED", null, board.getAsArrayList()); // faccio sempre anche se non modifica fa nulla
             this.listener.propertyChange(evt);
-        } finally {
         }
 
     }
