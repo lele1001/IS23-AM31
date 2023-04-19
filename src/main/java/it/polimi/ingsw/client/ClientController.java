@@ -354,6 +354,7 @@ public class ClientController {
      * @throws Exception if an error occurred calling the server ( Socket or RMI )
      */
     public void setPlayersNumber(int players) throws Exception {
+        selectNumberOfPlayers = false;
         connectionClient.setPlayersNumber(players);
     }
 

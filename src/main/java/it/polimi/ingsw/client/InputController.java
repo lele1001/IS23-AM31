@@ -14,15 +14,15 @@ public class InputController {
         this.clientController = clientController;
     }
 
-    public boolean checkTake(String[] input) {
+    public ArrayList<Integer> checkTake(String[] input) {
         if (!clientController.isMyTurn()) {
             System.out.println("It is not your turn!");
-            return false;
+            return null;
         }
 
         if (input.length < 2 || input.length > 4) {
             System.out.println("You can only take from 1 to 3 cards!");
-            return false;
+            return null;
         }
         coords.clear();
         // starts from 1 because input[0] == "@take"
@@ -32,16 +32,15 @@ public class InputController {
             } catch (NumberFormatException e) {
                 e.printStackTrace();
                 System.out.println("Parse exception!");
-                return false;
+                return null;
             }
 
            if (!checkPosition(coord)) {
-               return false;
+               return null;
            }
         }
 
-        clientController.setSelectedTiles(coords);
-        return true;
+        return coords;
     }
 
     private boolean checkPosition (int coord) {
@@ -54,18 +53,18 @@ public class InputController {
         return true;
     }
 
-    public boolean checkPut(String[] input) {
+    public ArrayList<ItemCard> checkPut(String[] input) {
         int column;
         ArrayList<ItemCard> tilesToPut = new ArrayList<>();
 
         if (!clientController.isMyTurn()) {
             System.out.println("It is not your turn!");
-            return false;
+            return null;
         }
 
         if (input.length != clientController.getSelectedTiles().size() + 2) {
             System.out.println("You are trying to put more cards than expected!");
-            return false;
+            return null;
         }
 
         try {
@@ -73,14 +72,16 @@ public class InputController {
         } catch (NumberFormatException e) {
             e.printStackTrace();
             System.out.println("Parse exception!");
-            return false;
+            return null;
         }
 
         if (column < 0 || column > 4) {
             System.out.println("Wrong column range!");
-            return false;
+            return null;
         }
+
         coords.clear();
+
         // starts from 2 because input[0] == "@put" and input[1] = column
         for (int i = 2; i < input.length; i++) {
             try {
@@ -88,17 +89,17 @@ public class InputController {
             } catch (NumberFormatException e) {
                 e.printStackTrace();
                 System.out.println("Parse exception!");
-                return false;
+                return null;
             }
 
             if (!checkPosition(coord)) {
-                return false;
+                return null;
             }
 
         }
 
         if (!clientController.getSelectedTiles().keySet().containsAll(coords)) {
-            return false;
+            return null;
         }
 
         for (Integer i : coords) {
@@ -106,17 +107,11 @@ public class InputController {
                 tilesToPut.add(clientController.getSelectedTiles().get(i));
             }
             else {
-                return false;
+                return null;
             }
         }
 
-        try {
-            clientController.insertCard(tilesToPut, column);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return true;
+        return tilesToPut;
     }
 
     public int checkChat(String[] input) {
