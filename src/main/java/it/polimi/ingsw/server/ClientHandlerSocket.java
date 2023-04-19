@@ -10,11 +10,13 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class ClientHandlerSocket extends ClientHandler implements Runnable {
     private final Server server;
     private boolean playerNumberAsked;
-    //private boolean isConnected;
+    private boolean isConnected;
     private final Socket socket;
     private final PrintWriter socketOut;
     private Thread listeningThread;
@@ -25,7 +27,7 @@ public class ClientHandlerSocket extends ClientHandler implements Runnable {
         this.server = server;
         this.connectionControl = connectionControl;
         playerNumberAsked = false;
-        //isConnected = true;
+        isConnected = true;
         try {
             socketOut = new PrintWriter(socket.getOutputStream());
         } catch (IOException e) {
@@ -33,7 +35,10 @@ public class ClientHandlerSocket extends ClientHandler implements Runnable {
         }
     }
 
-
+    /**
+     * Waits for client's nickname and, then, tries to insert it into the game.
+     * If the game is not available, sends the error and disconnects it.
+     */
     public void run() {
         nickname = null;
         listeningThread = new Thread(this::listen);
@@ -54,7 +59,9 @@ public class ClientHandlerSocket extends ClientHandler implements Runnable {
 
     }
 
-
+    /**
+     * The infinitive loop that listens from client's messages, until it is online.
+     */
     public void listen() {
         BufferedReader in;
         try {
@@ -76,8 +83,8 @@ public class ClientHandlerSocket extends ClientHandler implements Runnable {
                 if ((nickname == null) || (Thread.interrupted()))
                     return;
                 System.out.println("Client: " + nickname + " disconnected.");
+                isConnected = false;
                 connectionControl.changePlayerStatus(nickname);
-                //this.disconnectPlayer();
                 break;
             }
         }
@@ -90,44 +97,71 @@ public class ClientHandlerSocket extends ClientHandler implements Runnable {
         }
     }
 
+    /**
+     * A private method used to send to client the generated json.
+     * @param json to be converted in String and to be sent.
+     */
     private void send(JsonObject json) {
         socketOut.println(json.toString());
         socketOut.flush();
     }
 
+    /**
+     * A private method used to prevent repeated code: it generates standard messages used during the communication with client.
+     * @param type of the message to be sent.
+     * @param value of the message to be sent.
+     * @return the jsonObject to be sent. It doesn't call directly the "send" method because sometimes the game needs to add other fields in the jsonObject before sending it.
+     */
     private JsonObject generateStandardMessage(String type, String value) {
         JsonObject json = new JsonObject();
         json.addProperty("Type", type);
-        json.addProperty("Value", value);
+        if (value != null)
+            json.addProperty("Value", value);
         return json;
     }
 
+    /**
+     * Asks players' number to the client (if it hasn't done it already).
+     */
     @Override
     public void askPlayerNumber() {
         if (!playerNumberAsked) { // non gliel'ho ancora chiesto: glielo chiedo
             playerNumberAsked = true;
             send(generateStandardMessage("askPlayersNumber", null));
         }
-        //return Optional.empty();
     }
 
+    /**
+     * Sends an update of player's turn.
+     * @param nickname of the client is going to play.
+     */
     @Override
     public void sendPlayerTurn(String nickname) {
         send(generateStandardMessage("changeTurn", nickname));
     }
 
+    /**
+     * Disconnects the player, due to server's error or game not available.
+     */
     @Override
     public void disconnectPlayer() {
-        send(generateStandardMessage("disconnect", null));
-        if (listeningThread.isAlive())
-            listeningThread.interrupt();
-        try {
-            socket.close();
-        } catch (IOException e) {
-            System.err.println("Unable to close socket interface.");
+        if (isConnected) {
+            isConnected = false;
+            send(generateStandardMessage("disconnect", null));
+            if (listeningThread.isAlive())
+                listeningThread.interrupt();
+            try {
+                socket.close();
+            } catch (IOException e) {
+                System.err.println("Unable to close socket interface.");
+            }
         }
     }
 
+    /**
+     * Parses json messages received from the client.
+     * @param json string to be parsed.
+     */
     private void onMessageReceived(String json) {
         // switch per parsare i messaggi e chiamare i metodi corretti sul connectioncontrol
         // attenzione ad accettare due tipologie di messaggi: nickname all'inizio se ancora non ce l'ho (nickname==null)
@@ -136,54 +170,93 @@ public class ClientHandlerSocket extends ClientHandler implements Runnable {
         try {
             jsonObject = gson.fromJson(json, jsonObject.getClass());
         } catch (Exception e) {
-            System.out.println("Error parsing client's response.");
+            System.out.println("Unknown message from client.");
             return;
         }
         if (((jsonObject == null) || (jsonObject.isEmpty()) || !(jsonObject.has("Type")))) {
             System.out.println("Unknown message from client.");
         } else
-            switch (jsonObject.get("Type").getAsString()) {
-                case "nickname" -> {
-                    if (nickname == null) {
-                        nickname = jsonObject.get("Value").getAsString();
-                        System.out.println(nickname + " is trying to enter the game.");
+            try {
+                switch (jsonObject.get("Type").getAsString()) {
+                    case "nickname" -> {
+                        if (nickname == null) {
+                            nickname = jsonObject.get("Value").getAsString();
+                            System.out.println(nickname + " is trying to enter the game.");
+                        }
                     }
-                }
-                case "playersNumber" -> {
-                    if (playerNumberAsked) {
-                        server.setAvailablePlayers(Integer.parseInt(jsonObject.get("Value").getAsString()));
-                        playerNumberAsked = false;
+                    case "playersNumber" -> {
+                        if (playerNumberAsked) {
+                            int given = Integer.parseInt(jsonObject.get("Value").getAsString());
+                            if ((given < 2) || (given > 4)) {
+                                sendError("Players' number not correct.");
+                                playerNumberAsked = false;
+                                askPlayerNumber();
+                            } else {
+                                server.setAvailablePlayers(given);
+                                playerNumberAsked = false;
+                            }
+                        }
                     }
-                }
-                default ->
-                    System.out.println("Unknown message from client.");
+                    case "selectCards" ->
+                            connectionControl.selectCard(nickname, new ArrayList<>(Arrays.asList(gson.fromJson(jsonObject.get("Value").getAsString(), Integer[].class))));
 
+                    case "insertCards" ->
+                            connectionControl.insertCard(nickname, new ArrayList<>(Arrays.asList(gson.fromJson(jsonObject.get("Value").getAsString(), ItemCard[].class))), jsonObject.get("column").getAsInt());
+
+                    case "chatToAll" ->
+                        connectionControl.chatToAll(nickname, jsonObject.get("Value").getAsString());
+
+                    case "chatToPlayer" ->
+                        connectionControl.chatToPlayer(nickname, jsonObject.get("receiver").getAsString(), jsonObject.get("Value").getAsString());
+
+                    default -> System.out.println("Unknown message from client.");
+                }
+            } catch (Exception e) {
+                System.out.println("Error de-parsing client " + nickname + "'s message.");
             }
 
     }
 
-    // In questi metodi bisogna generare i JSON e inviarli
+    /**
+     * Generates a message to ask client to select cards from board.
+     */
     @Override
     public void askSelect() {
         send(generateStandardMessage("askSelect", null));
     }
 
+    /**
+     * Generates a message to ask client to insert cards in his bookshelf.
+     */
     @Override
     public void askInsert() {
         send(generateStandardMessage("askInsert", null));
     }
 
+    /**
+     * Generates an error message.
+     * @param error to be sent.
+     */
     @Override
     public void sendError(String error) {
         send(generateStandardMessage("error", error));
     }
 
+    /**
+     * Generates a message to send board's update.
+     * @param newBoard: the updated board.
+     */
     @Override
     public void SendBoardChanged(ItemCard[][] newBoard) {
         Gson gson = new Gson();
         send(generateStandardMessage("boardChanged", gson.toJson(newBoard)));
     }
 
+    /**
+     * Called to inform the client that a new commonGoal has been created (usually at the beginning of the game).
+     * @param comGoalID that has been created.
+     * @param score: the maximum score that can be reached on the commonGoal.
+     */
     @Override
     public void SendCommonGoalCreated(Integer comGoalID, Integer score) {
         JsonObject toSend = generateStandardMessage("comGoalCreated", comGoalID.toString());
@@ -191,11 +264,20 @@ public class ClientHandlerSocket extends ClientHandler implements Runnable {
         send(toSend);
     }
 
+    /**
+     * Called to notify to the client his new PersonalGoal.
+     * @param persGoal: the string that indicates the number of the card assigned.
+     */
     @Override
     public void SendPersGoalCreated(String persGoal) {
         send(generateStandardMessage("persGoalCreated", persGoal));
     }
 
+    /**
+     * Generates a message to send bookshelf's update.
+     * @param nickname of the player the bookshelf is referred to.
+     * @param newBookshelf: the updated bookshelf.
+     */
     @Override
     public void SendBookshelfChanged(String nickname, ItemCard[][] newBookshelf) {
         Gson gson = new Gson();
@@ -204,27 +286,54 @@ public class ClientHandlerSocket extends ClientHandler implements Runnable {
         send(toSend);
     }
 
+    /**
+     * Called to inform that someone has reached a commonGoal.
+     * @param source: the nickname of the client that reached it.
+     * @param details: the ID of the commonGoal and the score remained.
+     */
     @Override
     public void SendCommonGoalDone(String source, int[] details) {
-
+        Gson gson = new Gson();
+        JsonObject toSend = generateStandardMessage("commonGoalDone", gson.toJson(details));
+        toSend.addProperty("source", source);
+        send(toSend);
     }
 
+    /**
+     * It's the end of the game: there's a winner!
+     * @param winner: the nickname of the winner.
+     */
     @Override
     public void sendWinner(String winner) {
-
+        send(generateStandardMessage("winner", winner));
     }
 
+    /**
+     * Called when someone wants to send a message to this client.
+     * @param sender: the nickname of the client sender.
+     * @param message: the message.
+     */
     @Override
     public void chatToMe(String sender, String message) {
-
+        JsonObject toSend = generateStandardMessage("chatToMe", message);
+        toSend.addProperty("sender", sender);
+        send(toSend);
     }
 
+    /**
+     * Generates a message to inform client that game is starting.
+     */
     @Override
-    public void sendGameIsStarting() {
-        send(generateStandardMessage("gameStarted", null));
+    public void sendGameIsStarting(ArrayList<String> playersList) {
+        Gson gson = new Gson();
+        send(generateStandardMessage("gameStarted", gson.toJson(playersList)));
     }
 
+    /**
+     * Generates a message to inform client that game is not available.
+     */
     @Override
     public void sendErrorGameNotAvailable() {
+        send(generateStandardMessage("gameNotAvailable", null));
     }
 }

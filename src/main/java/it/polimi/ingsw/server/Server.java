@@ -244,8 +244,12 @@ public class Server {
 
     }
 
+    /**
+     * Re-initializes server at the end of a game to let it be ready for new games.
+     */
     public void onEndGame() {
         initialize();
         rmiInterface.setConnectionControl(connectionControl);
+        new Thread(this::setGame).start();
     }
 }

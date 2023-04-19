@@ -11,18 +11,22 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.*;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class GameController implements PropertyChangeListener {
 
     private final ConnectionControl connectionControl;
-    private ArrayList<String> playersList = new ArrayList<>();
+    private final ArrayList<String> playersList = new ArrayList<>();
     private String currPlayer;
     private boolean winner;
     private ModelInterface gameModel;
     private TurnPhase turnPhase;
 
     private boolean gameIsActive;
+    private boolean timeout = false;
+    private static final Object lock = new Object();
+
 
     public GameController(ConnectionControl connectionControl) {
         this.connectionControl = connectionControl;
@@ -37,9 +41,10 @@ public class GameController implements PropertyChangeListener {
             System.out.println("Error: number of players not correct.");
             return;
         }
-        connectionControl.sendGameIsStarting();
+
         // creates the list used to iterate on players
-        this.playersList = playersList;
+        this.playersList.addAll(playersList);
+        connectionControl.sendGameIsStarting(playersList);
         gameModel = new GameModel();
         // sets itself as a listener of the model
         gameModel.setListener(this);
@@ -54,23 +59,34 @@ public class GameController implements PropertyChangeListener {
      */
     public void run() {
         gameIsActive = true;
+        winner = false;
         int i = 0;
         while (!winner) {
+            Timer timer = new Timer();
             if (playersList.stream().filter(connectionControl::isOnline).count() < 2) {
                 System.out.println("Too many absents for this game.. waiting for players' returning in game.");
                 connectionControl.sendErrorToEveryone("Too many absents for this game.. waiting for players' returning in game.");
-                ExecutorService service = Executors.newSingleThreadExecutor();
-                try {
-                    Runnable r = () -> {
-                        while (playersList.stream().filter(connectionControl::isOnline).count() < 2)
-                            Thread.onSpinWait();
-                    };
-                    Future<?> f = service.submit(r);
-                    f.get(1, TimeUnit.MINUTES);     // attende per un minuto eventuali giocatori
-                } catch (final InterruptedException e) {
-                    // The thread was interrupted during sleep, wait or join
-                } catch (final TimeoutException e) {
-                    // Troppo tempo: l'eventuale giocatore rimasto è il vincitore.
+                winner = true;
+                timer.scheduleAtFixedRate(new TimerTask() {
+                    @Override
+                    public void run() {
+                        if (playersList.stream().filter(connectionControl::isOnline).count() >= 2)
+                            synchronized (lock) {
+                                winner = false;
+                                lock.notifyAll();
+                            }
+                    }
+                }, 1000, 1000);
+
+                synchronized (lock) {
+                        try {
+                            lock.wait(60000);
+                        } catch (InterruptedException e) {
+                            throw new RuntimeException(e);
+                        }
+                }
+                timer.cancel();
+                if (winner) {   // Timer scaduto: vince chi è rimasto (se ne è rimasto uno)
                     System.out.println("Took too long for returning... game is ending.");
                     connectionControl.sendErrorToEveryone("Took too long for returning... game is ending.");
                     if (playersList.stream().filter(connectionControl::isOnline).count() == 1) {
@@ -78,11 +94,9 @@ public class GameController implements PropertyChangeListener {
                         System.out.println("The winner of the game is " + remained.get(0));
                         connectionControl.sendWinner(remained.get(0));
                     }
-                } catch (final ExecutionException e) {
-                    // An exception from within the Runnable task
-                } finally {
-                    service.shutdown();
-                    service.close();
+                    return;
+                } else {
+                    connectionControl.sendErrorToEveryone("Game is resuming...");
                 }
             }
             playerTurn(i);
@@ -93,7 +107,6 @@ public class GameController implements PropertyChangeListener {
 
         }
         runLastTurn(currPlayer);
-
 
     }
 
@@ -116,44 +129,49 @@ public class GameController implements PropertyChangeListener {
      * Waits for the player's action caught by ConnectionControl and calls the method to check and perform it
      */
     private void playerTurn(int indexCurrPlayer) {
+        Timer timer = new Timer();
         currPlayer = playersList.get(indexCurrPlayer);
         if (connectionControl.isOnline(currPlayer)) {
             System.out.println(playersList.get(indexCurrPlayer) + "'s turn");
             connectionControl.sendPlayerTurn(currPlayer);
             turnPhase = TurnPhase.SELECTCARDS;
             connectionControl.askSelect(currPlayer);
+            timeout = true;
+            TimerTask task = new TimerTask() {
+                @Override
+                public void run() {
+                    if (!connectionControl.isOnline(currPlayer) || turnPhase == TurnPhase.ENDTURN) {
+                        synchronized (lock) {
+                            timeout = false;
+                            lock.notifyAll();
+                        }
+                    }
+                }
+            };
+            timer.scheduleAtFixedRate(task, 1000, 1000);
 
-            ExecutorService service = Executors.newSingleThreadExecutor();
-            try {
-                Runnable r = () -> {
-                    while (connectionControl.isOnline(currPlayer) && turnPhase != TurnPhase.ENDTURN)
-                        Thread.onSpinWait();
-                };
-                Future<?> f = service.submit(r);
-                f.get(3, TimeUnit.MINUTES);     // attende il task per tre minuti
-            } catch (final InterruptedException e) {
-                // The thread was interrupted during sleep, wait or join
-            } catch (final TimeoutException e) {
-                turnPhase = TurnPhase.NULL;
-                connectionControl.SendError("Timeout exceeded: took too long! Disconnecting you from the game...", currPlayer);
-                connectionControl.changePlayerStatus(currPlayer);
-                // Took too long!
-            } catch (final ExecutionException e) {
-                // An exception from within the Runnable task
-            } finally {
-                service.shutdown();
-                service.close();
+            synchronized (lock) {
+                try {
+                    lock.wait(180000);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
             }
+            timer.cancel();
 
             if (turnPhase == TurnPhase.ENDTURN) {
                 gameModel.EndTurn(currPlayer);
             } else {
-                //connectionControl.sendErrorToEveryone("Player " + currPlayer + " disconnected from the game. Resuming board...");
-                gameModel.resumeBoard();
+                if (timeout) {  // Took too long: timer expired!
+                    connectionControl.SendError("Timeout exceeded: took too long! Disconnecting you from the game...", currPlayer);
+                    connectionControl.changePlayerStatus(currPlayer);
+                }
+                if (turnPhase == TurnPhase.INSERTCARDS)
+                    gameModel.resumeBoard();
             }
         }
-
     }
+
 
     /**
      * The method tries to insert the cards selected
@@ -243,6 +261,7 @@ public class GameController implements PropertyChangeListener {
                 }
             }
     }
+
 
     // todo for Mila: call the methods to check for ComGoal and to see if there is a winner
     /*public void endTurn(String nickname) {

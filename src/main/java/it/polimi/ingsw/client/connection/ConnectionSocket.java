@@ -46,27 +46,32 @@ public class ConnectionSocket extends ConnectionClient {
 
     @Override
     public void selectCard(String nickname, ArrayList<Integer> cardsSelected) throws Exception {
-
+        Gson gson = new Gson();
+        send(generateStandardMessage("selectCards", gson.toJson(cardsSelected.toArray())));
     }
 
     @Override
     public void insertCard(String nickname, ArrayList<ItemCard> cards, int column) throws Exception {
-
+        Gson gson = new Gson();
+        JsonObject toSend = generateStandardMessage("insertCards", gson.toJson(cards.toArray()));
+        toSend.addProperty("column", column);
+        send(toSend);
     }
 
     @Override
     public void chatToAll(String nickname, String message) throws Exception {
-
+        send(generateStandardMessage("chatToAll", message));
     }
 
     @Override
     public void chatToPlayer(String sender, String receiver, String message) throws Exception {
-
+        JsonObject toSend = generateStandardMessage("chatToPlayer", message);
+        toSend.addProperty("receiver", receiver);
     }
 
     @Override
     public void setPlayersNumber(int players) throws Exception {
-
+        send(generateStandardMessage("playersNumber", Integer.toString(players)));
     }
 
     private void send(JsonObject json) {
@@ -85,7 +90,7 @@ public class ConnectionSocket extends ConnectionClient {
         while (true) {
             try {
                 String line = in.readLine();
-                System.out.println("Received: " + line);
+                // System.out.println("Received: " + line);
                 onMessageReceived(line);
             } catch (IOException e) {
                 System.out.println("Server disconnected.");
@@ -99,7 +104,7 @@ public class ConnectionSocket extends ConnectionClient {
         } catch (IOException e) {
             System.out.println("Error closing socket interface.");
         }
-        //chiamare disconnect
+        getController().disconnectMe();
     }
 
     private void onMessageReceived(String json) {
@@ -108,11 +113,11 @@ public class ConnectionSocket extends ConnectionClient {
         try {
             jsonObject = gson.fromJson(json, jsonObject.getClass());
             switch (jsonObject.get("Type").getAsString()) {
-                case "askPlayersNumber" -> {
-                }
-                case "disconnect" -> {
+                case "askPlayersNumber" ->
+                    getController().onPlayerNumber();
 
-                }
+                case "disconnect" -> in.close();
+
                 case "askSelect" -> getController().onSelect();
 
                 case "askInsert" -> getController().onInsert();
@@ -132,15 +137,25 @@ public class ConnectionSocket extends ConnectionClient {
 
                 case "changeTurn" -> getController().onChangeTurn(jsonObject.get("Value").getAsString());
 
+                case "winner" -> System.out.println("Winner is " + jsonObject.get("Value").getAsString());
+
+                case "commonGoalDone" -> getController().onCommonGoalDone(jsonObject.get("source").getAsString(), gson.fromJson(jsonObject.get("value"), int[].class));
+
                 case "gameStarted" -> {
                     System.out.println("gameStarting");
                     getController().setGameStarted(true);
+                    //todo: prendere anche la lista dei nickname e passarla al controller
                 }
+
+                case "gameNotAvailable" -> System.out.println("GameNotAvailable");
+
+                case "chatToMe" -> getController().chatToMe(jsonObject.get("sender").getAsString(), jsonObject.get("Value").getAsString());
+
                 default -> System.out.println("Unknown message from server.");
 
             }
-        } catch (Exception e) {
-            System.out.println("Unknown message from server.");
+        } catch (IOException e) {
+            System.out.println("Error de-parsing server's message.");
         }
     }
 }

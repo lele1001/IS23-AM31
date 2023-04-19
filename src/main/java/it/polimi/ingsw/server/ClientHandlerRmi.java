@@ -5,6 +5,7 @@ import it.polimi.ingsw.server.controller.ConnectionControl;
 import it.polimi.ingsw.server.model.ItemCard;
 
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -166,7 +167,7 @@ public class ClientHandlerRmi extends ClientHandler {
 
 
     @Override
-    public void sendGameIsStarting() {
+    public void sendGameIsStarting(ArrayList<String> playersList) {
         try {
             client.onGameIsStarting();
         } catch (RemoteException e) {

@@ -27,19 +27,18 @@ public class ConnectionControl {
     public void askPlayerNumber(String nickname) {
         System.out.println("Asking players number to " + nickname);
         this.clientHandlerMap.get(nickname).askPlayerNumber();
-        //Optional<Integer> optional = this.clientHandlerMap.get(nickname).askPlayerNumber();
-        //optional.ifPresent(server::setAvailablePlayers);
     }
 
     public boolean tryAddInQueue(ClientHandler clientHandler, String nickname) {
         if (gameController.isGameIsActive()) {
-            if (clientHandlerMap.containsKey(nickname)) {
+            if (clientStatusMap.containsKey(nickname)) {
                 if (clientStatusMap.get(nickname))
                     // ce n'è uno dentro e sta giocando
                     return false;
                 // è già dentro ed è tornato online
                 clientHandlerMap.put(nickname, clientHandler);
-                clientStatusMap.put(nickname, true);
+                clientStatusMap.replace(nickname, true);
+                System.out.println(nickname + " is back!");
                 return true;
             } else
                 return false;
@@ -63,28 +62,24 @@ public class ConnectionControl {
         this.clientStatusMap.remove(nickname);
     }
 
-/*    public void addClient(ClientHandler clientHandler, String nickname) {
-        if (this.clientHandlerMap.containsKey(nickname)) {       // già esiste, sta tornando online
-            gameController.changePlayerStatus(nickname);
-        }
-        this.clientHandlerMap.put(nickname, clientHandler);
-    }*/
 
     public void setGameController(GameController gameController) {
         this.gameController = gameController;
     }
 
-    public void sendGameIsStarting() {
+    public void sendGameIsStarting(ArrayList<String> playersList) {
         for (ClientHandler c : clientHandlerMap.values()) {
-            c.sendGameIsStarting();
+            c.sendGameIsStarting(playersList);
         }
         System.out.println("Game is starting... sending it to clients.");
     }
 
     public void changePlayerStatus(String nickname) {
-        this.clientStatusMap.put(nickname, false);
+        synchronized (clientStatusMap) {
+            this.clientStatusMap.put(nickname, false);
+        }
         server.removeFromQueue(nickname);   // se era in coda, lo rimuovo
-        if(clientHandlerMap.containsKey(nickname)){
+        if (clientHandlerMap.containsKey(nickname)) {
             this.clientHandlerMap.get(nickname).disconnectPlayer();
             this.clientHandlerMap.remove(nickname);
         }
@@ -155,6 +150,18 @@ public class ConnectionControl {
         }
     }
 
+/*    public void sendBoard (ItemCard[][] board, String receiver) {
+        System.out.println("Sending board to " + receiver);
+        if (clientHandlerMap.containsKey(receiver))
+            this.clientHandlerMap.get(receiver).SendBoardChanged(board);
+    }
+
+    public void sendBookshelf (ItemCard[][] bookshelf, String owner, String receiver) {
+        System.out.println("Sending " + owner + "'s bookshelf to " + receiver);
+        if (clientHandlerMap.containsKey(receiver))
+            this.clientHandlerMap.get(receiver).SendBookshelfChanged(owner, bookshelf);
+    }*/
+
     public void SendBookshelfChanged(String nickname, ItemCard[][] newBookshelf) {
         System.out.println("Player " + nickname + " has changed the bookshelf");
         c.printMyBookshelf(newBookshelf);
@@ -171,7 +178,7 @@ public class ConnectionControl {
             System.out.println("No connection available for " + nickname);
     }
 
-    public void sendErrorToEveryone(String error) {
+    public synchronized void sendErrorToEveryone(String error) {
         System.out.println("Sending error: " + error + " to everyone.");
         for (ClientHandler clientHandler : clientHandlerMap.values()) {
             clientHandler.sendError(error);
@@ -227,10 +234,14 @@ public class ConnectionControl {
     }
 
     public boolean isOnline(String nickname) {
-        return clientStatusMap.getOrDefault(nickname, true);
+        synchronized (clientStatusMap) {
+            return clientStatusMap.getOrDefault(nickname, true);
+        }
     }
 
+
     private void onEndGame() {
+        disconnectAll();
         this.clientStatusMap.clear();
         this.clientHandlerMap.clear();
         server.onEndGame();
