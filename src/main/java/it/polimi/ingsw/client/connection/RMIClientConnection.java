@@ -4,6 +4,7 @@ import it.polimi.ingsw.server.model.ItemCard;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 
 public interface RMIClientConnection extends Remote {
     /**
@@ -87,7 +88,7 @@ public interface RMIClientConnection extends Remote {
      *
      * @throws RemoteException if an error occurred calling the RMI client
      */
-    void onGameIsStarting() throws RemoteException;
+    void onGameIsStarting(ArrayList<String> playersList) throws RemoteException;
 
     /**
      *
@@ -99,7 +100,7 @@ public interface RMIClientConnection extends Remote {
      *
      * @throws RemoteException if an error occurred calling the RMI client
      */
-    void ping() throws RemoteException;
+    void pong() throws RemoteException;
 
     /**
      *

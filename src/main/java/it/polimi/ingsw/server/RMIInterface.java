@@ -41,28 +41,39 @@ public class RMIInterface implements RMI {
         connectionControl.chatToPlayer(sender, receiver, message);
     }
 
+    /**
+     * Used only by the client to check if the server in Online
+     * @throws RemoteException If the client cannot connect to the server
+     */
+    @Override
+    public void pong() throws RemoteException {
+
+    }
+
+    /**
+     *
+     * @param nickname nickname of the client
+     * @param cards The Item cards selected by the client
+     * @param column The column where the client wants to put the Item cards
+     */
     @Override
     public void insertCard(String nickname, ArrayList<ItemCard> cards, int column) {
         connectionControl.insertCard(nickname, cards, column);
     }
-
+    /**
+     * Waits for client's nickname and RMI interface, then, tries to insert it into the game.
+     * If the game is not available, sends the error and disconnects it.
+     * @param nickname nickname of the client
+     * @param client The client interface
+     */
     @Override
     public boolean login(String nickname, RMIClientConnection client) {        //deve prendere anche la classe del client
         ClientHandlerRmi clientHandlerRmi = new ClientHandlerRmi(connectionControl, nickname, client); //deve passargli la classe dell'interfaccia rmi client
         if (!connectionControl.tryAddInQueue(clientHandlerRmi, nickname)) {
-            // c'è già un gioco attivo e non sei dentro
+            clientHandlerRmi.sendError("Game not available.");
+            clientHandlerRmi.disconnectPlayer();
             return false;
         }
         return true;
     }
-
-/*    public boolean loginExistingGame(String nickname) {
-        // chiede al server se c'è una partita con quel nickname
-        // se non c'è
-        return false;
-
-        //else
-    }*/
-
-
 }

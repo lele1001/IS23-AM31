@@ -29,7 +29,7 @@ public class ClientHandlerRmi extends ClientHandler {
 
     private void ping() {
         try {
-            client.ping();
+            client.pong();
         } catch (RemoteException e) {
             // se si è disconnesso
             connectionControl.changePlayerStatus(nickname);
@@ -67,9 +67,10 @@ public class ClientHandlerRmi extends ClientHandler {
     @Override
     public void disconnectPlayer() {
         try {
+            timer.cancel();
             client.disconnectMe();
         } catch (RemoteException e) {
-            System.out.println("Impossibilile disconnetere il player " + nickname);
+            System.out.println("Impossibile disconnetere il player " + nickname);
         }
     }
 
@@ -169,7 +170,7 @@ public class ClientHandlerRmi extends ClientHandler {
     @Override
     public void sendGameIsStarting(ArrayList<String> playersList) {
         try {
-            client.onGameIsStarting();
+            client.onGameIsStarting(playersList);
         } catch (RemoteException e) {
             System.out.println("Impossibile dire a " + nickname + " che il game sta iniziando");
         }

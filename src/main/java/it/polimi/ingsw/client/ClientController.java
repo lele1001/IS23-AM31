@@ -25,8 +25,6 @@ import static it.polimi.ingsw.server.controller.TurnPhase.*;
 
 public class ClientController {
     private static final int DIM_BOARD = 9;
-    private static final int BOOKSHELF_HEIGHT = 6;
-    private static final int BOOKSHELF_LENGTH = 5;
     private String myNickname;
     private ItemCard[][] board = new ItemCard[DIM_BOARD][DIM_BOARD];
     private Map<String, ItemCard[][]> playersBookshelf = new HashMap<>();
@@ -43,7 +41,7 @@ public class ClientController {
 // new methods for failed login
 
     /**
-     * Method called by the server to ask for the selection of the itemcards to the client
+     * Method called by the server to ask for the selection of the item cards to the client
      * Change turn phase and print the board to the client's view
      */
     public void onSelect() {
@@ -55,7 +53,7 @@ public class ClientController {
     }
 
     /**
-     * Method called by the server to ask for the insertion of the itemcards to the client
+     * Method called by the server to ask for the insertion of the item cards to the client
      * Change turn phase and print the client's bookshelf to the client's view
      */
     public void onInsert() {
@@ -68,7 +66,7 @@ public class ClientController {
     /**
      * Method called by the view to update the Tiles selected from the player (After the input check)
      *
-     * @param coords C oordinates of the Tiles selected from the player
+     * @param coords Coordinates of the Tiles selected from the player
      */
 
     public void setSelectedTiles(ArrayList<Integer> coords) {
@@ -289,7 +287,7 @@ public class ClientController {
     }
 
     /**
-     * Method called by the client that pass to the server he chat message for the receiver
+     * Method called by the client that pass to the server the chat message for the receiver
      *
      * @param receiver player that receive the message
      * @param message  String to send to the receiver
@@ -404,6 +402,14 @@ public class ClientController {
      * Method called by the server to disconnect the player
      */
     public void disconnectMe() {
-        view.disconnectionError();
+        view.disconnectMe();
+    }
+
+    public void gameStarted(ArrayList<String> playersList, boolean gameStarted) {
+        for (String player: playersList){
+            playersBookshelf.put(player,null);
+        }
+        this.gameStarted = gameStarted;
+        view.printStartGame();
     }
 }
