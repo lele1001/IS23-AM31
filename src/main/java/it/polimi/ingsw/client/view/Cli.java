@@ -2,6 +2,7 @@ package it.polimi.ingsw.client.view;
 
 import it.polimi.ingsw.client.ClientController;
 import it.polimi.ingsw.client.InputController;
+import it.polimi.ingsw.server.controller.TurnPhase;
 import it.polimi.ingsw.server.model.HouseItem;
 import it.polimi.ingsw.server.model.ItemCard;
 
@@ -117,7 +118,6 @@ public class Cli implements View {
     private void listen() {
         String choice;
         String[] splitString;
-        boolean justStarted = true;
 
         if (!clientController.isGameStarted()) {
             synchronized (this) {
