@@ -11,6 +11,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class ConnectionSocket extends ConnectionClient {
     ClientController controller;
@@ -126,7 +127,7 @@ public class ConnectionSocket extends ConnectionClient {
                         getController().onBoardChanged(gson.fromJson(jsonObject.get("Value").getAsString(), ItemCard[][].class));
 
                 case "bookshelfChanged" ->
-                        getController().onBookshelfChanged(jsonObject.get("nickname").toString(), gson.fromJson(jsonObject.get("Value").getAsString(), ItemCard[][].class));
+                        getController().onBookshelfChanged(jsonObject.get("nickname").getAsString(), gson.fromJson(jsonObject.get("Value").getAsString(), ItemCard[][].class));
 
                 case "error" -> getController().onError(jsonObject.get("Value").getAsString());
 
@@ -143,8 +144,7 @@ public class ConnectionSocket extends ConnectionClient {
 
                 case "gameStarted" -> {
                     System.out.println("gameStarting");
-                    getController().setGameStarted(true);
-                    //todo: prendere anche la lista dei nickname e passarla al controller
+                    getController().gameStarted(new ArrayList<>(Arrays.asList(gson.fromJson(jsonObject.get("Value").getAsString(), String[].class))), true);
                 }
 
                 case "gameNotAvailable" -> System.out.println("GameNotAvailable");

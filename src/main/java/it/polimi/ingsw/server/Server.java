@@ -197,6 +197,7 @@ public class Server {
             if ((this.queue.indexOf(nickname) == 0)) {  // era il primo: notifico setGame()
                 this.queue.remove(nickname);
                 playersNumberAsked = false;
+                availablePlayers = -1;
                 this.notifyAll();
             } else {
                 this.queue.remove(nickname);
@@ -209,7 +210,7 @@ public class Server {
      * When the game is complete (and all the clients are online), it starts the game, calling methods on GameController.
      */
     public synchronized void setGame() {
-        while (availablePlayers == -1) {
+        while ((availablePlayers == -1) || (this.queue.size() < availablePlayers)) {
             if ((!this.queue.isEmpty()) && (!playersNumberAsked)) {
                 this.connectionControl.askPlayerNumber(this.queue.get(0));
                 playersNumberAsked = true;
@@ -222,13 +223,13 @@ public class Server {
             }
         }
         //System.out.println("Setplayers");
-        while (this.queue.size() < availablePlayers) {
+/*        while (this.queue.size() < availablePlayers) {
             try {
                 this.wait();
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
-        }
+        }*/
         //System.out.println("Past setplayers");
         // dico ai giocatori in eccesso che non possono giocare
         for (String s : queue) {
