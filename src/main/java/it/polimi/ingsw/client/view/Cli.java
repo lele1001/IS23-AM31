@@ -2,7 +2,6 @@ package it.polimi.ingsw.client.view;
 
 import it.polimi.ingsw.client.ClientController;
 import it.polimi.ingsw.client.InputController;
-import it.polimi.ingsw.server.controller.TurnPhase;
 import it.polimi.ingsw.server.model.HouseItem;
 import it.polimi.ingsw.server.model.ItemCard;
 
@@ -128,16 +127,6 @@ public class Cli implements View {
         }
 
         while (!stopListening) {
-            if (clientController.isGameStarted() && justStarted) {
-                synchronized (this) {
-                    System.out.println("Welcome " + clientController.getMyNickname() + "!");
-                    System.out.println("You will play in a " + clientController.getPlayersBookshelf().keySet().size() + " players game.");
-                }
-
-                printMenu();
-                justStarted = false;
-            }
-
             if (in.hasNextLine()) {
                 choice = in.nextLine();
                 splitString = choice.split(" ");
@@ -155,7 +144,7 @@ public class Cli implements View {
                                 try {
                                     clientController.setPlayersNumber(players);
                                 } catch (Exception e) {
-                                    e.printStackTrace();
+                                    System.out.println("Impossible to connect to the server");
                                 }
                             }
                         } else {
@@ -198,7 +187,10 @@ public class Cli implements View {
                         System.out.println("Stopping CLI...");
                         stopListening = true;
                     }
-                    default -> System.out.println("Input not recognised... try again");
+                    default -> {
+                        if(!stopListening)
+                            System.out.println("Input not recognised... try again");
+                    }
                 }
             }
         }
@@ -219,7 +211,7 @@ public class Cli implements View {
         try {
             clientController.selectCard();
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println("Impossible to connect to the server");
         }
     }
 
@@ -241,7 +233,7 @@ public class Cli implements View {
             try {
                 clientController.insertCard(tilesToPut, column);
             } catch (Exception e) {
-                e.printStackTrace();
+                System.out.println("Impossible to connect to the server");
             }
 
         }
@@ -269,7 +261,7 @@ public class Cli implements View {
             try {
                 clientController.chatToPlayer(destNickname, message);
             } catch (Exception e) {
-                e.printStackTrace();
+                System.out.println("Impossible to connect to the server");
             }
         } else if (dest == 2) {
             destNickname = "all";
@@ -277,7 +269,7 @@ public class Cli implements View {
             try {
                 clientController.chatToAll(message);
             } catch (Exception e) {
-                e.printStackTrace();
+                System.out.println("Impossible to connect to the server");
             }
         }
 
@@ -502,10 +494,7 @@ public class Cli implements View {
      */
     @Override
     public void printPersGoal(Map<Integer, HouseItem> myPersGoal) {
-        System.out.println("My personal goal is: ");
-        for (Integer i : myPersGoal.keySet()) {
-            System.out.println(i + " " + myPersGoal.get(i));
-        }
+        System.out.println("Your personal goal is: ");
         System.out.println("    0   1   2   3   4");
         for (int i = 0; i < BOOKSHELF_HEIGHT; i++) {
             for (int j = 0; j < BOOKSHELF_LENGTH; j++) {
@@ -545,5 +534,20 @@ public class Cli implements View {
         System.out.println("\nPress ENTER to exit");
         in.nextLine();
         System.exit(1);
+    }
+
+    @Override
+    public void disconnectMe() {
+        stopListening=true;
+        System.out.println("You are being disconnected from the server, please press ENTER to exit");
+    }
+
+    @Override
+    public void printStartGame() {
+        synchronized (this) {
+            System.out.println("Welcome " + clientController.getMyNickname() + "!");
+            System.out.println("You will play in a " + clientController.getPlayersBookshelf().keySet().size() + " players game.");
+        }
+        printMenu();
     }
 }

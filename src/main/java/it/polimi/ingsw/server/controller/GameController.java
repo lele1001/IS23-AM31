@@ -94,6 +94,7 @@ public class GameController implements PropertyChangeListener {
                         System.out.println("The winner of the game is " + remained.get(0));
                         connectionControl.sendWinner(remained.get(0));
                     }
+                    connectionControl.onEndGame();
                     return;
                 } else {
                     connectionControl.sendErrorToEveryone("Game is resuming...");
@@ -123,6 +124,7 @@ public class GameController implements PropertyChangeListener {
         String gameWinner = gameModel.calcFinalScore();
         System.out.println("The winner of the game is " + gameWinner);
         connectionControl.sendWinner(gameWinner);
+        connectionControl.onEndGame();
     }
 
     /**

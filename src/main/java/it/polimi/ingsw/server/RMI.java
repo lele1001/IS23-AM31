@@ -16,7 +16,8 @@ public interface RMI extends Remote {
 
     void setPlayerNumber(int number) throws RemoteException;
 
-    public void chatToAll(String nickname, String message) throws RemoteException;
+    void chatToAll(String nickname, String message) throws RemoteException;
 
-    public void chatToPlayer(String sender, String receiver, String message) throws RemoteException;
+    void chatToPlayer(String sender, String receiver, String message) throws RemoteException;
+    void pong()  throws RemoteException;
 }

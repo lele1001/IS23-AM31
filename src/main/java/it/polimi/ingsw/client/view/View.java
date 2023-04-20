@@ -68,4 +68,8 @@ public interface View {
 
     void printAskPlayerNumber();
     void disconnectionError();
+
+    void disconnectMe();
+
+    void printStartGame();
 }
