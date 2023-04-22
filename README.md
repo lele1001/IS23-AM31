@@ -45,7 +45,7 @@ The final version includes:
 |:-----------------------------|:------:|
 | Multiple simultaneous games  |        |
 | Persistence                  |        |
-| Resilience to disconnections |        |
-| Chat                         |        |
+| Resilience to disconnections |   :arrows_counterclockwise:     |
+| Chat                         |   :arrows_counterclockwise:     |
 
 ⛔ Not implemented &nbsp;&nbsp;&nbsp;&nbsp; :arrows_counterclockwise: In progress &nbsp;&nbsp;&nbsp;&nbsp; ✅ Implemented
