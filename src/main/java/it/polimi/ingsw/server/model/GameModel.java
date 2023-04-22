@@ -174,7 +174,7 @@ public class GameModel implements ModelInterface {
     public void EndTurn(String nickname) {
         boolean ComGoalDone;
         //boolean playerPointUpdate = false;
-        PropertyChangeEvent evt = null;
+        PropertyChangeEvent evt;
         for (ComGoal c : comGoals) {
             ComGoalDone = playerMap.get(nickname).checkComGoal(c);
             if (ComGoalDone) {
@@ -204,10 +204,24 @@ public class GameModel implements ModelInterface {
 
     }
 
+    @Override
     public void resumeBoard() {
         board.resumeBoard();
         PropertyChangeEvent evt = new PropertyChangeEvent("null", "BOARD_CHANGED", null, board.getAsArrayList());
         this.listener.propertyChange(evt);
+    }
+
+    @Override
+    public void sendGameDetails (String nickname) {
+        // Sending board...
+        PropertyChangeEvent evt = new PropertyChangeEvent("null", "BOARD_CHANGED", nickname, board.getAsArrayList());
+        this.listener.propertyChange(evt);
+
+        // Sending all bookshelves...
+        for (String s : playerMap.keySet()) {
+            evt = new PropertyChangeEvent(s, "BOOKSHELF_CHANGED", nickname, playerMap.get(s).getBookshelfAsMatrix());
+            this.listener.propertyChange(evt);
+        }
     }
 }
 

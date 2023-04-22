@@ -43,14 +43,13 @@ public class ClientHandlerSocket extends ClientHandler implements Runnable {
         nickname = null;
         listeningThread = new Thread(this::listen);
         listeningThread.start();
-        //aspetto nickname
+        // Waiting for nickname to be set.
         while (nickname == null) {
             Thread.onSpinWait();
         }
 
         if (!connectionControl.tryAddInQueue(this, nickname)) {
-            // c'è già un gioco attivo e non sei dentro
-            // invio messaggio e chiudo
+            // Game is not available.
             System.out.println("Sending " + nickname + " that game is not available.");
             sendError("Game not available.");
             disconnectPlayer();
@@ -71,7 +70,7 @@ public class ClientHandlerSocket extends ClientHandler implements Runnable {
             return;
         }
 
-        // Accetta messaggi dal client e, eventualmente, si accorge della sua disconnessione.
+        // Always listens from client's message and notifies server of its disconnection.
         while (true) {
             try {
                 String line = in.readLine();
@@ -125,7 +124,7 @@ public class ClientHandlerSocket extends ClientHandler implements Runnable {
      */
     @Override
     public void askPlayerNumber() {
-        if (!playerNumberAsked) { // non gliel'ho ancora chiesto: glielo chiedo
+        if (!playerNumberAsked) {
             playerNumberAsked = true;
             send(generateStandardMessage("askPlayersNumber", null));
         }
@@ -163,8 +162,6 @@ public class ClientHandlerSocket extends ClientHandler implements Runnable {
      * @param json string to be parsed.
      */
     private void onMessageReceived(String json) {
-        // switch per parsare i messaggi e chiamare i metodi corretti sul connectioncontrol
-        // attenzione ad accettare due tipologie di messaggi: nickname all'inizio se ancora non ce l'ho (nickname==null)
         JsonObject jsonObject = new JsonObject();
         Gson gson = new Gson();
         try {

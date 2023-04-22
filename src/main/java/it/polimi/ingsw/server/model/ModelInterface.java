@@ -28,4 +28,6 @@ public interface ModelInterface {
     void CreateGame(ArrayList<String> playersList);
 
     void resumeBoard();
+
+    void sendGameDetails (String nickname);
 }

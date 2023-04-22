@@ -194,7 +194,7 @@ public class Server {
      */
     public synchronized void removeFromQueue(String nickname) {
         if (this.queue != null) {
-            if ((this.queue.indexOf(nickname) == 0)) {  // era il primo: notifico setGame()
+            if ((this.queue.indexOf(nickname) == 0)) {  // it was the first player: let's notify setGame method.
                 this.queue.remove(nickname);
                 playersNumberAsked = false;
                 availablePlayers = -1;
@@ -222,7 +222,6 @@ public class Server {
                 throw new RuntimeException(e);
             }
         }
-        //System.out.println("Setplayers");
 /*        while (this.queue.size() < availablePlayers) {
             try {
                 this.wait();
@@ -230,8 +229,7 @@ public class Server {
                 throw new RuntimeException(e);
             }
         }*/
-        //System.out.println("Past setplayers");
-        // dico ai giocatori in eccesso che non possono giocare
+        // Saying other players that game is not available for them.
         for (String s : queue) {
             if (queue.indexOf(s) >= availablePlayers) {
                 connectionControl.SendError("Game not available.", s);

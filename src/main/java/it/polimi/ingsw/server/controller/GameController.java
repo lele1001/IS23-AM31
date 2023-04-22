@@ -44,7 +44,7 @@ public class GameController implements PropertyChangeListener {
 
         // creates the list used to iterate on players
         this.playersList.addAll(playersList);
-        connectionControl.sendGameIsStarting(playersList);
+        connectionControl.sendGameIsStarting(playersList, null);
         gameModel = new GameModel();
         // sets itself as a listener of the model
         gameModel.setListener(this);
@@ -55,7 +55,8 @@ public class GameController implements PropertyChangeListener {
     }
 
     /**
-     * Calls each player's turn until somebody completes his/her Bookshelf
+     * Calls each player's turn until somebody completes his/her Bookshelf.
+     * If available players are less than two, stops the game and waits for their coming back for 60 seconds: if the timeout exceeds, ends the game.
      */
     public void run() {
         gameIsActive = true;
@@ -86,7 +87,7 @@ public class GameController implements PropertyChangeListener {
                         }
                 }
                 timer.cancel();
-                if (winner) {   // Timer scaduto: vince chi è rimasto (se ne è rimasto uno)
+                if (winner) {   // Took too long! The winner is the remained player (if it's still online!)
                     System.out.println("Took too long for returning... game is ending.");
                     connectionControl.sendErrorToEveryone("Took too long for returning... game is ending.");
                     if (playersList.stream().filter(connectionControl::isOnline).count() == 1) {
@@ -234,12 +235,13 @@ public class GameController implements PropertyChangeListener {
         } else
             switch (evt.getPropertyName()) {
                 case "BOOKSHELF_CHANGED" -> {
-                    connectionControl.SendBookshelfChanged((String) evt.getSource(), (ItemCard[][]) evt.getNewValue());
-                    turnPhase = TurnPhase.ENDTURN;
+                    connectionControl.SendBookshelfChanged((String) evt.getSource(), (ItemCard[][]) evt.getNewValue(), (String) evt.getOldValue());
+                    if (evt.getOldValue() == null)
+                        turnPhase = TurnPhase.ENDTURN;
                 }
                 case "BOARD_CHANGED" -> {
-                    connectionControl.SendBoardChanged((ItemCard[][]) evt.getNewValue());
-                    if (turnPhase == TurnPhase.SELECTCARDS) {
+                    connectionControl.SendBoardChanged((ItemCard[][]) evt.getNewValue(), (String) evt.getOldValue());
+                    if ((evt.getOldValue() == null) && (turnPhase == TurnPhase.SELECTCARDS)) {
                         turnPhase = TurnPhase.INSERTCARDS;
                         connectionControl.askInsert(currPlayer);
                     }
@@ -262,6 +264,10 @@ public class GameController implements PropertyChangeListener {
                 default -> {
                 }
             }
+    }
+
+    public void sendGameDetails (String nickname) {
+        gameModel.sendGameDetails(nickname);
     }
 
 
