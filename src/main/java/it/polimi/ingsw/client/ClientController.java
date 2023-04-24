@@ -25,6 +25,8 @@ import static it.polimi.ingsw.server.controller.TurnPhase.*;
 
 public class ClientController {
     private static final int DIM_BOARD = 9;
+    private static final int BOOKSHELF_LENGTH = 5;
+    private static final int BOOKSHELF_HEIGHT = 6;
     private String myNickname;
     private ItemCard[][] board = new ItemCard[DIM_BOARD][DIM_BOARD];
     private Map<String, ItemCard[][]> playersBookshelf = new HashMap<>();
@@ -59,8 +61,8 @@ public class ClientController {
     public void onInsert() {
         phase = INSERTCARDS;
         // to fix
-        view.print("Choose int which order and where you want to put the Tiles");
-        view.printMyBookshelf(playersBookshelf.get(myNickname));
+        view.print("Choose in which order and where you want to put the Tiles");
+        view.printBookshelf(playersBookshelf.get(myNickname),myNickname);
     }
 
     /**
@@ -104,7 +106,7 @@ public class ClientController {
      */
     public void onBookshelfChanged(String nickname, ItemCard[][] newBookshelf) {
         playersBookshelf.put(nickname, newBookshelf);
-        view.printBookshelves(playersBookshelf);
+        view.printBookshelf(playersBookshelf.get(nickname),nickname);
     }
 
     /**
@@ -156,14 +158,16 @@ public class ClientController {
      * @param newValue new value of the CommonGoal after a player has done it
      */
     public void onCommonGoalDone(String nickname, int[] newValue) {
-        if (myNickname.equals(nickname)) {
-            myPoint += playerComGoal.get(newValue[0]);
-            view.printPoints(myPoint);
-        }
+        if(newValue!=null&&playerComGoal.containsKey(newValue[0])) {
+            if (myNickname.equals(nickname)) {
+                myPoint += playerComGoal.get(newValue[0]);
+                view.printPoints(myPoint);
+            }
 
-        playerComGoal.replace(newValue[0], newValue[1]);
-        view.print(nickname + " has completed the CommonGoal n° " + newValue[0]);
-        view.print("The new value of CommonGoal n° " + newValue[0] + " is " + newValue[1]);
+            playerComGoal.replace(newValue[0], newValue[1]);
+            view.print(nickname + " has completed the CommonGoal n° " + newValue[0]);
+            view.print("The new value of CommonGoal n° " + newValue[0] + " is " + newValue[1]);
+        }
     }
 
     /**
@@ -227,7 +231,7 @@ public class ClientController {
         if (view instanceof Cli) {
             System.out.println("Cli added to Client controller");
         }
-        //view.printMyBookshelf(playersBookshelf.get(myNickname));
+        //view.printBookshelf(playersBookshelf.get(myNickname));
     }
 
     /**
@@ -315,16 +319,6 @@ public class ClientController {
     }
 
     /**
-     * Method called by the server for the start of the game
-     *
-     * @param gameStarted Boolean to set the gamesStarted as true for the control in the view
-     */
-    public void setGameStarted(boolean gameStarted) {
-        this.gameStarted = gameStarted;
-        view.printMenu();
-    }
-
-    /**
      * @return the Board
      */
     public ItemCard[][] getBoard() {
@@ -407,7 +401,7 @@ public class ClientController {
 
     public void gameStarted(ArrayList<String> playersList, boolean gameStarted) {
         for (String player: playersList){
-            playersBookshelf.put(player,null);
+            playersBookshelf.put(player,new ItemCard[BOOKSHELF_HEIGHT][BOOKSHELF_LENGTH]);
         }
         this.gameStarted = gameStarted;
         view.printStartGame();

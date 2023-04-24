@@ -37,6 +37,9 @@ public class Player {
      * @return the total score of the player (sum of ComGoal score (saved in variable 'score'), bookshelf's adjacency score, persGoal score).
      */
     public int calculateFinScore() {
+        System.out.println(nickname + " has "+ score + "points from Commongoal");
+        System.out.println(nickname + " has "+ myBookshelf.calcScore() + "points from bookshelf");
+        System.out.println(nickname + " has "+ persGoal.calcScore(myBookshelf) + "points from Persgoal");
         return score + myBookshelf.calcScore() + persGoal.calcScore(myBookshelf);
     }
 

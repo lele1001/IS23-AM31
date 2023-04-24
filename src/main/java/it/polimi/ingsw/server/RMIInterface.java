@@ -26,9 +26,14 @@ public class RMIInterface implements RMI {
     }
 
     @Override
-    public void setPlayerNumber(int number) throws RemoteException {
-        System.out.println("Settato player number a " + number);
-        server.setAvailablePlayers(number);
+    public void setPlayerNumber(String client,int number) throws RemoteException {
+        if ((number < 2) || (number > 4)) {
+            connectionControl.SendError("Players' number not correct.",client);
+            connectionControl.askPlayerNumber(client);
+        } else {
+            connectionControl.SendError("Number of players set to " + number,client);
+            server.setAvailablePlayers(number);
+        }
     }
 
     @Override

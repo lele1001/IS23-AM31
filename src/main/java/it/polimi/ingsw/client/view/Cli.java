@@ -140,7 +140,7 @@ public class Cli implements View {
                         if (clientController.isSelectNumberOfPlayers()) {
                             int players = checkInput.checkPlayers(splitString);
 
-                            if (players != 0) {
+                            if (players != -1) {
                                 try {
                                     clientController.setPlayersNumber(players);
                                 } catch (Exception e) {
@@ -173,7 +173,7 @@ public class Cli implements View {
                         }
                     }
                     case "@myshelf" ->
-                            printMyBookshelf(clientController.getPlayersBookshelf().get(clientController.getMyNickname()));
+                            printBookshelf(clientController.getPlayersBookshelf().get(clientController.getMyNickname()),clientController.getMyNickname());
                     case "@allshelves" -> printBookshelves(clientController.getPlayersBookshelf());
                     case "@put" -> {
                         if (clientController.isMyTurn() && clientController.isGameStarted() && clientController.getPhase().equals(TurnPhase.INSERTCARDS)) {
@@ -257,7 +257,6 @@ public class Cli implements View {
 
         if (dest == 1) {
             destNickname = splitString[1];
-
             try {
                 clientController.chatToPlayer(destNickname, message);
             } catch (Exception e) {
@@ -323,8 +322,8 @@ public class Cli implements View {
     public void printBookshelves(Map<String, ItemCard[][]> bookshelves) {
         if (!bookshelves.isEmpty()) {
             for (String s : bookshelves.keySet()) {
-                printMyBookshelf(bookshelves.get(s));
-                System.out.println(s);
+                printBookshelf(bookshelves.get(s),s);
+
             }
         }
     }
@@ -333,7 +332,7 @@ public class Cli implements View {
      * Prints the bookshelf of a given player
      */
     @Override
-    public synchronized void printMyBookshelf(ItemCard[][] bookshelf) {
+    public synchronized void printBookshelf(ItemCard[][] bookshelf,String nickname) {
         if (bookshelf != null) {
             System.out.println("    0   1   2   3   4");
             printMatrix(bookshelf, BOOKSHELF_HEIGHT, BOOKSHELF_LENGTH);
@@ -341,6 +340,7 @@ public class Cli implements View {
             System.out.println("    0   1   2   3   4");
             printMatrix(new ItemCard[BOOKSHELF_HEIGHT][BOOKSHELF_LENGTH], BOOKSHELF_HEIGHT, BOOKSHELF_LENGTH);
         }
+            System.out.println(nickname);
     }
 
     @Override
@@ -450,9 +450,9 @@ public class Cli implements View {
                 } else if (i == 2) {
                     System.out.println("Two columns each formed by 6 different types of tiles.\n" + "One column can show the same or a different combination of the other column.");
                 } else if (i == 3) {
-                    System.out.println("Six groups each containing at least 2 tiles of the same type (not necessarily in the depicted shape).\n" + "The tiles of one group can be different from those of another group.");
-                } else if (i == 4) {
                     System.out.println("Four groups each containing at least 4 tiles of the same type (not necessarily in the depicted shape).\n" + "The tiles of one group can be different from those of another group.");
+                } else if (i == 4) {
+                    System.out.println("Six groups each containing at least 2 tiles of the same type (not necessarily in the depicted shape).\n" + "The tiles of one group can be different from those of another group.");
                 } else if (i == 5) {
                     System.out.println("Three columns each formed by 6 tiles of maximum three different types.\n" + "One column can show the same or a different combination of another column.");
                 } else if (i == 6) {

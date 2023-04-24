@@ -258,7 +258,7 @@ public class ConnectionControl {
     public void SendBookshelfChanged(String nickname, ItemCard[][] newBookshelf, String receiver) {
         if (receiver == null) {
             System.out.println("Player " + nickname + " has changed the bookshelf");
-            c.printMyBookshelf(newBookshelf);
+            c.printBookshelf(newBookshelf,nickname);
             for (ClientHandler c : getClientHandlerMap().values()) {
                 c.SendBookshelfChanged(nickname, newBookshelf);
             }

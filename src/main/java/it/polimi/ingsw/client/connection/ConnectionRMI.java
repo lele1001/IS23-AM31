@@ -37,7 +37,7 @@ public class ConnectionRMI extends ConnectionClient implements RMIClientConnecti
      */
     @Override
     public void startConnection() throws IOException, NotBoundException,NullPointerException {
-        boolean i = true;
+        boolean i;
         System.out.println("locateRegistry");
         Registry registry = LocateRegistry.getRegistry(getAddress(), getPort());
         System.out.println("locateLookup");
@@ -115,7 +115,7 @@ public class ConnectionRMI extends ConnectionClient implements RMIClientConnecti
      */
     @Override
     public void setPlayersNumber(int players) throws RemoteException,NullPointerException {
-        server.setPlayerNumber(players);
+        server.setPlayerNumber(getController().getMyNickname(),players);
     }
 
     @Override
@@ -194,7 +194,7 @@ public class ConnectionRMI extends ConnectionClient implements RMIClientConnecti
     private void ping() {
         try {
             server.pong();
-        } catch (RemoteException e) {
+        } catch (Exception e) {
             // se si è disconnesso
             timer.cancel();
             server=null;
