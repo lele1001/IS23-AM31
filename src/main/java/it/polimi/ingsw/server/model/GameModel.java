@@ -19,6 +19,7 @@ public class GameModel implements ModelInterface {
 
     private final ArrayList<ComGoal> comGoals = new ArrayList<>();
     private ArrayList<ItemCard> selected = new ArrayList<>();
+    String winner=null;
 
     /**
      * Builds the game
@@ -85,8 +86,8 @@ public class GameModel implements ModelInterface {
         a = playerMap.get(nickname).insertCard(cards, column);
         evt = new PropertyChangeEvent(nickname, "BOOKSHELF_CHANGED", null, playerMap.get(nickname).getBookshelfAsMatrix());
         this.listener.propertyChange(evt);
-        System.out.println(a);
-        if (a) {
+        if (a && winner==null) {
+            winner=nickname;
             evt = new PropertyChangeEvent(nickname, "BOOKSHELF_COMPLETED", null, null);
             this.listener.propertyChange(evt);
         }
@@ -133,6 +134,9 @@ public class GameModel implements ModelInterface {
 
         for (String s : playerMap.keySet()) {
             temp = playerMap.get(s).calculateFinScore();
+            if(s.equals(winner)) {
+                temp++;
+            }
             finalScores.put(s, temp);
             PropertyChangeEvent evt = new PropertyChangeEvent(s, "FINAL_SCORE", null, temp);
             listener.propertyChange(evt);
@@ -184,12 +188,6 @@ public class GameModel implements ModelInterface {
                 //playerPointUpdate = true;
             }
         }
-        /*
-        if(playerPointUpdate){
-            evt = new PropertyChangeEvent(nickname, "PLAYER_POINT_UPDATE", null, playerMap.get(nickname).getScore());
-            this.listener.propertyChange(evt);
-        } */
-
         try {
             if (board.checkRefill()) {
                 evt = new PropertyChangeEvent("null", "BOARD_CHANGED", null, board.getAsArrayList());
@@ -210,7 +208,7 @@ public class GameModel implements ModelInterface {
         PropertyChangeEvent evt = new PropertyChangeEvent("null", "BOARD_CHANGED", null, board.getAsArrayList());
         this.listener.propertyChange(evt);
     }
-
+// TODO: (luigi) sending players points
     @Override
     public void sendGameDetails (String nickname) {
         // Sending board...

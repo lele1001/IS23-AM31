@@ -88,7 +88,7 @@ class CG111211Test {
         l1.insertCard(col2, 0);
         l1.insertCard(col3, 1);
         l1.insertCard(col4, 2);
-        l1.insertCard(col5, 3);
+        l1.insertCard(col5_2, 3);
         l1.insertCard(col6, 4);
 
         l2.insertCard(col5, 0);
@@ -97,8 +97,8 @@ class CG111211Test {
         l2.insertCard(col2, 3);
         l2.insertCard(col1, 4);
 
-        assertEquals(8, comG11.goalReached(l1));
-        assertEquals(4, comG11.goalReached(l2));
+        assertEquals(0, comG11.goalReached(l1));
+        assertEquals(8, comG11.goalReached(l2));
     }
 
     /**

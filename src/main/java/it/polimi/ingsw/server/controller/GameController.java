@@ -272,17 +272,4 @@ public class GameController implements PropertyChangeListener {
         gameModel.sendGameDetails(nickname);
     }
 
-
-    // todo for Mila: call the methods to check for ComGoal and to see if there is a winner
-    /*public void endTurn(String nickname) {
-        // used to avoid errors... to change...
-        winner = true;
-        gameModel.EndTurn(nickname);
-    }*/
-
-
-/*    public void changePlayerStatus(String nickname) {
-        gameModel.changePlayerStatus(nickname);
-    }*/
-
 }

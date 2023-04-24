@@ -70,7 +70,7 @@ class CG1Test {
 
         l1.insertCard(colF, 0);
         l1.insertCard(colF, 1);
-        l1.insertCard(colG, 2);
+        l1.insertCard(colA, 2);
         l1.insertCard(colG, 3);
         l1.insertCard(colB, 4);
 

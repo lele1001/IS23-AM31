@@ -50,20 +50,15 @@ public class CG2_5 extends ComGoal {
         ArrayList<HouseItem> items = new ArrayList<>();
 
         for (c = 0; c < BookshelfWidth; c++) {
-            if (!items.isEmpty()) {
-                initSize = items.size();
+            items.clear();
+            if(l.get(0,c)!=null) {
+                for (r = 0; r < BookshelfHeight; r++) {
+                    if (l.get(r, c) != null) {
+                        myItem = l.get(r, c).getMyItem();
 
-                for (i = 0; i < initSize; i++) {
-                    items.remove(0);
-                }
-            }
-
-            for (r = 0; r < BookshelfHeight; r++) {
-                if (l.get(r, c) != null) {
-                    myItem = l.get(r, c).getMyItem();
-
-                    if (!items.contains(myItem)) {
-                        items.add(myItem);
+                        if (!items.contains(myItem)) {
+                            items.add(myItem);
+                        }
                     }
                 }
             }

@@ -22,8 +22,8 @@ class CG255Test {
     private final ItemCard t3 = new ItemCard(Trophy, Third);
     private final ItemCard g1 = new ItemCard(Games, First);
     private final ItemCard p3 = new ItemCard(Plants, Third);
-    private final List<ItemCard> col1 = new ArrayList<>(List.of(g1, p3, p3, f2, b1, t3));
-    private final List<ItemCard> col2 = new ArrayList<>(List.of(c1, c1, g1, p3, f2, g1));
+    private final List<ItemCard> col1 = new ArrayList<>(List.of(g1, p3, p3, f2, g1));// diff but not enough tiles to complete the column
+    private final List<ItemCard> col2 = new ArrayList<>(List.of(c1, g1));
     private final List<ItemCard> col3 = new ArrayList<>(List.of(f2, t3, b1, c1, b1, t3));
     private final List<ItemCard> col4 = new ArrayList<>(List.of(c1, t3, t3, c1, t3, p3)); //diff
     private final List<ItemCard> col5 = new ArrayList<>(List.of(f2, g1, p3, f2, g1, p3)); //diff
@@ -44,7 +44,7 @@ class CG255Test {
         l2.insertCard(col1, 0);
         l2.insertCard(col6, 1);
         l2.insertCard(col2, 2);
-        l2.insertCard(col3, 3);
+        l2.insertCard(col4, 3);
         l2.insertCard(col2, 4);
 
         assertEquals(0, comG5.goalReached(l1));

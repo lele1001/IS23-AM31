@@ -232,7 +232,6 @@ public class Board {
         }
     }
 
-    //Todo for Mila, already created ItemCard
     public void createcardBag() {
 
         for (HouseItem item : HouseItem.values()) {
