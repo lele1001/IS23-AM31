@@ -186,4 +186,22 @@ public class ClientHandlerRmi extends ClientHandler {
         }
     }
 
+    @Override
+    public void sendPlayerScore(int score) {
+        try {
+            client.onPlayerScore(score);
+        } catch (RemoteException e) {
+            System.out.println("Impossibile inviare a " + nickname + " il suo punteggio..");
+        }
+    }
+
+    @Override
+    public void sendBookshelfCompleted() {
+        try {
+            client.onBookshelfCompleted();
+        } catch (RemoteException e) {
+            System.out.println("Impossibile inviare a " + nickname + " che ha completato la sua libreria.");
+        }
+    }
 }
+

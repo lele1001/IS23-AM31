@@ -127,10 +127,11 @@ public class GameModel implements ModelInterface {
      *
      * @return a set (whose size is > 1 only in case of parity) with all the winners.
      */
-    public Set<String> calcFinalScore() { //su tutti i player sulla mappa devo chiamare il metodo per calcolare il punteggio
+    public ArrayList<String> calcFinalScore() { //su tutti i player sulla mappa devo chiamare il metodo per calcolare il punteggio
         int temp;
         int max = 0;
         Map<String, Integer> finalScores = new HashMap<>();
+        ArrayList<String> winners;
 
         for (String s : playerMap.keySet()) {
             temp = playerMap.get(s).calculateFinScore();
@@ -144,10 +145,11 @@ public class GameModel implements ModelInterface {
                 max = temp;
         }
 
+        winners = new ArrayList<>(finalScores.keySet().stream().toList());
         for (String s : finalScores.keySet())
             if (finalScores.get(s) < max)
-                finalScores.remove(s);
-        return finalScores.keySet();
+                winners.remove(s);
+        return winners;
     }
 
 
@@ -208,7 +210,11 @@ public class GameModel implements ModelInterface {
         PropertyChangeEvent evt = new PropertyChangeEvent("null", "BOARD_CHANGED", null, board.getAsArrayList());
         this.listener.propertyChange(evt);
     }
-// TODO: (luigi) sending players points
+
+    /**
+     * Used when a player comes back in a game and needs to have all game's information.
+     * @param nickname of the just returned player.
+     */
     @Override
     public void sendGameDetails (String nickname) {
         // Sending board...
@@ -230,6 +236,11 @@ public class GameModel implements ModelInterface {
             evt = new PropertyChangeEvent(c.getCGID(), "COM_GOAL_CREATED", nickname, c.getCurrScore());
             this.listener.propertyChange(evt);
         }
+
+        // Sending player's actual score
+        int score = playerMap.get(nickname).getScore();
+        evt = new PropertyChangeEvent(nickname, "PLAYER_SCORE", null, (nickname.equals(winner)) ? score+1 : score);
+        this.listener.propertyChange(evt);
     }
 }
 

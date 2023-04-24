@@ -116,4 +116,8 @@ public interface RMIClientConnection extends Remote {
      * @throws RemoteException if an error occurred calling the RMI client
      */
     void disconnectMe() throws RemoteException;
+
+    void onPlayerScore(int score) throws RemoteException;
+
+    void onBookshelfCompleted() throws RemoteException;
 }

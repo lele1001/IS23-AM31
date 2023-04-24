@@ -6,7 +6,6 @@ import it.polimi.ingsw.server.gameExceptions.NotSameSelectedException;
 
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
-import java.util.Set;
 
 public interface ModelInterface {
 
@@ -20,7 +19,7 @@ public interface ModelInterface {
 
     boolean isPlayerOnline(String nickname);
 
-    Set<String> calcFinalScore();
+    ArrayList<String> calcFinalScore();
 
     void changePlayerStatus(String nickname);
 

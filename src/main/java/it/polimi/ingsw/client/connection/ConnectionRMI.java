@@ -213,4 +213,14 @@ public class ConnectionRMI extends ConnectionClient implements RMIClientConnecti
         server=null;
         getController().disconnectMe();
     }
+
+    @Override
+    public void onPlayerScore(int score) throws RemoteException {
+        getController().onPlayerScore(score);
+    }
+
+    @Override
+    public void onBookshelfCompleted() throws RemoteException {
+        getController().onBookshelfCompleted();
+    }
 }

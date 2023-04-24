@@ -171,6 +171,26 @@ public class ClientController {
     }
 
     /**
+     * Called when the client comes back to an existing game with him into.
+     * @param score done during the game by the client.
+     */
+    public void onPlayerScore(int score) {
+        view.print("Updating my score...");
+        myPoint = score;
+    }
+
+    /**
+     * Just notifies client that he has completed his bookshelf and earned an extra point.
+     */
+    public void onBookshelfCompleted() {
+        view.print("Congrats! You have just completed your bookshelf.");
+        view.print("Adding you an extra point...");
+        myPoint++;
+        view.printPoints(myPoint);
+        view.print("Let's go on for the last turn of the game!");
+    }
+
+    /**
      * Method called by the server when creating the PersonalGoal of the player
      * Create from the json file the PersonalGoal and print it to the client's view
      *

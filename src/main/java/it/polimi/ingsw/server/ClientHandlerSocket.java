@@ -335,4 +335,14 @@ public class ClientHandlerSocket extends ClientHandler implements Runnable {
     public void sendErrorGameNotAvailable() {
         send(generateStandardMessage("gameNotAvailable", null));
     }
+
+    @Override
+    public void sendPlayerScore(int score) {
+        send(generateStandardMessage("player_score", String.valueOf(score)));
+    }
+
+    @Override
+    public void sendBookshelfCompleted() {
+        send(generateStandardMessage("bookshelf_completed", null));
+    }
 }

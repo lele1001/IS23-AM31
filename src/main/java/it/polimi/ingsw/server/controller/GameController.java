@@ -119,7 +119,7 @@ public class GameController implements PropertyChangeListener {
             playerTurn(i);
             i++;
         }
-        List<String> gameWinners = gameModel.calcFinalScore().stream().toList();
+        ArrayList<String> gameWinners = gameModel.calcFinalScore();
         if (gameWinners.size() == 1) {
             System.out.println("The winner of the game is " + gameWinners.get(0));
         }
@@ -251,8 +251,8 @@ public class GameController implements PropertyChangeListener {
                 case "COM_GOAL_CREATED" ->
                         connectionControl.SendCommonGoalCreated((Integer) evt.getSource(), (Integer) evt.getNewValue(), (String) evt.getOldValue());
                 case "EMPTY_CARD_BAG" -> connectionControl.SendEmptyCardBag();
-                //  case "PLAYER_POINT_UPDATE" ->
-                //          connectionControl.SendPlayerPointUpdate((String) evt.getSource(), (int) evt.getNewValue());
+                case "PLAYER_SCORE" ->
+                        connectionControl.sendPlayerScore((String) evt.getSource(), (Integer) evt.getNewValue());
                 case "COM_GOAL_DONE" ->
                         connectionControl.SendCommonGoalDone((String) evt.getSource(), (int[]) evt.getNewValue());
                 case "PERS_GOAL_CREATED" ->

@@ -356,14 +356,17 @@ public class ConnectionControl {
      * @param nickname of the client to be notified.
      */
     public void SendBookshelfCompleted(String nickname) {
-        System.out.println("Sending bookshelf completed to everyone");
-        for (ClientHandler clientHandler : getClientHandlerMap().values()) {
-            clientHandler.sendError(nickname + " has completed his Bookshelf. Let's go on for the last turn of the game.");
-        }
+        System.out.println("Sending bookshelf completed to everyone.");
+        ClientHandler first = getClientHandlerMap().get(nickname);
+        if (first != null)
+            first.sendBookshelfCompleted();
+        for (ClientHandler clientHandler : getClientHandlerMap().values())
+            if (clientHandler != first)
+                clientHandler.sendError(nickname + " has completed his Bookshelf. Let's go on for the last turn of the game.");
     }
 
     /**
-     * Sends to all client the name of the winner of the game.
+     * Sends to all clients the nickname of the winners of the game.
      * @param winners: winners' list.
      */
     public void sendWinner(List<String> winners) {
@@ -381,6 +384,18 @@ public class ConnectionControl {
         for (ClientHandler c : getClientHandlerMap().values()) {
             c.sendPlayerTurn(nickname);
         }
+    }
+
+    /**
+     * Used to send player's score when he comes back to the game.
+     * @param nickname of the just returned player.
+     * @param score to be sent.
+     */
+    public void sendPlayerScore (String nickname, int score) {
+        System.out.println("Sending actual score: " + score + " to " + nickname + ".");
+        ClientHandler clientHandler = getClientHandlerMap().get(nickname);
+        if (clientHandler != null)
+            clientHandler.sendPlayerScore(score);
     }
 
     /**
