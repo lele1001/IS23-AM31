@@ -10,6 +10,7 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -168,8 +169,12 @@ public class ConnectionRMI extends ConnectionClient implements RMIClientConnecti
     }
 
     @Override
-    public void onWinner(String winner) throws RemoteException {
-        System.out.println("winner is" + winner);
+    public void onWinner(List<String> winners) throws RemoteException {
+        if (winners.size() == 1) {
+            System.out.println("winner is" + winners.get(0));
+        } else {
+            System.out.println("Parity: winners are " + winners);
+        }
     }
 
     @Override

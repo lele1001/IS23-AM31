@@ -5,6 +5,7 @@ import it.polimi.ingsw.server.model.ItemCard;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
+import java.util.List;
 
 public interface RMIClientConnection extends Remote {
     /**
@@ -82,7 +83,7 @@ public interface RMIClientConnection extends Remote {
      * @param winner
      * @throws RemoteException if an error occurred calling the RMI client
      */
-    void onWinner(String winner) throws RemoteException;
+    void onWinner(List<String> winner) throws RemoteException;
 
     /**
      *

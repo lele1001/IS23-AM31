@@ -9,10 +9,7 @@ import it.polimi.ingsw.server.model.ModelInterface;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 
 public class GameController implements PropertyChangeListener {
 
@@ -90,10 +87,10 @@ public class GameController implements PropertyChangeListener {
                 if (winner) {   // Took too long! The winner is the remained player (if it's still online!)
                     System.out.println("Took too long for returning... game is ending.");
                     connectionControl.sendErrorToEveryone("Took too long for returning... game is ending.");
-                    if (playersList.stream().filter(connectionControl::isOnline).count() == 1) {
-                        List<String> remained = playersList.stream().filter(connectionControl::isOnline).toList();
+                    List<String> remained = playersList.stream().filter(connectionControl::isOnline).toList();
+                    if (remained.size() == 1) {
                         System.out.println("The winner of the game is " + remained.get(0));
-                        connectionControl.sendWinner(remained.get(0));
+                        connectionControl.sendWinner(remained);
                     }
                     connectionControl.onEndGame();
                     return;
@@ -122,9 +119,14 @@ public class GameController implements PropertyChangeListener {
             playerTurn(i);
             i++;
         }
-        String gameWinner = gameModel.calcFinalScore();
-        System.out.println("The winner of the game is " + gameWinner);
-        connectionControl.sendWinner(gameWinner);
+        List<String> gameWinners = gameModel.calcFinalScore().stream().toList();
+        if (gameWinners.size() == 1) {
+            System.out.println("The winner of the game is " + gameWinners.get(0));
+        }
+        else {
+            System.out.println("Parity: winners are " + gameWinners);
+        }
+        connectionControl.sendWinner(gameWinners);
         connectionControl.onEndGame();
     }
 
@@ -247,7 +249,7 @@ public class GameController implements PropertyChangeListener {
                     }
                 }
                 case "COM_GOAL_CREATED" ->
-                        connectionControl.SendCommonGoalCreated((Integer) evt.getSource(), (Integer) evt.getNewValue());
+                        connectionControl.SendCommonGoalCreated((Integer) evt.getSource(), (Integer) evt.getNewValue(), (String) evt.getOldValue());
                 case "EMPTY_CARD_BAG" -> connectionControl.SendEmptyCardBag();
                 //  case "PLAYER_POINT_UPDATE" ->
                 //          connectionControl.SendPlayerPointUpdate((String) evt.getSource(), (int) evt.getNewValue());

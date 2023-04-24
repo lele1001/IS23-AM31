@@ -124,26 +124,26 @@ public class GameModel implements ModelInterface {
     /**
      * Calculates all the players' final score and sends it to each of them
      *
-     * @return the nickname of the winner
+     * @return a set (whose size is > 1 only in case of parity) with all the winners.
      */
-    public String calcFinalScore() { //su tutti i player sulla mappa devo chiamare il metodo per calcolare il punteggio
-        //salvo punteggio e confronto quello più alto
-        //return nickname di quello col punteggio più alto
+    public Set<String> calcFinalScore() { //su tutti i player sulla mappa devo chiamare il metodo per calcolare il punteggio
         int temp;
         int max = 0;
-        String nome = null;
+        Map<String, Integer> finalScores = new HashMap<>();
 
         for (String s : playerMap.keySet()) {
             temp = playerMap.get(s).calculateFinScore();
+            finalScores.put(s, temp);
             PropertyChangeEvent evt = new PropertyChangeEvent(s, "FINAL_SCORE", null, temp);
             listener.propertyChange(evt);
-            if (temp > max) {
+            if (temp > max)
                 max = temp;
-                nome = s;
-            }
-
         }
-        return nome;
+
+        for (String s : finalScores.keySet())
+            if (finalScores.get(s) < max)
+                finalScores.remove(s);
+        return finalScores.keySet();
     }
 
 
@@ -220,6 +220,16 @@ public class GameModel implements ModelInterface {
         // Sending all bookshelves...
         for (String s : playerMap.keySet()) {
             evt = new PropertyChangeEvent(s, "BOOKSHELF_CHANGED", nickname, playerMap.get(s).getBookshelfAsMatrix());
+            this.listener.propertyChange(evt);
+        }
+
+        // Sending his personal goal
+        evt = new PropertyChangeEvent(nickname, "PERS_GOAL_CREATED", null, playerMap.get(nickname).getpersGoal());
+        this.listener.propertyChange(evt);
+
+        // Sending common goals
+        for (ComGoal c : comGoals) {
+            evt = new PropertyChangeEvent(c.getCGID(), "COM_GOAL_CREATED", nickname, c.getCurrScore());
             this.listener.propertyChange(evt);
         }
     }

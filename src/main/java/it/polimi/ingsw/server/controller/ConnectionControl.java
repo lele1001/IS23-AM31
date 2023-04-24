@@ -10,6 +10,7 @@ import java.io.FileNotFoundException;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class ConnectionControl {
@@ -301,9 +302,16 @@ public class ConnectionControl {
      * @param comGoalID: the ID of the Common Goal.
      * @param score: the maximum score available for the Common Goal.
      */
-    public void SendCommonGoalCreated(Integer comGoalID, Integer score) {
-        for (ClientHandler c : getClientHandlerMap().values()) {
-            c.SendCommonGoalCreated(comGoalID, score);
+    public void SendCommonGoalCreated(Integer comGoalID, Integer score, String receiver) {
+        if (receiver == null)
+            for (ClientHandler c : getClientHandlerMap().values())
+                c.SendCommonGoalCreated(comGoalID, score);
+        else {
+            ClientHandler c_receiver = getClientHandlerMap().get(receiver);
+            if (c_receiver != null) {
+                System.out.println("Sending commonGoal update to " + receiver);
+                c_receiver.SendCommonGoalCreated(comGoalID, score);
+            }
         }
     }
 
@@ -356,12 +364,12 @@ public class ConnectionControl {
 
     /**
      * Sends to all client the name of the winner of the game.
-     * @param winner: winner client's nickname.
+     * @param winners: winners' list.
      */
-    public void sendWinner(String winner) {
-        System.out.println("Sending winner's nickname...");
+    public void sendWinner(List<String> winners) {
+        System.out.println("Sending winners' nickname...");
         for (ClientHandler c : getClientHandlerMap().values()) {
-            c.sendWinner(winner);
+            c.sendWinner(winners);
         }
     }
 

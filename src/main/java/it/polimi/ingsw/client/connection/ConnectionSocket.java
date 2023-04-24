@@ -186,9 +186,15 @@ public class ConnectionSocket extends ConnectionClient {
 
                 case "changeTurn" -> getController().onChangeTurn(jsonObject.get("Value").getAsString());
 
-                case "winner" -> System.out.println("Winner is " + jsonObject.get("Value").getAsString());
+                case "winner" -> {
+                    String[] winners = gson.fromJson(jsonObject.get("Value"), String[].class);
+                    if (winners.length == 1)
+                        System.out.println("Winner is " + winners[0]);
+                    else
+                        System.out.println("Parity: winners are " + Arrays.toString(winners));
+                }
 
-                case "commonGoalDone" -> getController().onCommonGoalDone(jsonObject.get("source").getAsString(), gson.fromJson(jsonObject.get("value"), int[].class));
+                case "commonGoalDone" -> getController().onCommonGoalDone(jsonObject.get("source").getAsString(), gson.fromJson(jsonObject.get("Value"), int[].class));
 
                 case "gameStarted" -> {
                     System.out.println("gameStarting");

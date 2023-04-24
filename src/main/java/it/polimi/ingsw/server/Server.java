@@ -53,6 +53,7 @@ public class Server {
         this.gameController = new GameController(this.connectionControl);
         this.connectionControl.setGameController(gameController);
         this.queue = new ArrayList<>();
+        playersNumberAsked = false;
     }
 
     /**

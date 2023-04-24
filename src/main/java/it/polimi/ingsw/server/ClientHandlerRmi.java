@@ -6,6 +6,7 @@ import it.polimi.ingsw.server.model.ItemCard;
 
 import java.rmi.RemoteException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -108,16 +109,16 @@ public class ClientHandlerRmi extends ClientHandler {
         try {
             client.onBookshelfChanged(playername, newBookshelf);
         } catch (RemoteException e) {
-            System.out.println("Impossibile chiedere a" + nickname + "la bookshelf modificata");
+            System.out.println("Impossibile inviare a" + nickname + "la bookshelf modificata.");
         }
     }
 
     @Override
     public void SendCommonGoalDone(String source, int[] details) {
         try {
-            client.onCommonGoalDone(nickname, details);
+            client.onCommonGoalDone(source, details);
         } catch (RemoteException e) {
-            System.out.println("Impossibile chiedere a " + nickname + " la bookshelf modificata");
+            System.out.println("Impossibile inviare a " + nickname + " il commonGoal effettuato.");
         }
     }
 
@@ -126,7 +127,7 @@ public class ClientHandlerRmi extends ClientHandler {
         try {
             client.onPersGoalCreated(persGoal);
         } catch (RemoteException e) {
-            System.out.println("Impossibile chiedere a " + nickname + " la bookshelf modificata");
+            System.out.println("Impossibile inviare a " + nickname + " il Personal Goal creato.");
         }
     }
 
@@ -149,9 +150,9 @@ public class ClientHandlerRmi extends ClientHandler {
     }
 
     @Override
-    public void sendWinner(String winner) {
+    public void sendWinner(List<String> winners) {
         try {
-            client.onWinner(winner);
+            client.onWinner(winners);
         } catch (RemoteException e) {
             System.out.println("Impossibile dire a " + nickname + " il vincitore");
         }

@@ -12,6 +12,7 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class ClientHandlerSocket extends ClientHandler implements Runnable {
     private final Server server;
@@ -298,11 +299,12 @@ public class ClientHandlerSocket extends ClientHandler implements Runnable {
 
     /**
      * It's the end of the game: there's a winner!
-     * @param winner: the nickname of the winner.
+     * @param winners: winners' nickname.
      */
     @Override
-    public void sendWinner(String winner) {
-        send(generateStandardMessage("winner", winner));
+    public void sendWinner(List<String> winners) {
+        Gson gson = new Gson();
+        send(generateStandardMessage("winner", gson.toJson(winners.toArray())));
     }
 
     /**

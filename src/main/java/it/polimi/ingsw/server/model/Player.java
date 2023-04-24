@@ -105,4 +105,8 @@ public class Player {
     public int getScore() {
         return score;
     }
+
+    public String getpersGoal() {
+        return this.persGoal.toString();
+    }
 }

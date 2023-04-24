@@ -4,6 +4,7 @@ import it.polimi.ingsw.server.controller.ConnectionControl;
 import it.polimi.ingsw.server.model.ItemCard;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public abstract class ClientHandler {
     protected volatile String nickname;
@@ -35,7 +36,7 @@ public abstract class ClientHandler {
 
     public abstract void SendBoardChanged(ItemCard[][] newBoard);
 
-    public abstract void sendWinner(String winner);
+    public abstract void sendWinner(List<String> winner);
     public abstract void chatToMe(String sender,String message);
 
 }
