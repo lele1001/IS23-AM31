@@ -67,7 +67,7 @@ public class Board {
      * Check if there are only isolated cards on the board
      * I cannot have an edge case because edges are always null
      */
-    public boolean checkRefill() throws EmptyCardBagException {
+    public synchronized boolean checkRefill() throws EmptyCardBagException {
         boolean refill = true;
         for (int i = 0; i < DIM_BOARD && refill; i++) {
             for (int j = 0; j < DIM_BOARD && refill; j++) {
@@ -200,7 +200,7 @@ public class Board {
      * @throws NoRightItemCardSelection if the selected ItemCards do not pass the check selection
      */
 
-    public ArrayList<ItemCard> deleteSelection(ArrayList<Integer> position) throws NoRightItemCardSelection {
+    public synchronized ArrayList<ItemCard> deleteSelection(ArrayList<Integer> position) throws NoRightItemCardSelection {
         Collections.sort(position);
         if (!checkSelection(position)) {
             throw new NoRightItemCardSelection();
@@ -220,13 +220,13 @@ public class Board {
         return toBeReturned;
     }
 
-    public void resumeBoard() {
+    public synchronized void resumeBoard() {
         for (int i = 0; i < DIM_BOARD; i++) {
             System.arraycopy(oldBoard[i], 0, board[i], 0, DIM_BOARD);
         }
     }
 
-    public void backupBoard() {
+    public synchronized void backupBoard() {
         for (int i = 0; i < DIM_BOARD; i++) {
             System.arraycopy(board[i], 0, oldBoard[i], 0, DIM_BOARD);
         }
@@ -247,7 +247,7 @@ public class Board {
         }
     }
 
-    public ItemCard[][] getAsArrayList() {
+    public synchronized ItemCard[][] getAsArrayList() {
         ItemCard[][] toBeReturned = new ItemCard[DIM_BOARD][DIM_BOARD];
         for (int i = 0; i < DIM_BOARD; i++) {
             System.arraycopy(board[i], 0, toBeReturned[i], 0, DIM_BOARD);

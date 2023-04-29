@@ -41,6 +41,7 @@ public class GameController implements PropertyChangeListener {
 
         // creates the list used to iterate on players
         this.playersList.addAll(playersList);
+        Collections.shuffle(this.playersList);
         connectionControl.sendGameIsStarting(playersList, null);
         gameModel = new GameModel();
         // sets itself as a listener of the model
