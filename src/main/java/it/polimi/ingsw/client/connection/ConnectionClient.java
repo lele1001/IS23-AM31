@@ -59,7 +59,7 @@ public abstract class ConnectionClient extends UnicastRemoteObject {
      *
      * @param nickname      this client
      * @param cardsSelected Tiles selected by the client
-     * @throws Exception if an error occurred calling the server ( Socket or RMI )
+     * @throws Exception if an error occurred calling the server (Socket or RMI)
      */
 
     public abstract void selectCard(String nickname, ArrayList<Integer> cardsSelected) throws Exception;
@@ -70,16 +70,16 @@ public abstract class ConnectionClient extends UnicastRemoteObject {
      * @param nickname this client
      * @param cards    Tiles selected by the client in order
      * @param column   column where to put the Tiles
-     * @throws Exception if an error occurred calling the server ( Socket or RMI )
+     * @throws Exception if an error occurred calling the server (Socket or RMI)
      */
     public abstract void insertCard(String nickname, ArrayList<ItemCard> cards, int column) throws Exception;
 
     /**
-     * Method called from the client that pass to the server the chat message for all connected player of the game
+     * Method called from the client that pass to the server the chat message for all connected players of the game
      *
      * @param nickname this client
      * @param message  String to send to all the connected players
-     * @throws Exception if an error occurred calling the server ( Socket or RMI )
+     * @throws Exception if an error occurred calling the server (Socket or RMI)
      */
     public abstract void chatToAll(String nickname, String message) throws Exception;
 
@@ -87,9 +87,9 @@ public abstract class ConnectionClient extends UnicastRemoteObject {
      * Method called from the client that pass to the server the chat message for the receiver
      *
      * @param sender   this client
-     * @param receiver player that receive the message
+     * @param receiver player that receives the message
      * @param message  String to send to the receiver
-     * @throws Exception if an error occurred calling the server ( Socket or RMI )
+     * @throws Exception if an error occurred calling the server (Socket or RMI)
      */
     public abstract void chatToPlayer(String sender, String receiver, String message) throws Exception;
 
@@ -97,7 +97,7 @@ public abstract class ConnectionClient extends UnicastRemoteObject {
      * Method called by the client only if he is the first connected to the server
      *
      * @param players number of players in the game
-     * @throws Exception if an error occurred calling the server ( Socket or RMI )
+     * @throws Exception if an error occurred calling the server (Socket or RMI)
      */
     public abstract void setPlayersNumber(int players) throws Exception;
 }

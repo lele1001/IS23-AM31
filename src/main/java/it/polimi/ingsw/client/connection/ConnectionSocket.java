@@ -32,6 +32,7 @@ public class ConnectionSocket extends ConnectionClient {
 
     /**
      * Starts socket's connection, opening the socket and the streams.
+     *
      * @throws Exception if something has gone wrong.
      */
     @Override
@@ -50,7 +51,8 @@ public class ConnectionSocket extends ConnectionClient {
     }
 
     /**
-     * Called when the client wants to select cards from board.
+     * Called when the client wants to select cards from the board.
+     *
      * @param nickname      this client
      * @param cardsSelected Tiles selected by the client
      */
@@ -62,6 +64,7 @@ public class ConnectionSocket extends ConnectionClient {
 
     /**
      * Called when the client wants to insert cards in his bookshelf.
+     *
      * @param nickname this client
      * @param cards    Ordered tiles selected by the client
      * @param column   column to put Tiles into
@@ -76,6 +79,7 @@ public class ConnectionSocket extends ConnectionClient {
 
     /**
      * Called to send a message via chat to all the players.
+     *
      * @param nickname this client
      * @param message  String to send to all the connected players
      */
@@ -86,6 +90,7 @@ public class ConnectionSocket extends ConnectionClient {
 
     /**
      * Called to send a message via chat to a specific player.
+     *
      * @param sender   this client
      * @param receiver the client receiver of the message.
      * @param message  String to be sent as a message
@@ -97,8 +102,9 @@ public class ConnectionSocket extends ConnectionClient {
     }
 
     /**
-     * Called when client wants to set players' number.
-     * @param players: players' number to be set.
+     * Called when the client wants to set players' number.
+     *
+     * @param players is the players number to be set.
      */
     @Override
     public void setPlayersNumber(int players) {
@@ -106,7 +112,8 @@ public class ConnectionSocket extends ConnectionClient {
     }
 
     /**
-     * A private method used to send throw the socket connection a json message.
+     * A private method used to send throws the socket connection a json message.
+     *
      * @param json to be sent.
      */
     private void send(JsonObject json) {
@@ -116,8 +123,9 @@ public class ConnectionSocket extends ConnectionClient {
 
     /**
      * A private method used to generate standard messages with two fields.
+     *
      * @param type of the message to be sent.
-     * @param value: the string to be set as "Value" in the json message (not always used).
+     * @param value the string to be set as “Value” in the json message (not always used).
      * @return the jsonObject created with the two specified fields.
      */
     private JsonObject generateStandardMessage(String type, String value) {
@@ -128,8 +136,8 @@ public class ConnectionSocket extends ConnectionClient {
     }
 
     /**
-     * The infinitive loop that always listens throw socket connection until an error occurs.
-     * This method notifies the client if server has disconnected for some reason.
+     * The infinitive loop that always listens throws socket connection until an error occurs.
+     * This method notifies the client if the server has disconnected for some reason.
      */
     public void listen() {
         while (true) {
@@ -154,6 +162,7 @@ public class ConnectionSocket extends ConnectionClient {
 
     /**
      * A private method used to de-parse json messages received from the server and to do the actions requested.
+     *
      * @param json to be parsed.
      */
     private void onMessageReceived(String json) {
@@ -162,8 +171,7 @@ public class ConnectionSocket extends ConnectionClient {
         try {
             jsonObject = gson.fromJson(json, jsonObject.getClass());
             switch (jsonObject.get("Type").getAsString()) {
-                case "askPlayersNumber" ->
-                    getController().onPlayerNumber();
+                case "askPlayersNumber" -> getController().onPlayerNumber();
 
                 case "disconnect" -> in.close();
 
@@ -194,22 +202,22 @@ public class ConnectionSocket extends ConnectionClient {
                         System.out.println("Parity: winners are " + Arrays.toString(winners));
                 }
 
-                case "commonGoalDone" -> getController().onCommonGoalDone(jsonObject.get("source").getAsString(), gson.fromJson(jsonObject.get("Value").getAsString(), int[].class));
+                case "commonGoalDone" ->
+                        getController().onCommonGoalDone(jsonObject.get("source").getAsString(), gson.fromJson(jsonObject.get("Value").getAsString(), int[].class));
 
                 case "gameStarted" -> {
                     System.out.println("gameStarting");
                     getController().gameStarted(new ArrayList<>(Arrays.asList(gson.fromJson(jsonObject.get("Value").getAsString(), String[].class))), true);
                 }
 
-                case "player_score" ->
-                    getController().onPlayerScore(jsonObject.get("Value").getAsInt());
+                case "player_score" -> getController().onPlayerScore(jsonObject.get("Value").getAsInt());
 
-                case "bookshelf_completed" ->
-                    getController().onBookshelfCompleted();
+                case "bookshelf_completed" -> getController().onBookshelfCompleted();
 
                 case "gameNotAvailable" -> System.out.println("GameNotAvailable");
 
-                case "chatToMe" -> getController().chatToMe(jsonObject.get("sender").getAsString(), jsonObject.get("Value").getAsString());
+                case "chatToMe" ->
+                        getController().chatToMe(jsonObject.get("sender").getAsString(), jsonObject.get("Value").getAsString());
 
                 default -> System.out.println("Unknown message from server.");
 
