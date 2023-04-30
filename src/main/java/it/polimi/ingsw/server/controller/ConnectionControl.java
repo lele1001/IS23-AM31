@@ -27,6 +27,7 @@ public class ConnectionControl {
 
     /**
      * A private method, used for synchronize on the clientHandlerMap and take her values.
+     *
      * @return a copy of the clientHandlerMap to be used for sending objects.
      */
     private Map<String, ClientHandler> getClientHandlerMap() {
@@ -37,6 +38,7 @@ public class ConnectionControl {
 
     /**
      * Called by the server, asks players' number to a client.
+     *
      * @param nickname of the client.
      */
     public void askPlayerNumber(String nickname) {
@@ -46,8 +48,9 @@ public class ConnectionControl {
 
     /**
      * Tries to add the clientHandler in the queue of the game
+     *
      * @param clientHandler to be added.
-     * @param nickname of the client.
+     * @param nickname      of the client.
      * @return a boolean that indicates if the game is available.
      */
     public boolean tryAddInQueue(ClientHandler clientHandler, String nickname) {
@@ -74,17 +77,18 @@ public class ConnectionControl {
 
             System.out.println(nickname + " added in queue.");
             this.clientHandlerMap.put(nickname, clientHandler);
-            System.out.println("put in handlermap");
+            System.out.println("put in handlerMap");
             this.clientStatusMap.put(nickname, true);
             System.out.println("put in status");
             server.addInQueue(nickname);
-            System.out.println("ritornato da addqueue");
+            System.out.println("ritornato da addQueue");
             return true;
         }
     }
 
     /**
      * Called to remove a client from the maps (when the game is not available for him).
+     *
      * @param nickname of the client to be deleted.
      */
     public void removeClient(String nickname) {
@@ -97,6 +101,7 @@ public class ConnectionControl {
 
     /**
      * Used to set the gameController parameter.
+     *
      * @param gameController to be set.
      */
     public void setGameController(GameController gameController) {
@@ -104,9 +109,10 @@ public class ConnectionControl {
     }
 
     /**
-     * Sends a message to the client with game's list of the players, at the beginning of the game.
+     * Sends a message to the client with the game's list of the players, at the beginning of the game.
+     *
      * @param playersList of the active players in the just created game.
-     * @param receiver: the nickname of the receiver of the message (if null, the message has to be sent to all clients).
+     * @param receiver the nickname of the receiver of the message (if null, the message has to be sent to all clients).
      */
     public void sendGameIsStarting(ArrayList<String> playersList, String receiver) {
         if (receiver == null) { // Send it to all clients
@@ -124,6 +130,7 @@ public class ConnectionControl {
 
     /**
      * Called to set a player as offline.
+     *
      * @param nickname of the player that has gone out from the game.
      */
     public void changePlayerStatus(String nickname) {
@@ -142,8 +149,9 @@ public class ConnectionControl {
 
     /**
      * Called by the client to select cards from the board.
+     *
      * @param nickname of the client that wants to select.
-     * @param positions: a list of integer that indicates the positions of the tiles to be selected.
+     * @param positions a list of integer that indicates the positions of the tiles to be selected.
      */
     public void selectCard(String nickname, ArrayList<Integer> positions) {
         System.out.println(nickname + " wants to select cards in position: " + positions);
@@ -152,8 +160,9 @@ public class ConnectionControl {
 
     /**
      * Called by the client to insert cards in his bookshelf.
+     *
      * @param nickname of the client that wants to insert.
-     * @param cards: an ordered list of the ItemCards he wants to insert.
+     * @param cards an ordered list of the ItemCards he wants to insert.
      * @param column to put ItemCards into.
      */
     public void insertCard(String nickname, ArrayList<ItemCard> cards, int column) {
@@ -173,8 +182,9 @@ public class ConnectionControl {
 
     /**
      * Called by a client when he wants to send a message via chat to a specific player.
-     * @param sender: the sender of the message.
-     * @param receiver: the receiver.
+     *
+     * @param sender the sender of the message.
+     * @param receiver the receiver.
      * @param message to be sent.
      */
     public void chatToPlayer(String sender, String receiver, String message) {
@@ -186,7 +196,8 @@ public class ConnectionControl {
     }
 
     /**
-     * Called by the GameController, notifies a client that it's his turn to select cards.
+     * Called by the GameController, notifies a client that it is his turn to select cards.
+     *
      * @param nickname of the client that has to select.
      */
     public void askSelect(String nickname) {
@@ -200,7 +211,8 @@ public class ConnectionControl {
     }
 
     /**
-     * Called by the GameController, notifies a client that it's his turn to insert cards.
+     * Called by the GameController, notifies a client that it is his turn to insert cards.
+     *
      * @param nickname of the client that has to insert.
      */
     public void askInsert(String nickname) {
@@ -215,7 +227,8 @@ public class ConnectionControl {
 
     /**
      * Called by the GameController, sends the board to the client because of an update of it.
-     * @param newBoard: the board after the last update.
+     *
+     * @param newBoard the board after the last update.
      * @param receiver the nickname of the receiver of the update. If null, the update has to be sent to all clients.
      */
     public void SendBoardChanged(ItemCard[][] newBoard, String receiver) {
@@ -251,14 +264,15 @@ public class ConnectionControl {
 
     /**
      * Called by the GameController, sends a player's bookshelf to the client because of an update of it.
+     *
      * @param nickname of the owner of the bookshelf.
-     * @param newBookshelf: the bookshelf after the last update.
+     * @param newBookshelf the bookshelf after the last update.
      * @param receiver the nickname of the receiver of the update. If null, the update has to be sent to all the clients.
      */
     public void SendBookshelfChanged(String nickname, ItemCard[][] newBookshelf, String receiver) {
         if (receiver == null) {
             System.out.println("Player " + nickname + " has changed the bookshelf");
-            c.printBookshelf(newBookshelf,nickname);
+            c.printBookshelf(newBookshelf, nickname);
             for (ClientHandler c : getClientHandlerMap().values()) {
                 c.SendBookshelfChanged(nickname, newBookshelf);
             }
@@ -273,6 +287,7 @@ public class ConnectionControl {
 
     /**
      * Called by the GameController, sends an error to a specific client.
+     *
      * @param error to be sent.
      * @param nickname of the client to be sent to.
      */
@@ -288,6 +303,7 @@ public class ConnectionControl {
 
     /**
      * Sends an error to all the online players.
+     *
      * @param error to be sent.
      */
     public synchronized void sendErrorToEveryone(String error) {
@@ -299,8 +315,9 @@ public class ConnectionControl {
 
     /**
      * Called at the beginning of the game, sends the details of a Common Goal created.
-     * @param comGoalID: the ID of the Common Goal.
-     * @param score: the maximum score available for the Common Goal.
+     *
+     * @param comGoalID the ID of the Common Goal.
+     * @param score the maximum score available for the Common Goal.
      */
     public void SendCommonGoalCreated(Integer comGoalID, Integer score, String receiver) {
         if (receiver == null)
@@ -327,8 +344,10 @@ public class ConnectionControl {
 
     /**
      * Notifies clients that someone has reached a Common Goal.
-     * @param source: the nickname of the client just reached the goal.
-     * @param details: a two integers' vector: the first one indicates Common Goal's ID, while the other one is the maximum score still available after this event.
+     *
+     * @param source the nickname of the client just reached the goal.
+     * @param details a two integers' vector: the first one indicates Common Goal's ID,
+     *                while the other one is the maximum score still available after this event.
      */
     public void SendCommonGoalDone(String source, int[] details) {
         System.out.println(source + " has reached Common Goal number: " + details[0]);
@@ -339,6 +358,7 @@ public class ConnectionControl {
 
     /**
      * Notifies a client that a PersonalGoal has been assigned to him.
+     *
      * @param nickname of the client to be notified.
      * @param persGoal assigned.
      */
@@ -353,6 +373,7 @@ public class ConnectionControl {
 
     /**
      * Notifies the client that has completed his bookshelf.
+     *
      * @param nickname of the client to be notified.
      */
     public void SendBookshelfCompleted(String nickname) {
@@ -367,7 +388,8 @@ public class ConnectionControl {
 
     /**
      * Sends to all clients the nickname of the winners of the game.
-     * @param winners: winners' list.
+     *
+     * @param winners winners' list.
      */
     public void sendWinner(List<String> winners) {
         System.out.println("Sending winners' nickname...");
@@ -378,6 +400,7 @@ public class ConnectionControl {
 
     /**
      * Notifies all clients about the current player that has to play now.
+     *
      * @param nickname of the client that has to play.
      */
     public void sendPlayerTurn(String nickname) {
@@ -387,11 +410,12 @@ public class ConnectionControl {
     }
 
     /**
-     * Used to send player's score when he comes back to the game.
+     * Used to send the player's score when he comes back to the game.
+     *
      * @param nickname of the just returned player.
      * @param score to be sent.
      */
-    public void sendPlayerScore (String nickname, int score) {
+    public void sendPlayerScore(String nickname, int score) {
         System.out.println("Sending actual score: " + score + " to " + nickname + ".");
         ClientHandler clientHandler = getClientHandlerMap().get(nickname);
         if (clientHandler != null)
@@ -400,6 +424,7 @@ public class ConnectionControl {
 
     /**
      * Used by GameController to check if a client is still online.
+     *
      * @param nickname of the players to be checked.
      * @return true if the client is online.
      */
@@ -410,7 +435,7 @@ public class ConnectionControl {
     }
 
     /**
-     * Used at the end of a game to clear the maps and initialize server's features.
+     * Used at the end of a game to clear the maps and initialize the server's features.
      */
     public void onEndGame() {
         disconnectAll();

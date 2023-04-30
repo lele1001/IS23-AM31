@@ -124,7 +124,7 @@ public class ConnectionSocket extends ConnectionClient {
     /**
      * A private method used to generate standard messages with two fields.
      *
-     * @param type of the message to be sent.
+     * @param type  of the message to be sent.
      * @param value the string to be set as “Value” in the json message (not always used).
      * @return the jsonObject created with the two specified fields.
      */

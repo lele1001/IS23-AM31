@@ -51,7 +51,7 @@ public class CG2_5 extends ComGoal {
 
         for (c = 0; c < BookshelfWidth; c++) {
             items.clear();
-            if(l.get(0,c)!=null) {
+            if (l.get(0, c) != null) {
                 for (r = 0; r < BookshelfHeight; r++) {
                     if (l.get(r, c) != null) {
                         myItem = l.get(r, c).getMyItem();

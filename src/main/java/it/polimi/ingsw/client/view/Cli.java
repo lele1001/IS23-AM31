@@ -172,7 +172,7 @@ public class Cli implements View {
                         }
                     }
                     case "@myshelf" ->
-                            printBookshelf(clientController.getPlayersBookshelf().get(clientController.getMyNickname()),clientController.getMyNickname());
+                            printBookshelf(clientController.getPlayersBookshelf().get(clientController.getMyNickname()), clientController.getMyNickname());
                     case "@allshelves" -> printBookshelves(clientController.getPlayersBookshelf());
                     case "@put" -> {
                         if (clientController.isMyTurn() && clientController.isGameStarted() && clientController.getPhase().equals(TurnPhase.INSERTCARDS)) {
@@ -187,7 +187,7 @@ public class Cli implements View {
                         stopListening = true;
                     }
                     default -> {
-                        if(!stopListening)
+                        if (!stopListening)
                             System.out.println("Input not recognised... try again");
                     }
                 }
@@ -321,7 +321,7 @@ public class Cli implements View {
     public void printBookshelves(Map<String, ItemCard[][]> bookshelves) {
         if (!bookshelves.isEmpty()) {
             for (String s : bookshelves.keySet()) {
-                printBookshelf(bookshelves.get(s),s);
+                printBookshelf(bookshelves.get(s), s);
 
             }
         }
@@ -331,7 +331,8 @@ public class Cli implements View {
      * Prints the bookshelf of a given player
      */
     @Override
-    public synchronized void printBookshelf(ItemCard[][] bookshelf,String nickname) {
+    public synchronized void printBookshelf(ItemCard[][] bookshelf, String nickname) {
+        System.out.println(nickname + "'s bookshelf:");
         if (bookshelf != null) {
             System.out.println("    0   1   2   3   4");
             printMatrix(bookshelf, BOOKSHELF_HEIGHT, BOOKSHELF_LENGTH);
@@ -339,7 +340,6 @@ public class Cli implements View {
             System.out.println("    0   1   2   3   4");
             printMatrix(new ItemCard[BOOKSHELF_HEIGHT][BOOKSHELF_LENGTH], BOOKSHELF_HEIGHT, BOOKSHELF_LENGTH);
         }
-            System.out.println(nickname);
     }
 
     @Override
@@ -371,7 +371,7 @@ public class Cli implements View {
      */
     @Override
     public void printAskPlayerNumber() {
-        System.out.println("Write @PLAYERS followed by the number of players for this game");
+        System.out.println((char) 27 + "[0;39m" + "Write @PLAYERS followed by the number of players for this game");
     }
 
     /**
@@ -443,7 +443,7 @@ public class Cli implements View {
     public void printCommonGoal(Map<Integer, Integer> playerComGoal) {
         if (!playerComGoal.isEmpty()) {
             for (Integer i : playerComGoal.keySet()) {
-                System.out.println("Common Goal number " + i + ": ");
+                System.out.println((char) 27 + "[0;39m" + "Common Goal number " + i + ": ");
                 if (i == 1) {
                     System.out.println("Two separate groups each containing four tiles of the same type in a 2x2 square.\n" + "The tiles of one square can be different from those of the other square.");
                 } else if (i == 2) {
@@ -483,7 +483,7 @@ public class Cli implements View {
      */
     @Override
     public void printPoints(int myPoint) {
-        System.out.println("You currently have " + myPoint + "points.");
+        System.out.println((char) 27 + "[0;39m" + "You currently have " + myPoint + "points.");
     }
 
     /**
@@ -493,7 +493,7 @@ public class Cli implements View {
      */
     @Override
     public void printPersGoal(Map<Integer, HouseItem> myPersGoal) {
-        System.out.println("Your personal goal is: ");
+        System.out.println((char) 27 + "[0;39m" + "Your personal goal is: ");
         System.out.println("    0   1   2   3   4");
         for (int i = 0; i < BOOKSHELF_HEIGHT; i++) {
             for (int j = 0; j < BOOKSHELF_LENGTH; j++) {
@@ -517,6 +517,26 @@ public class Cli implements View {
         System.out.println();
     }
 
+    @Override
+    public void printSelectedTiles(Map<Integer, ItemCard> selectedTiles) {
+        System.out.println("Here are the cards you previously selected:");
+        int cardNumber = selectedTiles.size();
+
+        for(Integer i : selectedTiles.keySet()) {
+            char itemChar = selectedTiles.get(i).getMyItem().toString().charAt(0);
+            System.out.print((char) 27 + "[0;39m" + "Item card ");
+            System.out.print((char) 27 + chooseColorCode(itemChar) + itemChar);
+            System.out.print((char) 27 + "[0;39m" + " from position " + i);
+
+            if (cardNumber > 1){
+                System.out.print(" and ");
+            }
+            cardNumber--;
+        }
+
+        System.out.println();
+    }
+
     /**
      * Tells the player if it is his turn
      */
@@ -537,7 +557,7 @@ public class Cli implements View {
 
     @Override
     public void disconnectMe() {
-        stopListening=true;
+        stopListening = true;
         System.out.println("You are being disconnected from the server, please press ENTER to exit");
     }
 

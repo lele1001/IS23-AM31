@@ -37,9 +37,9 @@ public class Player {
      * @return the total score of the player (sum of ComGoal score (saved in variable 'score'), bookshelf's adjacency score, persGoal score).
      */
     public int calculateFinScore() {
-        System.out.println(nickname + " has "+ score + "points from Commongoal");
-        System.out.println(nickname + " has "+ myBookshelf.calcScore() + "points from bookshelf");
-        System.out.println(nickname + " has "+ persGoal.calcScore(myBookshelf) + "points from Persgoal");
+        System.out.println(nickname + " has " + score + "points from CommonGoal");
+        System.out.println(nickname + " has " + myBookshelf.calcScore() + "points from bookshelf");
+        System.out.println(nickname + " has " + persGoal.calcScore(myBookshelf) + "points from Persgoal");
         return score + myBookshelf.calcScore() + persGoal.calcScore(myBookshelf);
     }
 
@@ -64,7 +64,7 @@ public class Player {
     }
 
     /**
-     * @return true if the bookshelf is full (so the game has to run the last turn)
+     * @return true if the bookshelf is full (the game has to run the last turn)
      */
     public boolean checkEnd() {
         for (int i = 0; i < 5; i++) {
@@ -109,7 +109,7 @@ public class Player {
         return score;
     }
 
-    public String getpersGoal() {
+    public String getPersGoal() {
         return this.persGoal.toString();
     }
 }

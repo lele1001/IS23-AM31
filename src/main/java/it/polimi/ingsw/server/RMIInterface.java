@@ -26,12 +26,12 @@ public class RMIInterface implements RMI {
     }
 
     @Override
-    public void setPlayerNumber(String client,int number) throws RemoteException {
+    public void setPlayerNumber(String client, int number) throws RemoteException {
         if ((number < 2) || (number > 4)) {
-            connectionControl.SendError("Players' number not correct.",client);
+            connectionControl.SendError("Players' number not correct.", client);
             connectionControl.askPlayerNumber(client);
         } else {
-            connectionControl.SendError("Number of players set to " + number,client);
+            connectionControl.SendError("Number of players set to " + number, client);
             server.setAvailablePlayers(number);
         }
     }
@@ -48,6 +48,7 @@ public class RMIInterface implements RMI {
 
     /**
      * Used only by the client to check if the server in Online
+     *
      * @throws RemoteException If the client cannot connect to the server
      */
     @Override
@@ -56,20 +57,21 @@ public class RMIInterface implements RMI {
     }
 
     /**
-     *
      * @param nickname nickname of the client
-     * @param cards The Item cards selected by the client
-     * @param column The column where the client wants to put the Item cards
+     * @param cards    The Item cards selected by the client
+     * @param column   The column where the client wants to put the Item cards
      */
     @Override
     public void insertCard(String nickname, ArrayList<ItemCard> cards, int column) {
         connectionControl.insertCard(nickname, cards, column);
     }
+
     /**
-     * Waits for client's nickname and RMI interface, then, tries to insert it into the game.
+     * Waits for the client's nickname and RMI interface, then, tries to insert it into the game.
      * If the game is not available, sends the error and disconnects it.
+     *
      * @param nickname nickname of the client
-     * @param client The client interface
+     * @param client   The client interface
      */
     @Override
     public boolean login(String nickname, RMIClientConnection client) {        //deve prendere anche la classe del client

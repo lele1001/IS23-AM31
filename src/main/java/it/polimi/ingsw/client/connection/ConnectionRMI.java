@@ -16,7 +16,7 @@ import java.util.TimerTask;
 
 public class ConnectionRMI extends ConnectionClient implements RMIClientConnection {
     private RMI server;
-    Timer timer=new Timer();
+    Timer timer = new Timer();
 
     /**
      * Initialize the RMI connection to the server
@@ -36,7 +36,7 @@ public class ConnectionRMI extends ConnectionClient implements RMIClientConnecti
      * @throws NotBoundException throws if it has an error with the connection
      */
     @Override
-    public void startConnection() throws IOException, NotBoundException,NullPointerException {
+    public void startConnection() throws IOException, NotBoundException, NullPointerException {
         boolean i;
         System.out.println("locateRegistry");
         Registry registry = LocateRegistry.getRegistry(getAddress(), getPort());
@@ -62,10 +62,10 @@ public class ConnectionRMI extends ConnectionClient implements RMIClientConnecti
      *
      * @param nickname      this client
      * @param cardsSelected Tiles selected by the client
-     * @throws RemoteException if an error occurred calling the server ( Socket or RMI )
+     * @throws RemoteException if an error occurred calling the server (Socket or RMI)
      */
     @Override
-    public void selectCard(String nickname, ArrayList<Integer> cardsSelected) throws RemoteException,NullPointerException {
+    public void selectCard(String nickname, ArrayList<Integer> cardsSelected) throws RemoteException, NullPointerException {
         server.selectCard(nickname, cardsSelected);
     }
 
@@ -75,22 +75,22 @@ public class ConnectionRMI extends ConnectionClient implements RMIClientConnecti
      * @param nickname this client
      * @param cards    Tiles selected by the client in order
      * @param column   column where to put the Tiles
-     * @throws RemoteException if an error occurred calling the server ( Socket or RMI )
+     * @throws RemoteException if an error occurred calling the server (Socket or RMI)
      */
     @Override
-    public void insertCard(String nickname, ArrayList<ItemCard> cards, int column) throws RemoteException,NullPointerException {
+    public void insertCard(String nickname, ArrayList<ItemCard> cards, int column) throws RemoteException, NullPointerException {
         server.insertCard(nickname, cards, column);
     }
 
     /**
-     * Method called from the client that pass to the server the chat message for all connected player of the game
+     * Method called from the client that pass to the server the chat message for all connected players of the game
      *
      * @param nickname this client
      * @param message  String to send to all the connected players
-     * @throws RemoteException if an error occurred calling the server ( Socket or RMI )
+     * @throws RemoteException if an error occurred calling the server (Socket or RMI)
      */
     @Override
-    public void chatToAll(String nickname, String message) throws RemoteException,NullPointerException {
+    public void chatToAll(String nickname, String message) throws RemoteException, NullPointerException {
         server.chatToAll(nickname, message);
     }
 
@@ -98,12 +98,12 @@ public class ConnectionRMI extends ConnectionClient implements RMIClientConnecti
      * Method called from the client that pass to the server the chat message for the receiver
      *
      * @param sender   this client
-     * @param receiver player that receive the message
+     * @param receiver player that receives the message
      * @param message  String to send to the receiver
-     * @throws RemoteException if an error occurred calling the server ( Socket or RMI )
+     * @throws RemoteException if an error occurred calling the server (Socket or RMI)
      */
     @Override
-    public void chatToPlayer(String sender, String receiver, String message) throws RemoteException,NullPointerException {
+    public void chatToPlayer(String sender, String receiver, String message) throws RemoteException, NullPointerException {
         server.chatToPlayer(sender, receiver, message);
     }
 
@@ -114,8 +114,8 @@ public class ConnectionRMI extends ConnectionClient implements RMIClientConnecti
      * @throws RemoteException if an error occurred calling the RMI server
      */
     @Override
-    public void setPlayersNumber(int players) throws RemoteException,NullPointerException {
-        server.setPlayerNumber(getController().getMyNickname(),players);
+    public void setPlayersNumber(int players) throws RemoteException, NullPointerException {
+        server.setPlayerNumber(getController().getMyNickname(), players);
     }
 
     @Override
@@ -179,7 +179,7 @@ public class ConnectionRMI extends ConnectionClient implements RMIClientConnecti
 
     @Override
     public void onGameIsStarting(ArrayList<String> playersList) throws RemoteException {
-        getController().gameStarted(playersList,true);
+        getController().gameStarted(playersList, true);
     }
 
     @Override
@@ -191,13 +191,14 @@ public class ConnectionRMI extends ConnectionClient implements RMIClientConnecti
     public void pong() throws RemoteException {
 
     }
+
     private void ping() {
         try {
             server.pong();
         } catch (Exception e) {
             // se si è disconnesso
             timer.cancel();
-            server=null;
+            server = null;
             getController().disconnectMe();
         }
 
@@ -210,7 +211,7 @@ public class ConnectionRMI extends ConnectionClient implements RMIClientConnecti
 
     @Override
     public void disconnectMe() throws RemoteException {
-        server=null;
+        server = null;
         getController().disconnectMe();
     }
 

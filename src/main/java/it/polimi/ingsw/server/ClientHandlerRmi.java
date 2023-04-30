@@ -57,9 +57,9 @@ public class ClientHandlerRmi extends ClientHandler {
     }
 
     @Override
-    public void sendPlayerTurn(String playername) {
+    public void sendPlayerTurn(String playerName) {
         try {
-            client.onChangeTurn(playername);
+            client.onChangeTurn(playerName);
         } catch (RemoteException e) {
             System.out.println("Impossibile mandare il cambio turno a " + nickname);
         }
@@ -71,7 +71,7 @@ public class ClientHandlerRmi extends ClientHandler {
             timer.cancel();
             client.disconnectMe();
         } catch (RemoteException e) {
-            System.out.println("Impossibile disconnetere il player " + nickname);
+            System.out.println("Impossibile disconnettere il player " + nickname);
         }
     }
 
@@ -105,9 +105,9 @@ public class ClientHandlerRmi extends ClientHandler {
     }
 
     @Override
-    public void SendBookshelfChanged(String playername, ItemCard[][] newBookshelf) {
+    public void SendBookshelfChanged(String playerName, ItemCard[][] newBookshelf) {
         try {
-            client.onBookshelfChanged(playername, newBookshelf);
+            client.onBookshelfChanged(playerName, newBookshelf);
         } catch (RemoteException e) {
             System.out.println("Impossibile inviare a" + nickname + "la bookshelf modificata.");
         }

@@ -62,6 +62,7 @@ public class ClientController {
         phase = INSERTCARDS;
         // to fix
         view.print("Choose in which order and where you want to put the Tiles");
+        view.printSelectedTiles(selectedTiles);
         view.printBookshelf(playersBookshelf.get(myNickname), myNickname);
     }
 
@@ -80,7 +81,7 @@ public class ClientController {
     /**
      * Method to get the selected tiles from the view for the insert method
      *
-     * @return the Tiles selected by the players during the
+     * @return the Tiles selected by the players during the select phase
      */
     public Map<Integer, ItemCard> getSelectedTiles() {
         return selectedTiles;

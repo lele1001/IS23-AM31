@@ -58,7 +58,7 @@ public interface RMIClientConnection extends Remote {
      * Method called by the server when a Common goal is created
      *
      * @param comGoalID ID of the Common goal
-     * @param score Value if the client does the Common goal
+     * @param score     Value if the client does the Common goal
      * @throws RemoteException if an error occurred calling the RMI client
      */
     void onCommonGoalCreated(Integer comGoalID, Integer score) throws RemoteException;

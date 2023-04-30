@@ -25,7 +25,6 @@ public class Server {
     private RMIInterface rmiInterface;
     private boolean playersNumberAsked = false;
 
-
     public Server() {
     }
 
@@ -43,7 +42,7 @@ public class Server {
     }
 
     /**
-     * Initializes server's attributes (not only at the beginning but also at the end of a game).
+     * Initializes the server's attributes (not only at the beginning but also at the end of a game).
      */
     public void initialize() {
         System.out.println("Initializing server...");
@@ -73,6 +72,7 @@ public class Server {
 
     /**
      * Opens RMI interface to accept connections with this technology.
+     *
      * @return false if an error occurs.
      */
     public boolean startRMI() {
@@ -105,7 +105,7 @@ public class Server {
     }
 
     /**
-     * A loop that always listens from server's terminal (useful if user wants to stop server).
+     * A loop that always listens from the server's terminal (useful if a user wants to stop server).
      */
     public static void listen() {
         Scanner in = new Scanner(System.in);
@@ -166,9 +166,9 @@ public class Server {
         executor.shutdown();
     }
 
-
     /**
-     * Allows the first player to set number of available players. Notifies setGame() method that was waiting for the first.
+     * Allows the first player to set the number of available players.
+     * Notifies setGame() method that was waiting for the first.
      *
      * @param availablePlayers to set.
      */
@@ -190,7 +190,10 @@ public class Server {
     }
 
     /**
-     * Removes a client from the queue. Useful at the beginning of the game: if game is not still started, the queue is used to manage clients that go out before the game.
+     * Removes a client from the queue.
+     * Useful at the beginning of the game:
+     * if the game is not still started, the queue is used to manage clients that go out before the game.
+     *
      * @param nickname of the client that has gone out.
      */
     public synchronized void removeFromQueue(String nickname) {
@@ -223,7 +226,7 @@ public class Server {
                 throw new RuntimeException(e);
             }
         }
-/*        while (this.queue.size() < availablePlayers) {
+        /* while (this.queue.size() < availablePlayers) {
             try {
                 this.wait();
             } catch (InterruptedException e) {
@@ -238,7 +241,7 @@ public class Server {
                 //queue.remove(s);
             }
         }
-        queue.removeIf(x -> queue.indexOf(x)>=availablePlayers);
+        queue.removeIf(x -> queue.indexOf(x) >= availablePlayers);
         this.gameController.createGame(queue);
         new Thread(this.gameController::run).start();
 

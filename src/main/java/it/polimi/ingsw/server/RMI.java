@@ -14,10 +14,11 @@ public interface RMI extends Remote {
 
     void selectCard(String nickname, ArrayList<Integer> positions) throws RemoteException;
 
-    void setPlayerNumber(String client,int number) throws RemoteException;
+    void setPlayerNumber(String client, int number) throws RemoteException;
 
     void chatToAll(String nickname, String message) throws RemoteException;
 
     void chatToPlayer(String sender, String receiver, String message) throws RemoteException;
-    void pong()  throws RemoteException;
+
+    void pong() throws RemoteException;
 }

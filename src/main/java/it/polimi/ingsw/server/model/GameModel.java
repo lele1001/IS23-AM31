@@ -19,7 +19,7 @@ public class GameModel implements ModelInterface {
 
     private final ArrayList<ComGoal> comGoals = new ArrayList<>();
     private ArrayList<ItemCard> selected = new ArrayList<>();
-    String winner=null;
+    String winner = null;
 
     /**
      * Builds the game
@@ -74,8 +74,8 @@ public class GameModel implements ModelInterface {
      *
      * @param nickname of the player
      * @param cards    to insert in the column
-     * @param column   where cards have to be inserted
-     *                 catches NoBookshelfSpaceException if there is no space
+     * @param column   where the cards will be inserted
+     * @catches NoBookshelfSpaceException if there is no space
      */
     public void InsertCard(String nickname, ArrayList<ItemCard> cards, int column) throws NoBookshelfSpaceException, NotSameSelectedException {
         // controllo se vuole inserire quelle che aveva selezionato
@@ -86,8 +86,8 @@ public class GameModel implements ModelInterface {
         a = playerMap.get(nickname).insertCard(cards, column);
         evt = new PropertyChangeEvent(nickname, "BOOKSHELF_CHANGED", null, playerMap.get(nickname).getBookshelfAsMatrix());
         this.listener.propertyChange(evt);
-        if (a && winner==null) {
-            winner=nickname;
+        if (a && winner == null) {
+            winner = nickname;
             evt = new PropertyChangeEvent(nickname, "BOOKSHELF_COMPLETED", null, null);
             this.listener.propertyChange(evt);
         }
@@ -135,7 +135,7 @@ public class GameModel implements ModelInterface {
 
         for (String s : playerMap.keySet()) {
             temp = playerMap.get(s).calculateFinScore();
-            if(s.equals(winner)) {
+            if (s.equals(winner)) {
                 temp++;
             }
             finalScores.put(s, temp);
@@ -157,7 +157,6 @@ public class GameModel implements ModelInterface {
         playerMap.get(nickname).changePlayerStatus();
 
     }
-
 
     private ComGoal selectComGoal(int numComGoal, int numPlayers) {
         return switch (numComGoal) {
@@ -213,10 +212,11 @@ public class GameModel implements ModelInterface {
 
     /**
      * Used when a player comes back in a game and needs to have all game's information.
+     *
      * @param nickname of the just returned player.
      */
     @Override
-    public void sendGameDetails (String nickname) {
+    public void sendGameDetails(String nickname) {
         // Sending board...
         PropertyChangeEvent evt = new PropertyChangeEvent("null", "BOARD_CHANGED", nickname, board.getAsArrayList());
         this.listener.propertyChange(evt);
@@ -228,7 +228,7 @@ public class GameModel implements ModelInterface {
         }
 
         // Sending his personal goal
-        evt = new PropertyChangeEvent(nickname, "PERS_GOAL_CREATED", null, playerMap.get(nickname).getpersGoal());
+        evt = new PropertyChangeEvent(nickname, "PERS_GOAL_CREATED", null, playerMap.get(nickname).getPersGoal());
         this.listener.propertyChange(evt);
 
         // Sending common goals
@@ -239,7 +239,7 @@ public class GameModel implements ModelInterface {
 
         // Sending player's actual score
         int score = playerMap.get(nickname).getScore();
-        evt = new PropertyChangeEvent(nickname, "PLAYER_SCORE", null, (nickname.equals(winner)) ? score+1 : score);
+        evt = new PropertyChangeEvent(nickname, "PLAYER_SCORE", null, (nickname.equals(winner)) ? score + 1 : score);
         this.listener.propertyChange(evt);
     }
 }

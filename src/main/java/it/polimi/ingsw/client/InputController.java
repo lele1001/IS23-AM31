@@ -47,7 +47,7 @@ public class InputController {
                 return null;
             }
         }
-        if (!checkSelection(coords)) {
+        if (coords.size() > 1 && !checkSelection(coords)) {
             System.out.println("Position failed");
             return null;
         }
@@ -171,7 +171,7 @@ public class InputController {
             }
         }
 
-        return position.size() == 1;
+        return false;
     }
 
     /**

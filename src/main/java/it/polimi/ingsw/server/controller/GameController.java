@@ -78,11 +78,11 @@ public class GameController implements PropertyChangeListener {
                 }, 1000, 1000);
 
                 synchronized (lock) {
-                        try {
-                            lock.wait(60000);
-                        } catch (InterruptedException e) {
-                            throw new RuntimeException(e);
-                        }
+                    try {
+                        lock.wait(60000);
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
                 }
                 timer.cancel();
                 if (winner) {   // Took too long! The winner is the remained player (if it's still online!)
@@ -123,8 +123,7 @@ public class GameController implements PropertyChangeListener {
         ArrayList<String> gameWinners = gameModel.calcFinalScore();
         if (gameWinners.size() == 1) {
             System.out.println("The winner of the game is " + gameWinners.get(0));
-        }
-        else {
+        } else {
             System.out.println("Parity: winners are " + gameWinners);
         }
         connectionControl.sendWinner(gameWinners);
@@ -269,7 +268,7 @@ public class GameController implements PropertyChangeListener {
             }
     }
 
-    public void sendGameDetails (String nickname) {
+    public void sendGameDetails(String nickname) {
         gameModel.sendGameDetails(nickname);
     }
 

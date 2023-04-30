@@ -37,8 +37,11 @@ public abstract class ClientHandler {
     public abstract void SendBoardChanged(ItemCard[][] newBoard);
 
     public abstract void sendWinner(List<String> winner);
-    public abstract void chatToMe(String sender,String message);
+
+    public abstract void chatToMe(String sender, String message);
+
     public abstract void sendPlayerScore(int score);
+
     public abstract void sendBookshelfCompleted();
 
 }

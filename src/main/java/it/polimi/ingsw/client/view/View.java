@@ -50,6 +50,8 @@ public interface View {
      */
     void printPersGoal(Map<Integer, HouseItem> myPersGoal);
 
+    void printSelectedTiles(Map<Integer, ItemCard> selectedTiles);
+
     /**
      * Implementation for Cli and Gui of the printing if it is the player's turn
      *
@@ -67,6 +69,7 @@ public interface View {
     void chatToMe(String sender, String message);
 
     void printAskPlayerNumber();
+
     void disconnectionError();
 
     void disconnectMe();

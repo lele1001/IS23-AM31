@@ -37,14 +37,14 @@ public class ClientHandlerSocket extends ClientHandler implements Runnable {
     }
 
     /**
-     * Waits for client's nickname and, then, tries to insert it into the game.
+     * Waits for the client's nickname and, then, tries to insert it into the game.
      * If the game is not available, sends the error and disconnects it.
      */
     public void run() {
         nickname = null;
         listeningThread = new Thread(this::listen);
         listeningThread.start();
-        // Waiting for nickname to be set.
+        // Waiting for the nickname to be set.
         while (nickname == null) {
             Thread.onSpinWait();
         }
@@ -71,7 +71,7 @@ public class ClientHandlerSocket extends ClientHandler implements Runnable {
             return;
         }
 
-        // Always listens from client's message and notifies server of its disconnection.
+        // Always listens from the client's message and notifies the server of its disconnection.
         while (true) {
             try {
                 String line = in.readLine();
@@ -98,7 +98,8 @@ public class ClientHandlerSocket extends ClientHandler implements Runnable {
     }
 
     /**
-     * A private method used to send to client the generated json.
+     * A private method used to send to the client the generated json.
+     *
      * @param json to be converted in String and to be sent.
      */
     private void send(JsonObject json) {
@@ -107,10 +108,14 @@ public class ClientHandlerSocket extends ClientHandler implements Runnable {
     }
 
     /**
-     * A private method used to prevent repeated code: it generates standard messages used during the communication with client.
-     * @param type of the message to be sent.
+     * A private method used to prevent repeated code:
+     * it generates standard messages used during the communication with the client.
+     *
+     * @param type  of the message to be sent.
      * @param value of the message to be sent.
-     * @return the jsonObject to be sent. It doesn't call directly the "send" method because sometimes the game needs to add other fields in the jsonObject before sending it.
+     * @return the jsonObject to be sent.
+     * It doesn't call directly the “send”
+     * method because sometimes the game needs to add other fields in the jsonObject before sending it.
      */
     private JsonObject generateStandardMessage(String type, String value) {
         JsonObject json = new JsonObject();
@@ -133,6 +138,7 @@ public class ClientHandlerSocket extends ClientHandler implements Runnable {
 
     /**
      * Sends an update of player's turn.
+     *
      * @param nickname of the client is going to play.
      */
     @Override
@@ -160,6 +166,7 @@ public class ClientHandlerSocket extends ClientHandler implements Runnable {
 
     /**
      * Parses json messages received from the client.
+     *
      * @param json string to be parsed.
      */
     private void onMessageReceived(String json) {
@@ -201,11 +208,10 @@ public class ClientHandlerSocket extends ClientHandler implements Runnable {
                     case "insertCards" ->
                             connectionControl.insertCard(nickname, new ArrayList<>(Arrays.asList(gson.fromJson(jsonObject.get("Value").getAsString(), ItemCard[].class))), jsonObject.get("column").getAsInt());
 
-                    case "chatToAll" ->
-                        connectionControl.chatToAll(nickname, jsonObject.get("Value").getAsString());
+                    case "chatToAll" -> connectionControl.chatToAll(nickname, jsonObject.get("Value").getAsString());
 
                     case "chatToPlayer" ->
-                        connectionControl.chatToPlayer(nickname, jsonObject.get("receiver").getAsString(), jsonObject.get("Value").getAsString());
+                            connectionControl.chatToPlayer(nickname, jsonObject.get("receiver").getAsString(), jsonObject.get("Value").getAsString());
 
                     default -> System.out.println("Unknown message from client.");
                 }
@@ -216,7 +222,7 @@ public class ClientHandlerSocket extends ClientHandler implements Runnable {
     }
 
     /**
-     * Generates a message to ask client to select cards from board.
+     * Generates a message to ask the client to select cards from the board.
      */
     @Override
     public void askSelect() {
@@ -224,7 +230,7 @@ public class ClientHandlerSocket extends ClientHandler implements Runnable {
     }
 
     /**
-     * Generates a message to ask client to insert cards in his bookshelf.
+     * Generates a message to ask the client to insert cards in his bookshelf.
      */
     @Override
     public void askInsert() {
@@ -233,6 +239,7 @@ public class ClientHandlerSocket extends ClientHandler implements Runnable {
 
     /**
      * Generates an error message.
+     *
      * @param error to be sent.
      */
     @Override
@@ -242,6 +249,7 @@ public class ClientHandlerSocket extends ClientHandler implements Runnable {
 
     /**
      * Generates a message to send board's update.
+     *
      * @param newBoard: the updated board.
      */
     @Override
@@ -252,8 +260,9 @@ public class ClientHandlerSocket extends ClientHandler implements Runnable {
 
     /**
      * Called to inform the client that a new commonGoal has been created (usually at the beginning of the game).
+     *
      * @param comGoalID that has been created.
-     * @param score: the maximum score that can be reached on the commonGoal.
+     * @param score the maximum score that can be reached on the commonGoal.
      */
     @Override
     public void SendCommonGoalCreated(Integer comGoalID, Integer score) {
@@ -264,7 +273,8 @@ public class ClientHandlerSocket extends ClientHandler implements Runnable {
 
     /**
      * Called to notify to the client his new PersonalGoal.
-     * @param persGoal: the string that indicates the number of the card assigned.
+     *
+     * @param persGoal the string that indicates the number of the card assigned.
      */
     @Override
     public void SendPersGoalCreated(String persGoal) {
@@ -272,9 +282,10 @@ public class ClientHandlerSocket extends ClientHandler implements Runnable {
     }
 
     /**
-     * Generates a message to send bookshelf's update.
-     * @param nickname of the player the bookshelf is referred to.
-     * @param newBookshelf: the updated bookshelf.
+     * Generates a message to send the bookshelf's update.
+     *
+     * @param nickname      of the player the bookshelf is referred to.
+     * @param newBookshelf the updated bookshelf.
      */
     @Override
     public void SendBookshelfChanged(String nickname, ItemCard[][] newBookshelf) {
@@ -286,8 +297,9 @@ public class ClientHandlerSocket extends ClientHandler implements Runnable {
 
     /**
      * Called to inform that someone has reached a commonGoal.
-     * @param source: the nickname of the client that reached it.
-     * @param details: the ID of the commonGoal and the score remained.
+     *
+     * @param source the nickname of the client that reached it.
+     * @param details the ID of the commonGoal, and the score remained.
      */
     @Override
     public void SendCommonGoalDone(String source, int[] details) {
@@ -298,7 +310,8 @@ public class ClientHandlerSocket extends ClientHandler implements Runnable {
     }
 
     /**
-     * It's the end of the game: there's a winner!
+     * It is the end of the game: there's a winner!
+     *
      * @param winners: winners' nickname.
      */
     @Override
@@ -309,7 +322,8 @@ public class ClientHandlerSocket extends ClientHandler implements Runnable {
 
     /**
      * Called when someone wants to send a message to this client.
-     * @param sender: the nickname of the client sender.
+     *
+     * @param sender the nickname of the client sender.
      * @param message: the message.
      */
     @Override
@@ -320,7 +334,7 @@ public class ClientHandlerSocket extends ClientHandler implements Runnable {
     }
 
     /**
-     * Generates a message to inform client that game is starting.
+     * Generates a message to inform the client that the game is starting.
      */
     @Override
     public void sendGameIsStarting(ArrayList<String> playersList) {
@@ -329,7 +343,7 @@ public class ClientHandlerSocket extends ClientHandler implements Runnable {
     }
 
     /**
-     * Generates a message to inform client that game is not available.
+     * Generates a message to inform the client that game is not available.
      */
     @Override
     public void sendErrorGameNotAvailable() {
