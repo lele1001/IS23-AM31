@@ -62,7 +62,7 @@ public class ClientController {
         phase = INSERTCARDS;
         // to fix
         view.print("Choose in which order and where you want to put the Tiles");
-        view.printBookshelf(playersBookshelf.get(myNickname),myNickname);
+        view.printBookshelf(playersBookshelf.get(myNickname), myNickname);
     }
 
     /**
@@ -106,7 +106,7 @@ public class ClientController {
      */
     public void onBookshelfChanged(String nickname, ItemCard[][] newBookshelf) {
         playersBookshelf.put(nickname, newBookshelf);
-        view.printBookshelf(playersBookshelf.get(nickname),nickname);
+        view.printBookshelf(playersBookshelf.get(nickname), nickname);
     }
 
     /**
@@ -158,7 +158,7 @@ public class ClientController {
      * @param newValue new value of the CommonGoal after a player has done it
      */
     public void onCommonGoalDone(String nickname, int[] newValue) {
-        if(newValue!=null&&playerComGoal.containsKey(newValue[0])) {
+        if (newValue != null && playerComGoal.containsKey(newValue[0])) {
             if (myNickname.equals(nickname)) {
                 myPoint += playerComGoal.get(newValue[0]);
                 view.printPoints(myPoint);
@@ -172,6 +172,7 @@ public class ClientController {
 
     /**
      * Called when the client comes back to an existing game with him into.
+     *
      * @param score done during the game by the client.
      */
     public void onPlayerScore(int score) {
@@ -420,8 +421,8 @@ public class ClientController {
     }
 
     public void gameStarted(ArrayList<String> playersList, boolean gameStarted) {
-        for (String player: playersList){
-            playersBookshelf.put(player,new ItemCard[BOOKSHELF_HEIGHT][BOOKSHELF_LENGTH]);
+        for (String player : playersList) {
+            playersBookshelf.put(player, new ItemCard[BOOKSHELF_HEIGHT][BOOKSHELF_LENGTH]);
         }
         this.gameStarted = gameStarted;
         view.printStartGame();

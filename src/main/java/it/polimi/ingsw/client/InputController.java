@@ -18,17 +18,22 @@ public class InputController {
         this.clientController = clientController;
     }
 
+    /**
+     * Checks that the user selects a correct number of cards, that they exist on the board and that they are adjacent
+     */
     public ArrayList<Integer> checkTake(String[] input) {
         if (!clientController.isMyTurn()) {
             System.out.println("It is not your turn!");
             return null;
         }
 
-        if (input.length < 2 || input.length > maxTilesSize()+1) {
+        if (input.length < 2 || input.length > maxTilesSize() + 1) {
             System.out.println("You can only take from 1 to 3 cards!");
             return null;
         }
+
         coords.clear();
+
         // starts from 1 because input[0] == "@take"
         for (int i = 1; i < input.length; i++) {
             try {
@@ -38,9 +43,9 @@ public class InputController {
                 return null;
             }
 
-           if (!checkPosition(coord)) {
-               return null;
-           }
+            if (!checkPosition(coord)) {
+                return null;
+            }
         }
         if (!checkSelection(coords)) {
             System.out.println("Position failed");
@@ -50,28 +55,43 @@ public class InputController {
     }
 
     private int maxTilesSize() {
-        int maxTiles=0;
-        for(int column=0;column<BOOKSHELF_LENGTH;column++){
+        int maxTiles = 0;
+
+        for (int column = 0; column < BOOKSHELF_LENGTH; column++) {
             int i;
+
             for (i = BOOKSHELF_HEIGHT - 1; i >= 0; i--) {
-                if ( clientController.getPlayersBookshelf().get(clientController.getMyNickname())[i][column] == null) break;
+                if (clientController.getPlayersBookshelf().get(clientController.getMyNickname())[i][column] == null) {
+                    break;
+                }
             }
-           if(i>maxTiles)
-               maxTiles=i;
+
+            if (i > maxTiles) {
+                maxTiles = i;
+            }
         }
+
         maxTiles++;
         System.out.println(maxTiles);
         return maxTiles;
     }
 
-    private boolean checkPosition (int coord) {
-        if (Position.getRow(coord) >=DIM_BOARD || Position.getColumn(coord) >=DIM_BOARD) {
-            System.out.println("The requested cell does not exists!");
-            return false;
+    /**
+     * Checks that the given coordinate is inside the board range
+     *
+     * @param coord is the number from which we can extract row and column
+     * @return true if the position is correct
+     */
+    private boolean checkPosition(int coord) {
+        if (Position.getRow(coord) < DIM_BOARD || Position.getColumn(coord) < DIM_BOARD) {
+            coords.add(coord);
+            return true;
         }
-        coords.add(coord);
-        return true;
+
+        System.out.println("The requested cell does not exists!");
+        return false;
     }
+
     /**
      * Check if the Itemcard can be deleted
      * First check controls that the position numbers are contained in the board
@@ -105,13 +125,16 @@ public class InputController {
         int i;
         int j;
         boolean sideClear = true;
+
         for (int k = 0; k < position.size() && sideClear; k++) {
             i = Position.getRow(position.get(k));
             j = Position.getColumn(position.get(k));
+
             if (i != 0 && i != 8 && j != 0 && j != 8) {
                 sideClear = (clientController.getBoard()[i + 1][j] == null || clientController.getBoard()[i - 1][j] == null || clientController.getBoard()[i][j - 1] == null || clientController.getBoard()[i][j + 1] == null);
             }
         }
+
         return sideClear;
     }
 
@@ -123,21 +146,38 @@ public class InputController {
      * @return true if the ItemCards are in a straight line
      */
     private boolean checkStraightSelection(ArrayList<Integer> position) {
+        int pos0 = position.get(0);
+        int pos1 = position.get(1);
+
         if (position.size() == 3) {
-            if ((Position.getRow(position.get(0)) == Position.getRow(position.get(1)) - 1) && (Position.getRow(position.get(1)) == Position.getRow(position.get(2)) - 1) && (Position.getColumn(position.get(0)) == Position.getColumn(position.get(1))) && (Position.getColumn(position.get(1)) == Position.getColumn(position.get(2))))
+            int pos2 = position.get(2);
+
+            if ((Position.getRow(pos0) == Position.getRow(pos1) - 1) && (Position.getRow(pos1) == Position.getRow(pos2) - 1) && (Position.getColumn(pos0) == Position.getColumn(pos1)) && (Position.getColumn(pos1) == Position.getColumn(pos2))) {
                 return true;
-            if ((Position.getColumn(position.get(0)) == Position.getColumn(position.get(1)) - 1) && (Position.getColumn(position.get(1)) == Position.getColumn(position.get(2)) - 1) && (Position.getRow(position.get(0)) == Position.getRow(position.get(1))) && (Position.getRow(position.get(1)) == Position.getRow(position.get(2))))
+            }
+
+            if ((Position.getColumn(pos0) == Position.getColumn(pos1) - 1) && (Position.getColumn(pos1) == Position.getColumn(pos2) - 1) && (Position.getRow(pos0) == Position.getRow(pos1)) && (Position.getRow(pos1) == Position.getRow(pos2))) {
                 return true;
+            }
         }
+
         if (position.size() == 2) {
-            if ((Position.getRow(position.get(0)) == Position.getRow(position.get(1)) - 1) && (Position.getColumn(position.get(0)) == Position.getColumn(position.get(1))))
+            if ((Position.getRow(pos0) == Position.getRow(pos1) - 1) && (Position.getColumn(pos0) == Position.getColumn(pos1))) {
                 return true;
-            if ((Position.getColumn(position.get(0)) == Position.getColumn(position.get(1)) - 1) && (Position.getRow(position.get(0)) == Position.getRow(position.get(1))))
+            }
+
+            if ((Position.getColumn(pos0) == Position.getColumn(pos1) - 1) && (Position.getRow(pos0) == Position.getRow(pos1))) {
                 return true;
+            }
         }
+
         return position.size() == 1;
     }
 
+    /**
+     * Checks that the user selects a correct number of cards, that the column exists in the bookshelf
+     * and that the cards that he wants to put in it are the same he selected from the board
+     */
     public ArrayList<ItemCard> checkPut(String[] input) {
         int column;
         ArrayList<ItemCard> tilesToPut = new ArrayList<>();
@@ -190,8 +230,7 @@ public class InputController {
         for (Integer i : coords) {
             if (clientController.getSelectedTiles().containsKey(i)) {
                 tilesToPut.add(clientController.getSelectedTiles().get(i));
-            }
-            else {
+            } else {
                 System.out.println("Wrong tiles selected");
                 return null;
             }
@@ -200,11 +239,17 @@ public class InputController {
         return tilesToPut;
     }
 
+    /**
+     * Checks that the chat is directed to a player that exists or to all players in the game
+     *
+     * @return 0 if there is an error, 1 if the recipient is a player, 2 if the recipient are all players
+     */
     public int checkChat(String[] input) {
         if (input.length < 3) {
             System.out.println("You should write both a recipient and a message!");
             return 0;
         }
+
         // starts from 1 because input[0] == "@chat"
         if (input[1].equals(clientController.getMyNickname())) {
             System.out.println("You can not send a message to yourself!");
@@ -219,13 +264,18 @@ public class InputController {
         return 0;
     }
 
+    /**
+     * Checks that the selected number of player is in the correct range
+     *
+     * @return the number of players selected
+     */
     public int checkPlayers(String[] input) {
         if (input.length > 2) {
             System.out.println("You should only write the number of players!");
             return -1;
         }
 
-        int playersNum = -1;
+        int playersNum;
 
         try {
             playersNum = Integer.parseInt(input[1]);

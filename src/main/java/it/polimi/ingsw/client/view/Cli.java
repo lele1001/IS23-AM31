@@ -131,9 +131,8 @@ public class Cli implements View {
                 choice = in.nextLine();
                 splitString = choice.split(" ");
 
-                for (int i = 0; i < splitString.length; i++) {
-                    splitString[i] = splitString[i].toLowerCase();
-                }
+                // transforms only the command given by the user to its lower case version
+                splitString[0] = splitString[0].toLowerCase();
 
                 switch (splitString[0]) {
                     case "@players" -> {
