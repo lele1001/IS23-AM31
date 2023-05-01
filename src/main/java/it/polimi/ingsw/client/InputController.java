@@ -54,6 +54,9 @@ public class InputController {
         return coords;
     }
 
+    /**
+     * @return The maximum number of a tiles that can be inserted in the client's bookshelf
+     */
     private int maxTilesSize() {
         int maxTiles = 0;
 
@@ -72,7 +75,6 @@ public class InputController {
         }
 
         maxTiles++;
-        System.out.println(maxTiles);
         return maxTiles;
     }
 
@@ -165,10 +167,7 @@ public class InputController {
             if ((Position.getRow(pos0) == Position.getRow(pos1) - 1) && (Position.getColumn(pos0) == Position.getColumn(pos1))) {
                 return true;
             }
-
-            if ((Position.getColumn(pos0) == Position.getColumn(pos1) - 1) && (Position.getRow(pos0) == Position.getRow(pos1))) {
-                return true;
-            }
+            return (Position.getColumn(pos0) == Position.getColumn(pos1) - 1) && (Position.getRow(pos0) == Position.getRow(pos1));
         }
 
         return false;

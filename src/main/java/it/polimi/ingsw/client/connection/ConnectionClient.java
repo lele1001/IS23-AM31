@@ -42,7 +42,6 @@ public abstract class ConnectionClient extends UnicastRemoteObject {
     /**
      * @return the server Address written by the player
      */
-
     public String getAddress() {
         return address;
     }
@@ -61,7 +60,6 @@ public abstract class ConnectionClient extends UnicastRemoteObject {
      * @param cardsSelected Tiles selected by the client
      * @throws Exception if an error occurred calling the server (Socket or RMI)
      */
-
     public abstract void selectCard(String nickname, ArrayList<Integer> cardsSelected) throws Exception;
 
     /**

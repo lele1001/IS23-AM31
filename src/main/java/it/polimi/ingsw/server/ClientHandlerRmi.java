@@ -28,6 +28,9 @@ public class ClientHandlerRmi extends ClientHandler {
         timer.scheduleAtFixedRate(task, 0, 5000);
     }
 
+    /**
+     * The RMI server called a method on the player to see if the connection is still on, if not send a disconnection request to the connectionControl
+     */
     private void ping() {
         try {
             client.pong();
@@ -40,11 +43,9 @@ public class ClientHandlerRmi extends ClientHandler {
 
     }
 
-/*    @Override
-    public void addToGame() {
-        this.connectionControl.addClient(this, nickname);
-    }*/
-
+    /**
+     * The RMI server calls the client's method if the player is first in queue and ha to decide the number of players in the game
+     */
     @Override
     public void askPlayerNumber() {
         // chiedo il numero di giocatori
@@ -56,6 +57,11 @@ public class ClientHandlerRmi extends ClientHandler {
 
     }
 
+    /**
+     * The RMI server calls the client's method on a new Turn
+     *
+     * @param playerName the nickname of the players whose turn is
+     */
     @Override
     public void sendPlayerTurn(String playerName) {
         try {
@@ -65,6 +71,9 @@ public class ClientHandlerRmi extends ClientHandler {
         }
     }
 
+    /**
+     * The RMI server calls the client's method to disconnect the player when an error occurred or the game is finished
+     */
     @Override
     public void disconnectPlayer() {
         try {
@@ -75,6 +84,9 @@ public class ClientHandlerRmi extends ClientHandler {
         }
     }
 
+    /**
+     * The RMI server calls the client's method to ask the player to select the Tiles
+     */
     @Override
     public void askSelect() {
         //chiama il metodo sul client
@@ -85,6 +97,9 @@ public class ClientHandlerRmi extends ClientHandler {
         }
     }
 
+    /**
+     * The RMI server calls the client's method to ask the player to insert the Tiles
+     */
     @Override
     public void askInsert() {
         try {
@@ -94,6 +109,11 @@ public class ClientHandlerRmi extends ClientHandler {
         }
     }
 
+    /**
+     * The RMI server calls the client's method in case of error on the server side
+     *
+     * @param error String that describes the type of error
+     */
     @Override
     public void sendError(String error) {
         try {
@@ -104,6 +124,12 @@ public class ClientHandlerRmi extends ClientHandler {
         }
     }
 
+    /**
+     * The RMI server calls the client's method to update the client's side bookshelf of player nickname
+     *
+     * @param playerName   the nickname of the player
+     * @param newBookshelf the updated bookshelf of the player nickname
+     */
     @Override
     public void SendBookshelfChanged(String playerName, ItemCard[][] newBookshelf) {
         try {
@@ -113,6 +139,12 @@ public class ClientHandlerRmi extends ClientHandler {
         }
     }
 
+    /**
+     * The RMI server calls the client's method when a Common goal is completed by the player nickname
+     *
+     * @param source  nickname of the player
+     * @param details Array of Common goal ID and new value of common goal
+     */
     @Override
     public void SendCommonGoalDone(String source, int[] details) {
         try {
@@ -122,6 +154,11 @@ public class ClientHandlerRmi extends ClientHandler {
         }
     }
 
+    /**
+     * The RMI server calls the client's method when a Personal goal is created
+     *
+     * @param persGoal String that determines the Personal goal from a Json file
+     */
     @Override
     public void SendPersGoalCreated(String persGoal) {
         try {
@@ -131,6 +168,12 @@ public class ClientHandlerRmi extends ClientHandler {
         }
     }
 
+    /**
+     * The RMI server calls the client's method when a Common goal is created
+     *
+     * @param comGoalID ID of the Common goal
+     * @param score     Value if the client does the Common goal
+     */
     @Override
     public void SendCommonGoalCreated(Integer comGoalID, Integer score) {
         try {
@@ -140,6 +183,11 @@ public class ClientHandlerRmi extends ClientHandler {
         }
     }
 
+    /**
+     * The RMI server calls the client's method to update the client's side board
+     *
+     * @param newBoard the updated board
+     */
     @Override
     public void SendBoardChanged(ItemCard[][] newBoard) {
         try {
@@ -149,6 +197,11 @@ public class ClientHandlerRmi extends ClientHandler {
         }
     }
 
+    /**
+     * The RMI server calls the client's method when a player win
+     *
+     * @param winners is the player that won the game
+     */
     @Override
     public void sendWinner(List<String> winners) {
         try {
@@ -158,6 +211,12 @@ public class ClientHandlerRmi extends ClientHandler {
         }
     }
 
+    /**
+     * The RMI server calls the client's method when a player want to send a chat message to the client
+     *
+     * @param sender  of the message
+     * @param message sent to somebody else
+     */
     @Override
     public void chatToMe(String sender, String message) {
         try {
@@ -167,6 +226,9 @@ public class ClientHandlerRmi extends ClientHandler {
         }
     }
 
+    /**
+     * The RMI server calls the client's method when a game is starting
+     */
 
     @Override
     public void sendGameIsStarting(ArrayList<String> playersList) {
@@ -177,15 +239,11 @@ public class ClientHandlerRmi extends ClientHandler {
         }
     }
 
-    @Override
-    public void sendErrorGameNotAvailable() {
-        try {
-            client.onErrorGameNotAvailable();
-        } catch (RemoteException e) {
-            System.out.println("Impossibile dire a " + nickname + " il vincitore");
-        }
-    }
-
+    /**
+     * The RMI server calls the client's method to update the player score when a player reconnect
+     *
+     * @param score The score of the player
+     */
     @Override
     public void sendPlayerScore(int score) {
         try {
@@ -195,6 +253,9 @@ public class ClientHandlerRmi extends ClientHandler {
         }
     }
 
+    /**
+     * The RMI server calls the client's method when a player completes his bookshelf
+     */
     @Override
     public void sendBookshelfCompleted() {
         try {

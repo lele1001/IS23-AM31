@@ -177,7 +177,6 @@ public class GameController implements PropertyChangeListener {
         }
     }
 
-
     /**
      * The method tries to insert the cards selected
      *
@@ -226,10 +225,12 @@ public class GameController implements PropertyChangeListener {
 
     }
 
+    /**
+     * @return If the game is active
+     */
     public boolean isGameIsActive() {
         return gameIsActive;
     }
-
 
     public void propertyChange(PropertyChangeEvent evt) {
         if (evt.getPropertyName().matches("(.*)ERROR")) {
@@ -267,6 +268,7 @@ public class GameController implements PropertyChangeListener {
                 }
             }
     }
+
 
     public void sendGameDetails(String nickname) {
         gameModel.sendGameDetails(nickname);

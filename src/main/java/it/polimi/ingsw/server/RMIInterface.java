@@ -20,11 +20,27 @@ public class RMIInterface implements RMI {
         this.connectionControl = connectionControl;
     }
 
+    /**
+     * Method called from the client that pass to the server the position of the Tiles selected by the client
+     * Send a request for the checking procedure in the gameController and update the Model if the controls are successfully done
+     *
+     * @param nickname  this client
+     * @param positions Tiles selected by the client
+     * @throws RemoteException if an error occurred calling the server RMI
+     */
     @Override
-    public void selectCard(String nickname, ArrayList<Integer> positions) {
+    public void selectCard(String nickname, ArrayList<Integer> positions) throws RemoteException {
         connectionControl.selectCard(nickname, positions);
     }
 
+    /**
+     * Method called by the client only if he is the first connected to the server
+     * Check that he is the first and then set the number of player for the game
+     *
+     * @param client the client that send the request
+     * @param number number of players in the game
+     * @throws RemoteException if an error occurred calling the server RMI
+     */
     @Override
     public void setPlayerNumber(String client, int number) throws RemoteException {
         if ((number < 2) || (number > 4)) {
@@ -36,11 +52,28 @@ public class RMIInterface implements RMI {
         }
     }
 
+    /**
+     * Method called from the client that pass to the server the chat message for all connected players of the game
+     * The server send to all the other clients the message
+     *
+     * @param nickname this client
+     * @param message  String to send to all the connected players
+     * @throws RemoteException if an error occurred calling the server RMI
+     */
     @Override
     public void chatToAll(String nickname, String message) throws RemoteException {
         connectionControl.chatToAll(nickname, message);
     }
 
+    /**
+     * Method called from the client that pass to the server the chat message for all connected players of the game
+     * The server send to all the other clients the message
+     *
+     * @param sender   the player that send the message
+     * @param receiver the player that has to receive the message
+     * @param message  String to send to all the connected players
+     * @throws RemoteException if an error occurred calling the server RMI
+     */
     @Override
     public void chatToPlayer(String sender, String receiver, String message) throws RemoteException {
         connectionControl.chatToPlayer(sender, receiver, message);
@@ -57,12 +90,15 @@ public class RMIInterface implements RMI {
     }
 
     /**
+     * Method called from the client that pass to the server the position of the Tiles selected by the client
+     * Send a request for the checking procedure in the gameController and update the Model if the controls are successfully done
+     *
      * @param nickname nickname of the client
      * @param cards    The Item cards selected by the client
      * @param column   The column where the client wants to put the Item cards
      */
     @Override
-    public void insertCard(String nickname, ArrayList<ItemCard> cards, int column) {
+    public void insertCard(String nickname, ArrayList<ItemCard> cards, int column) throws RemoteException {
         connectionControl.insertCard(nickname, cards, column);
     }
 

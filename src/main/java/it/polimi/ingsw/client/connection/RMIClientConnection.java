@@ -89,27 +89,30 @@ public interface RMIClientConnection extends Remote {
     void onChangeTurn(String nickname) throws RemoteException;
 
     /**
-     * @param winner is the player that won the game
+     * Method called by the server when a player win
+     *
+     * @param winners is the player that won the game
      * @throws RemoteException if an error occurred calling the RMI client
      */
-    void onWinner(List<String> winner) throws RemoteException;
+    void onWinner(List<String> winners) throws RemoteException;
 
     /**
+     * Method called by the server when a game is starting
+     *
      * @throws RemoteException if an error occurred calling the RMI client
      */
     void onGameIsStarting(ArrayList<String> playersList) throws RemoteException;
 
     /**
-     * @throws RemoteException if an error occurred calling the RMI client
-     */
-    void onErrorGameNotAvailable() throws RemoteException;
-
-    /**
+     * Method called by the server to ensure the player is online and connected
+     *
      * @throws RemoteException if an error occurred calling the RMI client
      */
     void pong() throws RemoteException;
 
     /**
+     * Method called by the server when a player want to send a chat message to the client
+     *
      * @param sender  of the message
      * @param message sent to somebody else
      * @throws RemoteException if an error occurred calling the RMI client
@@ -117,11 +120,25 @@ public interface RMIClientConnection extends Remote {
     void chatToMe(String sender, String message) throws RemoteException;
 
     /**
+     * Method called by the server to disconnect the player when an error occurred or the game is finished
+     *
      * @throws RemoteException if an error occurred calling the RMI client
      */
     void disconnectMe() throws RemoteException;
 
+    /**
+     * Method called by the server to update the player score when a player reconnect
+     *
+     * @param score The score of the player
+     * @throws RemoteException if an error occurred calling the RMI client
+     */
+
     void onPlayerScore(int score) throws RemoteException;
 
+    /**
+     * Method called by the server when a player completes his bookshelf
+     *
+     * @throws RemoteException if an error occurred calling the RMI client
+     */
     void onBookshelfCompleted() throws RemoteException;
 }

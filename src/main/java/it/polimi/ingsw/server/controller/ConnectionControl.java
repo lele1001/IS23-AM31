@@ -112,7 +112,7 @@ public class ConnectionControl {
      * Sends a message to the client with the game's list of the players, at the beginning of the game.
      *
      * @param playersList of the active players in the just created game.
-     * @param receiver the nickname of the receiver of the message (if null, the message has to be sent to all clients).
+     * @param receiver    the nickname of the receiver of the message (if null, the message has to be sent to all clients).
      */
     public void sendGameIsStarting(ArrayList<String> playersList, String receiver) {
         if (receiver == null) { // Send it to all clients
@@ -150,7 +150,7 @@ public class ConnectionControl {
     /**
      * Called by the client to select cards from the board.
      *
-     * @param nickname of the client that wants to select.
+     * @param nickname  of the client that wants to select.
      * @param positions a list of integer that indicates the positions of the tiles to be selected.
      */
     public void selectCard(String nickname, ArrayList<Integer> positions) {
@@ -162,8 +162,8 @@ public class ConnectionControl {
      * Called by the client to insert cards in his bookshelf.
      *
      * @param nickname of the client that wants to insert.
-     * @param cards an ordered list of the ItemCards he wants to insert.
-     * @param column to put ItemCards into.
+     * @param cards    an ordered list of the ItemCards he wants to insert.
+     * @param column   to put ItemCards into.
      */
     public void insertCard(String nickname, ArrayList<ItemCard> cards, int column) {
         System.out.println(nickname + " wants to insert cards: " + cards + " in column: " + column);
@@ -183,9 +183,9 @@ public class ConnectionControl {
     /**
      * Called by a client when he wants to send a message via chat to a specific player.
      *
-     * @param sender the sender of the message.
+     * @param sender   the sender of the message.
      * @param receiver the receiver.
-     * @param message to be sent.
+     * @param message  to be sent.
      */
     public void chatToPlayer(String sender, String receiver, String message) {
         System.out.println(sender + " sends to " + receiver + ": " + message);
@@ -261,13 +261,12 @@ public class ConnectionControl {
         }
     }
 
-
     /**
      * Called by the GameController, sends a player's bookshelf to the client because of an update of it.
      *
-     * @param nickname of the owner of the bookshelf.
+     * @param nickname     of the owner of the bookshelf.
      * @param newBookshelf the bookshelf after the last update.
-     * @param receiver the nickname of the receiver of the update. If null, the update has to be sent to all the clients.
+     * @param receiver     the nickname of the receiver of the update. If null, the update has to be sent to all the clients.
      */
     public void SendBookshelfChanged(String nickname, ItemCard[][] newBookshelf, String receiver) {
         if (receiver == null) {
@@ -288,7 +287,7 @@ public class ConnectionControl {
     /**
      * Called by the GameController, sends an error to a specific client.
      *
-     * @param error to be sent.
+     * @param error    to be sent.
      * @param nickname of the client to be sent to.
      */
     public void SendError(String error, String nickname) {
@@ -317,7 +316,7 @@ public class ConnectionControl {
      * Called at the beginning of the game, sends the details of a Common Goal created.
      *
      * @param comGoalID the ID of the Common Goal.
-     * @param score the maximum score available for the Common Goal.
+     * @param score     the maximum score available for the Common Goal.
      */
     public void SendCommonGoalCreated(Integer comGoalID, Integer score, String receiver) {
         if (receiver == null)
@@ -345,7 +344,7 @@ public class ConnectionControl {
     /**
      * Notifies clients that someone has reached a Common Goal.
      *
-     * @param source the nickname of the client just reached the goal.
+     * @param source  the nickname of the client just reached the goal.
      * @param details a two integers' vector: the first one indicates Common Goal's ID,
      *                while the other one is the maximum score still available after this event.
      */
@@ -413,7 +412,7 @@ public class ConnectionControl {
      * Used to send the player's score when he comes back to the game.
      *
      * @param nickname of the just returned player.
-     * @param score to be sent.
+     * @param score    to be sent.
      */
     public void sendPlayerScore(String nickname, int score) {
         System.out.println("Sending actual score: " + score + " to " + nickname + ".");

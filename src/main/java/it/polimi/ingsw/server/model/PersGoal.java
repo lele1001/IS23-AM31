@@ -26,7 +26,6 @@ public enum PersGoal {
      */
     private final Map<Integer, HouseItem> positions = new HashMap<>();
 
-
     /**
      * Builds the card such as parameters indicates.
      */

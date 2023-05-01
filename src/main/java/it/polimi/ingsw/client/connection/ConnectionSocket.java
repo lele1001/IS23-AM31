@@ -14,7 +14,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class ConnectionSocket extends ConnectionClient {
-    ClientController controller;
     private PrintWriter socketOut = null;
     private BufferedReader in;
     private Socket socket;
@@ -213,8 +212,6 @@ public class ConnectionSocket extends ConnectionClient {
                 case "player_score" -> getController().onPlayerScore(jsonObject.get("Value").getAsInt());
 
                 case "bookshelf_completed" -> getController().onBookshelfCompleted();
-
-                case "gameNotAvailable" -> System.out.println("GameNotAvailable");
 
                 case "chatToMe" ->
                         getController().chatToMe(jsonObject.get("sender").getAsString(), jsonObject.get("Value").getAsString());

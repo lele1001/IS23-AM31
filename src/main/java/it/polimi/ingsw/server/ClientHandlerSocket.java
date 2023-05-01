@@ -262,7 +262,7 @@ public class ClientHandlerSocket extends ClientHandler implements Runnable {
      * Called to inform the client that a new commonGoal has been created (usually at the beginning of the game).
      *
      * @param comGoalID that has been created.
-     * @param score the maximum score that can be reached on the commonGoal.
+     * @param score     the maximum score that can be reached on the commonGoal.
      */
     @Override
     public void SendCommonGoalCreated(Integer comGoalID, Integer score) {
@@ -284,7 +284,7 @@ public class ClientHandlerSocket extends ClientHandler implements Runnable {
     /**
      * Generates a message to send the bookshelf's update.
      *
-     * @param nickname      of the player the bookshelf is referred to.
+     * @param nickname     of the player the bookshelf is referred to.
      * @param newBookshelf the updated bookshelf.
      */
     @Override
@@ -298,7 +298,7 @@ public class ClientHandlerSocket extends ClientHandler implements Runnable {
     /**
      * Called to inform that someone has reached a commonGoal.
      *
-     * @param source the nickname of the client that reached it.
+     * @param source  the nickname of the client that reached it.
      * @param details the ID of the commonGoal, and the score remained.
      */
     @Override
@@ -323,7 +323,7 @@ public class ClientHandlerSocket extends ClientHandler implements Runnable {
     /**
      * Called when someone wants to send a message to this client.
      *
-     * @param sender the nickname of the client sender.
+     * @param sender   the nickname of the client sender.
      * @param message: the message.
      */
     @Override
@@ -345,11 +345,6 @@ public class ClientHandlerSocket extends ClientHandler implements Runnable {
     /**
      * Generates a message to inform the client that game is not available.
      */
-    @Override
-    public void sendErrorGameNotAvailable() {
-        send(generateStandardMessage("gameNotAvailable", null));
-    }
-
     @Override
     public void sendPlayerScore(int score) {
         send(generateStandardMessage("player_score", String.valueOf(score)));

@@ -3,6 +3,7 @@ package it.polimi.ingsw.client.view;
 import it.polimi.ingsw.server.model.HouseItem;
 import it.polimi.ingsw.server.model.ItemCard;
 
+import java.util.List;
 import java.util.Map;
 
 public interface View {
@@ -13,6 +14,9 @@ public interface View {
      */
     void printBoard(ItemCard[][] board);
 
+    /**
+     * Implementation for Cli and Gui of the printing of the menu
+     */
     void printMenu();
 
     /**
@@ -50,6 +54,11 @@ public interface View {
      */
     void printPersGoal(Map<Integer, HouseItem> myPersGoal);
 
+    /**
+     * Implementation for Cli and Gui of the printing of the Tiles chosen by the player in the last Phase of the turn
+     *
+     * @param selectedTiles Tiles selected by the player
+     */
     void printSelectedTiles(Map<Integer, ItemCard> selectedTiles);
 
     /**
@@ -66,13 +75,38 @@ public interface View {
      */
     void printBookshelf(ItemCard[][] book, String nickname);
 
+    /**
+     * Implementation for Cli and Gui of the printing of the message sent by the sender
+     *
+     * @param sender  the player that has sent the message
+     * @param message The message sent
+     */
     void chatToMe(String sender, String message);
 
+    /**
+     * Implementation for Cli and Gui of the printing of the request for the number of players he wants in the game
+     */
     void printAskPlayerNumber();
 
+    /**
+     * Implementation for Cli and Gui of an error occurred and the consequent closure of the view
+     */
     void disconnectionError();
 
+    /**
+     * Implementation for Cli and Gui of a request done by the server to disconnect the client
+     */
     void disconnectMe();
 
+    /**
+     * Implementation for Cli and Gui of the printing of the message that signals the start of the game
+     */
     void printStartGame();
+
+    /**
+     * Implementation for Cli and Gui of the printing the name(s) of the winning player(s)
+     *
+     * @param winners the winner(s) of the game
+     */
+    void printWinners(List<String> winners);
 }

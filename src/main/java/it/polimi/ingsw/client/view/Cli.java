@@ -7,6 +7,7 @@ import it.polimi.ingsw.server.model.HouseItem;
 import it.polimi.ingsw.server.model.ItemCard;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -342,6 +343,12 @@ public class Cli implements View {
         }
     }
 
+    /**
+     * Prints the message sent by the sender
+     *
+     * @param sender  the player that has sent the message
+     * @param message The message sent
+     */
     @Override
     public void chatToMe(String sender, String message) {
         System.out.println("From" + sender + ": " + message);
@@ -517,18 +524,23 @@ public class Cli implements View {
         System.out.println();
     }
 
+    /**
+     * Prints the Tiles selected by the player
+     *
+     * @param selectedTiles Tiles selected by the player
+     */
     @Override
     public void printSelectedTiles(Map<Integer, ItemCard> selectedTiles) {
         System.out.println("Here are the cards you previously selected:");
         int cardNumber = selectedTiles.size();
 
-        for(Integer i : selectedTiles.keySet()) {
+        for (Integer i : selectedTiles.keySet()) {
             char itemChar = selectedTiles.get(i).getMyItem().toString().charAt(0);
             System.out.print((char) 27 + "[0;39m" + "Item card ");
             System.out.print((char) 27 + chooseColorCode(itemChar) + itemChar);
             System.out.print((char) 27 + "[0;39m" + " from position " + i);
 
-            if (cardNumber > 1){
+            if (cardNumber > 1) {
                 System.out.print(" and ");
             }
             cardNumber--;
@@ -555,12 +567,18 @@ public class Cli implements View {
         System.exit(1);
     }
 
+    /**
+     * The server disconnects the player
+     */
     @Override
     public void disconnectMe() {
         stopListening = true;
         System.out.println("You are being disconnected from the server, please press ENTER to exit");
     }
 
+    /**
+     * Prints a line that defines the starts of the game
+     */
     @Override
     public void printStartGame() {
         synchronized (this) {
@@ -568,5 +586,19 @@ public class Cli implements View {
             System.out.println("You will play in a " + clientController.getPlayersBookshelf().keySet().size() + " players game.");
         }
         printMenu();
+    }
+
+    /**
+     * Prints the name of winner(s) of the game
+     *
+     * @param winners the winner(s) of the game
+     */
+    @Override
+    public void printWinners(List<String> winners) {
+        if (winners.size() == 1) {
+            System.out.println("winner is" + winners.get(0));
+        } else {
+            System.out.println("Parity: winners are " + winners);
+        }
     }
 }

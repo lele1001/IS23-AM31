@@ -111,15 +111,6 @@ public class ClientController {
     }
 
     /**
-     * Method called to get the Client's view
-     *
-     * @return the Client's view (GUI or TUI)
-     */
-    public View getView() {
-        return view;
-    }
-
-    /**
      * Method called by the server when an error occurred,
      * Print the error to the client's view
      *
@@ -421,11 +412,26 @@ public class ClientController {
         view.disconnectMe();
     }
 
+    /**
+     * Method called by the server when the game starts
+     *
+     * @param playersList The List of the players connected to the game
+     * @param gameStarted A Boolean used by the client to check the input of the user
+     */
     public void gameStarted(ArrayList<String> playersList, boolean gameStarted) {
         for (String player : playersList) {
             playersBookshelf.put(player, new ItemCard[BOOKSHELF_HEIGHT][BOOKSHELF_LENGTH]);
         }
         this.gameStarted = gameStarted;
         view.printStartGame();
+    }
+
+    /**
+     * Method called by the server to print the name(s) of the winner(s)
+     *
+     * @param winners The player(s) tha has/have done the most amount of points
+     */
+    public void onWinner(List<String> winners) {
+        view.printWinners(winners);
     }
 }
