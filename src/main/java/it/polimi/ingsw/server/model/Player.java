@@ -15,6 +15,11 @@ public class Player {
     private final ArrayList<ComGoal> comGoalsReached;
     private final static int BOOKSHELF_LENGTH = 5;
 
+    /**
+     * The constructor of the class that initializes also player's bookshelf and common goals reached.
+     *
+     * @param nickname of the player to be created.
+     */
     public Player(String nickname) {
         this.nickname = nickname;
         myBookshelf = new Bookshelf();
@@ -23,7 +28,7 @@ public class Player {
     }
 
     /**
-     * Called at the beginning of the game
+     * Called at the beginning of the game, assigns a personal goal to the player.
      *
      * @param persGoal assigned to the player.
      */
@@ -93,22 +98,37 @@ public class Player {
         return true;
     }
 
+    /**
+     * Called by the GameModel, returns a representation of the player's bookshelf to be sent to all players.
+     *
+     * @return player's bookshelf as a matrix.
+     */
     public ItemCard[][] getBookshelfAsMatrix() {
         return this.myBookshelf.getAsMatrix();
     }
 
-    public void changePlayerStatus() {
+/*    public void changePlayerStatus() {
         isOnline = !isOnline;
-    }
+    }*/
 
-    public boolean isOnline() {
+/*    public boolean isOnline() {
         return isOnline;
-    }
+    }*/
 
+    /**
+     * Called by the GameModel when it needs to know player's score to send it to the player because he's just returned online.
+     *
+     * @return the actual score reached by the player.
+     */
     public int getScore() {
         return score;
     }
 
+    /**
+     * Called by the GameModel when it needs to know player's personal goal to send it to the player because he's just returned online.
+     *
+     * @return a string that represents player's personal goal.
+     */
     public String getPersGoal() {
         return this.persGoal.toString();
     }

@@ -252,7 +252,8 @@ public class Server {
      */
     public void onEndGame() {
         initialize();
-        rmiInterface.setConnectionControl(connectionControl);
+        if (rmiInterface != null)
+            rmiInterface.setConnectionControl(connectionControl);
         new Thread(this::setGame).start();
     }
 }

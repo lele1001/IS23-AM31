@@ -43,8 +43,8 @@ public class ConnectionSocket extends ConnectionClient {
         } catch (Exception e) {
             throw new Exception("Error establishing socket connection.");
         }
-        System.out.println("Connection established.");
-        System.out.println("Sending nickname...");
+        getController().onError("Connection established.");
+        getController().onError("Sending nickname...");
         send(generateStandardMessage("nickname", getController().getMyNickname()));
         new Thread(this::listen).start();
     }
@@ -145,7 +145,7 @@ public class ConnectionSocket extends ConnectionClient {
                 // System.out.println("Received: " + line);
                 onMessageReceived(line);
             } catch (IOException e) {
-                System.out.println("Server disconnected.");
+                getController().onError("Server disconnected.");
                 break;
             }
         }
@@ -154,7 +154,7 @@ public class ConnectionSocket extends ConnectionClient {
             in.close();
             socket.close();
         } catch (IOException e) {
-            System.out.println("Error closing socket interface.");
+            getController().onError("Error closing socket interface.");
         }
         getController().disconnectMe();
     }
@@ -193,21 +193,14 @@ public class ConnectionSocket extends ConnectionClient {
 
                 case "changeTurn" -> getController().onChangeTurn(jsonObject.get("Value").getAsString());
 
-                case "winner" -> {
-                    String[] winners = gson.fromJson(jsonObject.get("Value").getAsString(), String[].class);
-                    if (winners.length == 1)
-                        System.out.println("Winner is " + winners[0]);
-                    else
-                        System.out.println("Parity: winners are " + Arrays.toString(winners));
-                }
+                case "winner" ->
+                    getController().onWinner(Arrays.stream(gson.fromJson(jsonObject.get("Value").getAsString(), String[].class)).toList());
 
                 case "commonGoalDone" ->
                         getController().onCommonGoalDone(jsonObject.get("source").getAsString(), gson.fromJson(jsonObject.get("Value").getAsString(), int[].class));
 
-                case "gameStarted" -> {
-                    System.out.println("gameStarting");
+                case "gameStarted" ->
                     getController().gameStarted(new ArrayList<>(Arrays.asList(gson.fromJson(jsonObject.get("Value").getAsString(), String[].class))), true);
-                }
 
                 case "player_score" -> getController().onPlayerScore(jsonObject.get("Value").getAsInt());
 
@@ -216,11 +209,11 @@ public class ConnectionSocket extends ConnectionClient {
                 case "chatToMe" ->
                         getController().chatToMe(jsonObject.get("sender").getAsString(), jsonObject.get("Value").getAsString());
 
-                default -> System.out.println("Unknown message from server.");
+                default -> getController().onError("Unknown message from server.");
 
             }
         } catch (IOException e) {
-            System.out.println("Error de-parsing server's message.");
+            getController().onError("Error de-parsing server's message.");
         }
     }
 }

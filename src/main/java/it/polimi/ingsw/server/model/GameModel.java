@@ -22,12 +22,10 @@ public class GameModel implements ModelInterface {
     String winner = null;
 
     /**
-     * Builds the game
+     * Creates the game with all the necessary things (board, bookshelves, personal goals and common goals).
+     *
+     * @param players: the list with all players' nicknames.
      */
-    public GameModel() {
-
-    }
-
     public void CreateGame(ArrayList<String> players) {
         PropertyChangeEvent evt;
         board = new Board(players.size());
@@ -70,12 +68,13 @@ public class GameModel implements ModelInterface {
     }
 
     /**
-     * Tries to insert cards in the bookshelf associated to the nickname
+     * Tries to insert cards in nickname's bookshelf.
      *
-     * @param nickname of the player
-     * @param cards    to insert in the column
-     * @param column   where the cards will be inserted
-     * @catches NoBookshelfSpaceException if there is no space
+     * @param nickname: the owner of the bookshelf.
+     * @param cards     to be inserted into the bookshelf.
+     * @param column    of the bookshelf to insert cards into.
+     * @throws NoBookshelfSpaceException if there's no space in the column indicated.
+     * @throws NotSameSelectedException  if the player wants to insert cards different from the ones he selected.
      */
     public void InsertCard(String nickname, ArrayList<ItemCard> cards, int column) throws NoBookshelfSpaceException, NotSameSelectedException {
         // controllo se vuole inserire quelle che aveva selezionato
@@ -95,9 +94,10 @@ public class GameModel implements ModelInterface {
     }
 
     /**
-     * Select cards from the board
+     * Tries to select cards from the board.
      *
-     * @param positions cards' positions
+     * @param positions of the cards to be selected.
+     * @throws NoRightItemCardSelection if the selection is not valid.
      */
     public void selectCard(ArrayList<Integer> positions) throws NoRightItemCardSelection {  //anche questa eccezione verrà gestita nel controller
 
@@ -108,19 +108,15 @@ public class GameModel implements ModelInterface {
     }
 
     /**
-     * Set the controller as listener
+     * Set the controller as a GameModel's listener.
      */
     public void setListener(PropertyChangeListener listener) {
         this.listener = listener;
     }
 
-    /**
-     * @param nickname of the player to be checked
-     * @return true if the player is online
-     */
-    public boolean isPlayerOnline(String nickname) {
+/*    public boolean isPlayerOnline(String nickname) {
         return playerMap.get(nickname).isOnline();
-    }
+    }*/
 
     /**
      * Calculates all the players' final score and sends it to each of them
@@ -152,12 +148,18 @@ public class GameModel implements ModelInterface {
         return winners;
     }
 
-
-    public void changePlayerStatus(String nickname) {
+/*    public void changePlayerStatus(String nickname) {
         playerMap.get(nickname).changePlayerStatus();
 
-    }
+    }*/
 
+    /**
+     * A private method used to select a CommonGoal from an integer.
+     *
+     * @param numComGoal: the integer that represents the common goal.
+     * @param numPlayers: the players' number of the game.
+     * @return the ComGoal just created.
+     */
     private ComGoal selectComGoal(int numComGoal, int numPlayers) {
         return switch (numComGoal) {
             case 1 -> new CG1(numPlayers, 1);
@@ -176,6 +178,11 @@ public class GameModel implements ModelInterface {
         };
     }
 
+    /**
+     * Called at the end of a turn, checks if common goals have been reached from the current player and if board needs to be refilled.
+     *
+     * @param nickname of the current player.
+     */
     public void EndTurn(String nickname) {
         boolean ComGoalDone;
         //boolean playerPointUpdate = false;
@@ -203,6 +210,9 @@ public class GameModel implements ModelInterface {
 
     }
 
+    /**
+     * Called to resume the board when someone has selected tiles from it but has disconnected before inserting them in his bookshelf.
+     */
     @Override
     public void resumeBoard() {
         board.resumeBoard();

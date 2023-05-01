@@ -24,7 +24,11 @@ public class GameController implements PropertyChangeListener {
     private boolean timeout = false;
     private static final Object lock = new Object();
 
-
+    /**
+     * A simple constructor also used to set the reference for the ConnectionControl.
+     *
+     * @param connectionControl of the game.
+     */
     public GameController(ConnectionControl connectionControl) {
         this.connectionControl = connectionControl;
         gameIsActive = false;
@@ -112,7 +116,7 @@ public class GameController implements PropertyChangeListener {
 
     /**
      * If the current player is not the first one, makes all the remaining one play their turn
-     * Calls the method to calculate the final score and
+     * Calls the method to calculate the final score and end the game.
      */
     public void runLastTurn(String nickname) {
         int i = playersList.indexOf(nickname) + 1;
@@ -131,7 +135,8 @@ public class GameController implements PropertyChangeListener {
     }
 
     /**
-     * Waits for the player's action caught by ConnectionControl and calls the method to check and perform it
+     * Waits for the player's action caught by ConnectionControl and calls the method to check and perform it.
+     * Every player has three minutes to complete his turn: if this timer exceeds, the player is set as offline and the game continues with the next one.
      */
     private void playerTurn(int indexCurrPlayer) {
         Timer timer = new Timer();
@@ -232,6 +237,13 @@ public class GameController implements PropertyChangeListener {
         return gameIsActive;
     }
 
+    /**
+     * Called by the GameModel when it wants to notify its update/changes.
+     * This method is used to implement listener pattern.
+     *
+     * @param evt A PropertyChangeEvent object describing the event source
+     *            and the property that has changed.
+     */
     public void propertyChange(PropertyChangeEvent evt) {
         if (evt.getPropertyName().matches("(.*)ERROR")) {
             connectionControl.SendError(evt.getPropertyName(), (String) evt.getSource());
@@ -269,7 +281,11 @@ public class GameController implements PropertyChangeListener {
             }
     }
 
-
+    /**
+     * Called when a player has come back to the game, calls the method on the GameModel to send him all the game's details.
+     *
+     * @param nickname of the client to send details to.
+     */
     public void sendGameDetails(String nickname) {
         gameModel.sendGameDetails(nickname);
     }
