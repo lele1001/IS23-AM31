@@ -33,7 +33,6 @@ public class Cli implements View {
      *
      * @param clientController define the direct contact with all the object containers send from the server
      */
-
     public Cli(ClientController clientController) {
         this.clientController = clientController;
         clientController.setView(this);
@@ -160,6 +159,7 @@ public class Cli implements View {
                     }
                     case "@comgoal" -> printCommonGoal(clientController.getPlayerComGoal());
                     case "@persgoal" -> printPersGoal(clientController.getMyPersGoal());
+                    case "@score" -> printPoints(clientController.getMyPoint());
                     case "@board" -> {
                         if (clientController.isGameStarted()) {
                             printBoard(clientController.getBoard());
@@ -206,12 +206,12 @@ public class Cli implements View {
 
         if (coords != null) {
             clientController.setSelectedTiles(coords);
-        }
 
-        try {
-            clientController.selectCard();
-        } catch (Exception e) {
-            System.out.println("Impossible to connect to the server");
+            try {
+                clientController.selectCard();
+            } catch (Exception e) {
+                System.out.println("Impossible to connect to the server");
+            }
         }
     }
 
@@ -278,7 +278,7 @@ public class Cli implements View {
     /**
      * Allows the user only to quit the game while waiting for it to start
      */
-    public void waitForGameMenu() {
+    public synchronized void waitForGameMenu() {
         System.out.println("""
                 GAME MENU: type the corresponding command
                  \t@MENU to show again this menu
@@ -289,12 +289,13 @@ public class Cli implements View {
      * Prints a menu on the screen to let the user choose what to do next
      */
     @Override
-    public void printMenu() {
+    public synchronized void printMenu() {
         System.out.println("""
                 GAME MENU: type the corresponding command
                 \t@MENU to show again this menu
                 \t@COMGOAL to print the Common Goal of this game
                 \t@PERSGOAL to print your Personal Goal
+                \t@SCORE to print your score
                 \t@BOARD to print the game board
                 \t@TAKE to choose from 1 to 3 tiles from the board, followed by the coordinates (xy) of the chosen tiles
                 \t@MYSHELF to print you bookshelf
@@ -319,7 +320,7 @@ public class Cli implements View {
      * @param bookshelves is a map with key the nickname of the player and value its bookshelf
      */
     @Override
-    public void printBookshelves(Map<String, ItemCard[][]> bookshelves) {
+    public synchronized void printBookshelves(Map<String, ItemCard[][]> bookshelves) {
         if (!bookshelves.isEmpty()) {
             for (String s : bookshelves.keySet()) {
                 printBookshelf(bookshelves.get(s), s);
@@ -350,7 +351,7 @@ public class Cli implements View {
      * @param message The message sent
      */
     @Override
-    public void chatToMe(String sender, String message) {
+    public synchronized void chatToMe(String sender, String message) {
         System.out.println("From" + sender + ": " + message);
     }
 
@@ -361,7 +362,7 @@ public class Cli implements View {
      * @param i      is the row number
      * @param j      is the column number
      */
-    private void printCell(ItemCard[][] matrix, int i, int j) {
+    private synchronized void printCell(ItemCard[][] matrix, int i, int j) {
         if (matrix[i][j] != null) {
             char itemChar = matrix[i][j].getMyItem().toString().charAt(0);
 
@@ -377,7 +378,7 @@ public class Cli implements View {
      * If the player is the first, allows it to choose the number of players
      */
     @Override
-    public void printAskPlayerNumber() {
+    public synchronized void printAskPlayerNumber() {
         System.out.println((char) 27 + "[0;39m" + "Write @PLAYERS followed by the number of players for this game");
     }
 
@@ -388,7 +389,7 @@ public class Cli implements View {
      * @param height is the number of rows
      * @param length is the number of columns
      */
-    private void printMatrix(ItemCard[][] matrix, int height, int length) {
+    private synchronized void printMatrix(ItemCard[][] matrix, int height, int length) {
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < length; j++) {
                 if (j == 0) {
@@ -437,7 +438,7 @@ public class Cli implements View {
      * Prints a generic error
      */
     @Override
-    public void printError(String error) {
+    public synchronized void printError(String error) {
         System.out.println(error);
     }
 
@@ -447,7 +448,7 @@ public class Cli implements View {
      * @param playerComGoal is a map with key the comGoal number and value the available score
      */
     @Override
-    public void printCommonGoal(Map<Integer, Integer> playerComGoal) {
+    public synchronized void printCommonGoal(Map<Integer, Integer> playerComGoal) {
         if (!playerComGoal.isEmpty()) {
             for (Integer i : playerComGoal.keySet()) {
                 System.out.println((char) 27 + "[0;39m" + "Common Goal number " + i + ": ");
@@ -489,7 +490,7 @@ public class Cli implements View {
      * Prints the points earned by the player
      */
     @Override
-    public void printPoints(int myPoint) {
+    public synchronized void printPoints(int myPoint) {
         System.out.println((char) 27 + "[0;39m" + "You currently have " + myPoint + "points.");
     }
 
@@ -499,7 +500,7 @@ public class Cli implements View {
      * @param myPersGoal is a map with key the position and value the houseItem in that position
      */
     @Override
-    public void printPersGoal(Map<Integer, HouseItem> myPersGoal) {
+    public synchronized void printPersGoal(Map<Integer, HouseItem> myPersGoal) {
         System.out.println((char) 27 + "[0;39m" + "Your personal goal is: ");
         System.out.println("    0   1   2   3   4");
         for (int i = 0; i < BOOKSHELF_HEIGHT; i++) {
@@ -530,7 +531,7 @@ public class Cli implements View {
      * @param selectedTiles Tiles selected by the player
      */
     @Override
-    public void printSelectedTiles(Map<Integer, ItemCard> selectedTiles) {
+    public synchronized void printSelectedTiles(Map<Integer, ItemCard> selectedTiles) {
         System.out.println("Here are the cards you previously selected:");
         int cardNumber = selectedTiles.size();
 
@@ -553,7 +554,7 @@ public class Cli implements View {
      * Tells the player if it is his turn
      */
     @Override
-    public void print(String yourTurn) {
+    public synchronized void print(String yourTurn) {
         System.out.println(yourTurn);
     }
 
@@ -580,7 +581,7 @@ public class Cli implements View {
      * Prints a line that defines the starts of the game
      */
     @Override
-    public void printStartGame() {
+    public synchronized void printStartGame() {
         synchronized (this) {
             System.out.println("Welcome " + clientController.getMyNickname() + "!");
             System.out.println("You will play in a " + clientController.getPlayersBookshelf().keySet().size() + " players game.");
@@ -594,7 +595,7 @@ public class Cli implements View {
      * @param winners the winner(s) of the game
      */
     @Override
-    public void printWinners(List<String> winners) {
+    public synchronized void printWinners(List<String> winners) {
         if (winners.size() == 1) {
             System.out.println("winner is" + winners.get(0));
         } else {
