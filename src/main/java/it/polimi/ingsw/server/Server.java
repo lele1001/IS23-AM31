@@ -32,11 +32,15 @@ public class Server {
         System.out.println("Hello! Starting server...");
         System.out.println("Type \"stop\" to stop server.");
         new Thread(Server::listen).start();
-        if (args.length != 1) {
+        try {
+            Server.port = Integer.parseInt(args[0]);
+            int rmiPort = Server.port + 1;
+            System.out.println("Ports correctly set: socket " + Server.port + ", RMI " + rmiPort + ".");
+        } catch (Exception e) {
             System.out.println("Error: missing parameters.");
-            return;
+            System.out.println("Setting default ports: socket 1500, RMI 1501.");
+            Server.port = 1500;
         }
-        Server.port = Integer.parseInt(args[0]);
         Server server = new Server();
         server.start();
     }

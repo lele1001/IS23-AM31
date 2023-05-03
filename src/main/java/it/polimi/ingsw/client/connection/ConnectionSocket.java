@@ -142,7 +142,7 @@ public class ConnectionSocket extends ConnectionClient {
         while (true) {
             try {
                 String line = in.readLine();
-                // System.out.println("Received: " + line);
+                //System.out.println("Received: " + line);
                 onMessageReceived(line);
             } catch (IOException e) {
                 getController().onError("Server disconnected.");

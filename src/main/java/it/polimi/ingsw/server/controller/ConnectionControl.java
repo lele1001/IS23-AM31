@@ -6,7 +6,6 @@ import it.polimi.ingsw.server.ClientHandler;
 import it.polimi.ingsw.server.Server;
 import it.polimi.ingsw.server.model.ItemCard;
 
-import java.io.FileNotFoundException;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -239,15 +238,13 @@ public class ConnectionControl {
             // Just for tests: saving the board in a temporary file to check the insert.
             PrintStream printStream;
             try {
-                printStream = new PrintStream("src/test/java/it/polimi/ingsw/server/controller/boardTest.json");
-            } catch (FileNotFoundException e) {
-                System.out.println("File not found.");
-                return;
+                printStream = new PrintStream("src/main/resources/boardTest.json");
+                Gson gson = new Gson();
+                printStream.print(gson.toJson(newBoard));
+                printStream.close();
+            } catch (Exception e) {
+                System.out.println("File BoardTest not found.");
             }
-            Gson gson = new Gson();
-            printStream.print(gson.toJson(newBoard));
-            printStream.close();
-
 
             for (ClientHandler c : getClientHandlerMap().values())
                 c.SendBoardChanged(newBoard);

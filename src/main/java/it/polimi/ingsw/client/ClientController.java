@@ -12,14 +12,10 @@ import it.polimi.ingsw.server.model.HouseItem;
 import it.polimi.ingsw.server.model.ItemCard;
 import it.polimi.ingsw.server.model.Position;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.Reader;
+import java.io.*;
 import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import static it.polimi.ingsw.server.controller.TurnPhase.*;
 
@@ -190,11 +186,11 @@ public class ClientController {
      * @param newValue String that defines the PersonalGoal
      */
     public void onPersGoalCreated(String newValue) {
-        Reader json;
+        String json;
         {
             try {
-                json = new FileReader("src/main/java/it/polimi/ingsw/server/model/PersGoalConfiguration.json");
-            } catch (FileNotFoundException e) {
+                json = new BufferedReader(new InputStreamReader(Objects.requireNonNull(this.getClass().getClassLoader().getResourceAsStream("PersGoalConfiguration.json")))).lines().collect(Collectors.joining(System.lineSeparator()));
+            } catch (Exception e) {
                 System.out.println("ERROR: No such PersGoalConfiguration file.");
                 return;
             }

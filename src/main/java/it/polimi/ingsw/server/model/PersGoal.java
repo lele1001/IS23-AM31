@@ -4,14 +4,11 @@ package it.polimi.ingsw.server.model;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.Reader;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public enum PersGoal {
     Card1, Card2, Card3, Card4, Card5, Card6, Card7, Card8, Card9, Card10, Card11, Card12;
@@ -30,11 +27,11 @@ public enum PersGoal {
      * Builds the card such as parameters indicates.
      */
     PersGoal() {
-        Reader json;
+        String json;
         {
             try {
-                json = new FileReader("src/main/java/it/polimi/ingsw/server/model/PersGoalConfiguration.json");
-            } catch (FileNotFoundException e) {
+                json = new BufferedReader(new InputStreamReader(Objects.requireNonNull(this.getClass().getClassLoader().getResourceAsStream("PersGoalConfiguration.json")))).lines().collect(Collectors.joining(System.lineSeparator()));
+            } catch (Exception e) {
                 System.out.println("ERROR: No such PersGoalConfiguration file.");
                 return;
             }

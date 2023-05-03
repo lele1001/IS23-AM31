@@ -52,7 +52,7 @@ class GameControllerTest {
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
-        Path path = Paths.get("src/test/java/it/polimi/ingsw/server/controller/boardTest.json");
+        Path path = Paths.get("src/main/resources/boardTest.json");
         Gson gson = new Gson();
 
         // Taking board created from json boardtest file.
