@@ -173,8 +173,8 @@ public class Cli implements View {
                         }
                     }
                     case "@myshelf" ->
-                            printBookshelf(clientController.getPlayersBookshelf().get(clientController.getMyNickname()), clientController.getMyNickname());
-                    case "@allshelves" -> printBookshelves(clientController.getPlayersBookshelf());
+                            printBookshelf(clientController.getPlayersBookshelves().get(clientController.getMyNickname()), clientController.getMyNickname());
+                    case "@allshelves" -> printBookshelves(clientController.getPlayersBookshelves());
                     case "@put" -> {
                         if (clientController.isMyTurn() && clientController.isGameStarted() && clientController.getPhase().equals(TurnPhase.INSERTCARDS)) {
                             put(splitString);
@@ -290,14 +290,14 @@ public class Cli implements View {
      */
     @Override
     public synchronized void printMenu() {
-        System.out.println("""
+        System.out.println((char) 27 + "[0;39m" + """
                 GAME MENU: type the corresponding command
                 \t@MENU to show again this menu
                 \t@COMGOAL to print the Common Goal of this game
                 \t@PERSGOAL to print your Personal Goal
                 \t@SCORE to print your score
                 \t@BOARD to print the game board
-                \t@TAKE to choose from 1 to 3 tiles from the board, followed by the coordinates (xy) of the chosen tiles
+                \t@TAKE to choose from 1 to 3 tiles from the board, followed by their coordinates (xy) of the chosen tiles
                 \t@MYSHELF to print you bookshelf
                 \t@ALLSHELVES to print the bookshelf of all the players
                 \t@PUT to choose a column for putting the cards, followed by the column number and the board coordinates of the tiles (from bottom to top)
@@ -310,7 +310,7 @@ public class Cli implements View {
      */
     @Override
     public synchronized void printBoard(ItemCard[][] board) {
-        System.out.println("    0   1   2   3   4   5   6   7   8");
+        System.out.println((char) 27 + "[0;39m" + "    0   1   2   3   4   5   6   7   8");
         printMatrix(board, DIM_BOARD, DIM_BOARD);
     }
 
@@ -324,7 +324,6 @@ public class Cli implements View {
         if (!bookshelves.isEmpty()) {
             for (String s : bookshelves.keySet()) {
                 printBookshelf(bookshelves.get(s), s);
-
             }
         }
     }
@@ -334,7 +333,7 @@ public class Cli implements View {
      */
     @Override
     public synchronized void printBookshelf(ItemCard[][] bookshelf, String nickname) {
-        System.out.println(nickname + "'s bookshelf:");
+        System.out.println((char) 27 + "[0;39m" + nickname + "'s bookshelf:");
         if (bookshelf != null) {
             System.out.println("    0   1   2   3   4");
             printMatrix(bookshelf, BOOKSHELF_HEIGHT, BOOKSHELF_LENGTH);
@@ -439,7 +438,7 @@ public class Cli implements View {
      */
     @Override
     public synchronized void printError(String error) {
-        System.out.println(error);
+        System.out.println((char) 27 + "[0;39m" + error);
     }
 
     /**
@@ -457,9 +456,9 @@ public class Cli implements View {
                 } else if (i == 2) {
                     System.out.println("Two columns each formed by 6 different types of tiles.\n" + "One column can show the same or a different combination of the other column.");
                 } else if (i == 3) {
-                    System.out.println("Four groups each containing at least 4 tiles of the same type (not necessarily in the depicted shape).\n" + "The tiles of one group can be different from those of another group.");
+                    System.out.println("Four groups each containing at least 4 tiles of the same type.\n" + "The tiles of one group can be different from those of another group.");
                 } else if (i == 4) {
-                    System.out.println("Six groups each containing at least 2 tiles of the same type (not necessarily in the depicted shape).\n" + "The tiles of one group can be different from those of another group.");
+                    System.out.println("Six groups each containing at least 2 tiles of the same type.\n" + "The tiles of one group can be different from those of another group.");
                 } else if (i == 5) {
                     System.out.println("Three columns each formed by 6 tiles of maximum three different types.\n" + "One column can show the same or a different combination of another column.");
                 } else if (i == 6) {
@@ -503,6 +502,7 @@ public class Cli implements View {
     public synchronized void printPersGoal(Map<Integer, HouseItem> myPersGoal) {
         System.out.println((char) 27 + "[0;39m" + "Your personal goal is: ");
         System.out.println("    0   1   2   3   4");
+
         for (int i = 0; i < BOOKSHELF_HEIGHT; i++) {
             for (int j = 0; j < BOOKSHELF_LENGTH; j++) {
                 int k = i * 10 + j;
@@ -532,14 +532,14 @@ public class Cli implements View {
      */
     @Override
     public synchronized void printSelectedTiles(Map<Integer, ItemCard> selectedTiles) {
-        System.out.println("Here are the cards you previously selected:");
+        System.out.print("You selected: ");
         int cardNumber = selectedTiles.size();
 
         for (Integer i : selectedTiles.keySet()) {
             char itemChar = selectedTiles.get(i).getMyItem().toString().charAt(0);
-            System.out.print((char) 27 + "[0;39m" + "Item card ");
+            System.out.print((char) 27 + "[0;39m" + "(");
             System.out.print((char) 27 + chooseColorCode(itemChar) + itemChar);
-            System.out.print((char) 27 + "[0;39m" + " from position " + i);
+            System.out.print((char) 27 + "[0;39m" + " - " + i + ")");
 
             if (cardNumber > 1) {
                 System.out.print(" and ");
@@ -574,7 +574,7 @@ public class Cli implements View {
     @Override
     public void disconnectMe() {
         stopListening = true;
-        System.out.println("You are being disconnected from the server, please press ENTER to exit");
+        System.out.println((char) 27 + "[0;39m" + "You are being disconnected from the server, please press ENTER to exit");
     }
 
     /**
@@ -583,9 +583,9 @@ public class Cli implements View {
     @Override
     public synchronized void printStartGame() {
         synchronized (this) {
-            System.out.print("Welcome " + clientController.getMyNickname() + "!");
-            System.out.println("You will play in a " + clientController.getPlayersBookshelf().keySet().size() + " players game.");
-            System.out.println("Type @MENU to see the game menu");
+            System.out.print((char) 27 + "[0;39m" + "Welcome " + clientController.getMyNickname() + "! ");
+            System.out.println("You will play in a " + clientController.getPlayersBookshelves().keySet().size() + " players game.");
+            System.out.println("Type @MENU to see the game menu.\n");
         }
     }
 

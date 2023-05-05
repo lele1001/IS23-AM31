@@ -5,7 +5,7 @@ import javafx.stage.Stage;
 
 public class Gui extends Application {
     @Override
-    public void start(Stage primaryStage) throws Exception {
+    public void start(Stage primaryStage) {
         primaryStage.setTitle("My First JavaFX App");
         primaryStage.show();
     }

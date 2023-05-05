@@ -33,7 +33,7 @@ public abstract class ClientHandler {
     public abstract void sendPlayerTurn(String nickname);
 
     /**
-     * The server calls the client's method to disconnect the player when an error occurred or the game is finished
+     * The server calls the client's method to disconnect the player when an error occurred, or the game is finished
      */
     public abstract void disconnectPlayer();
 
@@ -88,14 +88,14 @@ public abstract class ClientHandler {
     public abstract void SendBoardChanged(ItemCard[][] newBoard);
 
     /**
-     * The server calls the client's method when a player win
+     * The server calls the client's method when a player wins
      *
      * @param winners is the player that won the game
      */
     public abstract void sendWinner(List<String> winners);
 
     /**
-     * The server calls the client's method when a player want to send a chat message to the client
+     * The server calls the client's method when a player wants to send a chat message to the client
      *
      * @param sender  of the message
      * @param message sent to somebody else
@@ -103,7 +103,7 @@ public abstract class ClientHandler {
     public abstract void chatToMe(String sender, String message);
 
     /**
-     * The server calls the client's method to update the player score when a player reconnect
+     * The server calls the client's method to update the player score when a player reconnects
      *
      * @param score The score of the player
      */

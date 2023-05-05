@@ -16,7 +16,7 @@ public class Player {
     private final static int BOOKSHELF_LENGTH = 5;
 
     /**
-     * The constructor of the class that initializes also player's bookshelf and common goals reached.
+     * The constructor of the class initializes the player's bookshelf and common goals reached.
      *
      * @param nickname of the player to be created.
      */

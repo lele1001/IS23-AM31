@@ -43,7 +43,7 @@ public class CG2_5 extends ComGoal {
      * @return number of rows found
      */
     private int lookDiff(Bookshelf l, int numDiff) {
-        int r, c, i, initSize;
+        int r, c;
         long diffFound;
         int groupsFound = 0;
         HouseItem myItem;

@@ -24,7 +24,7 @@ public class GameModel implements ModelInterface {
     /**
      * Creates the game with all the necessary things (board, bookshelves, personal goals and common goals).
      *
-     * @param players: the list with all players' nicknames.
+     * @param players the list with all players' nicknames.
      */
     public void CreateGame(ArrayList<String> players) {
         PropertyChangeEvent evt;
@@ -68,13 +68,13 @@ public class GameModel implements ModelInterface {
     }
 
     /**
-     * Tries to insert cards in nickname's bookshelf.
+     * Tries to insert cards in a nickname's bookshelf.
      *
-     * @param nickname: the owner of the bookshelf.
+     * @param nickname the owner of the bookshelf.
      * @param cards     to be inserted into the bookshelf.
      * @param column    of the bookshelf to insert cards into.
      * @throws NoBookshelfSpaceException if there's no space in the column indicated.
-     * @throws NotSameSelectedException  if the player wants to insert cards different from the ones he selected.
+     * @throws NotSameSelectedException  if the player wants to insert cards different from the ones selected.
      */
     public void InsertCard(String nickname, ArrayList<ItemCard> cards, int column) throws NoBookshelfSpaceException, NotSameSelectedException {
         // controllo se vuole inserire quelle che aveva selezionato
@@ -156,8 +156,8 @@ public class GameModel implements ModelInterface {
     /**
      * A private method used to select a CommonGoal from an integer.
      *
-     * @param numComGoal: the integer that represents the common goal.
-     * @param numPlayers: the players' number of the game.
+     * @param numComGoal the integer that represents the common goal.
+     * @param numPlayers the players' number of the game.
      * @return the ComGoal just created.
      */
     private ComGoal selectComGoal(int numComGoal, int numPlayers) {
@@ -179,7 +179,8 @@ public class GameModel implements ModelInterface {
     }
 
     /**
-     * Called at the end of a turn, checks if common goals have been reached from the current player and if board needs to be refilled.
+     * Called at the end of a turn, checks if common goals have been reached from the current player,
+     * and if the board needs to be refilled.
      *
      * @param nickname of the current player.
      */
@@ -211,7 +212,8 @@ public class GameModel implements ModelInterface {
     }
 
     /**
-     * Called to resume the board when someone has selected tiles from it but has disconnected before inserting them in his bookshelf.
+     * Called to resume the board when someone has selected tiles from it
+     * but has disconnected before inserting them in their bookshelf.
      */
     @Override
     public void resumeBoard() {

@@ -6,7 +6,7 @@ import it.polimi.ingsw.server.model.HouseItem;
 import java.util.ArrayList;
 
 /**
- * Two separate groups each containing four tiles of the same type in a 2x2 square.
+ * Two separate groups each containing four tiles of the same type in a 2×2 square.
  * The tiles of one square can be different from those of the other square.
  */
 public class CG1 extends ComGoal {

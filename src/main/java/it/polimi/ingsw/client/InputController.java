@@ -64,7 +64,7 @@ public class InputController {
             int i;
 
             for (i = BOOKSHELF_HEIGHT - 1; i >= 0; i--) {
-                if (clientController.getPlayersBookshelf().get(clientController.getMyNickname())[i][column] == null) {
+                if (clientController.getPlayersBookshelves().get(clientController.getMyNickname())[i][column] == null) {
                     break;
                 }
             }
@@ -239,7 +239,7 @@ public class InputController {
     }
 
     /**
-     * Checks that the chat is directed to a player that exists or to all players in the game
+     * Checks that the chat is directed to an existing player or to all players in the game
      *
      * @return 0 if there is an error, 1 if the recipient is a player, 2 if the recipient are all players
      */
@@ -253,7 +253,7 @@ public class InputController {
         if (input[1].equals(clientController.getMyNickname())) {
             System.out.println("You can not send a message to yourself!");
             return 0;
-        } else if (clientController.getPlayersBookshelf().containsKey(input[1])) {
+        } else if (clientController.getPlayersBookshelves().containsKey(input[1])) {
             return 1;
         } else if (input[1].equalsIgnoreCase("all")) {
             return 2;

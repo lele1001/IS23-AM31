@@ -89,7 +89,7 @@ public interface View {
     void printAskPlayerNumber();
 
     /**
-     * Implementation for Cli and Gui of an error occurred and the consequent closure of the view
+     * Implementation for Cli and Gui of an error occurred, and the consequent closure of the view
      */
     void disconnectionError();
 

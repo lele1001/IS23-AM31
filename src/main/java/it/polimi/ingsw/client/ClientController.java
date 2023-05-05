@@ -45,9 +45,9 @@ public class ClientController {
     public void onSelect() {
         phase = SELECTCARDS;
         selectedTiles.clear();
-        // to fix
-        view.print("Choose the Tiles you want to get from the Board");
+
         view.printBoard(board);
+        view.print((char) 27 + "[0;39m" + "Type @TAKE to choose from 1 to 3 tiles from the board, followed by their coordinates (xy)");
     }
 
     /**
@@ -56,9 +56,9 @@ public class ClientController {
      */
     public void onInsert() {
         phase = INSERTCARDS;
-        // to fix
-        view.print("Choose in which order and where you want to put the Tiles");
+        view.print((char) 27 + "[0;39m" + "Type @PUT followed by the column number and the board coordinates of the tiles (from bottom to top)");
         view.printSelectedTiles(selectedTiles);
+        view.printPersGoal(myPersGoal);
         view.printBookshelf(playersBookshelf.get(myNickname), myNickname);
     }
 
@@ -169,7 +169,7 @@ public class ClientController {
     }
 
     /**
-     * Just notifies client that he has completed his bookshelf and earned an extra point.
+     * Just notifies the client that he has completed his bookshelf and earned an extra point.
      */
     public void onBookshelfCompleted() {
         view.print("Congrats! You have just completed your bookshelf.");
@@ -221,11 +221,11 @@ public class ClientController {
     public void onChangeTurn(String nickname) {
         if (nickname.equals(myNickname)) {
             myTurn = true;
-            view.print("Your Turn");
+            view.print((char) 27 + "[0;39m" + "It is your turn\n");
         } else {
             phase = NULL;
             myTurn = false;
-            view.print(nickname + "'s Turn");
+            view.print((char) 27 + "[0;39m" + "It is " + nickname + "'s turn\n");
         }
     }
 
@@ -255,14 +255,14 @@ public class ClientController {
      */
     public void startConnection(int select, String username, String address, int port) throws Exception {
         this.myNickname = username;
-        System.out.println("Your nickname is " + myNickname);
+        //System.out.println("Your nickname is " + myNickname);
 
         if (select == 0) {
             connectionClient = new ConnectionRMI(this, address, port);
-            System.out.println("Created RMI connection!");
+            //System.out.println("Created RMI connection!");
         } else {
             connectionClient = new ConnectionSocket(this, address, port);
-            System.out.println("Created Socket connection!");
+            //System.out.println("Created Socket connection!");
         }
 
         connectionClient.startConnection();
@@ -271,7 +271,7 @@ public class ClientController {
     /**
      * Method called by the client that pass to the server the position of the Tiles selected by the client
      *
-     * @throws Exception if an error occurred calling the server ( Socket or RMI )
+     * @throws Exception if an error occurred calling the server (Socket or RMI)
      */
     public void selectCard() throws Exception {
         ArrayList<Integer> integerSelected = new ArrayList<>(selectedTiles.keySet());
@@ -283,17 +283,17 @@ public class ClientController {
      *
      * @param selectedCards Tiles selected by the client in order
      * @param column        column where to put the Tiles
-     * @throws Exception if an error occurred calling the server ( Socket or RMI )
+     * @throws Exception if an error occurred calling the server (Socket or RMI)
      */
     public void insertCard(ArrayList<ItemCard> selectedCards, int column) throws Exception {
         connectionClient.insertCard(myNickname, selectedCards, column);
     }
 
     /**
-     * Method called by the client that pass to the server the chat message for all connected player of the game
+     * Method called by the client that pass to the server the chat message for all connected players of the game
      *
      * @param message String to send to all the connected players
-     * @throws Exception if an error occurred calling the server ( Socket or RMI )
+     * @throws Exception if an error occurred calling the server (Socket or RMI)
      */
     public void chatToAll(String message) throws Exception {
         connectionClient.chatToAll(myNickname, message);
@@ -302,9 +302,9 @@ public class ClientController {
     /**
      * Method called by the client that pass to the server the chat message for the receiver
      *
-     * @param receiver player that receive the message
+     * @param receiver player that receives the message
      * @param message  String to send to the receiver
-     * @throws Exception if an error occurred calling the server ( Socket or RMI )
+     * @throws Exception if an error occurred calling the server (Socket or RMI)
      */
     public void chatToPlayer(String receiver, String message) throws Exception {
         connectionClient.chatToPlayer(myNickname, receiver, message);
@@ -337,7 +337,7 @@ public class ClientController {
     /**
      * @return the Map of all the Bookshelves
      */
-    public Map<String, ItemCard[][]> getPlayersBookshelf() {
+    public Map<String, ItemCard[][]> getPlayersBookshelves() {
         return playersBookshelf;
     }
 
@@ -352,7 +352,7 @@ public class ClientController {
      * Method called by the client only if he is the first connected to the server
      *
      * @param players number of players in the game
-     * @throws Exception if an error occurred calling the server ( Socket or RMI )
+     * @throws Exception if an error occurred calling the server (Socket or RMI)
      */
     public void setPlayersNumber(int players) throws Exception {
         selectNumberOfPlayers = false;
@@ -381,7 +381,7 @@ public class ClientController {
     }
 
     /**
-     * @return the game's turn phase if it's his turn, NULL all other times
+     * @return the game's turn phase if it is his turn, NULL all other times
      */
     public TurnPhase getPhase() {
         return phase;
@@ -395,7 +395,7 @@ public class ClientController {
     }
 
     /**
-     * @return true if game is started else false
+     * @return true if the game is started else false
      */
     public boolean isGameStarted() {
         return gameStarted;
@@ -425,7 +425,7 @@ public class ClientController {
     /**
      * Method called by the server to print the name(s) of the winner(s)
      *
-     * @param winners The player(s) tha has/have done the most amount of points
+     * @param winners The player(s) tha has/have done the highest number of points
      */
     public void onWinner(List<String> winners) {
         view.printWinners(winners);

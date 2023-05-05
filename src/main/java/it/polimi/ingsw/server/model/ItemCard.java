@@ -9,8 +9,8 @@ public class ItemCard implements Serializable {
     /**
      * The default constructor.
      *
-     * @param myItem: this ItemCard's HouseItem to be set.
-     * @param myNum:  this ItemCard's ItemNumber to be set.
+     * @param myItem this ItemCard's HouseItem to be set.
+     * @param myNum this ItemCard's ItemNumber to be set.
      */
     public ItemCard(HouseItem myItem, ItemNumber myNum) {
         this.houseItem = myItem;
@@ -36,9 +36,9 @@ public class ItemCard implements Serializable {
     }
 
     /**
-     * The default implementation of the equals method to compare ItemCards.
+     * The default implementation of the equal method to compare ItemCards.
      *
-     * @param o: the object to compare with this ItemCard.
+     * @param o the object to compare with this ItemCard.
      * @return true if o is the same ItemCard of this.
      */
     @Override

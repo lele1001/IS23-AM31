@@ -229,7 +229,7 @@ public class ConnectionRMI extends ConnectionClient implements RMIClientConnecti
     }
 
     /**
-     * Method called by the server when a player win
+     * Method called by the server when a player wins
      *
      * @param winners is the player that won the game
      * @throws RemoteException if an error occurred calling the RMI client
@@ -275,7 +275,7 @@ public class ConnectionRMI extends ConnectionClient implements RMIClientConnecti
     }
 
     /**
-     * Method called by the server when a player want to send a chat message to the client
+     * Method called by the server when a player wants to send a chat message to the client
      *
      * @param sender  of the message
      * @param message sent to somebody else
@@ -287,7 +287,7 @@ public class ConnectionRMI extends ConnectionClient implements RMIClientConnecti
     }
 
     /**
-     * Method called by the server to disconnect the player when an error occurred or the game is finished
+     * Method called by the server to disconnect the player when an error occurred, or the game is finished
      *
      * @throws RemoteException if an error occurred calling the RMI client
      */
@@ -298,7 +298,7 @@ public class ConnectionRMI extends ConnectionClient implements RMIClientConnecti
     }
 
     /**
-     * Method called by the server to update the player score when a player reconnect
+     * Method called by the server to update the player score when a player reconnects
      *
      * @param score The score of the player
      * @throws RemoteException if an error occurred calling the RMI client

@@ -35,9 +35,9 @@ public class RMIInterface implements RMI {
 
     /**
      * Method called by the client only if he is the first connected to the server
-     * Check that he is the first and then set the number of player for the game
+     * Check that he is the first and then set the number of players for the game
      *
-     * @param client the client that send the request
+     * @param client the client that sends the request
      * @param number number of players in the game
      * @throws RemoteException if an error occurred calling the server RMI
      */
@@ -54,7 +54,7 @@ public class RMIInterface implements RMI {
 
     /**
      * Method called from the client that pass to the server the chat message for all connected players of the game
-     * The server send to all the other clients the message
+     * The server sends to all the other clients the message
      *
      * @param nickname this client
      * @param message  String to send to all the connected players
@@ -67,9 +67,9 @@ public class RMIInterface implements RMI {
 
     /**
      * Method called from the client that pass to the server the chat message for all connected players of the game
-     * The server send to all the other clients the message
+     * The server sends to all the other clients the message
      *
-     * @param sender   the player that send the message
+     * @param sender   the player that sends the message
      * @param receiver the player that has to receive the message
      * @param message  String to send to all the connected players
      * @throws RemoteException if an error occurred calling the server RMI

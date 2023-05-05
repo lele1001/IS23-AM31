@@ -89,7 +89,7 @@ public class GameController implements PropertyChangeListener {
                     }
                 }
                 timer.cancel();
-                if (winner) {   // Took too long! The winner is the remained player (if it's still online!)
+                if (winner) {   // Took too long! The winner is the remaining player (if it is still online!)
                     System.out.println("Took too long for returning... game is ending.");
                     connectionControl.sendErrorToEveryone("Took too long for returning... game is ending.");
                     List<String> remained = playersList.stream().filter(connectionControl::isOnline).toList();
@@ -136,7 +136,8 @@ public class GameController implements PropertyChangeListener {
 
     /**
      * Waits for the player's action caught by ConnectionControl and calls the method to check and perform it.
-     * Every player has three minutes to complete his turn: if this timer exceeds, the player is set as offline and the game continues with the next one.
+     * Every player has three minutes to complete his turn:
+     * if this timer exceeds, the player is set as offline, and the game continues with the next one.
      */
     private void playerTurn(int indexCurrPlayer) {
         Timer timer = new Timer();
@@ -239,10 +240,9 @@ public class GameController implements PropertyChangeListener {
 
     /**
      * Called by the GameModel when it wants to notify its update/changes.
-     * This method is used to implement listener pattern.
+     * This method is used to implement a listener pattern.
      *
-     * @param evt A PropertyChangeEvent object describing the event source
-     *            and the property that has changed.
+     * @param evt A PropertyChangeEvent object describing the event source, and the property that has changed.
      */
     public void propertyChange(PropertyChangeEvent evt) {
         if (evt.getPropertyName().matches("(.*)ERROR")) {

@@ -44,7 +44,7 @@ public class ClientHandlerRmi extends ClientHandler {
     }
 
     /**
-     * The RMI server calls the client's method if the player is first in queue and ha to decide the number of players in the game
+     * The RMI server calls the client's method if the player is first in the queue and ha to decide the number of players in the game
      */
     @Override
     public void askPlayerNumber() {
@@ -72,7 +72,7 @@ public class ClientHandlerRmi extends ClientHandler {
     }
 
     /**
-     * The RMI server calls the client's method to disconnect the player when an error occurred or the game is finished
+     * The RMI server calls the client's method to disconnect the player when an error occurred, or the game is finished
      */
     @Override
     public void disconnectPlayer() {
@@ -198,7 +198,7 @@ public class ClientHandlerRmi extends ClientHandler {
     }
 
     /**
-     * The RMI server calls the client's method when a player win
+     * The RMI server calls the client's method when a player wins
      *
      * @param winners is the player that won the game
      */
@@ -212,7 +212,7 @@ public class ClientHandlerRmi extends ClientHandler {
     }
 
     /**
-     * The RMI server calls the client's method when a player want to send a chat message to the client
+     * The RMI server calls the client's method when a player wants to send a chat message to the client
      *
      * @param sender  of the message
      * @param message sent to somebody else
@@ -240,7 +240,7 @@ public class ClientHandlerRmi extends ClientHandler {
     }
 
     /**
-     * The RMI server calls the client's method to update the player score when a player reconnect
+     * The RMI server calls the client's method to update the player score when a player reconnects
      *
      * @param score The score of the player
      */
