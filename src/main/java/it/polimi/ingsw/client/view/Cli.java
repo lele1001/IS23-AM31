@@ -58,7 +58,7 @@ public class Cli implements View {
      */
     private void askConnection() {
         do {
-            System.out.println("Write 0 for RMI, 1 for Socket");
+            System.out.print("Write 0 for RMI, 1 for Socket: ");
             if (in.hasNextInt()) {
                 select = in.nextInt();
             } else if (in.hasNextLine()) {
@@ -73,7 +73,7 @@ public class Cli implements View {
      */
     private void askPort() {
         do {
-            System.out.println("Select Ip Port");
+            System.out.print("Select Ip Port: ");
             if (in.hasNextInt()) {
                 port = in.nextInt();
             } else if (in.hasNextLine()) {
@@ -83,7 +83,7 @@ public class Cli implements View {
         } while (port == -1);
 
         in.nextLine();
-        System.out.println("The server IP port chosen is: " + port);
+        //System.out.println("The server IP port chosen is: " + port);
     }
 
     /**
@@ -92,12 +92,12 @@ public class Cli implements View {
     private void askIP() {
         in.nextLine();
         do {
-            System.out.println("Select Ip Address");
-            if (in.hasNextLine()) {
-                address = in.nextLine();
+            System.out.print("Select Ip Address: ");
+            if (in.hasNext()) {
+                address = in.next();
             }
         } while (address.equals(""));
-        System.out.println("The server IP address chosen is: " + address);
+        //System.out.println("The server IP address chosen is: " + address);
     }
 
     /**
@@ -105,9 +105,9 @@ public class Cli implements View {
      */
     void askUsername() {
         do {
-            System.out.println("Select Username");
-            if (in.hasNextLine()) {
-                username = in.nextLine();
+            System.out.print("Select Username: ");
+            if (in.hasNext()) {
+                username = in.next();
             }
         } while (username.equals(""));
     }
@@ -317,7 +317,7 @@ public class Cli implements View {
     /**
      * Prints all the bookshelves of the players in the current game
      *
-     * @param bookshelves is a map with key the nickname of the player and value its bookshelf
+     * @param bookshelves is a map with keys the nickname of the player and values their bookshelves
      */
     @Override
     public synchronized void printBookshelves(Map<String, ItemCard[][]> bookshelves) {
@@ -445,7 +445,7 @@ public class Cli implements View {
     /**
      * Method used to switch between the 12 common goals and give their textual representation
      *
-     * @param playerComGoal is a map with key the comGoal number and value the available score
+     * @param playerComGoal is a map with keys the comGoal numbers and values their score
      */
     @Override
     public synchronized void printCommonGoal(Map<Integer, Integer> playerComGoal) {
@@ -583,10 +583,10 @@ public class Cli implements View {
     @Override
     public synchronized void printStartGame() {
         synchronized (this) {
-            System.out.println("Welcome " + clientController.getMyNickname() + "!");
+            System.out.print("Welcome " + clientController.getMyNickname() + "!");
             System.out.println("You will play in a " + clientController.getPlayersBookshelf().keySet().size() + " players game.");
+            System.out.println("Type @MENU to see the game menu");
         }
-        printMenu();
     }
 
     /**
