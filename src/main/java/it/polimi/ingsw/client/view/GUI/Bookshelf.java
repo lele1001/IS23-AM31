@@ -9,7 +9,7 @@ import java.io.InputStream;
 
 public class Bookshelf extends Gui {
     public ImageView showBookshelf() throws FileNotFoundException {
-        InputStream bookshelf = new FileInputStream("C:\\Users\\eleon\\Documents\\GitHub\\newVersion\\src\\main\\resources\\boards\\bookshelf.png");
+        InputStream bookshelf = new FileInputStream("resources\\boards\\bookshelf.png");
         Image bookshelfImg = new Image(bookshelf);
 
         //creates the image view
