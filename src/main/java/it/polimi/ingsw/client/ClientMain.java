@@ -1,7 +1,7 @@
 package it.polimi.ingsw.client;
 
 import it.polimi.ingsw.client.view.Cli;
-import it.polimi.ingsw.client.view.Gui;
+import it.polimi.ingsw.client.view.GUI.Gui;
 import javafx.application.Application;
 
 

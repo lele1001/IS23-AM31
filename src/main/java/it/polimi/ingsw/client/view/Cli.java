@@ -351,7 +351,7 @@ public class Cli implements View {
      */
     @Override
     public synchronized void chatToMe(String sender, String message) {
-        System.out.println("From" + sender + ": " + message);
+        System.out.println("From " + sender + ": " + message);
     }
 
     /**
