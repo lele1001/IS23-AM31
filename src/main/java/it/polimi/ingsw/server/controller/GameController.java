@@ -19,10 +19,8 @@ public class GameController implements PropertyChangeListener {
     private boolean winner;
     private ModelInterface gameModel;
     private TurnPhase turnPhase;
-
     private boolean gameIsActive;
     private boolean timeout = false;
-    private static final Object lock = new Object();
 
     /**
      * A simple constructor also used to set the reference for the ConnectionControl.
@@ -56,39 +54,45 @@ public class GameController implements PropertyChangeListener {
 
     }
 
+/*    public void resumeGame(ArrayList<String> onlinePlayers, List<String> playersList, String json) {
+        this.playersList.addAll(playersList);
+        gameModel = new GameModel();
+        gameModel.setListener(this);
+        gameModel.resumeGame(onlinePlayers, json);
+    }*/
+
     /**
      * Calls each player's turn until somebody completes his/her Bookshelf.
      * If available players are less than two, stops the game and waits for their coming back for 60 seconds: if the timeout exceeds, ends the game.
      */
-    public void run() {
+    public void run(int startFrom) {
+        Timer timer = new Timer();
         gameIsActive = true;
         winner = false;
-        int i = 0;
+        int i = startFrom;
         while (!winner) {
-            Timer timer = new Timer();
             if (playersList.stream().filter(connectionControl::isOnline).count() < 2) {
                 System.out.println("Too many absents for this game.. waiting for players' returning in game.");
                 connectionControl.sendErrorToEveryone("Too many absents for this game.. waiting for players' returning in game.");
-                winner = true;
-                timer.scheduleAtFixedRate(new TimerTask() {
+
+                timer.schedule(new TimerTask() {
                     @Override
                     public void run() {
-                        if (playersList.stream().filter(connectionControl::isOnline).count() >= 2)
-                            synchronized (lock) {
-                                winner = false;
-                                lock.notifyAll();
-                            }
+                        winner = true;
                     }
-                }, 1000, 1000);
-
-                synchronized (lock) {
+                }, 60000);
+                while (!winner) {
+                    if (playersList.stream().filter(connectionControl::isOnline).count() >= 2)
+                        break;
                     try {
-                        lock.wait(60000);
+                        Thread.sleep(500);
                     } catch (InterruptedException e) {
-                        throw new RuntimeException(e);
+                        System.out.println("Sleep problem.");
+                        break;
                     }
                 }
                 timer.cancel();
+
                 if (winner) {   // Took too long! The winner is the remaining player (if it is still online!)
                     System.out.println("Took too long for returning... game is ending.");
                     connectionControl.sendErrorToEveryone("Took too long for returning... game is ending.");
@@ -147,25 +151,22 @@ public class GameController implements PropertyChangeListener {
             connectionControl.sendPlayerTurn(currPlayer);
             turnPhase = TurnPhase.SELECTCARDS;
             connectionControl.askSelect(currPlayer);
-            timeout = true;
-            TimerTask task = new TimerTask() {
+
+            timeout = false;
+            timer.schedule(new TimerTask() {
                 @Override
                 public void run() {
-                    if (!connectionControl.isOnline(currPlayer) || turnPhase == TurnPhase.ENDTURN) {
-                        synchronized (lock) {
-                            timeout = false;
-                            lock.notifyAll();
-                        }
-                    }
+                    timeout = true;
                 }
-            };
-            timer.scheduleAtFixedRate(task, 1000, 1000);
-
-            synchronized (lock) {
+            }, 180000);
+            while (!timeout) {
+                if (!connectionControl.isOnline(currPlayer) || turnPhase == TurnPhase.ENDTURN)
+                    break;
                 try {
-                    lock.wait(180000);
+                    Thread.sleep(500);
                 } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
+                    System.out.println("Sleep problem.");
+                    break;
                 }
             }
             timer.cancel();
