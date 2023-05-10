@@ -34,7 +34,7 @@ public class CLI implements View {
      *
      * @param clientController define the direct contact with all the object containers send from the server
      */
-    public CLIView(ClientController clientController) {
+    public CLI(ClientController clientController) {
         this.clientController = clientController;
         clientController.setView(this);
         checkInput = new InputController(clientController);
