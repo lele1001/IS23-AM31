@@ -40,9 +40,6 @@ public class GUIApp extends Application {
      */
     @Override
     public void start(Stage stage) {
-        this.clientController = new ClientController();
-        clientController.setView((View) this);
-
         //Initializes the window dimensions
         windowHeight = 800;
         windowRatio = 16.0/9.0;

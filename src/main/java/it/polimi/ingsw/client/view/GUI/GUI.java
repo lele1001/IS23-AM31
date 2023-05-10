@@ -1,5 +1,6 @@
 package it.polimi.ingsw.client.view.GUI;
 
+import it.polimi.ingsw.client.ClientController;
 import it.polimi.ingsw.client.view.View;
 import it.polimi.ingsw.server.model.HouseItem;
 import it.polimi.ingsw.server.model.ItemCard;
@@ -8,6 +9,10 @@ import java.util.List;
 import java.util.Map;
 
 public class GUI implements View {
+    ClientController clientController;
+    public GUI(ClientController clientController) {
+       this.clientController = clientController;
+    }
     /**
      * Implementation for Cli and Gui of the printing/update of the board
      *

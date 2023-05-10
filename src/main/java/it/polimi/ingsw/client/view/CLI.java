@@ -1,4 +1,4 @@
-package it.polimi.ingsw.client.view.CLI;
+package it.polimi.ingsw.client.view;
 
 import it.polimi.ingsw.client.ClientController;
 import it.polimi.ingsw.client.InputController;
