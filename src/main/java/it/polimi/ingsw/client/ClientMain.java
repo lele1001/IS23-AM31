@@ -1,7 +1,7 @@
 package it.polimi.ingsw.client;
 
 import it.polimi.ingsw.client.view.CLI;
-import it.polimi.ingsw.client.view.GUI.GUI;
+import it.polimi.ingsw.client.view.GUI.GUIApp;
 import javafx.application.Application;
 
 
@@ -17,7 +17,7 @@ public class ClientMain {
         if (args.length > 0 && args[0].equalsIgnoreCase("CLI")) {
             new CLI(new ClientController());
         } else {
-            Application.launch(GUI.class);
+            Application.launch(GUIApp.class);
         }
     }
     public static void main(String[] args) {

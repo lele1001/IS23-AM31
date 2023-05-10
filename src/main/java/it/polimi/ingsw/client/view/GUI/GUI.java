@@ -1,98 +1,162 @@
 package it.polimi.ingsw.client.view.GUI;
 
-import it.polimi.ingsw.client.ClientController;
 import it.polimi.ingsw.client.view.View;
-import javafx.application.Application;
-import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.scene.image.Image;
-import javafx.stage.Stage;
+import it.polimi.ingsw.server.model.HouseItem;
+import it.polimi.ingsw.server.model.ItemCard;
 
-import java.io.IOException;
-import java.util.Objects;
+import java.util.List;
+import java.util.Map;
 
-public class GUI extends Application {
-    public static Stage stage;
-
-    public static SceneHandlerInterface controller;
-    @FXML
-    public static Label out;
-    @FXML
-    public static Label error;
-    ClientController clientController;
-    private int windowHeight, windowWidth;
-    private double windowRatio;
-
-
+public class GUI implements View {
     /**
-     * Launches the application.
-     */
-    public static void run() {
-        launch();
-    }
-
-    /**
-     * Loads the stage and starts the launcher.
+     * Implementation for Cli and Gui of the printing/update of the board
      *
-     * @param stage the stage created by JavaFX
+     * @param board updated by the server
      */
     @Override
-    public void start(Stage stage) {
-        this.clientController = new ClientController();
-        clientController.setView((View) this);
+    public void printBoard(ItemCard[][] board) {
 
-        //Initializes the window dimensions
-        windowHeight = 800;
-        windowRatio = 16.0/9.0;
-        windowWidth = (int) (windowHeight * windowRatio);
-
-        GUI.stage = stage;
-        stage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/publisherMaterial/Icon50x50px.png"))));
-        stage.setOnCloseRequest(e -> System.exit(0));
-        setScene("launcher", "My Shelfie");
     }
 
     /**
-     * Loads and sets a scene.
-     *
-     * @param fxmlFile   the name of the fxml file to load as a scene
-     * @param sceneTitle the title to put on the stage
+     * Implementation for Cli and Gui of the printing of the menu
      */
-    public void setScene(String fxmlFile, String sceneTitle) {
-        FXMLLoader fxmlLoader = new FXMLLoader(GUI.class.getResource("/FXML/" + fxmlFile + ".fxml"));
-        Scene scene;
+    @Override
+    public void printMenu() {
 
-        try {
-            scene = new Scene(fxmlLoader.load());
-        } catch (IOException e) {
-            System.err.println(e.getMessage());
-            return;
-        }
-
-        controller = fxmlLoader.getController();
-
-        if (stage == null) {
-            stage = new Stage();
-        } else if (stage.getScene() != null) {
-            stage.hide();
-        }
-
-        stage.setTitle(sceneTitle);
-        stage.setScene(scene);
-        stage.show();
     }
 
-    public double getWindowHeight() {
-        return windowHeight;
+    /**
+     * Implementation for Cli and Gui of the printing/update of one of the bookshelves
+     *
+     * @param bookshelves the container of all the bookshelves of all players in the game
+     */
+    @Override
+    public void printBookshelves(Map<String, ItemCard[][]> bookshelves) {
+
     }
 
-    public double getWindowRatio() {
-        return windowRatio;
+    /**
+     * Implementation for Cli and Gui of the printing of an error message
+     *
+     * @param error message to display to the client caused by an error
+     */
+    @Override
+    public void printError(String error) {
+
     }
 
-    public double getWindowWidth() {
-        return windowWidth;
+    /**
+     * Implementation for Cli and Gui of the printing of the ComGoal for the game
+     *
+     * @param playerComGoal Map in which are present the typology of ComGoal for the game
+     */
+    @Override
+    public void printCommonGoal(Map<Integer, Integer> playerComGoal) {
+
+    }
+
+    /**
+     * Implementation for Cli and Gui of the printing of the player's points
+     *
+     * @param myPoint points of the player
+     */
+    @Override
+    public void printPoints(int myPoint) {
+
+    }
+
+    /**
+     * Implementation for Cli and Gui of the printing of the player's personal goal
+     *
+     * @param myPersGoal Personal goal of the player
+     */
+    @Override
+    public void printPersGoal(Map<Integer, HouseItem> myPersGoal) {
+
+    }
+
+    /**
+     * Implementation for Cli and Gui of the printing of the Tiles chosen by the player in the last Phase of the turn
+     *
+     * @param selectedTiles Tiles selected by the player
+     */
+    @Override
+    public void printSelectedTiles(Map<Integer, ItemCard> selectedTiles) {
+
+    }
+
+    /**
+     * Implementation for Cli and Gui of the printing if it is the player's turn
+     *
+     * @param yourTurn String to print
+     */
+    @Override
+    public void print(String yourTurn) {
+
+    }
+
+    /**
+     * Implementation for Cli and Gui of the printing/update of the player's bookshelf
+     *
+     * @param book     player's bookshelf
+     * @param nickname
+     */
+    @Override
+    public void printBookshelf(ItemCard[][] book, String nickname) {
+
+    }
+
+    /**
+     * Implementation for Cli and Gui of the printing of the message sent by the sender
+     *
+     * @param sender  the player that has sent the message
+     * @param message The message sent
+     */
+    @Override
+    public void chatToMe(String sender, String message) {
+
+    }
+
+    /**
+     * Implementation for Cli and Gui of the printing of the request for the number of players he wants in the game
+     */
+    @Override
+    public void printAskPlayerNumber() {
+
+    }
+
+    /**
+     * Implementation for Cli and Gui of an error occurred, and the consequent closure of the view
+     */
+    @Override
+    public void disconnectionError() {
+
+    }
+
+    /**
+     * Implementation for Cli and Gui of a request done by the server to disconnect the client
+     */
+    @Override
+    public void disconnectMe() {
+
+    }
+
+    /**
+     * Implementation for Cli and Gui of the printing of the message that signals the start of the game
+     */
+    @Override
+    public void printStartGame() {
+
+    }
+
+    /**
+     * Implementation for Cli and Gui of the printing the name(s) of the winning player(s)
+     *
+     * @param winners the winner(s) of the game
+     */
+    @Override
+    public void printWinners(List<String> winners) {
+
     }
 }

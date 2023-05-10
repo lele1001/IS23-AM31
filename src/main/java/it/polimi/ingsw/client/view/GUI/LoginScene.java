@@ -159,7 +159,7 @@ public class LoginScene {
 
         if (players <= 0 || players >= 5) {
             error.setVisible(true);
-            GUI.out.setText("Error: insert a valid number of players");
+            GUIApp.out.setText("Error: insert a valid number of players");
             submitButton.setDisable(false);
         }
     }
