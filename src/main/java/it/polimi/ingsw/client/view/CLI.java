@@ -1,7 +1,8 @@
-package it.polimi.ingsw.client.view;
+package it.polimi.ingsw.client.view.CLI;
 
 import it.polimi.ingsw.client.ClientController;
 import it.polimi.ingsw.client.InputController;
+import it.polimi.ingsw.client.view.View;
 import it.polimi.ingsw.server.controller.TurnPhase;
 import it.polimi.ingsw.server.model.HouseItem;
 import it.polimi.ingsw.server.model.ItemCard;
@@ -11,7 +12,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
-public class CLI implements View {
+public class CLIView implements View {
     private static final int DIM_BOARD = 9;
     private static final int BOOKSHELF_HEIGHT = 6;
     private static final int BOOKSHELF_LENGTH = 5;
@@ -24,7 +25,7 @@ public class CLI implements View {
     int port = -1;
     int select = -1;
 
-    public CLI() {
+    public CLIView() {
 
     }
 
@@ -33,7 +34,7 @@ public class CLI implements View {
      *
      * @param clientController define the direct contact with all the object containers send from the server
      */
-    public CLI(ClientController clientController) {
+    public CLIView(ClientController clientController) {
         this.clientController = clientController;
         clientController.setView(this);
         checkInput = new InputController(clientController);

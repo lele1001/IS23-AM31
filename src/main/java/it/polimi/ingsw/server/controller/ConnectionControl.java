@@ -1,7 +1,7 @@
 package it.polimi.ingsw.server.controller;
 
 import com.google.gson.Gson;
-import it.polimi.ingsw.client.view.Cli;
+import it.polimi.ingsw.client.view.CLI;
 import it.polimi.ingsw.server.ClientHandler;
 import it.polimi.ingsw.server.Server;
 import it.polimi.ingsw.server.model.ItemCard;
@@ -17,10 +17,10 @@ public class ConnectionControl {
     private final Map<String, Boolean> clientStatusMap = new HashMap<>();
     private GameController gameController;
     private final Server server;
-    Cli c; //added only for testing purpose
+    CLI c; //added only for testing purpose
 
     public ConnectionControl(Server server) {
-        c = new Cli();
+        c = new CLI();
         this.server = server;
     }
 

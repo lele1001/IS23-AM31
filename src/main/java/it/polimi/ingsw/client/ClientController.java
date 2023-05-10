@@ -5,7 +5,7 @@ import com.google.gson.reflect.TypeToken;
 import it.polimi.ingsw.client.connection.ConnectionClient;
 import it.polimi.ingsw.client.connection.ConnectionRMI;
 import it.polimi.ingsw.client.connection.ConnectionSocket;
-import it.polimi.ingsw.client.view.Cli;
+import it.polimi.ingsw.client.view.CLI;
 import it.polimi.ingsw.client.view.View;
 import it.polimi.ingsw.server.controller.TurnPhase;
 import it.polimi.ingsw.server.model.HouseItem;
@@ -237,7 +237,7 @@ public class ClientController {
     public void setView(View view) {
         this.view = view;
 
-        if (view instanceof Cli) {
+        if (view != null) {
             System.out.println("Cli added to Client controller");
         }
         //view.printBookshelf(playersBookshelf.get(myNickname));
