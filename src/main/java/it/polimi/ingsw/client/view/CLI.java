@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
-public class CLIView implements View {
+public class CLI implements View {
     private static final int DIM_BOARD = 9;
     private static final int BOOKSHELF_HEIGHT = 6;
     private static final int BOOKSHELF_LENGTH = 5;
@@ -25,7 +25,7 @@ public class CLIView implements View {
     int port = -1;
     int select = -1;
 
-    public CLIView() {
+    public CLI() {
 
     }
 
