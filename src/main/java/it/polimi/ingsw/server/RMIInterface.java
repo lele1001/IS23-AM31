@@ -47,7 +47,6 @@ public class RMIInterface implements RMI {
             connectionControl.SendError("Players' number not correct.", client);
             connectionControl.askPlayerNumber(client);
         } else {
-            connectionControl.SendError("Number of players set to " + number, client);
             server.setAvailablePlayers(number);
         }
     }

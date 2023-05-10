@@ -5,7 +5,6 @@ import com.google.gson.reflect.TypeToken;
 import it.polimi.ingsw.client.connection.ConnectionClient;
 import it.polimi.ingsw.client.connection.ConnectionRMI;
 import it.polimi.ingsw.client.connection.ConnectionSocket;
-import it.polimi.ingsw.client.view.CLI;
 import it.polimi.ingsw.client.view.View;
 import it.polimi.ingsw.server.controller.TurnPhase;
 import it.polimi.ingsw.server.model.HouseItem;

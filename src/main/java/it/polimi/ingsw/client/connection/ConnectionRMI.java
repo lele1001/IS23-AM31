@@ -38,9 +38,7 @@ public class ConnectionRMI extends ConnectionClient implements RMIClientConnecti
     @Override
     public void startConnection() throws IOException, NotBoundException, NullPointerException {
         boolean i;
-        System.out.println("locateRegistry");
         Registry registry = LocateRegistry.getRegistry(getAddress(), getPort());
-        System.out.println("locateLookup");
         server = (RMI) registry.lookup("MyShelfieServer");
         TimerTask task = new TimerTask() {
             @Override
@@ -50,11 +48,7 @@ public class ConnectionRMI extends ConnectionClient implements RMIClientConnecti
         };
         timer.scheduleAtFixedRate(task, 0, 5000);
         System.out.println("Connection established.");
-        System.out.println("Sending nickname...");
         i = server.login(getController().getMyNickname(), this);
-        if (i) {
-            System.out.println("login done");
-        }
     }
 
     /**

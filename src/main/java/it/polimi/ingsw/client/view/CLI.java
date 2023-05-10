@@ -2,7 +2,6 @@ package it.polimi.ingsw.client.view;
 
 import it.polimi.ingsw.client.ClientController;
 import it.polimi.ingsw.client.InputController;
-import it.polimi.ingsw.client.view.View;
 import it.polimi.ingsw.server.controller.TurnPhase;
 import it.polimi.ingsw.server.model.HouseItem;
 import it.polimi.ingsw.server.model.ItemCard;
@@ -53,6 +52,32 @@ public class CLI implements View {
 
         new Thread(this::listen).start();
     }
+
+    public CLI(ClientController clientController, int port, String conn) {
+        this.clientController = clientController;
+        clientController.setView(this);
+        checkInput = new InputController(clientController);
+
+        askUsername();
+        in.nextLine();
+        if (conn.equals("rmi")) {
+            select = 0;
+        } else {
+            select = 1;
+        }
+        address = "127.0.0.1";
+
+
+        try {
+            clientController.startConnection(select, username, address, port);
+        } catch (Exception e) {
+            printError(e.getMessage());
+            disconnectionError();
+        }
+
+        new Thread(this::listen).start();
+    }
+
 
     /**
      * Asking the type of connection: 0 for RMI, 1 for Socket
@@ -139,7 +164,6 @@ public class CLI implements View {
                     case "@players" -> {
                         if (clientController.isSelectNumberOfPlayers()) {
                             int players = checkInput.checkPlayers(splitString);
-
                             if (players != -1) {
                                 try {
                                     clientController.setPlayersNumber(players);

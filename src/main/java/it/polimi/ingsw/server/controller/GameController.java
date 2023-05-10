@@ -65,11 +65,11 @@ public class GameController implements PropertyChangeListener {
      * Calls each player's turn until somebody completes his/her Bookshelf.
      * If available players are less than two, stops the game and waits for their coming back for 60 seconds: if the timeout exceeds, ends the game.
      */
-    public void run(int startFrom) {
+    public void run() {
         Timer timer = new Timer();
         gameIsActive = true;
         winner = false;
-        int i = startFrom;
+        int i = 0;
         while (!winner) {
             if (playersList.stream().filter(connectionControl::isOnline).count() < 2) {
                 System.out.println("Too many absents for this game.. waiting for players' returning in game.");
