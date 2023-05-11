@@ -16,7 +16,7 @@ import java.util.Objects;
 public class GUIApp extends Application {
     public static Stage stage;
 
-    public static GUI controller;
+    public static SceneHandler controller;
     @FXML
     public static Label out;
     @FXML
@@ -42,13 +42,14 @@ public class GUIApp extends Application {
     public void start(Stage stage) {
         //Initializes the window dimensions
         windowHeight = 800;
-        windowRatio = 16.0/9.0;
+        windowRatio = 16.0 / 9.0;
         windowWidth = (int) (windowHeight * windowRatio);
 
         GUIApp.stage = stage;
         stage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/publisherMaterial/Icon50x50px.png"))));
         stage.setOnCloseRequest(e -> System.exit(0));
-        setScene("launcher", "My Shelfie");
+        setScene("loginForm", "My Shelfie");
+
     }
 
     /**

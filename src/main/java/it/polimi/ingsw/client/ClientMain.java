@@ -15,8 +15,6 @@ public class ClientMain {
      */
     public void run(String[] args) {
         if (args.length > 0 && args[0].equalsIgnoreCase("CLI")) {
-
-
             int port = 0;
             String conn;
             if (args.length == 3 && (args[1].equalsIgnoreCase("RMI") || args[1].equalsIgnoreCase("SOCKET"))) {

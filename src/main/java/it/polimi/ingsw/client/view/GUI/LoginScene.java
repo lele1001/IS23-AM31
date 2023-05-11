@@ -21,7 +21,7 @@ public class LoginScene implements SceneHandler {
     @FXML
     public GridPane firstPlayerPane;
     @FXML
-    Label welcomeText, usernameText, connectionText, ipText, portText, error;
+    Label welcomeText, usernameText, connectionText, ipText, portText;
     @FXML
     Button submitButton, loginButton;
     @FXML
@@ -29,7 +29,7 @@ public class LoginScene implements SceneHandler {
     @FXML
     RadioButton connectionRMI, connectionSocket;
     @FXML
-    Spinner<Integer> playersNum = new Spinner<>(1, 4, 2, 1);
+    Spinner<Integer> playersNum;
     Integer players;
     boolean isFirstPlayer;
 
@@ -55,26 +55,20 @@ public class LoginScene implements SceneHandler {
      * Shows the form to select the number of players
      */
     public void isFirst() {
+        playersNum = new Spinner<>(1, 4, 2, 1);
+
         isFirstPlayer = true;
         setCurrentPane(firstPlayerPane);
     }
 
     public void setCurrentPane(GridPane pane) {
-        FadeTransition fadeOut = new FadeTransition(Duration.millis(100), currentPane);
-        fadeOut.setFromValue(100);
-        fadeOut.setToValue(0);
-
-        FadeTransition fadeIn = new FadeTransition(Duration.millis(100), pane);
-        fadeIn.setFromValue(0);
-        fadeIn.setToValue(100);
-
         currentPane.setDisable(true);
         currentPane.setVisible(false);
-        SequentialTransition trans = new SequentialTransition(fadeOut, fadeIn);
+
         currentPane = pane;
-        trans.play();
-        pane.setDisable(false);
-        pane.setVisible(true);
+
+        currentPane.setDisable(false);
+        currentPane.setVisible(true);
     }
 
     @FXML
