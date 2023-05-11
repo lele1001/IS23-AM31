@@ -2,6 +2,7 @@ package it.polimi.ingsw.client.view.GUI;
 
 import it.polimi.ingsw.client.ClientController;
 import it.polimi.ingsw.client.view.View;
+import it.polimi.ingsw.server.controller.TurnPhase;
 import it.polimi.ingsw.server.model.HouseItem;
 import it.polimi.ingsw.server.model.ItemCard;
 
@@ -10,9 +11,56 @@ import java.util.Map;
 
 public class GUI implements View {
     ClientController clientController;
+    SceneHandler currentScene;
+    LoginScene loginScene = new LoginScene();
+    TakeCardsScene takeCardsScene = new TakeCardsScene();
+    PutCardsScene putCardsScene = new PutCardsScene();
+    NotMyTurnScene notMyTurnScene = new NotMyTurnScene();
+    EndGameScene endGameScene = new EndGameScene();
+    private static boolean stopListening;
+
     public GUI(ClientController clientController) {
-       this.clientController = clientController;
+        this.clientController = clientController;
+
+        // Initializes all the game scenes
+        loginScene.initialize(clientController);
+        takeCardsScene.initialize(clientController);
+        putCardsScene.initialize(clientController);
+        notMyTurnScene.initialize(clientController);
+        endGameScene.initialize(clientController);
+
+        currentScene = loginScene;
+
+        if (clientController.isSelectNumberOfPlayers()) {
+            printAskPlayerNumber();
+        }
+
+        new Thread(this::listen).start();
     }
+
+    private void listen() {
+        if (!clientController.isGameStarted()) {
+            synchronized (this) {
+                GUIApp.out.setText("Waiting for other players to connect...");
+            }
+        }
+
+        while (!stopListening) {
+            if (clientController.isMyTurn()) {
+                switch (clientController.getPhase()) {
+                    case SELECTCARDS -> currentScene = takeCardsScene;
+                    case INSERTCARDS -> currentScene = putCardsScene;
+                    case ENDTURN -> currentScene = notMyTurnScene;
+                    case NULL -> {
+                        currentScene = endGameScene;
+                        stopListening = true;
+                    }
+                }
+            }
+        }
+    }
+
+
     /**
      * Implementation for Cli and Gui of the printing/update of the board
      *
@@ -20,16 +68,18 @@ public class GUI implements View {
      */
     @Override
     public void printBoard(ItemCard[][] board) {
-
+        if (clientController.isMyTurn() && clientController.getPhase() == TurnPhase.SELECTCARDS) {
+            takeCardsScene.highlightTiles();
+        } else {
+            notMyTurnScene.show();
+        }
     }
 
     /**
      * Implementation for Cli and Gui of the printing of the menu
      */
     @Override
-    public void printMenu() {
-
-    }
+    public void printMenu() {}
 
     /**
      * Implementation for Cli and Gui of the printing/update of one of the bookshelves
@@ -38,7 +88,11 @@ public class GUI implements View {
      */
     @Override
     public void printBookshelves(Map<String, ItemCard[][]> bookshelves) {
-
+        if (clientController.isMyTurn() && clientController.getPhase() == TurnPhase.INSERTCARDS) {
+            putCardsScene.orderTiles();
+        } else {
+            notMyTurnScene.show();
+        }
     }
 
     /**
@@ -48,7 +102,7 @@ public class GUI implements View {
      */
     @Override
     public void printError(String error) {
-
+        currentScene.printError(error);
     }
 
     /**
@@ -105,7 +159,7 @@ public class GUI implements View {
      * Implementation for Cli and Gui of the printing/update of the player's bookshelf
      *
      * @param book     player's bookshelf
-     * @param nickname
+     * @param nickname of the player
      */
     @Override
     public void printBookshelf(ItemCard[][] book, String nickname) {
@@ -128,7 +182,7 @@ public class GUI implements View {
      */
     @Override
     public void printAskPlayerNumber() {
-
+        loginScene.isFirst();
     }
 
     /**

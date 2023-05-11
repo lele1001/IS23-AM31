@@ -13,13 +13,13 @@ import javafx.util.Duration;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class LoginScene {
+public class LoginScene implements SceneHandler {
     @FXML
     private GridPane currentPane;
     @FXML
     public GridPane connectionPane;
     @FXML
-    public AnchorPane firstPlayerPane;
+    public GridPane firstPlayerPane;
     @FXML
     Label welcomeText, usernameText, connectionText, ipText, portText, error;
     @FXML
@@ -31,12 +31,32 @@ public class LoginScene {
     @FXML
     Spinner<Integer> playersNum = new Spinner<>(1, 4, 2, 1);
     Integer players;
+    boolean isFirstPlayer;
 
     private ClientController clientController;
 
-    public void initialize(URL location, ResourceBundle resources) {
-        initTableView();
+    /**
+     * Initializes the login page showing the connection setup page
+     */
+    public void initialize(ClientController clientController) {
+        this.clientController = clientController;
         currentPane = connectionPane;
+        isFirstPlayer = false;
+        setCurrentPane(connectionPane);
+    }
+
+    @Override
+    public void printError(String error) {
+        GUIApp.error.setVisible(true);
+        GUIApp.error.setText(error);
+    }
+
+    /**
+     * Shows the form to select the number of players
+     */
+    public void isFirst() {
+        isFirstPlayer = true;
+        setCurrentPane(firstPlayerPane);
     }
 
     public void setCurrentPane(GridPane pane) {
@@ -49,13 +69,12 @@ public class LoginScene {
         fadeIn.setToValue(100);
 
         currentPane.setDisable(true);
+        currentPane.setVisible(false);
         SequentialTransition trans = new SequentialTransition(fadeOut, fadeIn);
         currentPane = pane;
         trans.play();
         pane.setDisable(false);
-    }
-
-    private void initTableView() {
+        pane.setVisible(true);
     }
 
     @FXML
@@ -64,43 +83,31 @@ public class LoginScene {
         int port = checkPort();
 
         if (select == -1) {
-            error.setText("ERROR: select a connection type");
-            error.setVisible(true);
+           printError("ERROR: select a connection type");
             return;
         }
 
         if (!checkUsername()) {
-            error.setText("ERROR: insert a valid username");
-            error.setVisible(true);
+            printError("ERROR: insert a valid username");
             return;
         }
 
         if (!checkAddress()) {
-            error.setText("ERROR: insert a valid address");
-            error.setVisible(true);
+            printError("ERROR: insert a valid address");
             return;
         }
 
         if (port == -1) {
-            error.setText("ERROR: insert a valid port");
-            error.setVisible(true);
+            printError("ERROR: insert a valid port");
             return;
         }
 
         try {
             clientController.startConnection(select, usernameText.getText(), ipAddress.getText(), port);
         } catch (Exception e) {
-            error.setText("ERROR: " + e.getMessage());
-            error.setVisible(true);
+            printError("ERROR: " + e.getMessage());
             loginButton.setDisable(false);
-            return;
         }
-
-        // qualcosa per andare avanti
-    }
-
-    public void selectPlayers() {
-        playersNum.setVisible(true);
     }
 
     private int checkConnection () {
@@ -114,58 +121,42 @@ public class LoginScene {
     }
 
     private boolean checkUsername() {
-        if (username.getText().isEmpty()) {
-            error.setText("ERROR: insert a valid username");
-            error.setVisible(true);
-            return false;
-        }
-
-        return true;
+        return !username.getText().isEmpty();
     }
 
     private boolean checkAddress () {
-        if (username.getText().isEmpty()) {
-            error.setText("ERROR: insert a valid address");
-            error.setVisible(true);
-            return false;
-        }
-
-        return true;
+        return !username.getText().isEmpty();
     }
 
     private int checkPort() {
         int port;
 
-        if (username.getText().isEmpty()) {
-            error.setText("ERROR: insert a valid username");
-            error.setVisible(true);
+        if (ipPort.getText().isEmpty()) {
             return -1;
         }
 
         try {
             port = Integer.parseInt(ipPort.getText());
         } catch (NumberFormatException e) {
-            error.setText("ERROR: " + e.getMessage());
-            error.setVisible(true);
             return -1;
         }
 
         return port;
     }
 
-
-    public void playersAction(ActionEvent actionEvent) {
+    public void submitAction(ActionEvent actionEvent) {
         players = playersNum.getValue();
 
         if (players <= 0 || players >= 5) {
-            error.setVisible(true);
-            GUIApp.out.setText("Error: insert a valid number of players");
+            printError("Error: insert a valid number of players");
             submitButton.setDisable(false);
         }
-    }
 
-    public int getPlayersNum() {
-        return players;
+        try {
+            clientController.setPlayersNumber(players);
+        } catch (Exception e) {
+            printError("Impossible to connect to the server");
+        }
     }
 }
 
