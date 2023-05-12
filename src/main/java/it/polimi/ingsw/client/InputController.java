@@ -269,8 +269,8 @@ public class InputController {
      * @return the number of players selected
      */
     public int checkPlayers(String[] input) {
-        if (input.length > 2) {
-            System.out.println("You should only write the number of players!");
+        if (input.length != 3) {
+            System.out.println("It looks like you're missing something... please, try again.");
             return -1;
         }
 
@@ -292,4 +292,5 @@ public class InputController {
         return playersNum;
 
     }
+
 }

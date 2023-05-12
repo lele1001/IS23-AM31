@@ -2,6 +2,9 @@ package it.polimi.ingsw.client;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import it.polimi.ingsw.client.Exceptions.NotAskedException;
+import it.polimi.ingsw.client.Exceptions.NotAvailableNameException;
+import it.polimi.ingsw.client.Exceptions.NotExistingGameException;
 import it.polimi.ingsw.client.connection.ConnectionClient;
 import it.polimi.ingsw.client.connection.ConnectionRMI;
 import it.polimi.ingsw.client.connection.ConnectionSocket;
@@ -35,6 +38,9 @@ public class ClientController {
     private TurnPhase phase = NULL;
     private boolean selectNumberOfPlayers = false;
     private boolean gameStarted = false;
+    private boolean selectSavedGame = false;
+    private List<String> savedGames;
+    private List<String> notAvailableNames;
 // new methods for failed login
 
     /**
@@ -44,9 +50,8 @@ public class ClientController {
     public void onSelect() {
         phase = SELECTCARDS;
         selectedTiles.clear();
-
         view.printBoard(board);
-        view.print((char) 27 + "[0;39m" + "Type @TAKE to choose from 1 to 3 tiles from the board, followed by their coordinates (xy)");
+        view.onSelect();
     }
 
     /**
@@ -55,7 +60,7 @@ public class ClientController {
      */
     public void onInsert() {
         phase = INSERTCARDS;
-        view.print((char) 27 + "[0;39m" + "Type @PUT followed by the column number and the board coordinates of the tiles (from bottom to top)");
+        view.onInsert();
         view.printSelectedTiles(selectedTiles);
         view.printPersGoal(myPersGoal);
         view.printBookshelf(playersBookshelf.get(myNickname), myNickname);
@@ -120,9 +125,16 @@ public class ClientController {
      * Methods called by the server to the first player of the game asking the number of players he wants in the game
      * Set selectNumberOfPlayers to true, so the Cli can accept the corresponding command
      */
-    public void onPlayerNumber() {
+    public void onPlayerNumber(List<String> notAvailableNames) {
         selectNumberOfPlayers = true;
+        this.notAvailableNames = new ArrayList<>(notAvailableNames);
         view.printAskPlayerNumber();
+    }
+
+    public void onSavedGame(List<String> savedGames) {
+        selectSavedGame = true;
+        this.savedGames = savedGames;
+        view.askForSavedGame(savedGames);
     }
 
     /**
@@ -153,7 +165,7 @@ public class ClientController {
 
             playerComGoal.replace(newValue[0], newValue[1]);
             view.print(nickname + " has completed the CommonGoal n° " + newValue[0]);
-            view.print("The new value of CommonGoal n° " + newValue[0] + " is " + newValue[1]);
+            view.onCommonGoalDone(newValue[0], newValue[1]);
         }
     }
 
@@ -163,7 +175,7 @@ public class ClientController {
      * @param score done during the game by the client.
      */
     public void onPlayerScore(int score) {
-        view.print("Updating my score...");
+        view.printPoints(score);
         myPoint = score;
     }
 
@@ -220,12 +232,11 @@ public class ClientController {
     public void onChangeTurn(String nickname) {
         if (nickname.equals(myNickname)) {
             myTurn = true;
-            view.print((char) 27 + "[0;39m" + "It is your turn\n");
         } else {
             phase = NULL;
             myTurn = false;
-            view.print((char) 27 + "[0;39m" + "It is " + nickname + "'s turn\n");
         }
+        view.onChangeTurn(nickname);
     }
 
     /**
@@ -353,9 +364,20 @@ public class ClientController {
      * @param players number of players in the game
      * @throws Exception if an error occurred calling the server (Socket or RMI)
      */
-    public void setPlayersNumber(int players) throws Exception {
+    public void setPlayersNumber(int players, String gameName) throws Exception {
+        if ((notAvailableNames.contains(gameName)) || gameName.contains("."))
+            throw new NotAvailableNameException();
         selectNumberOfPlayers = false;
-        connectionClient.setPlayersNumber(players);
+        connectionClient.setPlayersNumber(players, gameName);
+    }
+
+    public void setSavedGame (boolean wantToSave, String gameName) throws Exception {
+        if (!selectSavedGame)
+            throw new NotAskedException();
+        if ((wantToSave) && (!savedGames.contains(gameName)))
+            throw new NotExistingGameException();
+        selectSavedGame = false;
+        connectionClient.setSavedGame(wantToSave, gameName);
     }
 
     /**
@@ -429,4 +451,5 @@ public class ClientController {
     public void onWinner(List<String> winners) {
         view.printWinners(winners);
     }
+
 }

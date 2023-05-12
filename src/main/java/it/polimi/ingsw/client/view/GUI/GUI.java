@@ -45,7 +45,7 @@ public class GUI implements View {
             }
         }
 
-        while (!stopListening) {
+/*        while (!stopListening) {
             if (clientController.isMyTurn()) {
                 switch (clientController.getPhase()) {
                     case SELECTCARDS -> currentScene = takeCardsScene;
@@ -57,9 +57,18 @@ public class GUI implements View {
                     }
                 }
             }
-        }
+        }*/
     }
 
+    @Override
+    public void onSelect() {
+        // Cambio: currentScene = takeCardsScene
+    }
+
+    @Override
+    public void onInsert() {
+        // Cambio: currentScene = putCardsScene
+    }
 
     /**
      * Implementation for Cli and Gui of the printing/update of the board
@@ -68,11 +77,13 @@ public class GUI implements View {
      */
     @Override
     public void printBoard(ItemCard[][] board) {
-        if (clientController.isMyTurn() && clientController.getPhase() == TurnPhase.SELECTCARDS) {
+        // TODO: chiamo updateBoard(ItemCard[][] board) su tutte le scene che la contengono
+
+/*        if (clientController.isMyTurn() && clientController.getPhase() == TurnPhase.SELECTCARDS) {
             takeCardsScene.highlightTiles();
         } else {
             notMyTurnScene.show();
-        }
+        }*/
     }
 
     /**
@@ -88,11 +99,13 @@ public class GUI implements View {
      */
     @Override
     public void printBookshelves(Map<String, ItemCard[][]> bookshelves) {
-        if (clientController.isMyTurn() && clientController.getPhase() == TurnPhase.INSERTCARDS) {
+        // TODO: chiamo updateBookshelves(Map<String, ItemCard[][]> bookshelves) su tutte le scene che le contengono
+
+/*        if (clientController.isMyTurn() && clientController.getPhase() == TurnPhase.INSERTCARDS) {
             putCardsScene.orderTiles();
         } else {
             notMyTurnScene.show();
-        }
+        }*/
     }
 
     /**
@@ -112,7 +125,19 @@ public class GUI implements View {
      */
     @Override
     public void printCommonGoal(Map<Integer, Integer> playerComGoal) {
+        //Crea i commonGoal e i punteggi su tutti gli scenari che li conterranno
+    }
 
+    @Override
+    public void onCommonGoalDone(int comGoalDoneID, int newValue) {
+        // Aggiorna il punteggio del comGoal fatto su tutti gli scenari
+    }
+
+    @Override
+    public void onChangeTurn(String currPlayer) {
+        // Aggiorna il nome dell'attuale giocatore sugli scenari che lo contengono
+        // Se currPlayer non è lui, currrentScene = NotMyTurnScene
+        // Se, invece, è lui, non fa nulla perché poi il server chiamerà la askSelect e lo scenario commuterà da lì.
     }
 
     /**
@@ -122,7 +147,7 @@ public class GUI implements View {
      */
     @Override
     public void printPoints(int myPoint) {
-
+        //TODO: chiamo updatePoints(... su tutte le scene che contengono il punteggio
     }
 
     /**
@@ -218,4 +243,10 @@ public class GUI implements View {
     public void printWinners(List<String> winners) {
 
     }
+
+    @Override
+    public void askForSavedGame(List<String> savedGames) {
+
+    }
+
 }

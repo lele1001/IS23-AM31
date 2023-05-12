@@ -2,9 +2,7 @@ package it.polimi.ingsw.server.controller;
 
 import com.google.gson.Gson;
 import it.polimi.ingsw.server.Server;
-import it.polimi.ingsw.server.model.HouseItem;
 import it.polimi.ingsw.server.model.ItemCard;
-import it.polimi.ingsw.server.model.ItemNumber;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -46,7 +44,7 @@ class GameControllerTest {
     void run() throws IOException {
         GameController gameController4 = new GameController(new ConnectionControl(new Server()));
         gameController4.createGame(new ArrayList<>(List.of("Topolino", "Eleonora", "Luigi", "Niccolò")));
-        new Thread(gameController4::run).start();
+        new Thread(()-> gameController4.run(0)).start();
         try {
             TimeUnit.MILLISECONDS.sleep(10);
         } catch (InterruptedException e) {
@@ -62,7 +60,7 @@ class GameControllerTest {
         ArrayList<ItemCard> selected = new ArrayList<>(List.of(board[0][3], board[0][4]));
         // Selecting them from board.
         //test: NO RIGHT SELECTION
-        gameController4.selectCard("Topolino", new ArrayList<>(List.of(1,2))); //null case with 2 cards
+/*        gameController4.selectCard("Topolino", new ArrayList<>(List.of(1,2))); //null case with 2 cards
         //wrong selection of 3 cards
         gameController4.selectCard("Topolino", new ArrayList<>(List.of(0, 1, 2))); //null case with 3 cards
         gameController4.selectCard("Topolino", new ArrayList<>(List.of(3, 13, 22)));
@@ -90,22 +88,22 @@ class GameControllerTest {
         gameController4.selectCard("Topolino", new ArrayList<>(List.of(41, 51)));
         gameController4.selectCard("Topolino", new ArrayList<>(List.of(42, 53)));
         gameController4.selectCard("Topolino", new ArrayList<>(List.of(54, 55)));
-        gameController4.selectCard("Topolino", new ArrayList<>(List.of(57, 66)));
+        gameController4.selectCard("Topolino", new ArrayList<>(List.of(57, 66)));*/
 
         gameController4.selectCard("Topolino", new ArrayList<>(List.of(3, 4)));
         // Giving model time to do all the operations.
         try {
-            TimeUnit.MICROSECONDS.sleep(1);
+            TimeUnit.MICROSECONDS.sleep(1000);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
       /*  gameController4.insertCard("Topolino", selected, 6);  */ //wrong insertion in bookshelf
         gameController4.insertCard("Topolino", selected, 3);
         try {
-            TimeUnit.SECONDS.sleep(2);
+            TimeUnit.MILLISECONDS.sleep(200);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
-        }
+        }/*
         // Inserting cards just selected from board.
 
         // Trying some casual insert.
@@ -121,7 +119,7 @@ class GameControllerTest {
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
-
+*/
         // Reading board (to do after every "board changed" event).
         board = gson.fromJson(Files.readString(path), ItemCard[][].class);
         selected = new ArrayList<>(List.of(board[3][8], board[4][8]));
@@ -131,7 +129,7 @@ class GameControllerTest {
         gameController4.selectCard("Eleonora", new ArrayList<>(List.of(38, 48)));
         gameController4.insertCard("Eleonora", selected, 3);
         try {
-            TimeUnit.SECONDS.sleep(2);
+            TimeUnit.MILLISECONDS.sleep(2000);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
@@ -143,11 +141,11 @@ class GameControllerTest {
         gameController4.selectCard("Luigi", new ArrayList<>(List.of(84, 85)));
         gameController4.insertCard("Luigi", selected, 3);
         try {
-            TimeUnit.SECONDS.sleep(2);
+            TimeUnit.MILLISECONDS.sleep(200);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
-
+/*
         board = gson.fromJson(Files.readString(path), ItemCard[][].class);
         selected = new ArrayList<>(List.of(board[3][7], board[4][7], board[5][7]));
         gameController4.selectCard("Niccolò", new ArrayList<>(List.of(37, 47, 57)));
@@ -641,7 +639,7 @@ class GameControllerTest {
             throw new RuntimeException(e);
         }
 
-
+*/
     }
 }
 

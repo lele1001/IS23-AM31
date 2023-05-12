@@ -7,6 +7,14 @@ import java.util.List;
 import java.util.Map;
 
 public interface View {
+    void onSelect();
+
+    void onInsert();
+
+    void onCommonGoalDone(int comGoalDoneID, int newValue);
+
+    void onChangeTurn(String currPlayer);
+
     /**
      * Implementation for Cli and Gui of the printing/update of the board
      *
@@ -18,6 +26,8 @@ public interface View {
      * Implementation for Cli and Gui of the printing of the menu
      */
     void printMenu();
+
+    void askForSavedGame (List<String> savedGames);
 
     /**
      * Implementation for Cli and Gui of the printing/update of one of the bookshelves

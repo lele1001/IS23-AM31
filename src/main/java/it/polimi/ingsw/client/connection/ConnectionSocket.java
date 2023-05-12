@@ -98,6 +98,7 @@ public class ConnectionSocket extends ConnectionClient {
     public void chatToPlayer(String sender, String receiver, String message) {
         JsonObject toSend = generateStandardMessage("chatToPlayer", message);
         toSend.addProperty("receiver", receiver);
+        send(toSend);
     }
 
     /**
@@ -106,8 +107,17 @@ public class ConnectionSocket extends ConnectionClient {
      * @param players is the players number to be set.
      */
     @Override
-    public void setPlayersNumber(int players) {
-        send(generateStandardMessage("playersNumber", Integer.toString(players)));
+    public void setPlayersNumber(int players, String gameName) {
+        JsonObject toSend = generateStandardMessage("playersNumber", Integer.toString(players));
+        toSend.addProperty("gameName", gameName);
+        send(toSend);
+    }
+
+    @Override
+    public void setSavedGame(boolean wantToSave, String gameName) {
+        JsonObject toSend = generateStandardMessage("savedGameFound", String.valueOf(wantToSave));
+        toSend.addProperty("gameName", gameName != null ? gameName : "null");
+        send(toSend);
     }
 
     /**
@@ -170,9 +180,12 @@ public class ConnectionSocket extends ConnectionClient {
         try {
             jsonObject = gson.fromJson(json, jsonObject.getClass());
             switch (jsonObject.get("Type").getAsString()) {
-                case "askPlayersNumber" -> getController().onPlayerNumber();
+                case "askPlayersNumber" -> getController().onPlayerNumber(new ArrayList<>(Arrays.asList(gson.fromJson(jsonObject.get("Value").getAsString(), String[].class))));
 
                 case "disconnect" -> in.close();
+
+                case "savedGameFound" ->
+                        getController().onSavedGame(new ArrayList<>(Arrays.asList(gson.fromJson(jsonObject.get("Value").getAsString(), String[].class))));
 
                 case "askSelect" -> getController().onSelect();
 
@@ -194,13 +207,13 @@ public class ConnectionSocket extends ConnectionClient {
                 case "changeTurn" -> getController().onChangeTurn(jsonObject.get("Value").getAsString());
 
                 case "winner" ->
-                    getController().onWinner(Arrays.stream(gson.fromJson(jsonObject.get("Value").getAsString(), String[].class)).toList());
+                        getController().onWinner(new ArrayList<>(Arrays.asList(gson.fromJson(jsonObject.get("Value").getAsString(), String[].class))));
 
                 case "commonGoalDone" ->
                         getController().onCommonGoalDone(jsonObject.get("source").getAsString(), gson.fromJson(jsonObject.get("Value").getAsString(), int[].class));
 
                 case "gameStarted" ->
-                    getController().gameStarted(new ArrayList<>(Arrays.asList(gson.fromJson(jsonObject.get("Value").getAsString(), String[].class))), true);
+                        getController().gameStarted(new ArrayList<>(Arrays.asList(gson.fromJson(jsonObject.get("Value").getAsString(), String[].class))), true);
 
                 case "player_score" -> getController().onPlayerScore(jsonObject.get("Value").getAsInt());
 

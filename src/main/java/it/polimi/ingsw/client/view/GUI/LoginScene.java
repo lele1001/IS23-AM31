@@ -138,6 +138,7 @@ public class LoginScene implements SceneHandler {
         return port;
     }
 
+    //TODO nome gioco
     public void submitAction(ActionEvent actionEvent) {
         players = playersNum.getValue();
 
@@ -147,7 +148,7 @@ public class LoginScene implements SceneHandler {
         }
 
         try {
-            clientController.setPlayersNumber(players);
+            clientController.setPlayersNumber(players, "prova");
         } catch (Exception e) {
             printError("Impossible to connect to the server");
         }

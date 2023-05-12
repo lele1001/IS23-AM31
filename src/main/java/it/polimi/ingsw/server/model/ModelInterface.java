@@ -1,5 +1,6 @@
 package it.polimi.ingsw.server.model;
 
+import com.google.gson.JsonObject;
 import it.polimi.ingsw.server.gameExceptions.NoBookshelfSpaceException;
 import it.polimi.ingsw.server.gameExceptions.NoRightItemCardSelection;
 import it.polimi.ingsw.server.gameExceptions.NotSameSelectedException;
@@ -14,6 +15,8 @@ public interface ModelInterface {
      * @param playersList the list with all players' nicknames.
      */
     void CreateGame(ArrayList<String> playersList);
+
+    void resumeGame(ArrayList<String> onlinePlayers, JsonObject json);
 
     /**
      * Tries to insert cards in a nickname's bookshelf.

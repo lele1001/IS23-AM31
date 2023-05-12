@@ -1,6 +1,9 @@
 package it.polimi.ingsw.client.view;
 
 import it.polimi.ingsw.client.ClientController;
+import it.polimi.ingsw.client.Exceptions.NotAskedException;
+import it.polimi.ingsw.client.Exceptions.NotAvailableNameException;
+import it.polimi.ingsw.client.Exceptions.NotExistingGameException;
 import it.polimi.ingsw.client.InputController;
 import it.polimi.ingsw.server.controller.TurnPhase;
 import it.polimi.ingsw.server.model.HouseItem;
@@ -10,6 +13,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
+
+import static it.polimi.ingsw.server.controller.TurnPhase.NULL;
 
 public class CLI implements View {
     private static final int DIM_BOARD = 9;
@@ -78,6 +83,29 @@ public class CLI implements View {
         new Thread(this::listen).start();
     }
 
+    @Override
+    public void onSelect() {
+        print((char) 27 + "[0;39m" + "Type @TAKE to choose from 1 to 3 tiles from the board, followed by their coordinates (xy)");
+    }
+
+    @Override
+    public void onInsert() {
+        print((char) 27 + "[0;39m" + "Type @PUT followed by the column number and the board coordinates of the tiles (from bottom to top)");
+    }
+
+    @Override
+    public void onCommonGoalDone(int comGoalDoneID, int newValue) {
+        print("The new value of CommonGoal n° " + comGoalDoneID + " is " + newValue);
+    }
+
+    @Override
+    public void onChangeTurn(String currPlayer) {
+        if (currPlayer.equals(username)) {
+            print((char) 27 + "[0;39m" + "It is your turn\n");
+        } else {
+            print((char) 27 + "[0;39m" + "It is " + currPlayer + "'s turn\n");
+        }
+    }
 
     /**
      * Asking the type of connection: 0 for RMI, 1 for Socket
@@ -138,6 +166,13 @@ public class CLI implements View {
         } while (username.equals(""));
     }
 
+    public void askForSavedGame(List<String> savedGames) {
+        System.out.println("These are the saved games with your nickname into: " + savedGames + ".");
+        System.out.println("Do you want to resume one of them?");
+        System.out.println("Type @savedgame and the name of the game you want to resume (or 'n' to start a new game).");
+    }
+
+
     /**
      * Reads the choice of the user
      */
@@ -166,13 +201,32 @@ public class CLI implements View {
                             int players = checkInput.checkPlayers(splitString);
                             if (players != -1) {
                                 try {
-                                    clientController.setPlayersNumber(players);
+                                    clientController.setPlayersNumber(players, splitString[2]);
+                                } catch (NotAskedException e) {
+                                    System.out.println("Input not recognised... it's not time to set game's name.");
+                                } catch (NotAvailableNameException e) {
+                                    System.out.println("Name you want to set is not available, please try again.");
                                 } catch (Exception e) {
                                     System.out.println("Impossible to connect to the server");
                                 }
                             }
                         } else {
                             System.out.println("You can not choose the number of players!");
+                        }
+                    }
+                    case "@savedgame" -> {
+                        try {
+                            if (splitString[1].equalsIgnoreCase("n") || splitString[1].equalsIgnoreCase("no"))
+                                clientController.setSavedGame(false, null);
+                            else {
+                                clientController.setSavedGame(true, splitString[1]);
+                            }
+                        } catch (NotAskedException e) {
+                            System.out.println("Input not recognised... it's not time to set saved games.");
+                        } catch (NotExistingGameException e) {
+                            System.out.println("The game you wrote doesn't exist: try again.");
+                        } catch (Exception e) {
+                            System.out.println("Impossible to connect to the server.");
                         }
                     }
                     case "@menu" -> {
@@ -403,7 +457,8 @@ public class CLI implements View {
      */
     @Override
     public synchronized void printAskPlayerNumber() {
-        System.out.println((char) 27 + "[0;39m" + "Write @PLAYERS followed by the number of players for this game");
+        System.out.println((char) 27 + "[0;39m" + "Write @PLAYERS followed by the number of players and a name for this game.");
+        System.out.println("Please, remember it in case of server crash (you can resume the game typing its name.)");
     }
 
     /**
@@ -515,7 +570,7 @@ public class CLI implements View {
      */
     @Override
     public synchronized void printPoints(int myPoint) {
-        System.out.println((char) 27 + "[0;39m" + "You currently have " + myPoint + "points.");
+        System.out.println((char) 27 + "[0;39m" + "You currently have " + myPoint + " points.");
     }
 
     /**
@@ -622,7 +677,7 @@ public class CLI implements View {
     @Override
     public synchronized void printWinners(List<String> winners) {
         if (winners.size() == 1) {
-            System.out.println("winner is" + winners.get(0));
+            System.out.println("winner is " + winners.get(0));
         } else {
             System.out.println("Parity: winners are " + winners);
         }

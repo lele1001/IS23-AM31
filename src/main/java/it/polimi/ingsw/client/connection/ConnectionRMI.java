@@ -108,9 +108,15 @@ public class ConnectionRMI extends ConnectionClient implements RMIClientConnecti
      * @throws RemoteException if an error occurred calling the server RMI
      */
     @Override
-    public void setPlayersNumber(int players) throws RemoteException, NullPointerException {
+    public void setPlayersNumber(int players, String gameName) throws RemoteException, NullPointerException {
         server.setPlayerNumber(getController().getMyNickname(), players);
     }
+
+    @Override
+    public void setSavedGame(boolean wantToSave, String gameName) throws Exception {
+
+    }
+
 
     /**
      * Method called by the server if the player is first in queue and ha to decide the number of players in the game
@@ -119,7 +125,7 @@ public class ConnectionRMI extends ConnectionClient implements RMIClientConnecti
      */
     @Override
     public void onPlayerNumber() throws RemoteException {
-        getController().onPlayerNumber();
+        getController().onPlayerNumber(new ArrayList<>());
     }
 
     /**

@@ -97,5 +97,8 @@ public abstract class ConnectionClient extends UnicastRemoteObject {
      * @param players number of players in the game
      * @throws Exception if an error occurred calling the server (Socket or RMI)
      */
-    public abstract void setPlayersNumber(int players) throws Exception;
+    public abstract void setPlayersNumber(int players, String gameName) throws Exception;
+
+    public abstract void setSavedGame (boolean wantToSave, String gameName) throws Exception;
+
 }

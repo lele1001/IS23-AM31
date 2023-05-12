@@ -1,5 +1,6 @@
 package it.polimi.ingsw.server.controller;
 
+import com.google.gson.JsonObject;
 import it.polimi.ingsw.server.gameExceptions.NoBookshelfSpaceException;
 import it.polimi.ingsw.server.gameExceptions.NoRightItemCardSelection;
 import it.polimi.ingsw.server.gameExceptions.NotSameSelectedException;
@@ -54,23 +55,23 @@ public class GameController implements PropertyChangeListener {
 
     }
 
-/*    public void resumeGame(ArrayList<String> onlinePlayers, List<String> playersList, String json) {
+    public void resumeGame(ArrayList<String> onlinePlayers, List<String> playersList, JsonObject json) {
         this.playersList.addAll(playersList);
         gameModel = new GameModel();
         gameModel.setListener(this);
         gameModel.resumeGame(onlinePlayers, json);
-    }*/
+    }
 
     /**
      * Calls each player's turn until somebody completes his/her Bookshelf.
      * If available players are less than two, stops the game and waits for their coming back for 60 seconds: if the timeout exceeds, ends the game.
      */
-    public void run() {
-        Timer timer = new Timer();
+    public void run(int startFrom) {
         gameIsActive = true;
         winner = false;
-        int i = 0;
+        int i = startFrom;
         while (!winner) {
+            Timer timer = new Timer();
             if (playersList.stream().filter(connectionControl::isOnline).count() < 2) {
                 System.out.println("Too many absents for this game.. waiting for players' returning in game.");
                 connectionControl.sendErrorToEveryone("Too many absents for this game.. waiting for players' returning in game.");
@@ -144,9 +145,9 @@ public class GameController implements PropertyChangeListener {
      * if this timer exceeds, the player is set as offline, and the game continues with the next one.
      */
     private void playerTurn(int indexCurrPlayer) {
-        Timer timer = new Timer();
         currPlayer = playersList.get(indexCurrPlayer);
         if (connectionControl.isOnline(currPlayer)) {
+            Timer timer = new Timer();
             System.out.println(playersList.get(indexCurrPlayer) + "'s turn");
             connectionControl.sendPlayerTurn(currPlayer);
             turnPhase = TurnPhase.SELECTCARDS;
@@ -176,7 +177,7 @@ public class GameController implements PropertyChangeListener {
             } else {
                 if (timeout) {  // Took too long: timer expired!
                     connectionControl.SendError("Timeout exceeded: took too long! Disconnecting you from the game...", currPlayer);
-                    connectionControl.changePlayerStatus(currPlayer);
+                    connectionControl.changePlayerStatus(currPlayer, true);
                 }
                 if (turnPhase == TurnPhase.INSERTCARDS)
                     gameModel.resumeBoard();

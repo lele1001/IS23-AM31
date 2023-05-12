@@ -1,17 +1,22 @@
 package it.polimi.ingsw.server;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import it.polimi.ingsw.server.controller.ConnectionControl;
 import it.polimi.ingsw.server.controller.GameController;
 
+import java.io.File;
 import java.io.IOException;
-import java.net.*;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.net.SocketException;
+import java.nio.file.Files;
 import java.rmi.AlreadyBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.ArrayList;
-import java.util.Scanner;
+import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -24,6 +29,13 @@ public class Server {
     private static boolean stop;
     private RMIInterface rmiInterface;
     private boolean playersNumberAsked = false;
+    private boolean savedGameAsked = false;
+    private boolean wantToSave = false;
+    private boolean firstAsked = false;
+    private String gameName;
+    private final Map<String, String> savedGames = new HashMap<>();
+    private final static String savedGamesPath = "C:\\MyShelfieSavedGames";
+
 
     public Server() {
     }
@@ -64,6 +76,7 @@ public class Server {
      */
     public void start() {
         initialize();
+        findSavedGames();
         new Thread(this::setGame).start();
         if (!startRMI()) {
             System.out.println("Error creating RMI interface.");
@@ -170,16 +183,36 @@ public class Server {
         executor.shutdown();
     }
 
+    public void findSavedGames () {
+        File directory;
+        try {
+            directory = new File(savedGamesPath);
+            for (File file : Objects.requireNonNull(directory.listFiles()))
+                savedGames.put(file.getName().split("\\.")[0], Files.readString(file.toPath()));
+        } catch (Exception e) {
+            System.out.println("Unable to read from savedGames file.");
+        }
+    }
+
     /**
      * Allows the first player to set the number of available players.
      * Notifies setGame() method that was waiting for the first.
      *
      * @param availablePlayers to set.
      */
-    public synchronized void setAvailablePlayers(int availablePlayers) {
+    public synchronized void setAvailablePlayers(int availablePlayers, String gameName) {
         this.availablePlayers = availablePlayers;
+        this.gameName = gameName;
         this.notifyAll();
         System.out.println("Players' number set to " + availablePlayers);
+        System.out.println("Game name set to " + gameName);
+    }
+
+    public synchronized void setSavedGame(boolean wantToSave, String gameName) {
+        this.wantToSave = wantToSave;
+        this.gameName = gameName;
+        firstAsked = false;
+        this.notifyAll();
     }
 
     /**
@@ -205,6 +238,9 @@ public class Server {
             if ((this.queue.indexOf(nickname) == 0)) {  // it was the first player: let's notify setGame method.
                 this.queue.remove(nickname);
                 playersNumberAsked = false;
+                savedGameAsked = false;
+                firstAsked = false;
+                wantToSave = false;
                 availablePlayers = -1;
                 this.notifyAll();
             } else {
@@ -218,10 +254,33 @@ public class Server {
      * When the game is complete (and all the clients are online), it starts the game, calling methods on GameController.
      */
     public synchronized void setGame() {
-        while ((availablePlayers == -1) || (this.queue.size() < availablePlayers)) {
-            if ((!this.queue.isEmpty()) && (!playersNumberAsked)) {
-                this.connectionControl.askPlayerNumber(this.queue.get(0));
-                playersNumberAsked = true;
+        JsonObject jsonObject = new JsonObject();
+        Gson gson = new Gson();
+
+        while ((!wantToSave) && (availablePlayers == -1) || (this.queue.size() < availablePlayers)) {
+            if (!this.queue.isEmpty()) {
+                if (!firstAsked) {
+                    List<String> savedNames = new ArrayList<>();
+                    for (String s : savedGames.keySet()) {
+                        jsonObject = gson.fromJson(savedGames.get(s), jsonObject.getClass());
+                        if (Arrays.asList(gson.fromJson(jsonObject.get("nicknames"), String[].class)).contains(this.queue.get(0)) && !savedGameAsked)
+                            savedNames.add(s);
+                        /*if (nicknames.get(s).contains(this.queue.get(0)) && (!savedGameAsked)) {
+                            savedNames.add(s);
+                        }*/
+                    }
+                    if (!savedGameAsked && !savedNames.isEmpty()) {
+                        System.out.println("Found some saved games with client's nickname.. asking him if he wants to resume it.");
+                        System.out.println(savedNames);
+                        this.connectionControl.askSavedGame(this.queue.get(0), savedNames);     //passare tutti i nomi possibii
+                        savedGameAsked = true;
+                        firstAsked = true;
+                    } else if (!playersNumberAsked) {
+                        this.connectionControl.askPlayerNumber(this.queue.get(0), savedGames.keySet().stream().toList());
+                        playersNumberAsked = true;
+                        firstAsked = true;
+                    }
+                }
             }
             try {
                 //System.out.println("Waiting for the first.");
@@ -237,17 +296,46 @@ public class Server {
                 throw new RuntimeException(e);
             }
         }*/
-        // Saying other players that game is not available for them.
-        for (String s : queue) {
-            if (queue.indexOf(s) >= availablePlayers) {
-                connectionControl.SendError("Game not available.", s);
-                connectionControl.removeClient(s);
-                //queue.remove(s);
+        if (wantToSave) {
+            jsonObject = gson.fromJson(savedGames.get(gameName), jsonObject.getClass());
+            List<String> players = Arrays.asList(gson.fromJson(jsonObject.get("nicknames"), String[].class));
+            //System.out.println("ok. wants to save.");
+            ArrayList<String> onlinePlayers = new ArrayList<>();
+
+            for (String s : queue) {
+                if (players.contains(s))
+                    onlinePlayers.add(s);
+                else {
+                    connectionControl.SendError("Game not available.", s);
+                    connectionControl.removeClient(s);
+                }
             }
+
+            for (String s : players) {
+                if (!onlinePlayers.contains(s)) {
+                    this.connectionControl.changePlayerStatus(s, false);
+                }
+            }
+
+            this.gameController.resumeGame(onlinePlayers, players, jsonObject);
+
+            int finalStartFrom = jsonObject.get("currPlayerIndex").getAsInt();
+            new Thread(() -> this.gameController.run(finalStartFrom)).start();
+        } else {
+            // Saying other players that game is not available for them.
+            for (String s : queue) {
+                if (queue.indexOf(s) >= availablePlayers) {
+                    connectionControl.SendError("Game not available.", s);
+                    connectionControl.removeClient(s);
+                    //queue.remove(s);
+                }
+            }
+
+            //creare il json e passarlo al model usando gameName come nome del gioco
+            queue.removeIf(x -> queue.indexOf(x) >= availablePlayers);
+            this.gameController.createGame(queue);
+            new Thread(() -> this.gameController.run(0)).start();
         }
-        queue.removeIf(x -> queue.indexOf(x) >= availablePlayers);
-        this.gameController.createGame(queue);
-        new Thread(this.gameController::run).start();
 
     }
 

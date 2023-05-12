@@ -1,5 +1,6 @@
 package it.polimi.ingsw.server.model;
 
+import com.google.gson.JsonObject;
 import it.polimi.ingsw.server.gameExceptions.EmptyCardBagException;
 import it.polimi.ingsw.server.gameExceptions.NoBookshelfSpaceException;
 import it.polimi.ingsw.server.gameExceptions.NoRightItemCardSelection;
@@ -65,6 +66,42 @@ public class GameModel implements ModelInterface {
             this.listener.propertyChange(evt);
             persGoals.remove(0);
         }
+    }
+
+    public void resumeGame(ArrayList<String> onlinePlayers, JsonObject json) {
+        PropertyChangeEvent evt;
+        /*
+        Leggo la board e la passo al nuovo costruttore new Board(ItemCard[][] board)
+         */
+        System.out.println("Board restored");
+
+
+        //Prendo i player dal file e li salvo in una lista di stringhe
+        ArrayList<String> players = new ArrayList<>();
+
+        // Li prendo dal file
+        int firstGoal = 0;
+        int secondGoal = 0;
+
+        // La add prende il numero di giocatori in base al punteggio rimasto
+        //comGoals.add(selectComGoal(firstGoal, players.size()));
+        System.out.println("ComGoals restored: " + firstGoal + "," + secondGoal);
+
+        //comGoals.add(selectComGoal(secondGoal, players.size()));
+
+
+        ArrayList<PersGoal> persGoals = new ArrayList<>(Arrays.asList(PersGoal.values()));
+        Collections.shuffle(persGoals);
+        for (String s : players) {
+            this.playerMap.put(s, new Player(s));
+            playerMap.get(s).assignPersGoal(persGoals.get(0));
+            System.out.println("PersGoal " + persGoals.get(0) + " assigned to " + s);
+            // Settare i punti del giocatore
+            // Settare la libreria del giocatore
+            persGoals.remove(0);
+        }
+        for (String s : onlinePlayers)
+            this.sendGameDetails(s);
     }
 
     /**

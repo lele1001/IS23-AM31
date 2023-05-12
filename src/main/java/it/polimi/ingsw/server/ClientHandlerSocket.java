@@ -21,6 +21,7 @@ public class ClientHandlerSocket extends ClientHandler implements Runnable {
     private final Socket socket;
     private final PrintWriter socketOut;
     private Thread listeningThread;
+    private volatile Boolean savedGame;
 
 
     public ClientHandlerSocket(Socket socket, Server server, ConnectionControl connectionControl) {
@@ -34,6 +35,7 @@ public class ClientHandlerSocket extends ClientHandler implements Runnable {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+        savedGame = null;
     }
 
     /**
@@ -76,7 +78,7 @@ public class ClientHandlerSocket extends ClientHandler implements Runnable {
             try {
                 String line = in.readLine();
                 if (line != null) {
-                    System.out.println("Received: " + line);
+                    //System.out.println("Received: " + line);
                     onMessageReceived(line);
                 }
             } catch (IOException e) {
@@ -84,7 +86,7 @@ public class ClientHandlerSocket extends ClientHandler implements Runnable {
                     return;
                 System.out.println("Client: " + nickname + " disconnected.");
                 isConnected = false;
-                connectionControl.changePlayerStatus(nickname);
+                connectionControl.changePlayerStatus(nickname, true);
                 break;
             }
         }
@@ -129,10 +131,10 @@ public class ClientHandlerSocket extends ClientHandler implements Runnable {
      * Asks players' number to the client (if it hasn't done it already).
      */
     @Override
-    public void askPlayerNumber() {
+    public void askPlayerNumber(List<String> notAvailableNames) {
         if (!playerNumberAsked) {
             playerNumberAsked = true;
-            send(generateStandardMessage("askPlayersNumber", null));
+            send(generateStandardMessage("askPlayersNumber", notAvailableNames.toString()));
         }
     }
 
@@ -195,12 +197,16 @@ public class ClientHandlerSocket extends ClientHandler implements Runnable {
                             if ((given < 2) || (given > 4)) {
                                 sendError("Players' number not correct.");
                                 playerNumberAsked = false;
-                                askPlayerNumber();
+                                //askPlayerNumber();
                             } else {
-                                server.setAvailablePlayers(given);
+                                server.setAvailablePlayers(given, jsonObject.get("gameName").getAsString());
                                 playerNumberAsked = false;
                             }
                         }
+                    }
+                    case "savedGameFound" -> {
+                        if (savedGame)
+                            server.setSavedGame(jsonObject.get("Value").getAsBoolean(), jsonObject.get("gameName").getAsString());
                     }
                     case "selectCards" ->
                             connectionControl.selectCard(nickname, new ArrayList<>(Arrays.asList(gson.fromJson(jsonObject.get("Value").getAsString(), Integer[].class))));
@@ -353,5 +359,11 @@ public class ClientHandlerSocket extends ClientHandler implements Runnable {
     @Override
     public void sendBookshelfCompleted() {
         send(generateStandardMessage("bookshelf_completed", null));
+    }
+
+    @Override
+    public void askSavedGame(List<String> savedGames) {
+        send(generateStandardMessage("savedGameFound", Arrays.toString(savedGames.toArray())));
+        savedGame = true;
     }
 }

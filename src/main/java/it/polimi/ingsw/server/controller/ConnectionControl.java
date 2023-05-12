@@ -40,9 +40,9 @@ public class ConnectionControl {
      *
      * @param nickname of the client.
      */
-    public void askPlayerNumber(String nickname) {
+    public void askPlayerNumber(String nickname, List<String> notAvailableNames) {
         System.out.println("Asking players number to " + nickname);
-        this.getClientHandlerMap().get(nickname).askPlayerNumber();
+        this.getClientHandlerMap().get(nickname).askPlayerNumber(notAvailableNames);
     }
 
     /**
@@ -55,11 +55,14 @@ public class ConnectionControl {
     public boolean tryAddInQueue(ClientHandler clientHandler, String nickname) {
         synchronized (clientHandlerMap) {
             if (gameController.isGameIsActive()) {
-                if (clientStatusMap.containsKey(nickname)) {
-                    if (clientStatusMap.get(nickname))
+                if ((clientStatusMap.containsKey(nickname)) && (!clientStatusMap.get(nickname))) {
+/*                    if (clientStatusMap.get(nickname)) {
                         // There's a client in the game playing with the same nickname!
+                        clientHandler.sendError("There's already an active game. Please, try later.");
                         return false;
+                    }*/
                     // Client's nickname is already in the map: it went offline during the game. Setting him as online...
+                    clientHandler.sendError("Welcome back " + nickname + "!");
                     clientHandlerMap.put(nickname, clientHandler);
                     clientStatusMap.replace(nickname, true);
                     System.out.println(nickname + " is back!");
@@ -67,22 +70,28 @@ public class ConnectionControl {
                     this.sendGameIsStarting(new ArrayList<>(getClientHandlerMap().keySet()), nickname);
                     gameController.sendGameDetails(nickname);
                     return true;
-                } else
+                } else {
+                    clientHandler.sendError("There's already an active game. Please, try later.");
                     return false;
+                }
             }
             if (clientHandlerMap.containsKey(nickname)) {
+                clientHandler.sendError("There's already a player with your nickname. Please, try again with another one.");
                 return false;
             }
-
-            System.out.println(nickname + " added in queue.");
             this.clientHandlerMap.put(nickname, clientHandler);
             System.out.println("put in handlerMap");
             this.clientStatusMap.put(nickname, true);
             System.out.println("put in status");
-            server.addInQueue(nickname);
-            System.out.println("ritornato da addQueue");
+            this.server.addInQueue(nickname);
+            System.out.println(nickname + " added in queue.");
+            //System.out.println("ritornato da addQueue");
             return true;
         }
+    }
+
+    public void askSavedGame (String nickname, List<String> savedGames) {
+        this.getClientHandlerMap().get(nickname).askSavedGame(savedGames);
     }
 
     /**
@@ -132,7 +141,7 @@ public class ConnectionControl {
      *
      * @param nickname of the player that has gone out from the game.
      */
-    public void changePlayerStatus(String nickname) {
+    public void changePlayerStatus(String nickname, boolean adviceAll) {
         synchronized (clientHandlerMap) {
             this.clientStatusMap.put(nickname, false);
             server.removeFromQueue(nickname);   // Removes it if it was in the queue.
@@ -141,9 +150,9 @@ public class ConnectionControl {
                 this.clientHandlerMap.remove(nickname);
             }
         }
-        sendErrorToEveryone(nickname + " is disconnected from the game.");
+        if (adviceAll)
+            sendErrorToEveryone(nickname + " is disconnected from the game.");
         //gameController.changePlayerStatus(nickname);
-
     }
 
     /**
@@ -238,7 +247,7 @@ public class ConnectionControl {
             // Just for tests: saving the board in a temporary file to check the insert.
             PrintStream printStream;
             try {
-                printStream = new PrintStream("src/main/resources/boardTest.json");
+                printStream = new PrintStream("src/main/boardTest.json");
                 Gson gson = new Gson();
                 printStream.print(gson.toJson(newBoard));
                 printStream.close();

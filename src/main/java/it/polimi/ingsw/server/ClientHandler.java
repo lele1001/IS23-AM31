@@ -23,7 +23,7 @@ public abstract class ClientHandler {
     /**
      * The server calls the client's method if the player is first in queue and ha to decide the number of players in the game
      */
-    public abstract void askPlayerNumber();
+    public abstract void askPlayerNumber(List<String> notAvailableNames);
 
     /**
      * The server calls the client's method on a new Turn
@@ -114,4 +114,6 @@ public abstract class ClientHandler {
      * The server calls the client's method when a player completes his bookshelf
      */
     public abstract void sendBookshelfCompleted();
+
+    public abstract void askSavedGame(List<String> savedGames);
 }

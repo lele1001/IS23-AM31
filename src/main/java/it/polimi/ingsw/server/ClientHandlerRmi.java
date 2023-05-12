@@ -25,7 +25,7 @@ public class ClientHandlerRmi extends ClientHandler {
                 ping();
             }
         };
-        timer.scheduleAtFixedRate(task, 0, 5000);
+        timer.scheduleAtFixedRate(task, 0, 3000);
     }
 
     /**
@@ -36,7 +36,7 @@ public class ClientHandlerRmi extends ClientHandler {
             client.pong();
         } catch (RemoteException e) {
             // se si è disconnesso
-            connectionControl.changePlayerStatus(nickname);
+            connectionControl.changePlayerStatus(nickname, true);
             timer.cancel();
             disconnectPlayer();
         }
@@ -47,7 +47,7 @@ public class ClientHandlerRmi extends ClientHandler {
      * The RMI server calls the client's method if the player is first in the queue and ha to decide the number of players in the game
      */
     @Override
-    public void askPlayerNumber() {
+    public void askPlayerNumber(List<String> notAvailableNames) {
         // chiedo il numero di giocatori
         try {
             client.onPlayerNumber();
@@ -263,6 +263,10 @@ public class ClientHandlerRmi extends ClientHandler {
         } catch (RemoteException e) {
             System.out.println("Impossibile inviare a " + nickname + " che ha completato la sua libreria.");
         }
+    }
+
+    @Override
+    public void askSavedGame(List<String> savedGames) {
     }
 }
 
