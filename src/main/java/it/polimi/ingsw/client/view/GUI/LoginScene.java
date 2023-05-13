@@ -1,38 +1,31 @@
 package it.polimi.ingsw.client.view.GUI;
 
 import it.polimi.ingsw.client.ClientController;
-import javafx.animation.FadeTransition;
-import javafx.animation.SequentialTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
-import javafx.util.Duration;
-
-import java.net.URL;
-import java.util.ResourceBundle;
 
 public class LoginScene implements SceneHandler {
     @FXML
-    private GridPane currentPane;
+    public AnchorPane loginScenePane;
     @FXML
-    public GridPane connectionPane;
-    @FXML
-    public GridPane firstPlayerPane;
+    private GridPane currentPane, connectionPane, firstPlayerPane, errorPane;
     @FXML
     Label welcomeText, usernameText, connectionText, ipText, portText;
     @FXML
     Button submitButton, loginButton;
     @FXML
-    TextField username, ipPort, ipAddress;
+    TextField username, ipPort, ipAddress, gameName;
     @FXML
     RadioButton connectionRMI, connectionSocket;
     @FXML
     Spinner<Integer> playersNum;
+    @FXML
+    public TextArea errorArea;
     Integer players;
     boolean isFirstPlayer;
-
     private ClientController clientController;
 
     /**
@@ -40,15 +33,25 @@ public class LoginScene implements SceneHandler {
      */
     public void initialize(ClientController clientController) {
         this.clientController = clientController;
-        currentPane = connectionPane;
+        connectionPane = new GridPane();
+        firstPlayerPane = new GridPane();
+        errorPane = new GridPane();
+
+        firstPlayerPane.setVisible(false);
+        firstPlayerPane.setDisable(true);
         isFirstPlayer = false;
+
+        errorPane.setVisible(false);
+        errorPane.setDisable(true);
+
+        currentPane = connectionPane;
         setCurrentPane(connectionPane);
     }
 
     @Override
     public void printError(String error) {
-        GUIApp.error.setVisible(true);
-        GUIApp.error.setText(error);
+        errorPane.setVisible(true);
+        errorArea.setText(error);
     }
 
     /**
@@ -62,11 +65,12 @@ public class LoginScene implements SceneHandler {
     }
 
     public void setCurrentPane(GridPane pane) {
-        currentPane.setDisable(true);
-        currentPane.setVisible(false);
+        if (currentPane != null) {
+            currentPane.setDisable(true);
+            currentPane.setVisible(false);
+        }
 
         currentPane = pane;
-
         currentPane.setDisable(false);
         currentPane.setVisible(true);
     }
@@ -76,18 +80,18 @@ public class LoginScene implements SceneHandler {
         int select = checkConnection();
         int port = checkPort();
 
-        if (select == -1) {
-           printError("ERROR: select a connection type");
-            return;
-        }
-
-        if (!checkUsername()) {
+        if (!checkText(username)) {
             printError("ERROR: insert a valid username");
             return;
         }
 
-        if (!checkAddress()) {
-            printError("ERROR: insert a valid address");
+        if (select == -1) {
+            printError("ERROR: select a connection type");
+            return;
+        }
+
+        if (!checkText(ipAddress)) {
+            printError("ERROR: insert a valid IP Address");
             return;
         }
 
@@ -104,7 +108,7 @@ public class LoginScene implements SceneHandler {
         }
     }
 
-    private int checkConnection () {
+    private int checkConnection() {
         if (connectionRMI.isSelected()) {
             return 0;
         } else if (connectionSocket.isSelected()) {
@@ -114,12 +118,8 @@ public class LoginScene implements SceneHandler {
         }
     }
 
-    private boolean checkUsername() {
-        return !username.getText().isEmpty();
-    }
-
-    private boolean checkAddress () {
-        return !username.getText().isEmpty();
+    private boolean checkText(TextField text) {
+        return !text.getText().isEmpty();
     }
 
     private int checkPort() {
@@ -138,7 +138,6 @@ public class LoginScene implements SceneHandler {
         return port;
     }
 
-    //TODO nome gioco
     public void submitAction(ActionEvent actionEvent) {
         players = playersNum.getValue();
 
@@ -147,8 +146,14 @@ public class LoginScene implements SceneHandler {
             submitButton.setDisable(false);
         }
 
+        if (!checkText(gameName)) {
+            printError("Error: insert a valid name for the game");
+            submitButton.setDisable(false);
+        }
+
         try {
             clientController.setPlayersNumber(players, "prova");
+            //clientController.setGameName(gameName.getText());
         } catch (Exception e) {
             printError("Impossible to connect to the server");
         }

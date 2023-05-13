@@ -1,7 +1,6 @@
 package it.polimi.ingsw.client.view.GUI;
 
 import it.polimi.ingsw.client.ClientController;
-import it.polimi.ingsw.client.view.View;
 import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -17,11 +16,11 @@ public class GUIApp extends Application {
     public static Stage stage;
 
     public static SceneHandler controller;
+    private GUI gui;
     @FXML
     public static Label out;
     @FXML
     public static Label error;
-    ClientController clientController;
     private int windowHeight, windowWidth;
     private double windowRatio;
 
@@ -48,38 +47,7 @@ public class GUIApp extends Application {
         GUIApp.stage = stage;
         stage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/publisherMaterial/Icon50x50px.png"))));
         stage.setOnCloseRequest(e -> System.exit(0));
-        setScene("loginForm", "My Shelfie");
-
-    }
-
-    /**
-     * Loads and sets a scene.
-     *
-     * @param fxmlFile   the name of the fxml file to load as a scene
-     * @param sceneTitle the title to put on the stage
-     */
-    public void setScene(String fxmlFile, String sceneTitle) {
-        FXMLLoader fxmlLoader = new FXMLLoader(GUIApp.class.getResource("/FXML/" + fxmlFile + ".fxml"));
-        Scene scene;
-
-        try {
-            scene = new Scene(fxmlLoader.load());
-        } catch (IOException e) {
-            System.err.println(e.getMessage());
-            return;
-        }
-
-        controller = fxmlLoader.getController();
-
-        if (stage == null) {
-            stage = new Stage();
-        } else if (stage.getScene() != null) {
-            stage.hide();
-        }
-
-        stage.setTitle(sceneTitle);
-        stage.setScene(scene);
-        stage.show();
+        gui = new GUI(new ClientController());
     }
 
     public double getWindowHeight() {

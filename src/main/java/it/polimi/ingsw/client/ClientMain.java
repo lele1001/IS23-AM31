@@ -6,8 +6,6 @@ import javafx.application.Application;
 
 
 public class ClientMain {
-    //private static final ClientController clientController = new ClientController();
-
     /**
      * Start of the player side game
      *

@@ -2,22 +2,29 @@ package it.polimi.ingsw.client.view.GUI;
 
 import it.polimi.ingsw.client.ClientController;
 import it.polimi.ingsw.client.view.View;
-import it.polimi.ingsw.server.controller.TurnPhase;
 import it.polimi.ingsw.server.model.HouseItem;
 import it.polimi.ingsw.server.model.ItemCard;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
 public class GUI implements View {
     ClientController clientController;
     SceneHandler currentScene;
+    Parent root;
+
+    //controllers of all scenes
     LoginScene loginScene = new LoginScene();
     TakeCardsScene takeCardsScene = new TakeCardsScene();
     PutCardsScene putCardsScene = new PutCardsScene();
     NotMyTurnScene notMyTurnScene = new NotMyTurnScene();
     EndGameScene endGameScene = new EndGameScene();
-    private static boolean stopListening;
+    private Stage stage;
 
     public GUI(ClientController clientController) {
         this.clientController = clientController;
@@ -30,34 +37,49 @@ public class GUI implements View {
         endGameScene.initialize(clientController);
 
         currentScene = loginScene;
+        setScene("loginForm", "My Shelfie");
 
-        if (clientController.isSelectNumberOfPlayers()) {
-            printAskPlayerNumber();
+        //new Thread(this::listen).start();
+    }
+
+    /**
+     * Loads and sets a scene.
+     *
+     * @param fxmlFile   the name of the fxml file to load as a scene
+     * @param sceneTitle the title to put on the stage
+     */
+    public void setScene(String fxmlFile, String sceneTitle) {
+        FXMLLoader fxmlLoader = new FXMLLoader(GUIApp.class.getResource("/FXML/" + fxmlFile + ".fxml"));
+
+        try {
+            root = fxmlLoader.load();
+        } catch (IOException e) {
+            System.err.println(e.getMessage());
+            return;
         }
 
-        new Thread(this::listen).start();
+        currentScene = fxmlLoader.getController();
+        Scene scene = new Scene(root);
+
+        if (stage == null) {
+            stage = new Stage();
+        } else if (stage.getScene() != null) {
+            stage.hide();
+        }
+
+        stage.setTitle(sceneTitle);
+        stage.setScene(scene);
+        stage.setResizable(false);
+        stage.show();
     }
 
     private void listen() {
+
         if (!clientController.isGameStarted()) {
             synchronized (this) {
                 GUIApp.out.setText("Waiting for other players to connect...");
             }
         }
-
-/*        while (!stopListening) {
-            if (clientController.isMyTurn()) {
-                switch (clientController.getPhase()) {
-                    case SELECTCARDS -> currentScene = takeCardsScene;
-                    case INSERTCARDS -> currentScene = putCardsScene;
-                    case ENDTURN -> currentScene = notMyTurnScene;
-                    case NULL -> {
-                        currentScene = endGameScene;
-                        stopListening = true;
-                    }
-                }
-            }
-        }*/
     }
 
     @Override
@@ -207,7 +229,9 @@ public class GUI implements View {
      */
     @Override
     public void printAskPlayerNumber() {
-        loginScene.isFirst();
+        if (clientController.isSelectNumberOfPlayers()) {
+            loginScene.isFirst();
+        }
     }
 
     /**
