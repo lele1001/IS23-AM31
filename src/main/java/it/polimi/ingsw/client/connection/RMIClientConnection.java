@@ -141,4 +141,6 @@ public interface RMIClientConnection extends Remote {
      * @throws RemoteException if an error occurred calling the RMI client
      */
     void onBookshelfCompleted() throws RemoteException;
+
+    void onSavedGame(List<String> savedGames) throws RemoteException;
 }

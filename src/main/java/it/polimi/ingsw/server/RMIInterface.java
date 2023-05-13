@@ -88,6 +88,11 @@ public class RMIInterface implements RMI {
 
     }
 
+    @Override
+    public void setSavedGames(boolean wantToSave, String gameName) throws RemoteException {
+        server.setSavedGame(wantToSave, gameName);
+    }
+
     /**
      * Method called from the client that pass to the server the position of the Tiles selected by the client
      * Send a request for the checking procedure in the gameController and update the Model if the controls are successfully done

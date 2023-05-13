@@ -114,7 +114,7 @@ public class ConnectionRMI extends ConnectionClient implements RMIClientConnecti
 
     @Override
     public void setSavedGame(boolean wantToSave, String gameName) throws Exception {
-
+        server.setSavedGames(wantToSave, gameName);
     }
 
 
@@ -316,5 +316,10 @@ public class ConnectionRMI extends ConnectionClient implements RMIClientConnecti
     @Override
     public void onBookshelfCompleted() throws RemoteException {
         getController().onBookshelfCompleted();
+    }
+
+    @Override
+    public void onSavedGame(List<String> savedGames) throws RemoteException {
+        getController().onSavedGame(savedGames);
     }
 }

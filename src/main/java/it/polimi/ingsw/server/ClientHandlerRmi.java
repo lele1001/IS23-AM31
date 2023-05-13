@@ -267,6 +267,11 @@ public class ClientHandlerRmi extends ClientHandler {
 
     @Override
     public void askSavedGame(List<String> savedGames) {
+        try {
+            client.onSavedGame(savedGames);
+        } catch (RemoteException e) {
+            System.out.println("Impossibile inviare a " + nickname + " i game salvati.");
+        }
     }
 }
 

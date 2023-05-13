@@ -77,4 +77,6 @@ public interface RMI extends Remote {
      * @throws RemoteException if an error occurred calling the server RMI
      */
     void pong() throws RemoteException;
+
+    void setSavedGames(boolean wantToSave, String gameName) throws RemoteException;
 }
