@@ -1,31 +1,28 @@
-package it.polimi.ingsw.client.view.GUI;
+package it.polimi.ingsw.client.view.GUI.scenes;
 
 import it.polimi.ingsw.client.ClientController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 
-public class LoginScene implements SceneHandler {
+public class LoginScene implements GUIScene {
     @FXML
     public AnchorPane loginScenePane;
     @FXML
-    private GridPane currentPane, connectionPane, firstPlayerPane, errorPane;
+    private GridPane connectionPane;
     @FXML
     Label welcomeText, usernameText, connectionText, ipText, portText;
     @FXML
-    Button submitButton, loginButton;
+    Button loginButton;
     @FXML
-    TextField username, ipPort, ipAddress, gameName;
+    TextField username, ipPort, ipAddress;
     @FXML
     RadioButton connectionRMI, connectionSocket;
     @FXML
-    Spinner<Integer> playersNum;
-    @FXML
-    public TextArea errorArea;
-    Integer players;
-    boolean isFirstPlayer;
+    TextArea errorArea;
     private ClientController clientController;
 
     /**
@@ -34,45 +31,21 @@ public class LoginScene implements SceneHandler {
     public void initialize(ClientController clientController) {
         this.clientController = clientController;
         connectionPane = new GridPane();
-        firstPlayerPane = new GridPane();
-        errorPane = new GridPane();
+        errorArea.setVisible(false);
 
-        firstPlayerPane.setVisible(false);
-        firstPlayerPane.setDisable(true);
-        isFirstPlayer = false;
-
-        errorPane.setVisible(false);
-        errorPane.setDisable(true);
-
-        currentPane = connectionPane;
-        setCurrentPane(connectionPane);
+        connectionPane.setDisable(false);
+        connectionPane.setVisible(true);
     }
 
     @Override
     public void printError(String error) {
-        errorPane.setVisible(true);
+        errorArea.setVisible(true);
         errorArea.setText(error);
     }
 
-    /**
-     * Shows the form to select the number of players
-     */
-    public void isFirst() {
-        playersNum = new Spinner<>(1, 4, 2, 1);
-
-        isFirstPlayer = true;
-        setCurrentPane(firstPlayerPane);
-    }
-
-    public void setCurrentPane(GridPane pane) {
-        if (currentPane != null) {
-            currentPane.setDisable(true);
-            currentPane.setVisible(false);
-        }
-
-        currentPane = pane;
-        currentPane.setDisable(false);
-        currentPane.setVisible(true);
+    @Override
+    public void bindEvents() {
+        loginButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> loginAction());
     }
 
     @FXML
@@ -90,7 +63,7 @@ public class LoginScene implements SceneHandler {
             return;
         }
 
-        if (!checkText(ipAddress)) {
+        if (!checkIP(ipAddress)) {
             printError("ERROR: insert a valid IP Address");
             return;
         }
@@ -101,7 +74,7 @@ public class LoginScene implements SceneHandler {
         }
 
         try {
-            clientController.startConnection(select, usernameText.getText(), ipAddress.getText(), port);
+            clientController.startConnection(select, username.getText(), ipAddress.getText(), port);
         } catch (Exception e) {
             printError("ERROR: " + e.getMessage());
             loginButton.setDisable(false);
@@ -119,7 +92,15 @@ public class LoginScene implements SceneHandler {
     }
 
     private boolean checkText(TextField text) {
-        return !text.getText().isEmpty();
+        String toCheck = text.getText();
+
+        return !toCheck.isEmpty() && toCheck.matches("[a-zA-Z0-9]+");
+    }
+
+    private boolean checkIP(TextField text) {
+        String toCheck = text.getText();
+
+        return !toCheck.isEmpty() && toCheck.matches("[.0-9]+");
     }
 
     private int checkPort() {
@@ -136,27 +117,6 @@ public class LoginScene implements SceneHandler {
         }
 
         return port;
-    }
-
-    public void submitAction(ActionEvent actionEvent) {
-        players = playersNum.getValue();
-
-        if (players <= 0 || players >= 5) {
-            printError("Error: insert a valid number of players");
-            submitButton.setDisable(false);
-        }
-
-        if (!checkText(gameName)) {
-            printError("Error: insert a valid name for the game");
-            submitButton.setDisable(false);
-        }
-
-        try {
-            clientController.setPlayersNumber(players, "prova");
-            //clientController.setGameName(gameName.getText());
-        } catch (Exception e) {
-            printError("Impossible to connect to the server");
-        }
     }
 }
 

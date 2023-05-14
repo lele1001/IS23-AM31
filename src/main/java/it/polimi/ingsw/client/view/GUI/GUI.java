@@ -1,85 +1,36 @@
 package it.polimi.ingsw.client.view.GUI;
 
 import it.polimi.ingsw.client.ClientController;
+import it.polimi.ingsw.client.view.GUI.scenes.*;
 import it.polimi.ingsw.client.view.View;
 import it.polimi.ingsw.server.model.HouseItem;
 import it.polimi.ingsw.server.model.ItemCard;
-import javafx.fxml.FXMLLoader;
+import javafx.application.Platform;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
 public class GUI implements View {
     ClientController clientController;
-    SceneHandler currentScene;
-    Parent root;
-
-    //controllers of all scenes
-    LoginScene loginScene = new LoginScene();
-    TakeCardsScene takeCardsScene = new TakeCardsScene();
-    PutCardsScene putCardsScene = new PutCardsScene();
-    NotMyTurnScene notMyTurnScene = new NotMyTurnScene();
-    EndGameScene endGameScene = new EndGameScene();
-    private Stage stage;
+    GUIScene currentScene;
+    private SceneController sceneController;
 
     public GUI(ClientController clientController) {
         this.clientController = clientController;
-
-        // Initializes all the game scenes
-        loginScene.initialize(clientController);
-        takeCardsScene.initialize(clientController);
-        putCardsScene.initialize(clientController);
-        notMyTurnScene.initialize(clientController);
-        endGameScene.initialize(clientController);
-
-        currentScene = loginScene;
-        setScene("loginForm", "My Shelfie");
-
-        //new Thread(this::listen).start();
+        this.clientController.setView(this);
+        this.sceneController = new SceneController(this.clientController);
+        gameLogin();
     }
 
-    /**
-     * Loads and sets a scene.
-     *
-     * @param fxmlFile   the name of the fxml file to load as a scene
-     * @param sceneTitle the title to put on the stage
-     */
-    public void setScene(String fxmlFile, String sceneTitle) {
-        FXMLLoader fxmlLoader = new FXMLLoader(GUIApp.class.getResource("/FXML/" + fxmlFile + ".fxml"));
-
-        try {
-            root = fxmlLoader.load();
-        } catch (IOException e) {
-            System.err.println(e.getMessage());
-            return;
-        }
-
-        currentScene = fxmlLoader.getController();
-        Scene scene = new Scene(root);
-
-        if (stage == null) {
-            stage = new Stage();
-        } else if (stage.getScene() != null) {
-            stage.hide();
-        }
-
-        stage.setTitle(sceneTitle);
-        stage.setScene(scene);
-        stage.setResizable(false);
-        stage.show();
+    public SceneController getSceneController() {
+        return this.sceneController;
     }
 
-    private void listen() {
-
-        if (!clientController.isGameStarted()) {
-            synchronized (this) {
-                GUIApp.out.setText("Waiting for other players to connect...");
-            }
-        }
+    private void gameLogin() {
+        currentScene = sceneController.getLoginScene();
+        Platform.runLater(this.sceneController::loadLogin);
     }
 
     @Override
@@ -230,7 +181,8 @@ public class GUI implements View {
     @Override
     public void printAskPlayerNumber() {
         if (clientController.isSelectNumberOfPlayers()) {
-            loginScene.isFirst();
+            currentScene = sceneController.getNumberOfPlayersScene();
+            Platform.runLater(this.sceneController::loadNumberOfPlayer);
         }
     }
 
@@ -272,5 +224,4 @@ public class GUI implements View {
     public void askForSavedGame(List<String> savedGames) {
 
     }
-
 }

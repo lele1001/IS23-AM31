@@ -29,9 +29,7 @@ public class CLI implements View {
     int port = -1;
     int select = -1;
 
-    public CLI() {
-
-    }
+    public CLI() {}
 
     /**
      * Initialization of the client profile asking: username, type of connection, ip and port

@@ -1,14 +1,13 @@
-package it.polimi.ingsw.client.view.GUI;
+package it.polimi.ingsw.client.view.GUI.scenes;
 
 import it.polimi.ingsw.client.ClientController;
-import it.polimi.ingsw.server.model.ItemCard;
 
-import java.util.Map;
-
-public interface SceneHandler {
+public interface GUIScene {
     void initialize(ClientController clientController);
 
     void printError(String error);
+
+    void bindEvents();
 
     /* TODO:
     void updateBoard(ItemCard[][] board);

@@ -8,6 +8,8 @@ import it.polimi.ingsw.client.Exceptions.NotExistingGameException;
 import it.polimi.ingsw.client.connection.ConnectionClient;
 import it.polimi.ingsw.client.connection.ConnectionRMI;
 import it.polimi.ingsw.client.connection.ConnectionSocket;
+import it.polimi.ingsw.client.view.CLI;
+import it.polimi.ingsw.client.view.GUI.GUI;
 import it.polimi.ingsw.client.view.View;
 import it.polimi.ingsw.server.controller.TurnPhase;
 import it.polimi.ingsw.server.model.HouseItem;
@@ -248,7 +250,11 @@ public class ClientController {
         this.view = view;
 
         if (view != null) {
-            System.out.println("Cli added to Client controller");
+            if (view instanceof CLI) {
+                System.out.println("CLI added to ClientController");
+            } else if (view instanceof GUI) {
+                System.out.println("GUI added to ClientController");
+            }
         }
         //view.printBookshelf(playersBookshelf.get(myNickname));
     }

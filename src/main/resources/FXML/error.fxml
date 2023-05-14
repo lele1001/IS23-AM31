@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.scene.text.Font?>
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="it.polimi.ingsw.client.view.GUI.scenes.ErrorScene"
+            prefHeight="400.0" prefWidth="600.0">
+    <children>
+        <Label layoutX="227.0" layoutY="40.0" text="ERROR" textFill="RED">
+            <font>
+                <Font size="48.0" />
+            </font>
+        </Label>
+        <Button layoutX="261.0" layoutY="268.0" mnemonicParsing="false" text="Close game" onAction="#closeGame" />
+        <Label fx:id="errorDescription_label" layoutX="129.0" layoutY="159.0" prefHeight="17.0" prefWidth="345.0" text="Error:" textAlignment="CENTER" textFill="RED">
+            <font>
+                <Font size="18.0" />
+            </font>
+        </Label>
+    </children>
+</AnchorPane>

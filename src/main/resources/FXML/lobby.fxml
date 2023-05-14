@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="300.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1">
+
+    <ImageView fitHeight="200.0" fitWidth="300.0" layoutX="100.0" layoutY="50.0" pickOnBounds="true" preserveRatio="true">
+        <Image url="@../images/publisherMaterial/TitleSmall.png" />
+    </ImageView>
+    <ProgressIndicator layoutX="224.0" layoutY="200.0" prefHeight="120.0" prefWidth="120.0" />
+
+    <Label alignment="CENTER" contentDisplay="CENTER" layoutY="150.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="500.0" text="Waiting for other players" AnchorPane.topAnchor="150.0">
+        <font>
+            <Font name="Bauhaus 93" size="24.0" />
+        </font>
+    </Label>
+</AnchorPane>
