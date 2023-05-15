@@ -34,18 +34,18 @@ The final version includes:
 |:---------------------------------|:-------------------------:|
 | Basic rules                      |             ✅             |
 | Complete rules                   |             ✅             |
-| RMI                              | :arrows_counterclockwise: |
-| Socket                           | :arrows_counterclockwise: |
+| RMI                              |             ✅             |
+| Socket                           |             ✅             |
 | TUI _(Textual User Interface)_   | :arrows_counterclockwise: |
-| GUI _(Graphical User Interface)_ |                           |
+| GUI _(Graphical User Interface)_ | :arrows_counterclockwise: |
 
 ### Advanced functionalities
 
 | Functionality                | Status |
 |:-----------------------------|:------:|
-| Multiple simultaneous games  |        |
-| Persistence                  |        |
-| Resilience to disconnections |   :arrows_counterclockwise:     |
-| Chat                         |   :arrows_counterclockwise:     |
+| Multiple simultaneous games  |   ⛔     |
+| Persistence                  | :arrows_counterclockwise: |
+| Resilience to disconnections |             ✅             |
+| Chat                         |             ✅             |
 
 ⛔ Not implemented &nbsp;&nbsp;&nbsp;&nbsp; :arrows_counterclockwise: In progress &nbsp;&nbsp;&nbsp;&nbsp; ✅ Implemented
