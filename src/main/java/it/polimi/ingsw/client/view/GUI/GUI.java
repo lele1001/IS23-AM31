@@ -29,10 +29,6 @@ public class GUI implements View {
     private void gameLogin() {
         currentScene = sceneController.getLoginScene();
         Platform.runLater(this.sceneController::loadLogin);
-
-        if (!clientController.isSelectNumberOfPlayers() && !clientController.isGameStarted()) {
-            Platform.runLater(this.sceneController::loadLobby);
-        }
     }
 
     @Override
@@ -65,7 +61,8 @@ public class GUI implements View {
      * Implementation for Cli and Gui of the printing of the menu
      */
     @Override
-    public void printMenu() {}
+    public void printMenu() {
+    }
 
     /**
      * Implementation for Cli and Gui of the printing/update of one of the bookshelves
@@ -195,10 +192,6 @@ public class GUI implements View {
             currentScene = sceneController.getNumberOfPlayersScene();
             Platform.runLater(this.sceneController::loadNumberOfPlayer);
         }
-
-        if (!clientController.isGameStarted()) {
-            Platform.runLater(this.sceneController::loadLobby);
-        }
     }
 
     /**
@@ -233,6 +226,13 @@ public class GUI implements View {
     @Override
     public void printWinners(List<String> winners) {
 
+    }
+
+    @Override
+    public void printLobby() {
+        if (!clientController.isGameStarted()) {
+            Platform.runLater(this.sceneController::loadLobby);
+        }
     }
 
     @Override

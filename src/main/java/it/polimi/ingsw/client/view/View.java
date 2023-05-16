@@ -119,4 +119,6 @@ public interface View {
      * @param winners the winner(s) of the game
      */
     void printWinners(List<String> winners);
+
+    void printLobby();
 }

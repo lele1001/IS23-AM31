@@ -29,7 +29,8 @@ public class CLI implements View {
     int port = -1;
     int select = -1;
 
-    public CLI() {}
+    public CLI() {
+    }
 
     /**
      * Initialization of the client profile asking: username, type of connection, ip and port
@@ -177,12 +178,7 @@ public class CLI implements View {
         String choice;
         String[] splitString;
 
-        if (!clientController.isGameStarted()) {
-            synchronized (this) {
-                System.out.println("Waiting for other players to connect...");
-                waitForGameMenu();
-            }
-        }
+        printLobby();
 
         while (!stopListening) {
             if (in.hasNextLine()) {
@@ -677,6 +673,14 @@ public class CLI implements View {
             System.out.println("The winner is " + winners.get(0));
         } else {
             System.out.println("Parity: the winners are " + winners);
+        }
+    }
+
+    @Override
+    public synchronized void printLobby() {
+        if (!clientController.isGameStarted()) {
+            System.out.println("Waiting for other players to connect...");
+            waitForGameMenu();
         }
     }
 }

@@ -282,6 +282,7 @@ public class ClientController {
         }
 
         connectionClient.startConnection();
+        printWaitingForGame();
     }
 
     /**
@@ -375,6 +376,13 @@ public class ClientController {
             throw new NotAvailableNameException();
         selectNumberOfPlayers = false;
         connectionClient.setPlayersNumber(players, gameName);
+        printWaitingForGame();
+    }
+
+    public void printWaitingForGame() {
+        if(!gameStarted) {
+            view.printLobby();
+        }
     }
 
     public void setSavedGame (boolean wantToSave, String gameName) throws Exception {
