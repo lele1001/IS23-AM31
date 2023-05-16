@@ -109,7 +109,7 @@ public class ConnectionRMI extends ConnectionClient implements RMIClientConnecti
      */
     @Override
     public void setPlayersNumber(int players, String gameName) throws RemoteException, NullPointerException {
-        server.setPlayerNumber(getController().getMyNickname(), players);
+        server.setPlayerNumber(getController().getMyNickname(), players, gameName);
     }
 
     @Override

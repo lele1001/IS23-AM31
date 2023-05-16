@@ -11,7 +11,6 @@ public class Player {
     private final Bookshelf myBookshelf;
     private int score;
     private PersGoal persGoal;
-    private boolean isOnline;
     private final ArrayList<ComGoal> comGoalsReached;
     private final static int BOOKSHELF_LENGTH = 5;
 
@@ -23,7 +22,6 @@ public class Player {
     public Player(String nickname) {
         this.nickname = nickname;
         myBookshelf = new Bookshelf();
-        isOnline = true;
         comGoalsReached = new ArrayList<>();
     }
 
@@ -107,13 +105,6 @@ public class Player {
         return this.myBookshelf.getAsMatrix();
     }
 
-/*    public void changePlayerStatus() {
-        isOnline = !isOnline;
-    }*/
-
-/*    public boolean isOnline() {
-        return isOnline;
-    }*/
 
     /**
      * Called by the GameModel when it needs to know player's score to send it to the player because he's just returned online.
@@ -132,4 +123,5 @@ public class Player {
     public String getPersGoal() {
         return this.persGoal.toString();
     }
+
 }

@@ -1,8 +1,11 @@
 package it.polimi.ingsw.client.view.GUI.scenes;
 
 import it.polimi.ingsw.client.ClientController;
+import it.polimi.ingsw.server.model.ItemCard;
 
-public class NotMyTurnScene implements GUIScene {
+import java.util.Map;
+
+public class NotMyTurnScene extends GUIScene {
     private ClientController clientController;
 
     @Override
@@ -26,4 +29,15 @@ public class NotMyTurnScene implements GUIScene {
     public void updateCurrPlayer(String currPlayer) {
         //TODO: print the name of the current player
     }
+
+    @Override
+    public void updateBoard(ItemCard[][] board) {
+
+    }
+
+    @Override
+    public void updateBookshelf(String nickname, ItemCard[][] bookshelf) {
+
+    }
+
 }

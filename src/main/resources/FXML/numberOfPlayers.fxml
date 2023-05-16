@@ -23,9 +23,9 @@
                 <Font name="Bauhaus 93" size="18.0" />
             </font>
         </Label>
-        <Spinner fx:id="playersNum" editable="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="150.0" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+        <TextField fx:id="playersNum" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="150.0" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
         <TextField fx:id="gameName" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="200.0" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
-        <Button fx:id="submitButton" alignment="CENTER" contentDisplay="CENTER" onAction="#submitAction" prefWidth="100.0" text="OK" textAlignment="CENTER" textOverrun="CLIP" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER">
+        <Button fx:id="submitButton" alignment="CENTER" contentDisplay="CENTER" prefWidth="100.0" text="OK" textAlignment="CENTER" textOverrun="CLIP" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER">
             <font>
                 <Font name="Bauhaus 93" size="16.0" />
             </font>

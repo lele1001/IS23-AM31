@@ -2,6 +2,7 @@ package it.polimi.ingsw.client.view.GUI.scenes;
 
 import it.polimi.ingsw.client.ClientController;
 import it.polimi.ingsw.client.view.GUI.GUI;
+import it.polimi.ingsw.server.model.ItemCard;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -10,7 +11,9 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 
-public class LoginScene implements GUIScene {
+import java.util.Map;
+
+public class LoginScene extends GUIScene {
     @FXML
     public AnchorPane loginScenePane;
     @FXML
@@ -120,5 +123,21 @@ public class LoginScene implements GUIScene {
 
         return port;
     }
+
+    @Override
+    public void updateBoard(ItemCard[][] board) {
+
+    }
+
+    @Override
+    public void updateBookshelf(String nickname, ItemCard[][] bookshelf) {
+
+    }
+
+    @Override
+    public void updateCurrPlayer(String player) {
+
+    }
+
 }
 

@@ -35,7 +35,9 @@ public class GUIApp extends Application {
         windowWidth = (int) (windowHeight * windowRatio);
 
         GUI gui = new GUI(this.clientController);
-        gui.getSceneController().start(stage);
+        //gui.getSceneController().start(stage);
+
+        gui.gameLogin();
     }
 
     @Override

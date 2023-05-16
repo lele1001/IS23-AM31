@@ -1,8 +1,9 @@
 package it.polimi.ingsw.client.view.GUI.scenes;
 
 import it.polimi.ingsw.client.ClientController;
+import it.polimi.ingsw.server.model.ItemCard;
 
-public class PutCardsScene implements GUIScene {
+public class PutCardsScene extends GUIScene {
     private ClientController clientController;
 
     @Override
@@ -23,7 +24,17 @@ public class PutCardsScene implements GUIScene {
     public void orderTiles() {
     }
 
-    public void updateCurrPlayer(String yourTurn) {
+    public void updateCurrPlayer(String player) {
         //TODO: print the input string
+    }
+
+    @Override
+    public void updateBoard(ItemCard[][] board) {
+
+    }
+
+    @Override
+    public void updateBookshelf(String nickname, ItemCard[][] bookshelf) {
+
     }
 }

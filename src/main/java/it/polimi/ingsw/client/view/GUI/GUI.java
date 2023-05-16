@@ -7,38 +7,38 @@ import it.polimi.ingsw.server.model.HouseItem;
 import it.polimi.ingsw.server.model.ItemCard;
 import javafx.application.Platform;
 
+import java.sql.SQLOutput;
 import java.util.List;
 import java.util.Map;
 
 public class GUI implements View {
     ClientController clientController;
-    GUIScene currentScene;
     private SceneController sceneController;
 
     public GUI(ClientController clientController) {
         this.clientController = clientController;
         this.clientController.setView(this);
         this.sceneController = new SceneController(this.clientController);
-        gameLogin();
+        //gameLogin();
     }
 
     public SceneController getSceneController() {
         return this.sceneController;
     }
 
-    private void gameLogin() {
-        currentScene = sceneController.getLoginScene();
+    public void gameLogin() {
+        //currentScene = sceneController.getLoginScene();
         Platform.runLater(this.sceneController::loadLogin);
     }
 
     @Override
     public void onSelect() {
-        // Cambio: currentScene = takeCardsScene
+        Platform.runLater(this.sceneController::loadTake);
     }
 
     @Override
     public void onInsert() {
-        // Cambio: currentScene = putCardsScene
+        Platform.runLater(this.sceneController::loadPut);
     }
 
     /**
@@ -48,37 +48,9 @@ public class GUI implements View {
      */
     @Override
     public void printBoard(ItemCard[][] board) {
-        // TODO: chiamo updateBoard(ItemCard[][] board) su tutte le scene che la contengono
-
-/*        if (clientController.isMyTurn() && clientController.getPhase() == TurnPhase.SELECTCARDS) {
-            takeCardsScene.highlightTiles();
-        } else {
-            notMyTurnScene.show();
-        }*/
+        sceneController.updateBoard(board);
     }
 
-    /**
-     * Implementation for Cli and Gui of the printing of the menu
-     */
-    @Override
-    public void printMenu() {
-    }
-
-    /**
-     * Implementation for Cli and Gui of the printing/update of one of the bookshelves
-     *
-     * @param bookshelves the container of all the bookshelves of all players in the game
-     */
-    @Override
-    public void printBookshelves(Map<String, ItemCard[][]> bookshelves) {
-        // TODO: chiamo updateBookshelves(Map<String, ItemCard[][]> bookshelves) su tutte le scene che le contengono
-
-/*        if (clientController.isMyTurn() && clientController.getPhase() == TurnPhase.INSERTCARDS) {
-            putCardsScene.orderTiles();
-        } else {
-            notMyTurnScene.show();
-        }*/
-    }
 
     /**
      * Implementation for Cli and Gui of the printing of an error message
@@ -87,7 +59,7 @@ public class GUI implements View {
      */
     @Override
     public void printError(String error) {
-        currentScene.printError(error);
+        sceneController.printError(error);
     }
 
     /**
@@ -107,18 +79,18 @@ public class GUI implements View {
 
     @Override
     public void onChangeTurn(String currPlayer) {
-        // Aggiorna il nome dell'attuale giocatore sugli scenari che lo contengono
-        // Se currPlayer non è lui, currrentScene = NotMyTurnScene
-        // Se, invece, è lui, non fa nulla perché poi il server chiamerà la askSelect e lo scenario commuterà da lì.
+        sceneController.updateCurrPlayer(currPlayer);
+        if (!currPlayer.equals(clientController.getMyNickname()))
+            Platform.runLater(this.sceneController::notMyTurn);
 
-        if (!clientController.isMyTurn()) {
+ /*       if (!clientController.isMyTurn()) {
             sceneController.getNotMyTurnScene().updateCurrPlayer(currPlayer);
             currentScene = sceneController.getNotMyTurnScene();
             Platform.runLater(this.sceneController::notMyTurn);
         } else {
             sceneController.getTakeCardsScene().updateCurrPlayer("It is your turn");
             sceneController.getPutCardsScene().updateCurrPlayer("It is your turn");
-        }
+        }*/
     }
 
     /**
@@ -169,7 +141,7 @@ public class GUI implements View {
      */
     @Override
     public void printBookshelf(ItemCard[][] book, String nickname) {
-
+        sceneController.updateBookshelf(nickname, book);
     }
 
     /**
@@ -189,7 +161,6 @@ public class GUI implements View {
     @Override
     public void printAskPlayerNumber() {
         if (clientController.isSelectNumberOfPlayers()) {
-            currentScene = sceneController.getNumberOfPlayersScene();
             Platform.runLater(this.sceneController::loadNumberOfPlayer);
         }
     }
@@ -199,7 +170,9 @@ public class GUI implements View {
      */
     @Override
     public void disconnectionError() {
-
+        Platform.runLater(() -> {
+            this.sceneController.fatalError("You've been disconnected from server.");
+        });
     }
 
     /**
@@ -207,7 +180,9 @@ public class GUI implements View {
      */
     @Override
     public void disconnectMe() {
-
+        Platform.runLater(() -> {
+            this.sceneController.fatalError("You've been disconnected from server.");
+        });
     }
 
     /**
@@ -225,6 +200,10 @@ public class GUI implements View {
      */
     @Override
     public void printWinners(List<String> winners) {
+        if (winners.contains(clientController.getMyNickname()))
+            Platform.runLater(this.sceneController::endGameWin);
+        else
+            Platform.runLater(this.sceneController::endGameLose);
 
     }
 

@@ -201,6 +201,7 @@ public class CLI implements View {
                                     System.out.println("Name you want to set is not available, please try again.");
                                 } catch (Exception e) {
                                     System.out.println("Impossible to connect to the server");
+                                    e.printStackTrace();
                                 }
                             }
                         } else {
@@ -360,7 +361,6 @@ public class CLI implements View {
     /**
      * Prints a menu on the screen to let the user choose what to do next
      */
-    @Override
     public synchronized void printMenu() {
         System.out.println((char) 27 + "[0;39m" + """
                 GAME MENU: type the corresponding command
@@ -391,7 +391,6 @@ public class CLI implements View {
      *
      * @param bookshelves is a map with keys the nickname of the player and values their bookshelves
      */
-    @Override
     public synchronized void printBookshelves(Map<String, ItemCard[][]> bookshelves) {
         if (!bookshelves.isEmpty()) {
             for (String s : bookshelves.keySet()) {

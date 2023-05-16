@@ -22,19 +22,9 @@ public interface View {
      */
     void printBoard(ItemCard[][] board);
 
-    /**
-     * Implementation for Cli and Gui of the printing of the menu
-     */
-    void printMenu();
 
     void askForSavedGame (List<String> savedGames);
 
-    /**
-     * Implementation for Cli and Gui of the printing/update of one of the bookshelves
-     *
-     * @param bookshelves the container of all the bookshelves of all players in the game
-     */
-    void printBookshelves(Map<String, ItemCard[][]> bookshelves);
 
     /**
      * Implementation for Cli and Gui of the printing of an error message

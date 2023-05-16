@@ -10,6 +10,7 @@ import it.polimi.ingsw.server.model.ModelInterface;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.nio.file.Path;
 import java.util.*;
 
 public class GameController implements PropertyChangeListener {
@@ -36,7 +37,7 @@ public class GameController implements PropertyChangeListener {
     /**
      * Creates the game with all the necessary (board, bookshelves, ...) and starts it
      */
-    public void createGame(ArrayList<String> playersList) {
+    public void createGame(ArrayList<String> playersList, String gameFilePath) {
         if (playersList.size() < 2 || playersList.size() > 4) {
             System.out.println("Error: number of players not correct.");
             return;
@@ -51,15 +52,14 @@ public class GameController implements PropertyChangeListener {
         gameModel.setListener(this);
         // creates the board, and the bookshelves
         // assigns personalGoals and commonGoals
-        gameModel.CreateGame(playersList);
-
+        gameModel.CreateGame(this.playersList, gameFilePath);
     }
 
-    public void resumeGame(ArrayList<String> onlinePlayers, List<String> playersList, JsonObject json) {
+    public void resumeGame(ArrayList<String> onlinePlayers, List<String> playersList, JsonObject json, String gameFilePath) {
         this.playersList.addAll(playersList);
         gameModel = new GameModel();
         gameModel.setListener(this);
-        gameModel.resumeGame(onlinePlayers, json);
+        gameModel.resumeGame(onlinePlayers, json, gameFilePath);
     }
 
     /**
@@ -69,7 +69,7 @@ public class GameController implements PropertyChangeListener {
     public void run(int startFrom) {
         gameIsActive = true;
         winner = false;
-        int i = startFrom;
+        int i = (startFrom > playersList.size() ? 0 : startFrom);
         while (!winner) {
             Timer timer = new Timer();
             if (playersList.stream().filter(connectionControl::isOnline).count() < 2) {

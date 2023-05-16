@@ -11,6 +11,8 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
 import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.attribute.FileAttribute;
 import java.rmi.AlreadyBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -33,7 +35,7 @@ public class Server {
     private boolean wantToSave = false;
     private boolean firstAsked = false;
     private String gameName;
-    private final Map<String, String> savedGames = new HashMap<>();
+    private final Map<String, JsonObject> savedGames = new HashMap<>();
     private final static String savedGamesPath = "C:\\MyShelfieSavedGames";
 
 
@@ -185,10 +187,11 @@ public class Server {
 
     public void findSavedGames () {
         File directory;
+        Gson gson = new Gson();
         try {
             directory = new File(savedGamesPath);
             for (File file : Objects.requireNonNull(directory.listFiles()))
-                savedGames.put(file.getName().split("\\.")[0], Files.readString(file.toPath()));
+                savedGames.put(file.getName().split("\\.")[0], gson.fromJson(Files.readString(file.toPath()), JsonObject.class));
         } catch (Exception e) {
             System.out.println("Unable to read from savedGames file.");
         }
@@ -254,7 +257,6 @@ public class Server {
      * When the game is complete (and all the clients are online), it starts the game, calling methods on GameController.
      */
     public synchronized void setGame() {
-        JsonObject jsonObject = new JsonObject();
         Gson gson = new Gson();
 
         while ((!wantToSave) && (availablePlayers == -1) || (this.queue.size() < availablePlayers)) {
@@ -262,9 +264,13 @@ public class Server {
                 if (!firstAsked) {
                     List<String> savedNames = new ArrayList<>();
                     for (String s : savedGames.keySet()) {
-                        jsonObject = gson.fromJson(savedGames.get(s), jsonObject.getClass());
-                        if (Arrays.asList(gson.fromJson(jsonObject.get("nicknames"), String[].class)).contains(this.queue.get(0)) && !savedGameAsked)
-                            savedNames.add(s);
+                        try {
+                            if (gson.fromJson(savedGames.get(s).get("nicknames").getAsString(), List.class).contains(this.queue.get(0)) && !savedGameAsked)
+                                savedNames.add(s);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            System.out.println(s + " non valid as a gameJson.");
+                        }
                         /*if (nicknames.get(s).contains(this.queue.get(0)) && (!savedGameAsked)) {
                             savedNames.add(s);
                         }*/
@@ -297,8 +303,7 @@ public class Server {
             }
         }*/
         if (wantToSave) {
-            jsonObject = gson.fromJson(savedGames.get(gameName), jsonObject.getClass());
-            List<String> players = Arrays.asList(gson.fromJson(jsonObject.get("nicknames"), String[].class));
+            List<String> players = gson.fromJson(savedGames.get(gameName).get("nicknames").getAsString(), List.class);
             //System.out.println("ok. wants to save.");
             ArrayList<String> onlinePlayers = new ArrayList<>();
 
@@ -317,10 +322,9 @@ public class Server {
                 }
             }
 
-            this.gameController.resumeGame(onlinePlayers, players, jsonObject);
+            this.gameController.resumeGame(onlinePlayers, players, savedGames.get(gameName), Server.savedGamesPath + "\\" + gameName + ".json");
 
-            int finalStartFrom = jsonObject.get("currPlayerIndex").getAsInt();
-            new Thread(() -> this.gameController.run(finalStartFrom)).start();
+            new Thread(() -> this.gameController.run(players.indexOf(savedGames.get(gameName).get("currPlayer").getAsString())+1)).start();
         } else {
             // Saying other players that game is not available for them.
             for (String s : queue) {
@@ -331,9 +335,8 @@ public class Server {
                 }
             }
 
-            //creare il json e passarlo al model usando gameName come nome del gioco
             queue.removeIf(x -> queue.indexOf(x) >= availablePlayers);
-            this.gameController.createGame(queue);
+            this.gameController.createGame(queue, savedGamesPath + "\\" + gameName + ".json");
             new Thread(() -> this.gameController.run(0)).start();
         }
 

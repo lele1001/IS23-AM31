@@ -8,6 +8,7 @@ import it.polimi.ingsw.server.gameExceptions.NoRightItemCardSelection;
 import it.polimi.ingsw.server.gameExceptions.NotSameSelectedException;
 import org.junit.jupiter.api.Test;
 
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -21,7 +22,7 @@ class GameModelTest {
         GameController gameController = new GameController(connectionControl);
 
         gameModel.setListener(gameController);
-        gameModel.CreateGame(new ArrayList<>(List.of("Luca", "Filippo", "Giovanni", "Topolino")));
+        gameModel.CreateGame(new ArrayList<>(List.of("Luca", "Filippo", "Giovanni", "Topolino")), "C:\\MyShelfieSavedGames\\prova");
         System.out.println(Arrays.deepToString(gameModel.board.getAsArrayList()));
 
         try {

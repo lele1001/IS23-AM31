@@ -23,29 +23,29 @@ class GameControllerTest {
         System.out.println("Case: 2 players");
 
         GameController gameController2 = new GameController(new ConnectionControl(new Server()));
-        gameController2.createGame(new ArrayList<>(List.of("Giacomo", "Nicolas")));
+        gameController2.createGame(new ArrayList<>(List.of("Giacomo", "Nicolas")), "C:\\MyShelfieSavedGames\\prova1");
 
         System.out.println("Case: 3 players");
 
         GameController gameController3 = new GameController(new ConnectionControl(new Server()));
-        gameController3.createGame(new ArrayList<>(List.of("Andrea", "Luca", "Alice")));
+        gameController3.createGame(new ArrayList<>(List.of("Andrea", "Luca", "Alice")), "C:\\MyShelfieSavedGames\\prova2");
 
 
         System.out.println("Case: 4 players");
 
         GameController gameController4 = new GameController(new ConnectionControl(new Server()));
-        gameController4.createGame(new ArrayList<>(List.of("Topolino", "Eleonora", "Luigi", "Niccolò")));
+        gameController4.createGame(new ArrayList<>(List.of("Topolino", "Eleonora", "Luigi", "Niccolò")), "C:\\MyShelfieSavedGames\\prova3");
 
         System.out.println("Case: 5 players");
 
         GameController gameController5 = new GameController(new ConnectionControl(new Server()));
-        gameController5.createGame(new ArrayList<>(List.of("Riccardo", "Eleonora", "Alice", "Topolino", "Andrea")));
+        gameController5.createGame(new ArrayList<>(List.of("Riccardo", "Eleonora", "Alice", "Topolino", "Andrea")), "C:\\MyShelfieSavedGames\\prova3");
     }
 
     @Test
     void run() throws IOException {
         GameController gameController4 = new GameController(new ConnectionControl(new Server()));
-        gameController4.createGame(new ArrayList<>(List.of("Topolino", "Eleonora", "Luigi", "Niccolò")));
+        gameController4.createGame(new ArrayList<>(List.of("Topolino", "Eleonora", "Luigi", "Niccolò")), "C:\\MyShelfieSavedGames\\prova4");
         new Thread(()-> gameController4.run(0)).start();
         try {
             TimeUnit.MILLISECONDS.sleep(1000);

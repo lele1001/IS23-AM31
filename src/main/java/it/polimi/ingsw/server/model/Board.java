@@ -36,6 +36,12 @@ public class Board {
         Collections.shuffle(cardBag);
     }
 
+    public Board (ItemCard[][] board, ArrayList<ItemCard> cardBag, int numPlayers) {
+        this.board = board;
+        this.cardBag = cardBag;
+        this.numPlayers = numPlayers;
+    }
+
     /**
      * Method that fills the board with Itemcard if there is not in the correspondent Cell
      * If the exception is thrown, the Game controller has to be notified
@@ -254,4 +260,9 @@ public class Board {
         }
         return toBeReturned;
     }
+
+    public ArrayList<ItemCard> getCardBag() {
+        return cardBag;
+    }
+
 }

@@ -2,6 +2,7 @@ package it.polimi.ingsw.client.view.GUI;
 
 import it.polimi.ingsw.client.ClientController;
 import it.polimi.ingsw.client.view.GUI.scenes.*;
+import it.polimi.ingsw.server.model.ItemCard;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -9,25 +10,45 @@ import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.util.Objects;
+import java.util.*;
 
 public class SceneController {
     private final ClientController clientController;
     private Stage activeStage = null;
 
-    private LoginScene loginScene = null;
-    private NumberOfPlayersScene numberOfPlayersScene = null;
-    private TakeCardsScene takeCardsScene = null;
-    private PutCardsScene putCardsScene = null;
-    private NotMyTurnScene notMyTurnScene = null;
-    private EndGameScene endGameScene = null;
-    private ErrorScene errorScene = null;
+    GUIScene currentController;
+
+    private Map<String, GUIScene> scenesMap = new HashMap<>();
 
     public SceneController(ClientController clientController) {
         this.clientController = clientController;
+        this.createScene(GUIResources.loginFXML, "loginScene");
+        this.createScene(GUIResources.errorFXML, "errorScene");
+        //this.createScene(GUIResources.putCardsFXML, "putCardsScene");
+        //this.createScene(GUIResources.takeCardsFXML, "takeCardsScene");
+        //this.createScene(GUIResources.endGameLoseFXML, "endGameScene");
+        //this.createScene(GUIResources.notMyTurnFXML, "notMyTurnScene");
+        this.createScene(GUIResources.numberOfPlayerFXML, "numberOfPlayersScene");
     }
 
-    private FXMLLoader changeScene(String fxml, ClientController clientController) {
+    public void createScene (String fxml, String name) {
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(SceneController.class.getClassLoader().getResource(fxml));
+            if (loader.getLocation() == null) {
+                System.out.println("Not possible to set " + fxml + " scene.");
+            }
+            Parent root = loader.load();
+            GUIScene guiScene = loader.getController();
+            guiScene.initialize(this.clientController);
+            guiScene.setMyScene(new Scene(root));
+            this.scenesMap.put(name, guiScene);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+/*    private FXMLLoader changeScene(String fxml, ClientController clientController) {
         try {
             FXMLLoader loader =  loadFXML(fxml);;
             Parent root = setRoot(loader);
@@ -42,21 +63,21 @@ public class SceneController {
     }
 
     private FXMLLoader changeStage(String fxml, ClientController clientController) {
-        if (this.activeStage != null) {
+*//*        if (this.activeStage != null) {
             this.activeStage.hide();
-        }
+        }*//*
 
         try {
             FXMLLoader loader =  loadFXML(fxml);;
             Parent root = setRoot(loader);
 
-            Stage stage = new Stage();
-            stage.setScene(new Scene(root));
-            stage.getIcons().add(GUIResources.icon);
+            //Stage stage = new Stage();
+            this.activeStage.setScene(new Scene(root));
+*//*            stage.getIcons().add(GUIResources.icon);
             stage.setTitle("My Shelfie");
             stage.setResizable(false);
             this.activeStage = stage;
-            stage.show();
+            stage.show();*//*
 
             return loader;
         } catch (IOException e) {
@@ -88,9 +109,9 @@ public class SceneController {
         return root;
     }
 
-    /**
+    *//**
      * Initializes the first stage and asks the user for server connection
-     */
+     *//*
     public void start(Stage stage) {
         try {
             FXMLLoader loader = new FXMLLoader();
@@ -116,15 +137,24 @@ public class SceneController {
             e.printStackTrace();
             this.clientController.onError("Fatal Error: loading fxml file failed");
         }
-    }
+    }*/
 
     /**
      * Asks the user to insert login details
      * (using the current stage)
      */
     public void loadLogin() {
-        this.clearController();
-        this.loginScene = this.changeScene(GUIResources.loginFXML, this.clientController).getController();
+        //this.clearController();
+        this.activeStage = new Stage();
+        this.activeStage.getIcons().add(GUIResources.icon);
+        this.activeStage.setTitle("My Shelfie");
+        this.activeStage.setResizable(false);
+
+        this.currentController = this.scenesMap.get("loginScene");
+        this.activeStage.setScene(currentController.getMyScene());
+        this.activeStage.setResizable(false);
+        this.activeStage.show();
+        //this.loginScene = this.changeScene(GUIResources.loginFXML, this.clientController).getController();
     }
 
     /**
@@ -132,8 +162,19 @@ public class SceneController {
      * (using the current stage)
      */
     public void loadLobby() {
-        this.clearController();
-        this.changeScene(GUIResources.lobbyFXML, this.clientController);
+        Parent root;
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(SceneController.class.getClassLoader().getResource(GUIResources.lobbyFXML));
+            if (loader.getLocation() == null) {
+                System.out.println("Not possible to set " + "lobby" + " scene.");
+            }
+            root = loader.load();
+        } catch (IOException e) {
+            System.out.println("Lobby's error.");
+            return;
+        }
+        this.activeStage.setScene(new Scene(root));
     }
 
     /**
@@ -141,8 +182,10 @@ public class SceneController {
      * (using the current stage)
      */
     public void loadNumberOfPlayer() {
-        this.clearController();
-        this.numberOfPlayersScene = Objects.requireNonNull(this.changeScene(GUIResources.numberOfPlayerFXML, this.clientController)).getController();
+        this.currentController = this.scenesMap.get("numberOfPlayersScene");
+        this.activeStage.setScene(currentController.getMyScene());
+        /*        this.clearController();
+        this.numberOfPlayersScene = Objects.requireNonNull(this.changeScene(GUIResources.numberOfPlayerFXML, this.clientController)).getController();*/
     }
 
     /**
@@ -150,8 +193,8 @@ public class SceneController {
      * (closing the current stage and showing a new stage)
      */
     public void loadTake() {
-        this.clearController();
-        this.takeCardsScene = Objects.requireNonNull(this.changeStage(GUIResources.takeCardsFXML, this.clientController)).getController();
+        this.currentController = this.scenesMap.get("takeCardsScene");
+        this.activeStage.setScene(currentController.getMyScene());
     }
 
     /**
@@ -159,8 +202,8 @@ public class SceneController {
      * (closing the current stage and showing a new stage)
      */
     public void loadPut() {
-        this.clearController();
-        this.putCardsScene = Objects.requireNonNull(this.changeStage(GUIResources.putCardsFXML, this.clientController)).getController();
+        this.currentController = this.scenesMap.get("putCardsScene");
+        this.activeStage.setScene(currentController.getMyScene());
     }
 
     /**
@@ -168,8 +211,8 @@ public class SceneController {
      * (closing the current stage and showing a new stage)
      */
     public void notMyTurn() {
-        this.clearController();
-        this.notMyTurnScene = this.changeStage(GUIResources.notMyTurnFXML, this.clientController).getController();
+        this.currentController = this.scenesMap.get("notMyTurnScene");
+        this.activeStage.setScene(currentController.getMyScene());
     }
 
     /**
@@ -177,8 +220,8 @@ public class SceneController {
      * (using the current stage)
      */
     public void endGameWin() {
-        this.clearController();
-        this.endGameScene = Objects.requireNonNull(this.changeScene(GUIResources.endGameWinFXML, this.clientController)).getController();
+        this.currentController = this.scenesMap.get("endGameScene");
+        this.activeStage.setScene(currentController.getMyScene());
     }
 
     /**
@@ -186,11 +229,11 @@ public class SceneController {
      * (using the current stage)
      */
     public void endGameLose() {
-        this.clearController();
-        this.endGameScene = Objects.requireNonNull(this.changeScene(GUIResources.endGameLoseFXML, this.clientController)).getController();
+        this.currentController = this.scenesMap.get("endGameScene");
+        this.activeStage.setScene(currentController.getMyScene());
     }
 
-    private void clearController() {
+/*    private void clearController() {
         this.loginScene = null;
         this.numberOfPlayersScene = null;
         this.notMyTurnScene = null;
@@ -198,35 +241,35 @@ public class SceneController {
         this.putCardsScene = null;
         this.endGameScene = null;
         this.errorScene = null;
-    }
+    }*/
 
-    public LoginScene getLoginScene() {
-        return loginScene;
-    }
-
-    public NumberOfPlayersScene getNumberOfPlayersScene() {
-        return numberOfPlayersScene;
-    }
-
-    public NotMyTurnScene getNotMyTurnScene() {
-        return notMyTurnScene;
-    }
-
-    public TakeCardsScene getTakeCardsScene() {
-        return takeCardsScene;
-    }
-
-    public PutCardsScene getPutCardsScene() {
-        return putCardsScene;
-    }
-
-    public EndGameScene getEndGameScene() {
-        return endGameScene;
-    }
 
     public void fatalError(String error) {
-        this.clearController();
-        this.errorScene = Objects.requireNonNull(this.changeStage(GUIResources.errorFXML, this.clientController)).getController();
-        this.errorScene.printError(error);
+        activeStage.setScene(this.scenesMap.get("errorScene").getMyScene());
+        this.currentController.printError(error);
     }
+
+    public void updateCurrPlayer (String player) {
+        for (GUIScene gs : scenesMap.values())
+            gs.updateCurrPlayer(player);
+    }
+
+    public void updateBoard (ItemCard[][] board) {
+        for (GUIScene gs : scenesMap.values())
+            gs.updateBoard(board);
+    }
+
+    public void updateBookshelf (String nickname, ItemCard[][] bookshelf) {
+        for (GUIScene gs : scenesMap.values())
+            gs.updateBookshelf(nickname, bookshelf);
+    }
+
+    public void printError (String error) {
+        this.currentController.printError(error);
+    }
+
+    public void updateSelectedTiles (Map<Integer, ItemCard> selectedTiles) {
+        this.scenesMap.get("putCardsScene").updateSelectedTiles(selectedTiles);
+    }
+
 }

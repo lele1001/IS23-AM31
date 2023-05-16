@@ -6,6 +6,7 @@ import it.polimi.ingsw.server.gameExceptions.NoRightItemCardSelection;
 import it.polimi.ingsw.server.gameExceptions.NotSameSelectedException;
 
 import java.beans.PropertyChangeListener;
+import java.nio.file.Path;
 import java.util.ArrayList;
 
 public interface ModelInterface {
@@ -14,9 +15,9 @@ public interface ModelInterface {
      *
      * @param playersList the list with all players' nicknames.
      */
-    void CreateGame(ArrayList<String> playersList);
+    void CreateGame(ArrayList<String> playersList, String gameFilePath);
 
-    void resumeGame(ArrayList<String> onlinePlayers, JsonObject json);
+    void resumeGame(ArrayList<String> onlinePlayers, JsonObject json, String gameFilePath);
 
     /**
      * Tries to insert cards in a nickname's bookshelf.

@@ -1,5 +1,6 @@
 package it.polimi.ingsw.server.model;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import it.polimi.ingsw.server.gameExceptions.EmptyCardBagException;
 import it.polimi.ingsw.server.gameExceptions.NoBookshelfSpaceException;
@@ -9,6 +10,7 @@ import it.polimi.ingsw.server.model.comGoals.*;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.*;
 import java.util.*;
 
 public class GameModel implements ModelInterface {
@@ -21,13 +23,19 @@ public class GameModel implements ModelInterface {
     private final ArrayList<ComGoal> comGoals = new ArrayList<>();
     private ArrayList<ItemCard> selected = new ArrayList<>();
     String winner = null;
+    private String gameFilePath;
+    private JsonObject gameJson;
 
     /**
      * Creates the game with all the necessary things (board, bookshelves, personal goals and common goals).
      *
      * @param players the list with all players' nicknames.
      */
-    public void CreateGame(ArrayList<String> players) {
+    public void CreateGame(ArrayList<String> players, String gameFilePath) {
+        this.gameJson = new JsonObject();
+        this.gameFilePath = gameFilePath;
+        this.gameJson.addProperty("nicknames", players.toString());
+
         PropertyChangeEvent evt;
         board = new Board(players.size());
         System.out.println("Board Created");
@@ -47,7 +55,6 @@ public class GameModel implements ModelInterface {
             firstGoal = random.nextInt(1, 12);
             secondGoal = random.nextInt(1, 12);
         } while (firstGoal == secondGoal);
-
         comGoals.add(selectComGoal(firstGoal, players.size()));
         System.out.println("ComGoals created: " + firstGoal + "," + secondGoal);
         evt = new PropertyChangeEvent(firstGoal, "COM_GOAL_CREATED", null, comGoals.get(0).getCurrScore());
@@ -66,40 +73,45 @@ public class GameModel implements ModelInterface {
             this.listener.propertyChange(evt);
             persGoals.remove(0);
         }
+        this.gameJson.addProperty("lastPlayer", players.get(players.size()-1));
+        saveJson(true);
     }
 
-    public void resumeGame(ArrayList<String> onlinePlayers, JsonObject json) {
+    public void resumeGame(ArrayList<String> onlinePlayers, JsonObject json, String gameFilePath) {
+        this.gameJson = json;
+        this.gameFilePath = gameFilePath;
+        Gson gson = new Gson();
+
+        //Prendo i player dal file e li salvo in una lista di stringhe
+        ArrayList<String> players = new ArrayList<>(gson.fromJson(json.get("nicknames").getAsString(), List.class));
+
         PropertyChangeEvent evt;
         /*
         Leggo la board e la passo al nuovo costruttore new Board(ItemCard[][] board)
+
+
          */
+
+        System.out.println(gson.fromJson(json.get("board").getAsString(), ItemCard[][].class));
+        this.board = new Board(gson.fromJson(json.get("board").getAsString(), ItemCard[][].class), new ArrayList<>(Arrays.asList(gson.fromJson(json.get("cardBag").getAsString(), ItemCard[].class))), players.size());
         System.out.println("Board restored");
 
 
-        //Prendo i player dal file e li salvo in una lista di stringhe
-        ArrayList<String> players = new ArrayList<>();
-
         // Li prendo dal file
-        int firstGoal = 0;
-        int secondGoal = 0;
+        comGoals.add(gson.fromJson(json.get("firstComGoal"), ComGoal.class));
+        comGoals.add(gson.fromJson(json.get("secondComGoal"), ComGoal.class));
 
         // La add prende il numero di giocatori in base al punteggio rimasto
         //comGoals.add(selectComGoal(firstGoal, players.size()));
-        System.out.println("ComGoals restored: " + firstGoal + "," + secondGoal);
+        System.out.println("ComGoals restored: " + comGoals.get(0).getCGID() + "," + comGoals.get(1).getCGID());
 
         //comGoals.add(selectComGoal(secondGoal, players.size()));
 
 
-        ArrayList<PersGoal> persGoals = new ArrayList<>(Arrays.asList(PersGoal.values()));
-        Collections.shuffle(persGoals);
         for (String s : players) {
-            this.playerMap.put(s, new Player(s));
-            playerMap.get(s).assignPersGoal(persGoals.get(0));
-            System.out.println("PersGoal " + persGoals.get(0) + " assigned to " + s);
-            // Settare i punti del giocatore
-            // Settare la libreria del giocatore
-            persGoals.remove(0);
+            this.playerMap.put(s,  gson.fromJson(json.get(s), Player.class));
         }
+
         for (String s : onlinePlayers)
             this.sendGameDetails(s);
     }
@@ -124,6 +136,7 @@ public class GameModel implements ModelInterface {
         this.listener.propertyChange(evt);
         if (a && winner == null) {
             winner = nickname;
+            gameJson.addProperty("winner", winner);
             evt = new PropertyChangeEvent(nickname, "BOOKSHELF_COMPLETED", null, null);
             this.listener.propertyChange(evt);
         }
@@ -222,7 +235,7 @@ public class GameModel implements ModelInterface {
      * @param nickname of the current player.
      */
     public void EndTurn(String nickname) {
-        boolean ComGoalDone;
+        boolean ComGoalDone = false;
         //boolean playerPointUpdate = false;
         PropertyChangeEvent evt;
         for (ComGoal c : comGoals) {
@@ -245,7 +258,8 @@ public class GameModel implements ModelInterface {
             evt = new PropertyChangeEvent("null", "BOARD_CHANGED", null, board.getAsArrayList()); // faccio sempre anche se non modifica fa nulla
             this.listener.propertyChange(evt);
         }
-
+        this.gameJson.addProperty("lastPlayer", nickname);
+        saveJson(ComGoalDone);
     }
 
     /**
@@ -287,9 +301,31 @@ public class GameModel implements ModelInterface {
         }
 
         // Sending player's actual score
-        int score = playerMap.get(nickname).getScore();
-        evt = new PropertyChangeEvent(nickname, "PLAYER_SCORE", null, (nickname.equals(winner)) ? score + 1 : score);
+        evt = new PropertyChangeEvent(nickname, "PLAYER_SCORE", null, (nickname.equalsIgnoreCase(winner) ? playerMap.get(nickname).getScore() + 1 : playerMap.get(nickname).getScore()));
         this.listener.propertyChange(evt);
+    }
+
+    private void saveJson(boolean comGoalDone) {
+        Gson gson = new Gson();
+        gameJson.addProperty("board", gson.toJson(board.getAsArrayList()));
+        gameJson.addProperty("cardBag", gson.toJson(board.getCardBag()));
+
+        if(comGoalDone) {
+            gameJson.addProperty("firstComGoal", gson.toJson(comGoals.get(0), ComGoal.class));
+            gameJson.addProperty("secondComGoal", gson.toJson(comGoals.get(1), ComGoal.class));
+        }
+
+        for (String s : playerMap.keySet())
+            gameJson.addProperty(s, gson.toJson(playerMap.get(s), Player.class));
+
+        try {
+            PrintWriter gameFile = new PrintWriter(new BufferedWriter(new FileWriter(gameFilePath)));
+            gameFile.print(gameJson);
+            gameFile.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.err.println("Unable to write on game's file.");
+        }
     }
 }
 

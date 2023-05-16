@@ -48,7 +48,7 @@ public interface RMI extends Remote {
      * @param number number of players in the game
      * @throws RemoteException if an error occurred calling the server RMI
      */
-    void setPlayerNumber(String client, int number) throws RemoteException;
+    void setPlayerNumber(String client, int number, String gameName) throws RemoteException;
 
     /**
      * Method called from the client that pass to the server the chat message for all connected players of the game

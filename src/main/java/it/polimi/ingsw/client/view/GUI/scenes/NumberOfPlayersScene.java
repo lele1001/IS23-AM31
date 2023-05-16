@@ -1,17 +1,25 @@
 package it.polimi.ingsw.client.view.GUI.scenes;
 
 import it.polimi.ingsw.client.ClientController;
+import it.polimi.ingsw.client.view.GUI.GUIResources;
+import it.polimi.ingsw.client.view.GUI.SceneController;
+import it.polimi.ingsw.server.model.ItemCard;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 
-public class NumberOfPlayersScene implements GUIScene{
+import java.io.IOException;
+
+public class NumberOfPlayersScene extends GUIScene{
     @FXML
     public GridPane firstPlayerPane;
     @FXML
-    public Spinner<Integer> playersNum;
+    public TextField playersNum;
     @FXML
     public TextField gameName;
     @FXML
@@ -19,11 +27,16 @@ public class NumberOfPlayersScene implements GUIScene{
     @FXML
     TextArea errorArea;
     private ClientController clientController;
+    public Parent root;
+
+    public void setRoot (Parent root) {
+        this.root = root;
+    }
 
     @Override
     public void initialize(ClientController clientController) {
         this.clientController = clientController;
-        playersNum = new Spinner<Integer>(1, 4, 2);
+        //playersNum = new Spinner<Integer>(1, 4, 2);
 
         bindEvents();
     }
@@ -47,8 +60,7 @@ public class NumberOfPlayersScene implements GUIScene{
      * Form to select the number of players
      */
     public void submitAction() {
-        int players = Integer.parseInt(playersNum.getValue().toString());
-
+        int players = Integer.parseInt(playersNum.getText());
         if (players <= 0 || players >= 5) {
             printError("Error: insert a valid number of players");
             submitButton.setDisable(false);
@@ -58,11 +70,26 @@ public class NumberOfPlayersScene implements GUIScene{
             printError("Error: insert a valid name for the game");
             submitButton.setDisable(false);
         }
-
         try {
+            submitButton.setDisable(true);
             clientController.setPlayersNumber(players, gameName.getText());
         } catch (Exception e) {
             printError("Impossible to connect to the server");
         }
+    }
+
+    @Override
+    public void updateBookshelf(String nickname, ItemCard[][] bookshelf) {
+
+    }
+
+    @Override
+    public void updateBoard(ItemCard[][] board) {
+
+    }
+
+    @Override
+    public void updateCurrPlayer(String player) {
+
     }
 }
