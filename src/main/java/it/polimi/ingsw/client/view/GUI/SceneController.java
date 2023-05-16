@@ -9,6 +9,7 @@ import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.Objects;
 
 public class SceneController {
     private final ClientController clientController;
@@ -21,7 +22,6 @@ public class SceneController {
     private NotMyTurnScene notMyTurnScene = null;
     private EndGameScene endGameScene = null;
     private ErrorScene errorScene = null;
-
 
     public SceneController(ClientController clientController) {
         this.clientController = clientController;
@@ -89,7 +89,7 @@ public class SceneController {
     }
 
     /**
-     * Initialize the first stage and ask the user for server connection
+     * Initializes the first stage and asks the user for server connection
      */
     public void start(Stage stage) {
         try {
@@ -119,7 +119,7 @@ public class SceneController {
     }
 
     /**
-     * Ask the user to insert username and gameID
+     * Asks the user to insert login details
      * (using the current stage)
      */
     public void loadLogin() {
@@ -128,7 +128,7 @@ public class SceneController {
     }
 
     /**
-     * Show a loading screen waiting for other players connection
+     * Shows a loading screen waiting for other players connection
      * (using the current stage)
      */
     public void loadLobby() {
@@ -142,12 +142,30 @@ public class SceneController {
      */
     public void loadNumberOfPlayer() {
         this.clearController();
-        this.numberOfPlayersScene = this.changeScene(GUIResources.numberOfPlayerFXML, this.clientController).getController();
+        this.numberOfPlayersScene = Objects.requireNonNull(this.changeScene(GUIResources.numberOfPlayerFXML, this.clientController)).getController();
     }
 
     /**
-     * Load the game board
-     * (closing the current stage and show in a new stage)
+     * Loads the game board and allows the player to select cards
+     * (closing the current stage and showing a new stage)
+     */
+    public void loadTake() {
+        this.clearController();
+        this.takeCardsScene = Objects.requireNonNull(this.changeStage(GUIResources.takeCardsFXML, this.clientController)).getController();
+    }
+
+    /**
+     * Loads the player's bookshelf and allows him to put cards
+     * (closing the current stage and showing a new stage)
+     */
+    public void loadPut() {
+        this.clearController();
+        this.putCardsScene = Objects.requireNonNull(this.changeStage(GUIResources.putCardsFXML, this.clientController)).getController();
+    }
+
+    /**
+     * Loads the game board
+     * (closing the current stage and showing a new stage)
      */
     public void notMyTurn() {
         this.clearController();
@@ -155,21 +173,21 @@ public class SceneController {
     }
 
     /**
-     * Display victory
+     * Displays a victory message
      * (using the current stage)
      */
     public void endGameWin() {
         this.clearController();
-        this.endGameScene = this.changeScene(GUIResources.endGameWinFXML, this.clientController).getController();
+        this.endGameScene = Objects.requireNonNull(this.changeScene(GUIResources.endGameWinFXML, this.clientController)).getController();
     }
 
     /**
-     * Display lost
+     * Displays a lost message
      * (using the current stage)
      */
     public void endGameLose() {
         this.clearController();
-        this.endGameScene = this.changeScene(GUIResources.endGameLoseFXML, this.clientController).getController();
+        this.endGameScene = Objects.requireNonNull(this.changeScene(GUIResources.endGameLoseFXML, this.clientController)).getController();
     }
 
     private void clearController() {
@@ -208,7 +226,7 @@ public class SceneController {
 
     public void fatalError(String error) {
         this.clearController();
-        this.errorScene = this.changeStage(GUIResources.errorFXML, this.clientController).getController();
+        this.errorScene = Objects.requireNonNull(this.changeStage(GUIResources.errorFXML, this.clientController)).getController();
         this.errorScene.printError(error);
     }
 }

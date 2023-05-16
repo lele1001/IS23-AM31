@@ -22,4 +22,8 @@ public class PutCardsScene implements GUIScene {
 
     public void orderTiles() {
     }
+
+    public void updateCurrPlayer(String yourTurn) {
+        //TODO: print the input string
+    }
 }

@@ -22,4 +22,8 @@ public class NotMyTurnScene implements GUIScene {
 
     public void show() {
     }
+
+    public void updateCurrPlayer(String currPlayer) {
+        //TODO: print the name of the current player
+    }
 }

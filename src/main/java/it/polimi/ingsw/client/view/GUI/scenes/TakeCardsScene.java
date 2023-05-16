@@ -22,4 +22,8 @@ public class TakeCardsScene implements GUIScene {
 
     public void highlightTiles() {
     }
+
+    public void updateCurrPlayer(String yourTurn) {
+        //TODO: print the input string
+    }
 }

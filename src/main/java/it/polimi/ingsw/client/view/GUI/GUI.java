@@ -6,8 +6,6 @@ import it.polimi.ingsw.client.view.View;
 import it.polimi.ingsw.server.model.HouseItem;
 import it.polimi.ingsw.server.model.ItemCard;
 import javafx.application.Platform;
-import javafx.scene.Parent;
-import javafx.stage.Stage;
 
 import java.util.List;
 import java.util.Map;
@@ -31,6 +29,10 @@ public class GUI implements View {
     private void gameLogin() {
         currentScene = sceneController.getLoginScene();
         Platform.runLater(this.sceneController::loadLogin);
+
+        if (!clientController.isSelectNumberOfPlayers() && !clientController.isGameStarted()) {
+            Platform.runLater(this.sceneController::loadLobby);
+        }
     }
 
     @Override
@@ -111,6 +113,15 @@ public class GUI implements View {
         // Aggiorna il nome dell'attuale giocatore sugli scenari che lo contengono
         // Se currPlayer non è lui, currrentScene = NotMyTurnScene
         // Se, invece, è lui, non fa nulla perché poi il server chiamerà la askSelect e lo scenario commuterà da lì.
+
+        if (!clientController.isMyTurn()) {
+            sceneController.getNotMyTurnScene().updateCurrPlayer(currPlayer);
+            currentScene = sceneController.getNotMyTurnScene();
+            Platform.runLater(this.sceneController::notMyTurn);
+        } else {
+            sceneController.getTakeCardsScene().updateCurrPlayer("It is your turn");
+            sceneController.getPutCardsScene().updateCurrPlayer("It is your turn");
+        }
     }
 
     /**
@@ -183,6 +194,10 @@ public class GUI implements View {
         if (clientController.isSelectNumberOfPlayers()) {
             currentScene = sceneController.getNumberOfPlayersScene();
             Platform.runLater(this.sceneController::loadNumberOfPlayer);
+        }
+
+        if (!clientController.isGameStarted()) {
+            Platform.runLater(this.sceneController::loadLobby);
         }
     }
 

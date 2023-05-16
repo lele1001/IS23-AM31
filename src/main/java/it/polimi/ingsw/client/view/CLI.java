@@ -170,7 +170,6 @@ public class CLI implements View {
         System.out.println("Type @savedgame and the name of the game you want to resume (or 'n' to start a new game).");
     }
 
-
     /**
      * Reads the choice of the user
      */
@@ -675,9 +674,9 @@ public class CLI implements View {
     @Override
     public synchronized void printWinners(List<String> winners) {
         if (winners.size() == 1) {
-            System.out.println("winner is " + winners.get(0));
+            System.out.println("The winner is " + winners.get(0));
         } else {
-            System.out.println("Parity: winners are " + winners);
+            System.out.println("Parity: the winners are " + winners);
         }
     }
 }
