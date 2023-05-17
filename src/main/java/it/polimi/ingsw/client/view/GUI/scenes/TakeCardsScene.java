@@ -7,6 +7,9 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 
+import java.awt.*;
+import java.util.Objects;
+
 public class TakeCardsScene extends GUIScene {
 
     private static final int DIM_BOARD = 9;
