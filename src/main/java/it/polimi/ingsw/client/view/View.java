@@ -23,7 +23,7 @@ public interface View {
     void printBoard(ItemCard[][] board);
 
 
-    void askForSavedGame (List<String> savedGames);
+    void askForSavedGame(List<String> savedGames);
 
 
     /**

@@ -40,19 +40,32 @@ public class LoginScene extends GUIScene {
 
         connectionPane.setDisable(false);
         connectionPane.setVisible(true);
+
+        ToggleGroup connectionGroup = new ToggleGroup();
+        connectionRMI.setToggleGroup(connectionGroup);
+        connectionSocket.setToggleGroup(connectionGroup);
     }
 
+    /**
+     * Prints the error received by the server
+     */
     @Override
     public void printError(String error) {
         errorArea.setVisible(true);
         errorArea.setText(error);
     }
 
+    /**
+     * Connects the FXML file to the scene
+     */
     @Override
     public void bindEvents() {
         loginButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> loginAction());
     }
 
+    /**
+     * Checks the parameters inserted by the user and tries to start a connection with the server
+     */
     @FXML
     public void loginAction() {
         int select = checkConnection();
@@ -126,17 +139,14 @@ public class LoginScene extends GUIScene {
 
     @Override
     public void updateBoard(ItemCard[][] board) {
-
     }
 
     @Override
     public void updateBookshelf(String nickname, ItemCard[][] bookshelf) {
-
     }
 
     @Override
     public void updateCurrPlayer(String player) {
-
     }
 
 }

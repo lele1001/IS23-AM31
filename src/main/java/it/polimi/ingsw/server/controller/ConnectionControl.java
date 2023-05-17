@@ -90,7 +90,7 @@ public class ConnectionControl {
         }
     }
 
-    public void askSavedGame (String nickname, List<String> savedGames) {
+    public void askSavedGame(String nickname, List<String> savedGames) {
         this.getClientHandlerMap().get(nickname).askSavedGame(savedGames);
     }
 

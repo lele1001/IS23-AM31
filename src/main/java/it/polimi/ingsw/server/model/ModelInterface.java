@@ -23,8 +23,8 @@ public interface ModelInterface {
      * Tries to insert cards in a nickname's bookshelf.
      *
      * @param nickname the owner of the bookshelf.
-     * @param cards     to be inserted into the bookshelf.
-     * @param column    of the bookshelf to insert cards into.
+     * @param cards    to be inserted into the bookshelf.
+     * @param column   of the bookshelf to insert cards into.
      * @throws NoBookshelfSpaceException if there's no space in the column indicated.
      * @throws NotSameSelectedException  if the player wants to insert cards different from the ones selected.
      */

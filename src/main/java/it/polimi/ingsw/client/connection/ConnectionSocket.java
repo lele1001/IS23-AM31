@@ -180,7 +180,8 @@ public class ConnectionSocket extends ConnectionClient {
         try {
             jsonObject = gson.fromJson(json, jsonObject.getClass());
             switch (jsonObject.get("Type").getAsString()) {
-                case "askPlayersNumber" -> getController().onPlayerNumber(new ArrayList<>(Arrays.asList(gson.fromJson(jsonObject.get("Value").getAsString(), String[].class))));
+                case "askPlayersNumber" ->
+                        getController().onPlayerNumber(new ArrayList<>(Arrays.asList(gson.fromJson(jsonObject.get("Value").getAsString(), String[].class))));
 
                 case "disconnect" -> in.close();
 

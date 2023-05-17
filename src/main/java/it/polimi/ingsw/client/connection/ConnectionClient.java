@@ -99,6 +99,6 @@ public abstract class ConnectionClient extends UnicastRemoteObject {
      */
     public abstract void setPlayersNumber(int players, String gameName) throws Exception;
 
-    public abstract void setSavedGame (boolean wantToSave, String gameName) throws Exception;
+    public abstract void setSavedGame(boolean wantToSave, String gameName) throws Exception;
 
 }

@@ -73,7 +73,7 @@ public class GameModel implements ModelInterface {
             this.listener.propertyChange(evt);
             persGoals.remove(0);
         }
-        this.gameJson.addProperty("lastPlayer", players.get(players.size()-1));
+        this.gameJson.addProperty("lastPlayer", players.get(players.size() - 1));
         saveJson(true);
     }
 
@@ -109,7 +109,7 @@ public class GameModel implements ModelInterface {
 
 
         for (String s : players) {
-            this.playerMap.put(s,  gson.fromJson(json.get(s), Player.class));
+            this.playerMap.put(s, gson.fromJson(json.get(s), Player.class));
         }
 
         for (String s : onlinePlayers)
@@ -120,8 +120,8 @@ public class GameModel implements ModelInterface {
      * Tries to insert cards in a nickname's bookshelf.
      *
      * @param nickname the owner of the bookshelf.
-     * @param cards     to be inserted into the bookshelf.
-     * @param column    of the bookshelf to insert cards into.
+     * @param cards    to be inserted into the bookshelf.
+     * @param column   of the bookshelf to insert cards into.
      * @throws NoBookshelfSpaceException if there's no space in the column indicated.
      * @throws NotSameSelectedException  if the player wants to insert cards different from the ones selected.
      */
@@ -310,7 +310,7 @@ public class GameModel implements ModelInterface {
         gameJson.addProperty("board", gson.toJson(board.getAsArrayList()));
         gameJson.addProperty("cardBag", gson.toJson(board.getCardBag()));
 
-        if(comGoalDone) {
+        if (comGoalDone) {
             gameJson.addProperty("firstComGoal", gson.toJson(comGoals.get(0), ComGoal.class));
             gameJson.addProperty("secondComGoal", gson.toJson(comGoals.get(1), ComGoal.class));
         }

@@ -380,12 +380,12 @@ public class ClientController {
     }
 
     public void printWaitingForGame() {
-        if(!gameStarted) {
+        if (!gameStarted) {
             view.printLobby();
         }
     }
 
-    public void setSavedGame (boolean wantToSave, String gameName) throws Exception {
+    public void setSavedGame(boolean wantToSave, String gameName) throws Exception {
         if (!selectSavedGame)
             throw new NotAskedException();
         if ((wantToSave) && (!savedGames.contains(gameName)))

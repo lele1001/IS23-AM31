@@ -36,7 +36,7 @@ public class Board {
         Collections.shuffle(cardBag);
     }
 
-    public Board (ItemCard[][] board, ArrayList<ItemCard> cardBag, int numPlayers) {
+    public Board(ItemCard[][] board, ArrayList<ItemCard> cardBag, int numPlayers) {
         this.board = board;
         this.cardBag = cardBag;
         this.numPlayers = numPlayers;
