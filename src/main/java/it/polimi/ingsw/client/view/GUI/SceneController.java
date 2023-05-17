@@ -25,7 +25,7 @@ public class SceneController {
         this.createScene(GUIResources.loginFXML, "loginScene");
         this.createScene(GUIResources.errorFXML, "errorScene");
         //this.createScene(GUIResources.putCardsFXML, "putCardsScene");
-        //this.createScene(GUIResources.takeCardsFXML, "takeCardsScene");
+        this.createScene(GUIResources.takeCardsFXML, "takeCardsScene");
         //this.createScene(GUIResources.endGameLoseFXML, "endGameScene");
         //this.createScene(GUIResources.notMyTurnFXML, "notMyTurnScene");
         this.createScene(GUIResources.numberOfPlayerFXML, "numberOfPlayersScene");

@@ -2,6 +2,8 @@ package it.polimi.ingsw.client.view.GUI;
 
 import javafx.scene.image.Image;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 public final class GUIResources {
@@ -19,45 +21,68 @@ public final class GUIResources {
     //images
     public final static Image icon = new Image(Objects.requireNonNull(GUIResources.class.getResource("/images/publisherMaterial/Icon.png")).toString());
 
-    public final static Image frameFirst = new Image(Objects.requireNonNull(GUIResources.class.getResource("/images/publisherMaterial/Cornici1.1.png")).toString());
+    public final static Image frameFirst = new Image(Objects.requireNonNull(GUIResources.class.getResource("/images/publisherMaterial/Cornici1.png")).toString());
 
-    public final static Image frameSecond = new Image(Objects.requireNonNull(GUIResources.class.getResource("/images/publisherMaterial/Cornici1.2.png")).toString());
+    public final static Image frameSecond = new Image(Objects.requireNonNull(GUIResources.class.getResource("/images/publisherMaterial/Cornici2.png")).toString());
 
-    public final static Image franeThird = new Image(Objects.requireNonNull(GUIResources.class.getResource("/images/publisherMaterial/Cornici1.3.png")).toString());
+    public final static Image franeThird = new Image(Objects.requireNonNull(GUIResources.class.getResource("/images/publisherMaterial/Cornici3.png")).toString());
 
-    public final static Image catFirst = new Image(Objects.requireNonNull(GUIResources.class.getResource("/images/publisherMaterial/Gatti1.1.png")).toString());
+    public final static Image catFirst = new Image(Objects.requireNonNull(GUIResources.class.getResource("/images/publisherMaterial/Gatti1.png")).toString());
 
-    public final static Image catSecond = new Image(Objects.requireNonNull(GUIResources.class.getResource("/images/publisherMaterial/Gatti1.2.png")).toString());
+    public final static Image catSecond = new Image(Objects.requireNonNull(GUIResources.class.getResource("/images/publisherMaterial/Gatti2.png")).toString());
 
-    public final static Image catThird = new Image(Objects.requireNonNull(GUIResources.class.getResource("/images/publisherMaterial/Gatti1.3.png")).toString());
+    public final static Image catThird = new Image(Objects.requireNonNull(GUIResources.class.getResource("/images/publisherMaterial/Gatti3.png")).toString());
 
-    public final static Image gamesFirst = new Image(Objects.requireNonNull(GUIResources.class.getResource("/images/publisherMaterial/Giochi1.1.png")).toString());
+    public final static Image gamesFirst = new Image(Objects.requireNonNull(GUIResources.class.getResource("/images/publisherMaterial/Giochi1.png")).toString());
 
-    public final static Image gameSecond = new Image(Objects.requireNonNull(GUIResources.class.getResource("/images/publisherMaterial/Giochi1.2.png")).toString());
+    public final static Image gamesSecond = new Image(Objects.requireNonNull(GUIResources.class.getResource("/images/publisherMaterial/Giochi2.png")).toString());
 
-    public final static Image gameThird = new Image(Objects.requireNonNull(GUIResources.class.getResource("/images/publisherMaterial/Giochi1.3.png")).toString());
+    public final static Image gamesThird = new Image(Objects.requireNonNull(GUIResources.class.getResource("/images/publisherMaterial/Giochi3.png")).toString());
 
-    public final static Image booksFirst = new Image(Objects.requireNonNull(GUIResources.class.getResource("/images/publisherMaterial/Libri1.1.png")).toString());
+    public final static Image booksFirst = new Image(Objects.requireNonNull(GUIResources.class.getResource("/images/publisherMaterial/Libri1.png")).toString());
 
-    public final static Image booksSecond = new Image(Objects.requireNonNull(GUIResources.class.getResource("/images/publisherMaterial/Libri1.2.png")).toString());
+    public final static Image booksSecond = new Image(Objects.requireNonNull(GUIResources.class.getResource("/images/publisherMaterial/Libri2.png")).toString());
 
-    public final static Image booksThird = new Image(Objects.requireNonNull(GUIResources.class.getResource("/images/publisherMaterial/Libri1.3.png")).toString());
+    public final static Image booksThird = new Image(Objects.requireNonNull(GUIResources.class.getResource("/images/publisherMaterial/Libri3.png")).toString());
 
-    public final static Image plantsFirst = new Image(Objects.requireNonNull(GUIResources.class.getResource("/images/publisherMaterial/Piante1.1.png")).toString());
+    public final static Image plantsFirst = new Image(Objects.requireNonNull(GUIResources.class.getResource("/images/publisherMaterial/Piante1.png")).toString());
 
-    public final static Image plantsSecond = new Image(Objects.requireNonNull(GUIResources.class.getResource("/images/publisherMaterial/Piante1.2.png")).toString());
+    public final static Image plantsSecond = new Image(Objects.requireNonNull(GUIResources.class.getResource("/images/publisherMaterial/Piante2.png")).toString());
 
-    public final static Image plantsThird = new Image(Objects.requireNonNull(GUIResources.class.getResource("/images/publisherMaterial/Piante1.3.png")).toString());
+    public final static Image plantsThird = new Image(Objects.requireNonNull(GUIResources.class.getResource("/images/publisherMaterial/Piante3.png")).toString());
 
-    public final static Image trophyFirst = new Image(Objects.requireNonNull(GUIResources.class.getResource("/images/publisherMaterial/Trofei1.1.png")).toString());
+    public final static Image trophyFirst = new Image(Objects.requireNonNull(GUIResources.class.getResource("/images/publisherMaterial/Trofei1.png")).toString());
 
-    public final static Image trophySecond = new Image(Objects.requireNonNull(GUIResources.class.getResource("/images/publisherMaterial/Trofei1.2.png")).toString());
+    public final static Image trophySecond = new Image(Objects.requireNonNull(GUIResources.class.getResource("/images/publisherMaterial/Trofei2.png")).toString());
 
-    public final static Image trophyThird = new Image(Objects.requireNonNull(GUIResources.class.getResource("/images/publisherMaterial/Trofei1.3.png")).toString());
+    public final static Image trophyThird = new Image(Objects.requireNonNull(GUIResources.class.getResource("/images/publisherMaterial/Trofei3.png")).toString());
+
+    private static final Map<String, Image> itemTiles = new HashMap<String, Image>();
+
     private GUIResources() {
         //mappare item tiles
-        //
+        itemTiles.put("frameFirst", frameFirst);
+        itemTiles.put("frameSecond", frameSecond);
+        itemTiles.put("frameThird", franeThird);
+        itemTiles.put("catFirst", catFirst);
+        itemTiles.put("catSecond", catSecond);
+        itemTiles.put("catThird", catThird);
+        itemTiles.put("gamesFirst", gamesFirst);
+        itemTiles.put("gamesSecond", gamesSecond);
+        itemTiles.put("gamesThird", gamesThird);
+        itemTiles.put("booksFirst", booksFirst);
+        itemTiles.put("booksSecond", booksSecond);
+        itemTiles.put("booksThird", booksThird);
+        itemTiles.put("plantsFirst", plantsFirst);
+        itemTiles.put("plantsSecond", plantsSecond);
+        itemTiles.put("plantsThird", plantsThird);
+        itemTiles.put("trophyFirst", trophyFirst);
+        itemTiles.put("trophySecond", trophySecond);
+        itemTiles.put("trophyThird", trophyThird);
 
+    }
 
+    public static Image getItem(String myItem) {
+        return itemTiles.get(myItem);
     }
 }
