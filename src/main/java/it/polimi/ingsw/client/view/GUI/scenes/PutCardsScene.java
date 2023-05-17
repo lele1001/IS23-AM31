@@ -38,8 +38,8 @@ public class PutCardsScene extends GUIScene {
 
     @Override
     public void updateBoard(ItemCard[][] board) {
-        for(int i = 0; i < DIM_BOARD; i++){
-            for(int j = 0; j < DIM_BOARD; j++){
+        for (int i = 0; i < DIM_BOARD; i++) {
+            for (int j = 0; j < DIM_BOARD; j++) {
                 String itemName = board[i][j].getMyItem().toString().toLowerCase();
                 String itemNumber = board[i][j].getMyNum().toString();
                 String myItem = itemName + itemNumber;
@@ -52,13 +52,13 @@ public class PutCardsScene extends GUIScene {
     @Override
     public void updateBookshelf(String nickname, ItemCard[][] bookshelf) {
 
-        for(int i = 0; i < BOOKSHELF_HEIGHT; i++){
-            for(int j = 0; j < BOOKSHELF_LENGTH ; j++){
+        for (int i = 0; i < BOOKSHELF_HEIGHT; i++) {
+            for (int j = 0; j < BOOKSHELF_LENGTH; j++) {
                 String itemName = bookshelf[i][j].getMyItem().toString().toLowerCase();
                 String itemNumber = bookshelf[i][j].getMyNum().toString();
                 String myItem = itemName + itemNumber;
                 //Creare funzione per scegliere
-            //    boardPane.add(new ImageView(GUIResources.getItem(myItem)), i, j);
+                //    boardPane.add(new ImageView(GUIResources.getItem(myItem)), i, j);
             }
         }
     }

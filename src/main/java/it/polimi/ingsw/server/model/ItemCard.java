@@ -10,7 +10,7 @@ public class ItemCard implements Serializable {
      * The default constructor.
      *
      * @param myItem this ItemCard's HouseItem to be set.
-     * @param myNum this ItemCard's ItemNumber to be set.
+     * @param myNum  this ItemCard's ItemNumber to be set.
      */
     public ItemCard(HouseItem myItem, ItemNumber myNum) {
         this.houseItem = myItem;

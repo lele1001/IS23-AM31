@@ -1,7 +1,6 @@
 package it.polimi.ingsw.client.view.GUI;
 
 import it.polimi.ingsw.client.ClientController;
-import it.polimi.ingsw.client.view.GUI.scenes.*;
 import it.polimi.ingsw.client.view.View;
 import it.polimi.ingsw.server.model.HouseItem;
 import it.polimi.ingsw.server.model.ItemCard;
@@ -19,7 +18,6 @@ public class GUI implements View {
         this.clientController = clientController;
         this.clientController.setView(this);
         this.sceneController = new SceneController(this.clientController);
-        //gameLogin();
     }
 
     public SceneController getSceneController() {
@@ -27,7 +25,6 @@ public class GUI implements View {
     }
 
     public void gameLogin() {
-        //currentScene = sceneController.getLoginScene();
         Platform.runLater(this.sceneController::loadLogin);
     }
 
@@ -80,17 +77,10 @@ public class GUI implements View {
     @Override
     public void onChangeTurn(String currPlayer) {
         sceneController.updateCurrPlayer(currPlayer);
-        if (!currPlayer.equals(clientController.getMyNickname()))
-            Platform.runLater(this.sceneController::notMyTurn);
 
- /*       if (!clientController.isMyTurn()) {
-            sceneController.getNotMyTurnScene().updateCurrPlayer(currPlayer);
-            currentScene = sceneController.getNotMyTurnScene();
+        if (!currPlayer.equals(clientController.getMyNickname())) {
             Platform.runLater(this.sceneController::notMyTurn);
-        } else {
-            sceneController.getTakeCardsScene().updateCurrPlayer("It is your turn");
-            sceneController.getPutCardsScene().updateCurrPlayer("It is your turn");
-        }*/
+        }
     }
 
     /**
@@ -170,9 +160,7 @@ public class GUI implements View {
      */
     @Override
     public void disconnectionError() {
-        Platform.runLater(() -> {
-            this.sceneController.fatalError("You've been disconnected from server.");
-        });
+        Platform.runLater(() -> this.sceneController.fatalError("You've been disconnected from server."));
     }
 
     /**
@@ -180,9 +168,7 @@ public class GUI implements View {
      */
     @Override
     public void disconnectMe() {
-        Platform.runLater(() -> {
-            this.sceneController.fatalError("You've been disconnected from server.");
-        });
+        Platform.runLater(() -> this.sceneController.fatalError("You've been disconnected from server."));
     }
 
     /**
@@ -200,11 +186,11 @@ public class GUI implements View {
      */
     @Override
     public void printWinners(List<String> winners) {
-        if (winners.contains(clientController.getMyNickname()))
+        if (winners.contains(clientController.getMyNickname())) {
             Platform.runLater(this.sceneController::endGameWin);
-        else
+        } else {
             Platform.runLater(this.sceneController::endGameLose);
-
+        }
     }
 
     @Override

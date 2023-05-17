@@ -15,7 +15,7 @@ import javafx.scene.layout.GridPane;
 
 import java.io.IOException;
 
-public class NumberOfPlayersScene extends GUIScene{
+public class NumberOfPlayersScene extends GUIScene {
     @FXML
     public GridPane firstPlayerPane;
     @FXML
@@ -29,7 +29,7 @@ public class NumberOfPlayersScene extends GUIScene{
     private ClientController clientController;
     public Parent root;
 
-    public void setRoot (Parent root) {
+    public void setRoot(Parent root) {
         this.root = root;
     }
 

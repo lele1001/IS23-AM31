@@ -79,7 +79,6 @@ public final class GUIResources {
         itemTiles.put("trophyFirst", trophyFirst);
         itemTiles.put("trophySecond", trophySecond);
         itemTiles.put("trophyThird", trophyThird);
-
     }
 
     public static Image getItem(String myItem) {

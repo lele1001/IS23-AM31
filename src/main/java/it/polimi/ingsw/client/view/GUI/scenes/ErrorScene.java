@@ -2,16 +2,17 @@ package it.polimi.ingsw.client.view.GUI.scenes;
 
 import it.polimi.ingsw.client.ClientController;
 import it.polimi.ingsw.server.model.ItemCard;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.input.MouseEvent;
 
-import java.util.Map;
-
-public class ErrorScene extends GUIScene{
+public class ErrorScene extends GUIScene {
     private ClientController clientController;
     @FXML
-    private Label errorDescription_label;
+    private Label errorDescription;
+    @FXML
+    public Button closeButton;
 
     @Override
     public void initialize(ClientController clientController) {
@@ -20,12 +21,12 @@ public class ErrorScene extends GUIScene{
 
     @Override
     public void printError(String error) {
-        this.errorDescription_label.setText(error);
+        this.errorDescription.setText(error);
     }
 
     @Override
     public void bindEvents() {
-
+        closeButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> closeGame());
     }
 
     public void closeGame() {
@@ -34,18 +35,13 @@ public class ErrorScene extends GUIScene{
 
     @Override
     public void updateBoard(ItemCard[][] board) {
-
     }
 
     @Override
     public void updateBookshelf(String nickname, ItemCard[][] bookshelf) {
-
     }
 
     @Override
     public void updateCurrPlayer(String player) {
-
     }
-
 }
-

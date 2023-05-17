@@ -23,8 +23,8 @@ public class TakeCardsScene extends GUIScene {
     @Override
     public void updateBoard(ItemCard[][] board) {
 
-        for(int i = 0; i < DIM_BOARD; i++){
-            for(int j = 0; j < DIM_BOARD; j++){
+        for (int i = 0; i < DIM_BOARD; i++) {
+            for (int j = 0; j < DIM_BOARD; j++) {
                 String itemName = board[i][j].getMyItem().toString().toLowerCase();
                 String itemNumber = board[i][j].getMyNum().toString();
                 String myItem = itemName + itemNumber;
