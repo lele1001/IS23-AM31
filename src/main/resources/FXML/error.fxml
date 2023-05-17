@@ -4,21 +4,27 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.view.GUI.scenes.ErrorScene">
-    <children>
-        <Label layoutX="225.0" layoutY="75.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="55.0" prefWidth="150.0" text="ERROR" textFill="RED">
-            <font>
-                <Font name="Bauhaus 93" size="48.0" />
-            </font>
-        </Label>
-        <Button fx:id="closeButton" layoutX="245.0" layoutY="280.0" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#closeGame" prefHeight="30.0" prefWidth="110.0" text="Close game" textAlignment="CENTER">
-         <font>
-            <Font name="Bauhaus 93" size="16.0" />
-         </font></Button>
-        <Label fx:id="errorDescription" layoutX="100.0" layoutY="182.5" prefHeight="35.0" prefWidth="400.0" textAlignment="CENTER" textFill="RED">
-            <font>
-                <Font name="Bauhaus 93" size="18.0" />
-            </font>
-        </Label>
-    </children>
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.view.GUI.scenes.ErrorScene">
+    <Label layoutX="225.0" layoutY="75.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+           minWidth="-Infinity" prefHeight="55.0" prefWidth="150.0" text="ERROR" textFill="RED">
+        <font>
+            <Font name="Bauhaus 93" size="48.0"/>
+        </font>
+    </Label>
+
+    <Button fx:id="closeButton" layoutX="245.0" layoutY="280.0" maxHeight="-Infinity" maxWidth="-Infinity"
+            mnemonicParsing="false" onAction="#closeGame" prefHeight="30.0" prefWidth="110.0" text="Close game"
+            textAlignment="CENTER">
+        <font>
+            <Font name="Bauhaus 93" size="16.0"/>
+        </font>
+    </Button>
+
+    <Label fx:id="errorDescription" layoutX="100.0" layoutY="182.5" prefHeight="35.0" prefWidth="400.0"
+           textAlignment="CENTER" textFill="RED">
+        <font>
+            <Font name="Bauhaus 93" size="18.0"/>
+        </font>
+    </Label>
 </AnchorPane>

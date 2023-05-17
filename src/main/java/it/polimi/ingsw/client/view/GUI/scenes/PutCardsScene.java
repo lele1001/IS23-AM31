@@ -46,7 +46,6 @@ public class PutCardsScene extends GUIScene {
                 boardPane.add(new ImageView(GUIResources.getItem(myItem)), i, j);
             }
         }
-
     }
 
     @Override

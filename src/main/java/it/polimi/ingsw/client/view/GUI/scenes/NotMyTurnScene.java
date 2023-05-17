@@ -39,5 +39,4 @@ public class NotMyTurnScene extends GUIScene {
     public void updateBookshelf(String nickname, ItemCard[][] bookshelf) {
 
     }
-
 }

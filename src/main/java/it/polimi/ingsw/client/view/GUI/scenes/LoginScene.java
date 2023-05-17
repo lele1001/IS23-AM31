@@ -138,16 +138,10 @@ public class LoginScene extends GUIScene {
     }
 
     @Override
-    public void updateBoard(ItemCard[][] board) {
-    }
-
+    public void updateBoard(ItemCard[][] board) {}
     @Override
-    public void updateBookshelf(String nickname, ItemCard[][] bookshelf) {
-    }
-
+    public void updateBookshelf(String nickname, ItemCard[][] bookshelf) {}
     @Override
-    public void updateCurrPlayer(String player) {
-    }
+    public void updateCurrPlayer(String player) {}
 
 }
-
