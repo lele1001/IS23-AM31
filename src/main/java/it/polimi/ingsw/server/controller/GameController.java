@@ -10,7 +10,6 @@ import it.polimi.ingsw.server.model.ModelInterface;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.nio.file.Path;
 import java.util.*;
 
 public class GameController implements PropertyChangeListener {
@@ -23,6 +22,7 @@ public class GameController implements PropertyChangeListener {
     private TurnPhase turnPhase;
     private boolean gameIsActive;
     private boolean timeout = false;
+    private String gameFilePath;
 
     /**
      * A simple constructor also used to set the reference for the ConnectionControl.
@@ -32,12 +32,14 @@ public class GameController implements PropertyChangeListener {
     public GameController(ConnectionControl connectionControl) {
         this.connectionControl = connectionControl;
         gameIsActive = false;
+        winner = false;
     }
 
     /**
      * Creates the game with all the necessary (board, bookshelves, ...) and starts it
      */
     public void createGame(ArrayList<String> playersList, String gameFilePath) {
+        this.gameFilePath = gameFilePath;
         if (playersList.size() < 2 || playersList.size() > 4) {
             System.out.println("Error: number of players not correct.");
             return;
@@ -56,9 +58,18 @@ public class GameController implements PropertyChangeListener {
     }
 
     public void resumeGame(ArrayList<String> onlinePlayers, List<String> playersList, JsonObject json, String gameFilePath) {
+        this.gameFilePath = gameFilePath;
         this.playersList.addAll(playersList);
         gameModel = new GameModel();
         gameModel.setListener(this);
+        try {
+            json.get("winner").getAsString();
+            this.winner = true;
+        } catch (Exception e) {
+            System.out.println("Restored game doesn't have a winner yet.");
+        }
+        this.currPlayer = json.get("lastPlayer").getAsString();
+        connectionControl.sendGameIsStarting(new ArrayList<>(playersList), null);
         gameModel.resumeGame(onlinePlayers, json, gameFilePath);
     }
 
@@ -68,8 +79,7 @@ public class GameController implements PropertyChangeListener {
      */
     public void run(int startFrom) {
         gameIsActive = true;
-        winner = false;
-        int i = (startFrom > playersList.size() ? 0 : startFrom);
+        int i = (startFrom >= playersList.size() ? 0 : startFrom);
         while (!winner) {
             Timer timer = new Timer();
             if (playersList.stream().filter(connectionControl::isOnline).count() < 2) {
@@ -102,7 +112,7 @@ public class GameController implements PropertyChangeListener {
                         System.out.println("The winner of the game is " + remained.get(0));
                         connectionControl.sendWinner(remained);
                     }
-                    connectionControl.onEndGame();
+                    connectionControl.onEndGame(gameFilePath);
                     return;
                 } else {
                     connectionControl.sendErrorToEveryone("Game is resuming...");
@@ -136,7 +146,7 @@ public class GameController implements PropertyChangeListener {
             System.out.println("Parity: winners are " + gameWinners);
         }
         connectionControl.sendWinner(gameWinners);
-        connectionControl.onEndGame();
+        connectionControl.onEndGame(gameFilePath);
     }
 
     /**

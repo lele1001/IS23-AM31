@@ -11,8 +11,6 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
 import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.attribute.FileAttribute;
 import java.rmi.AlreadyBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -31,9 +29,9 @@ public class Server {
     private static boolean stop;
     private RMIInterface rmiInterface;
     private boolean playersNumberAsked = false;
-    private boolean savedGameAsked = false;
-    private boolean wantToSave = false;
-    private boolean firstAsked = false;
+    private boolean savedGameAsked;
+    private boolean wantToSave;
+    private boolean firstAsked;
     private String gameName;
     private final Map<String, JsonObject> savedGames = new HashMap<>();
     private final static String savedGamesPath = "C:\\MyShelfieSavedGames";
@@ -71,6 +69,10 @@ public class Server {
         this.connectionControl.setGameController(gameController);
         this.queue = new ArrayList<>();
         playersNumberAsked = false;
+        wantToSave = false;
+        savedGameAsked = false;
+        firstAsked = false;
+        gameName = null;
     }
 
     /**
@@ -185,7 +187,7 @@ public class Server {
         executor.shutdown();
     }
 
-    public void findSavedGames() {
+    public void findSavedGames () {
         File directory;
         Gson gson = new Gson();
         try {
@@ -265,7 +267,7 @@ public class Server {
                     List<String> savedNames = new ArrayList<>();
                     for (String s : savedGames.keySet()) {
                         try {
-                            if (gson.fromJson(savedGames.get(s).get("nicknames").getAsString(), List.class).contains(this.queue.get(0)) && !savedGameAsked)
+                            if (Arrays.asList(gson.fromJson(savedGames.get(s).get("nicknames").getAsString(), String[].class)).contains(this.queue.get(0)) && !savedGameAsked)
                                 savedNames.add(s);
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -303,7 +305,7 @@ public class Server {
             }
         }*/
         if (wantToSave) {
-            List<String> players = gson.fromJson(savedGames.get(gameName).get("nicknames").getAsString(), List.class);
+            List<String> players = Arrays.asList(gson.fromJson(savedGames.get(gameName).get("nicknames").getAsString(), String[].class));
             //System.out.println("ok. wants to save.");
             ArrayList<String> onlinePlayers = new ArrayList<>();
 
@@ -324,7 +326,7 @@ public class Server {
 
             this.gameController.resumeGame(onlinePlayers, players, savedGames.get(gameName), Server.savedGamesPath + "\\" + gameName + ".json");
 
-            new Thread(() -> this.gameController.run(players.indexOf(savedGames.get(gameName).get("currPlayer").getAsString()) + 1)).start();
+            new Thread(() -> this.gameController.run(players.indexOf(savedGames.get(gameName).get("lastPlayer").getAsString())+1)).start();
         } else {
             // Saying other players that game is not available for them.
             for (String s : queue) {
@@ -345,7 +347,14 @@ public class Server {
     /**
      * Re-initializes server at the end of a game to let it be ready for new games.
      */
-    public void onEndGame() {
+    public void onEndGame(String gameFilePath) {
+        File file = new File(gameFilePath);
+        if (file.delete()) {
+            System.out.println("Game file successfully deleted.");
+        }
+        else {
+            System.out.println("Game file deletion failed.");
+        }
         initialize();
         if (rmiInterface != null)
             rmiInterface.setConnectionControl(connectionControl);

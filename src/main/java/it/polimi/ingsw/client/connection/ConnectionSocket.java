@@ -57,8 +57,7 @@ public class ConnectionSocket extends ConnectionClient {
      */
     @Override
     public void selectCard(String nickname, ArrayList<Integer> cardsSelected) {
-        Gson gson = new Gson();
-        send(generateStandardMessage("selectCards", gson.toJson(cardsSelected.toArray())));
+        send(generateStandardMessage("selectCards", cardsSelected.toString()));
     }
 
     /**

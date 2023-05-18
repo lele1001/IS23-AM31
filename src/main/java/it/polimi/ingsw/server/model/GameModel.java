@@ -1,7 +1,6 @@
 package it.polimi.ingsw.server.model;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
+import com.google.gson.*;
 import it.polimi.ingsw.server.gameExceptions.EmptyCardBagException;
 import it.polimi.ingsw.server.gameExceptions.NoBookshelfSpaceException;
 import it.polimi.ingsw.server.gameExceptions.NoRightItemCardSelection;
@@ -73,7 +72,7 @@ public class GameModel implements ModelInterface {
             this.listener.propertyChange(evt);
             persGoals.remove(0);
         }
-        this.gameJson.addProperty("lastPlayer", players.get(players.size() - 1));
+        this.gameJson.addProperty("lastPlayer", players.get(players.size()-1));
         saveJson(true);
     }
 
@@ -83,33 +82,23 @@ public class GameModel implements ModelInterface {
         Gson gson = new Gson();
 
         //Prendo i player dal file e li salvo in una lista di stringhe
-        ArrayList<String> players = new ArrayList<>(gson.fromJson(json.get("nicknames").getAsString(), List.class));
+        List<String> players = Arrays.asList(gson.fromJson(json.get("nicknames").getAsString(), String[].class));
 
-        PropertyChangeEvent evt;
-        /*
-        Leggo la board e la passo al nuovo costruttore new Board(ItemCard[][] board)
-
-
-         */
-
-        System.out.println(gson.fromJson(json.get("board").getAsString(), ItemCard[][].class));
         this.board = new Board(gson.fromJson(json.get("board").getAsString(), ItemCard[][].class), new ArrayList<>(Arrays.asList(gson.fromJson(json.get("cardBag").getAsString(), ItemCard[].class))), players.size());
         System.out.println("Board restored");
 
+        comGoals.add(gson.fromJson(json.get("firstComGoal").getAsString(), selectComGoal(gson.fromJson(json.get("firstComGoal").getAsString().replace("\\", ""), JsonObject.class).get("CGID").getAsInt(), 3).getClass()));
+        comGoals.add(gson.fromJson(json.get("secondComGoal").getAsString(), selectComGoal(gson.fromJson(json.get("secondComGoal").getAsString().replace("\\", ""), JsonObject.class).get("CGID").getAsInt(), 3).getClass()));
 
-        // Li prendo dal file
-        comGoals.add(gson.fromJson(json.get("firstComGoal"), ComGoal.class));
-        comGoals.add(gson.fromJson(json.get("secondComGoal"), ComGoal.class));
+        System.out.println("ComGoals restored: " + comGoals.get(0).getCGID() + " punti: " + comGoals.get(0).getCurrScore() + "," +  comGoals.get(1).getCGID() + " punti: " + comGoals.get(1).getCurrScore() + ".");
 
-        // La add prende il numero di giocatori in base al punteggio rimasto
-        //comGoals.add(selectComGoal(firstGoal, players.size()));
-        System.out.println("ComGoals restored: " + comGoals.get(0).getCGID() + "," + comGoals.get(1).getCGID());
+        for (String s : players)
+            this.playerMap.put(s, gson.fromJson(json.get(s).getAsString(), Player.class));
 
-        //comGoals.add(selectComGoal(secondGoal, players.size()));
-
-
-        for (String s : players) {
-            this.playerMap.put(s, gson.fromJson(json.get(s), Player.class));
+        try {
+            this.winner = gameJson.get("winner").getAsString();
+        } catch (Exception e) {
+            System.out.println("Restored game doesn't have a winner yet.");
         }
 
         for (String s : onlinePlayers)
@@ -120,8 +109,8 @@ public class GameModel implements ModelInterface {
      * Tries to insert cards in a nickname's bookshelf.
      *
      * @param nickname the owner of the bookshelf.
-     * @param cards    to be inserted into the bookshelf.
-     * @param column   of the bookshelf to insert cards into.
+     * @param cards     to be inserted into the bookshelf.
+     * @param column    of the bookshelf to insert cards into.
      * @throws NoBookshelfSpaceException if there's no space in the column indicated.
      * @throws NotSameSelectedException  if the player wants to insert cards different from the ones selected.
      */
@@ -308,9 +297,9 @@ public class GameModel implements ModelInterface {
     private void saveJson(boolean comGoalDone) {
         Gson gson = new Gson();
         gameJson.addProperty("board", gson.toJson(board.getAsArrayList()));
-        gameJson.addProperty("cardBag", gson.toJson(board.getCardBag()));
+        gameJson.addProperty("cardBag", gson.toJson(board.getCardBag().toArray()));
 
-        if (comGoalDone) {
+        if(comGoalDone) {
             gameJson.addProperty("firstComGoal", gson.toJson(comGoals.get(0), ComGoal.class));
             gameJson.addProperty("secondComGoal", gson.toJson(comGoals.get(1), ComGoal.class));
         }

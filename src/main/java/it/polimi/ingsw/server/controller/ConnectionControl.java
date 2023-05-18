@@ -442,13 +442,13 @@ public class ConnectionControl {
     /**
      * Used at the end of a game to clear the maps and initialize the server's features.
      */
-    public void onEndGame() {
+    public void onEndGame(String gameFilePath) {
         disconnectAll();
         synchronized (clientHandlerMap) {
             this.clientStatusMap.clear();
             this.clientHandlerMap.clear();
         }
-        server.onEndGame();
+        server.onEndGame(gameFilePath);
     }
 
     /**
