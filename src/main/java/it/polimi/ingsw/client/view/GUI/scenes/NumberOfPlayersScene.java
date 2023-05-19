@@ -14,6 +14,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 
 import java.io.IOException;
+import java.util.Map;
 
 public class NumberOfPlayersScene extends GUIScene {
     @FXML
@@ -80,6 +81,12 @@ public class NumberOfPlayersScene extends GUIScene {
 
     @Override
     public void updateBookshelf(String nickname, ItemCard[][] bookshelf) {}
+
+    @Override
+    public void comGoal(Map<Integer, Integer> playerCommonGoal) {
+
+    }
+
     @Override
     public void updateBoard(ItemCard[][] board) {}
     @Override

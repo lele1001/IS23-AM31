@@ -66,7 +66,7 @@ public class GUI implements View {
      */
     @Override
     public void printCommonGoal(Map<Integer, Integer> playerComGoal) {
-        //Crea i commonGoal e i punteggi su tutti gli scenari che li conterranno
+        sceneController.comGoal(playerComGoal);
     }
 
     @Override

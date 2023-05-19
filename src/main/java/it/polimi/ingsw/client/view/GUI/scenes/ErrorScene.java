@@ -7,6 +7,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 
+import java.util.Map;
+
 public class ErrorScene extends GUIScene {
     private ClientController clientController;
     @FXML
@@ -39,6 +41,11 @@ public class ErrorScene extends GUIScene {
 
     @Override
     public void updateBookshelf(String nickname, ItemCard[][] bookshelf) {
+    }
+
+    @Override
+    public void comGoal(Map<Integer, Integer> playerCommonGoal) {
+
     }
 
     @Override

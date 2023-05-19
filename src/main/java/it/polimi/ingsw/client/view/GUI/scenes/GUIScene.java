@@ -33,7 +33,7 @@ public abstract class GUIScene {
         //aggiornare tiles selezionate SOLO per la scena PutCardsScene
     }
 
-    ;
+    public abstract void comGoal(Map<Integer, Integer> playerCommonGoal);
 
 /* TODO:
     void updateBoard(ItemCard[][] board);

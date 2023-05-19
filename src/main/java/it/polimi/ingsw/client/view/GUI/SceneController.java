@@ -25,12 +25,12 @@ public class SceneController {
     public SceneController(ClientController clientController) {  //chiedere se devo rinominare queste righe per nome sbagliato ??
         this.clientController = clientController;
         this.createScene(GUIResources.loginFXML, "loginScene");
-        this.createScene(GUIResources.errorFXML, "errorScene");
-        //this.createScene(GUIResources.putCardsFXML, "putCardsScene");
-        //this.createScene(GUIResources.takeCardsFXML, "takeCardsScene");
+       // this.createScene(GUIResources.errorFXML, "errorScene");
+        this.createScene(GUIResources.putCardsFXML, "putCardsScene");
+        this.createScene(GUIResources.takeCardsFXML, "takeCardsScene");
         //this.createScene(GUIResources.endGameWinFXML, "endGameWinScene");
         //this.createScene(GUIResources.endGameLoseFXML, "endGameLoseScene");
-        //this.createScene(GUIResources.notMyTurnFXML, "notMyTurnScene");
+        this.createScene(GUIResources.notMyTurnFXML, "notMyTurnScene");
         this.createScene(GUIResources.numberOfPlayerFXML, "numberOfPlayersScene");
 
         //Initializes the window dimensions
@@ -122,6 +122,7 @@ public class SceneController {
     public void loadTake() {
         this.currentController = this.scenesMap.get("takeCardsScene");
         this.activeStage.setScene(currentController.getMyScene());
+        this.activeStage.setResizable(true);
     }
 
     /**
@@ -131,6 +132,7 @@ public class SceneController {
     public void loadPut() {
         this.currentController = this.scenesMap.get("putCardsScene");
         this.activeStage.setScene(currentController.getMyScene());
+        this.activeStage.setResizable(true);
     }
 
     /**
@@ -140,6 +142,7 @@ public class SceneController {
     public void notMyTurn() {
         this.currentController = this.scenesMap.get("notMyTurnScene");
         this.activeStage.setScene(currentController.getMyScene());
+        this.activeStage.setResizable(true);
     }
 
     /**
@@ -218,4 +221,8 @@ public class SceneController {
         this.scenesMap.get("putCardsScene").updateSelectedTiles(selectedTiles);
     }
 
+    public void comGoal(Map<Integer, Integer> playerCommonGoal) {
+        for (GUIScene gs : scenesMap.values())
+            gs.comGoal(playerCommonGoal);
+    }
 }

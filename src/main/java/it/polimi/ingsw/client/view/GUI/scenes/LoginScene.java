@@ -135,6 +135,12 @@ public class LoginScene extends GUIScene {
     public void updateBoard(ItemCard[][] board) {}
     @Override
     public void updateBookshelf(String nickname, ItemCard[][] bookshelf) {}
+
+    @Override
+    public void comGoal(Map<Integer, Integer> playerCommonGoal) {
+
+    }
+
     @Override
     public void updateCurrPlayer(String player) {}
 
