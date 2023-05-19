@@ -11,7 +11,7 @@ public class Player {
     private final Bookshelf myBookshelf;
     private int score;
     private PersGoal persGoal;
-    private final ArrayList<ComGoal> comGoalsReached;
+    private final ArrayList<Integer> comGoalsReached;
     private final static int BOOKSHELF_LENGTH = 5;
 
     /**
@@ -53,14 +53,14 @@ public class Player {
      * @return true if the player has reached the goal, false in other cases (goal not reached or already reached in other turns)
      */
     public boolean checkComGoal(ComGoal comGoal) {
-        for (ComGoal cg : comGoalsReached) {
-            if (cg == comGoal)
+        for (Integer cg : comGoalsReached) {
+            if (cg == comGoal.getCGID())
                 return false;
         }
         int comGoalScore = comGoal.goalReached(myBookshelf);
         if (comGoalScore > 0) {
             score += comGoalScore;
-            comGoalsReached.add(comGoal);
+            comGoalsReached.add(comGoal.getCGID());
             return true;
         }
         return false;
@@ -83,7 +83,7 @@ public class Player {
      * @param cards  to be inserted
      * @param column of the bookshelf where cards have to be inserted
      * @throws NoBookshelfSpaceException if there's no such space in the column of the bookshelf for the cards
-     * @requires cards.size() <= 3
+     * requires cards.size() <= 3
      */
     public boolean insertCard(List<ItemCard> cards, int column) throws NoBookshelfSpaceException {
         if (!myBookshelf.checkSpace(column, cards.size()))

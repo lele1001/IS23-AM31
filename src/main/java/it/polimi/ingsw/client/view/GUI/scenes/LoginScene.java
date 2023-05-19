@@ -1,15 +1,11 @@
 package it.polimi.ingsw.client.view.GUI.scenes;
 
 import it.polimi.ingsw.client.ClientController;
-import it.polimi.ingsw.client.view.GUI.GUI;
 import it.polimi.ingsw.server.model.ItemCard;
-import javafx.application.Platform;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.GridPane;
+import javafx.scene.layout.*;
 
 import java.util.Map;
 
@@ -19,15 +15,13 @@ public class LoginScene extends GUIScene {
     @FXML
     private GridPane connectionPane;
     @FXML
-    Label welcomeText, usernameText, connectionText, ipText, portText;
+    Label welcomeText, usernameText, connectionText, ipText, portText, errorArea;
     @FXML
     Button loginButton;
     @FXML
     TextField username, ipPort, ipAddress;
     @FXML
     RadioButton connectionRMI, connectionSocket;
-    @FXML
-    TextArea errorArea;
     private ClientController clientController;
 
     /**
@@ -138,16 +132,10 @@ public class LoginScene extends GUIScene {
     }
 
     @Override
-    public void updateBoard(ItemCard[][] board) {
-    }
-
+    public void updateBoard(ItemCard[][] board) {}
     @Override
-    public void updateBookshelf(String nickname, ItemCard[][] bookshelf) {
-    }
-
+    public void updateBookshelf(String nickname, ItemCard[][] bookshelf) {}
     @Override
-    public void updateCurrPlayer(String player) {
-    }
+    public void updateCurrPlayer(String player) {}
 
 }
-

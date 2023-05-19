@@ -7,6 +7,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
+import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
 import java.awt.*;
@@ -26,7 +27,8 @@ public class SceneController {
         this.createScene(GUIResources.errorFXML, "errorScene");
         //this.createScene(GUIResources.putCardsFXML, "putCardsScene");
         //this.createScene(GUIResources.takeCardsFXML, "takeCardsScene");
-        //this.createScene(GUIResources.endGameLoseFXML, "endGameScene");
+        //this.createScene(GUIResources.endGameWinFXML, "endGameWinScene");
+        //this.createScene(GUIResources.endGameLoseFXML, "endGameLoseScene");
         //this.createScene(GUIResources.notMyTurnFXML, "notMyTurnScene");
         this.createScene(GUIResources.numberOfPlayerFXML, "numberOfPlayersScene");
 
@@ -86,9 +88,11 @@ public class SceneController {
      */
     public void loadLobby() {
         Parent root;
+
         try {
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(SceneController.class.getClassLoader().getResource(GUIResources.lobbyFXML));
+
             if (loader.getLocation() == null) {
                 System.out.println("Not possible to set " + "lobby" + " scene.");
             }
@@ -97,6 +101,7 @@ public class SceneController {
             System.out.println("Lobby's error.");
             return;
         }
+
         this.activeStage.setScene(new Scene(root));
     }
 
@@ -141,8 +146,23 @@ public class SceneController {
      * (using the current stage)
      */
     public void endGameWin() {
-        this.currentController = this.scenesMap.get("endGameScene");
-        this.activeStage.setScene(currentController.getMyScene());
+        Parent root;
+
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(SceneController.class.getClassLoader().getResource(GUIResources.endGameWinFXML));
+
+            if (loader.getLocation() == null) {
+                System.out.println("Not possible to set winner scene.");
+            }
+
+            root = loader.load();
+        } catch (IOException e) {
+            System.out.println("Winner scene's error.");
+            return;
+        }
+
+        this.activeStage.setScene(new Scene(root));
     }
 
     /**
@@ -150,8 +170,23 @@ public class SceneController {
      * (using the current stage)
      */
     public void endGameLose() {
-        this.currentController = this.scenesMap.get("endGameScene");
-        this.activeStage.setScene(currentController.getMyScene());
+        Parent root;
+
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(SceneController.class.getClassLoader().getResource(GUIResources.endGameLoseFXML));
+
+            if (loader.getLocation() == null) {
+                System.out.println("Not possible to set loser scene.");
+            }
+
+            root = loader.load();
+        } catch (IOException e) {
+            System.out.println("Loser scene's error.");
+            return;
+        }
+
+        this.activeStage.setScene(new Scene(root));
     }
 
     public void fatalError(String error) {

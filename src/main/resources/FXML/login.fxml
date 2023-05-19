@@ -3,96 +3,54 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
 
-<AnchorPane fx:id="loginScenePane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
-            prefHeight="300.0" prefWidth="500.0" snapToPixel="false" xmlns="http://javafx.com/javafx/17.0.2-ea"
-            xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.view.GUI.scenes.LoginScene">
-    <GridPane fx:id="connectionPane" alignment="center" hgap="10.0" maxHeight="-Infinity" maxWidth="-Infinity"
-              minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="500.0" vgap="10.0"
-              AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
-              AnchorPane.topAnchor="0.0">
+<AnchorPane fx:id="loginScenePane" focusTraversable="true" prefHeight="300.0" prefWidth="500.0" stylesheets="@../CSS/login.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.view.GUI.scenes.LoginScene">
+    <GridPane fx:id="connectionPane" alignment="center" hgap="10.0" prefHeight="300.0" prefWidth="500.0" vgap="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
 
-        <Label fx:id="welcomeText" alignment="CENTER" contentDisplay="CENTER" graphicTextGap="8.0" lineSpacing="1.0"
-               text="Welcome to MyShelfie" textAlignment="CENTER" textOverrun="CLIP" GridPane.columnIndex="0"
-               GridPane.columnSpan="2147483647" GridPane.halignment="LEFT" GridPane.rowIndex="0">
-            <font>
-                <Font name="Bauhaus 93" size="30.0"/>
-            </font>
+        <Label fx:id="welcomeText" alignment="CENTER" contentDisplay="CENTER" graphicTextGap="8.0" lineSpacing="1.0" text="Welcome to MyShelfie" textOverrun="CLIP" GridPane.columnIndex="0" GridPane.columnSpan="2147483647" GridPane.halignment="LEFT" GridPane.rowIndex="0">
         </Label>
-
-        <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2"
-                   GridPane.halignment="RIGHT" GridPane.valignment="CENTER">
-            <Image url="@../images/publisherMaterial/Icon.png"/>
+        <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.valignment="CENTER">
+            <Image url="@../images/publisherMaterial/Icon.png" />
         </ImageView>
 
-        <Label fx:id="usernameText" text="Username:" textOverrun="CLIP" GridPane.columnIndex="0" GridPane.columnSpan="2"
-               GridPane.rowIndex="1">
-            <font>
-                <Font name="Bauhaus 93" size="18.0"/>
-            </font>
+        <Label fx:id="usernameText" text="Username:" textOverrun="CLIP" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="1">
         </Label>
-        <TextField fx:id="username" GridPane.columnIndex="1" GridPane.columnSpan="2147483647" GridPane.rowIndex="1"/>
+        <TextField fx:id="username" GridPane.columnIndex="1" GridPane.columnSpan="2147483647" GridPane.rowIndex="1" />
 
-        <Label fx:id="connectionText" text="Connection:" textOverrun="CLIP" GridPane.columnIndex="0"
-               GridPane.rowIndex="2">
-            <font>
-                <Font name="Bauhaus 93" size="18.0"/>
-            </font>
+        <Label fx:id="connectionText" text="Connection:" textOverrun="CLIP" GridPane.columnIndex="0" GridPane.rowIndex="2">
         </Label>
-
         <RadioButton fx:id="connectionRMI" text="RMI" GridPane.columnIndex="1" GridPane.rowIndex="2">
-            <font>
-                <Font name="Bauhaus 93" size="18.0"/>
-            </font>
         </RadioButton>
         <RadioButton fx:id="connectionSocket" text="Socket" GridPane.columnIndex="2" GridPane.rowIndex="2">
-            <font>
-                <Font name="Bauhaus 93" size="18.0"/>
-            </font>
         </RadioButton>
 
         <Label fx:id="ipText" text="IP Address:" GridPane.rowIndex="3">
-            <font>
-                <Font name="Bauhaus 93" size="18.0"/>
-            </font>
         </Label>
-        <TextField fx:id="ipAddress" GridPane.columnIndex="1" GridPane.columnSpan="2147483647" GridPane.rowIndex="3"/>
+        <TextField fx:id="ipAddress" GridPane.columnIndex="1" GridPane.columnSpan="2147483647" GridPane.rowIndex="3" />
 
         <Label fx:id="portText" text="IP Port:" textOverrun="CLIP" GridPane.rowIndex="4">
-            <font>
-                <Font name="Bauhaus 93" size="18.0"/>
-            </font>
         </Label>
-        <TextField fx:id="ipPort" GridPane.columnIndex="1" GridPane.columnSpan="2147483647" GridPane.rowIndex="4"/>
+        <TextField fx:id="ipPort" GridPane.columnIndex="1" GridPane.columnSpan="2147483647" GridPane.rowIndex="4" />
 
-        <Button fx:id="loginButton" alignment="CENTER" contentDisplay="CENTER" onAction="#loginAction" prefWidth="100.0"
-                text="Login" textAlignment="CENTER" textOverrun="CLIP" GridPane.columnIndex="2" GridPane.rowIndex="5">
-            <font>
-                <Font name="Bauhaus 93" size="16.0"/>
-            </font>
+        <Button fx:id="loginButton" alignment="CENTER" contentDisplay="CENTER" onAction="#loginAction" prefWidth="100.0" text="Login" textOverrun="CLIP" GridPane.columnIndex="2" GridPane.rowIndex="5">
         </Button>
-        <TextArea fx:id="errorArea" editable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
-                  minWidth="-Infinity" prefHeight="50.0" prefWidth="370.0" visible="false" wrapText="true"
-                  GridPane.columnSpan="2147483647" GridPane.rowIndex="6">
-            <font>
-                <Font name="Bauhaus 93" size="18.0"/>
-            </font>
-        </TextArea>
+
+        <Label fx:id="errorArea" prefHeight="50.0" prefWidth="370.0" visible="false" wrapText="true" GridPane.columnSpan="2147483647" GridPane.rowIndex="6">
+        </Label>
 
         <columnConstraints>
-            <ColumnConstraints prefWidth="150.0"/>
-            <ColumnConstraints prefWidth="100.0"/>
-            <ColumnConstraints prefWidth="100.0"/>
+            <ColumnConstraints prefWidth="150.0" />
+            <ColumnConstraints prefWidth="100.0" />
+            <ColumnConstraints prefWidth="100.0" />
         </columnConstraints>
         <rowConstraints>
-            <RowConstraints minHeight="25.0"/>
-            <RowConstraints prefHeight="25.0"/>
-            <RowConstraints prefHeight="25.0"/>
-            <RowConstraints prefHeight="25.0"/>
-            <RowConstraints prefHeight="25.0"/>
-            <RowConstraints prefHeight="30.0"/>
-            <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="50.0"/>
+            <RowConstraints minHeight="25.0" />
+            <RowConstraints prefHeight="25.0" />
+            <RowConstraints prefHeight="25.0" />
+            <RowConstraints prefHeight="25.0" />
+            <RowConstraints prefHeight="25.0" />
+            <RowConstraints prefHeight="30.0" />
+            <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="50.0" />
         </rowConstraints>
     </GridPane>
 </AnchorPane>

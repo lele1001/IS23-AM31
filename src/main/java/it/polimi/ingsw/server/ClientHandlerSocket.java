@@ -309,8 +309,7 @@ public class ClientHandlerSocket extends ClientHandler implements Runnable {
      */
     @Override
     public void SendCommonGoalDone(String source, int[] details) {
-        Gson gson = new Gson();
-        JsonObject toSend = generateStandardMessage("commonGoalDone", gson.toJson(details));
+        JsonObject toSend = generateStandardMessage("commonGoalDone", Arrays.toString(details));
         toSend.addProperty("source", source);
         send(toSend);
     }
@@ -322,8 +321,7 @@ public class ClientHandlerSocket extends ClientHandler implements Runnable {
      */
     @Override
     public void sendWinner(List<String> winners) {
-        Gson gson = new Gson();
-        send(generateStandardMessage("winner", gson.toJson(winners.toArray())));
+        send(generateStandardMessage("winner", winners.toString()));
     }
 
     /**
@@ -344,8 +342,7 @@ public class ClientHandlerSocket extends ClientHandler implements Runnable {
      */
     @Override
     public void sendGameIsStarting(ArrayList<String> playersList) {
-        Gson gson = new Gson();
-        send(generateStandardMessage("gameStarted", gson.toJson(playersList)));
+        send(generateStandardMessage("gameStarted", playersList.toString()));
     }
 
     /**
@@ -363,7 +360,7 @@ public class ClientHandlerSocket extends ClientHandler implements Runnable {
 
     @Override
     public void askSavedGame(List<String> savedGames) {
-        send(generateStandardMessage("savedGameFound", Arrays.toString(savedGames.toArray())));
+        send(generateStandardMessage("savedGameFound", savedGames.toString()));
         savedGame = true;
     }
 }
