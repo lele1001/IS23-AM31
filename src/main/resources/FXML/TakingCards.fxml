@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.TilePane?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.view.GUI.scenes.TakeCardsScene">
+    <children>
+        <GridPane fx:id="boardPane" layoutX="45.0" layoutY="43.0" prefHeight="489.0" prefWidth="484.0">
+            <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            </rowConstraints>
+        </GridPane>
+        <ImageView fitHeight="553.0" fitWidth="550.0" layoutX="14.0" layoutY="15.0" pickOnBounds="true" preserveRatio="true">
+            <image>
+                <Image url="@../images/misc/sfondoParquet.jpg" />
+            </image>
+        </ImageView>
+        <ImageView fitHeight="540.0" fitWidth="528.0" layoutX="24.0" layoutY="25.0" pickOnBounds="true" preserveRatio="true">
+            <image>
+                <Image url="@../images/boards/livingroom.png" />
+            </image>
+        </ImageView>
+        <ImageView fitHeight="221.0" fitWidth="201.0" layoutX="745.0" layoutY="294.0" pickOnBounds="true" preserveRatio="true">
+            <image>
+                <Image url="@../images/boards/bookshelf_orth.png" />
+            </image>
+        </ImageView>
+        <ImageView fitHeight="205.0" fitWidth="237.0" layoutX="739.0" layoutY="290.0" pickOnBounds="true" preserveRatio="true">
+            <image>
+                <Image url="@../images/boards/bookshelf.png" />
+            </image>
+        </ImageView>
+        <TilePane layoutX="452.0" layoutY="25.0" prefHeight="108.0" prefWidth="66.0" />
+        <GridPane layoutX="631.0" layoutY="565.0" prefHeight="136.0" prefWidth="419.0">
+            <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="212.0" minWidth="10.0" prefWidth="130.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="108.79998779296875" minWidth="1.0" prefWidth="83.0" />
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            </rowConstraints>
+            <children>
+                <TilePane prefHeight="152.0" prefWidth="226.0">
+                    <children>
+                        <ImageView fitHeight="205.0" fitWidth="209.0" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@../images/commonGoalCards/9.jpg" />
+                            </image>
+                        </ImageView>
+                    </children>
+                </TilePane>
+                <TilePane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1">
+                    <children>
+                        <ImageView fitHeight="135.0" fitWidth="252.0" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@../images/commonGoalCards/4.jpg" />
+                            </image>
+                        </ImageView>
+                    </children>
+                </TilePane>
+            </children>
+        </GridPane>
+          <ImageView fitHeight="183.0" fitWidth="166.0" layoutX="783.0" layoutY="61.0" pickOnBounds="true" preserveRatio="true">
+              <image>
+                  <Image url="@../images/personalGoalCards/back.jpg" />
+              </image>
+          </ImageView>
+    </children>
+</Pane>

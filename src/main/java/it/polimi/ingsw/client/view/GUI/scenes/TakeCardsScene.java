@@ -1,5 +1,4 @@
 package it.polimi.ingsw.client.view.GUI.scenes;
-
 import it.polimi.ingsw.client.ClientController;
 import it.polimi.ingsw.client.view.GUI.GUIResources;
 import it.polimi.ingsw.server.model.ItemCard;
@@ -9,6 +8,7 @@ import javafx.scene.layout.GridPane;
 
 import java.awt.*;
 import java.util.Objects;
+
 
 public class TakeCardsScene extends GUIScene {
 

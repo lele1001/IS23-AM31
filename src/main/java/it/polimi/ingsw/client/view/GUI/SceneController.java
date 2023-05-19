@@ -21,7 +21,8 @@ public class SceneController {
     private final Map<String, GUIScene> scenesMap = new HashMap<>();
     private int windowHeight, windowWidth;
 
-    public SceneController(ClientController clientController) {
+
+    public SceneController(ClientController clientController) {  //chiedere se devo rinominare queste righe per nome sbagliato ??
         this.clientController = clientController;
         this.createScene(GUIResources.loginFXML, "loginScene");
         this.createScene(GUIResources.errorFXML, "errorScene");
