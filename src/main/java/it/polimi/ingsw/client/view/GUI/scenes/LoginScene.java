@@ -11,9 +11,9 @@ import java.util.Map;
 
 public class LoginScene extends GUIScene {
     @FXML
-    public AnchorPane loginScenePane;
+    AnchorPane loginScenePane;
     @FXML
-    private GridPane connectionPane;
+    GridPane connectionPane;
     @FXML
     Label welcomeText, usernameText, connectionText, ipText, portText, errorArea;
     @FXML
@@ -29,7 +29,6 @@ public class LoginScene extends GUIScene {
      */
     public void initialize(ClientController clientController) {
         this.clientController = clientController;
-        connectionPane = new GridPane();
         errorArea.setVisible(false);
 
         connectionPane.setDisable(false);
@@ -132,9 +131,12 @@ public class LoginScene extends GUIScene {
     }
 
     @Override
-    public void updateBoard(ItemCard[][] board) {}
+    public void updateBoard(ItemCard[][] board) {
+    }
+
     @Override
-    public void updateBookshelf(String nickname, ItemCard[][] bookshelf) {}
+    public void updateBookshelf(String nickname, ItemCard[][] bookshelf) {
+    }
 
     @Override
     public void comGoal(Map<Integer, Integer> playerCommonGoal) {
@@ -142,6 +144,7 @@ public class LoginScene extends GUIScene {
     }
 
     @Override
-    public void updateCurrPlayer(String player) {}
+    public void updateCurrPlayer(String player) {
+    }
 
 }

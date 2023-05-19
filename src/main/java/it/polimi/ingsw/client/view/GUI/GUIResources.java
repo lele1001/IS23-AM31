@@ -60,9 +60,9 @@ public final class GUIResources {
     public final static Image cg12 = new Image(Objects.requireNonNull(GUIResources.class.getResource("/images/commonGoalCards/12.jpg")).toString());
 
 
-
     private static final Map<String, Image> itemTiles = new HashMap<String, Image>();
     private static final Map<String, Image> comGoals = new HashMap<>();
+
     private GUIResources() {
         //mappare item tiles
         itemTiles.put("frameFirst", frameFirst);
@@ -96,7 +96,6 @@ public final class GUIResources {
         comGoals.put("cg10", cg10);
         comGoals.put("cg11", cg11);
         comGoals.put("cg12", cg12);
-
 
 
     }

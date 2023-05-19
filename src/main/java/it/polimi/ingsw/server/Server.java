@@ -187,7 +187,7 @@ public class Server {
         executor.shutdown();
     }
 
-    public void findSavedGames () {
+    public void findSavedGames() {
         File directory;
         Gson gson = new Gson();
         try {
@@ -326,7 +326,7 @@ public class Server {
 
             this.gameController.resumeGame(onlinePlayers, players, savedGames.get(gameName), Server.savedGamesPath + "\\" + gameName + ".json");
 
-            new Thread(() -> this.gameController.run(players.indexOf(savedGames.get(gameName).get("lastPlayer").getAsString())+1)).start();
+            new Thread(() -> this.gameController.run(players.indexOf(savedGames.get(gameName).get("lastPlayer").getAsString()) + 1)).start();
         } else {
             // Saying other players that game is not available for them.
             for (String s : queue) {
@@ -351,8 +351,7 @@ public class Server {
         File file = new File(gameFilePath);
         if (file.delete()) {
             System.out.println("Game file successfully deleted.");
-        }
-        else {
+        } else {
             System.out.println("Game file deletion failed.");
         }
         initialize();

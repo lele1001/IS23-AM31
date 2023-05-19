@@ -72,7 +72,7 @@ public class GameModel implements ModelInterface {
             this.listener.propertyChange(evt);
             persGoals.remove(0);
         }
-        this.gameJson.addProperty("lastPlayer", players.get(players.size()-1));
+        this.gameJson.addProperty("lastPlayer", players.get(players.size() - 1));
         saveJson(true);
     }
 
@@ -90,7 +90,7 @@ public class GameModel implements ModelInterface {
         comGoals.add(gson.fromJson(json.get("firstComGoal").getAsString(), selectComGoal(gson.fromJson(json.get("firstComGoal").getAsString().replace("\\", ""), JsonObject.class).get("CGID").getAsInt(), 3).getClass()));
         comGoals.add(gson.fromJson(json.get("secondComGoal").getAsString(), selectComGoal(gson.fromJson(json.get("secondComGoal").getAsString().replace("\\", ""), JsonObject.class).get("CGID").getAsInt(), 3).getClass()));
 
-        System.out.println("ComGoals restored: " + comGoals.get(0).getCGID() + " punti: " + comGoals.get(0).getCurrScore() + "," +  comGoals.get(1).getCGID() + " punti: " + comGoals.get(1).getCurrScore() + ".");
+        System.out.println("ComGoals restored: " + comGoals.get(0).getCGID() + " punti: " + comGoals.get(0).getCurrScore() + "," + comGoals.get(1).getCGID() + " punti: " + comGoals.get(1).getCurrScore() + ".");
 
         for (String s : players)
             this.playerMap.put(s, gson.fromJson(json.get(s).getAsString(), Player.class));
@@ -109,8 +109,8 @@ public class GameModel implements ModelInterface {
      * Tries to insert cards in a nickname's bookshelf.
      *
      * @param nickname the owner of the bookshelf.
-     * @param cards     to be inserted into the bookshelf.
-     * @param column    of the bookshelf to insert cards into.
+     * @param cards    to be inserted into the bookshelf.
+     * @param column   of the bookshelf to insert cards into.
      * @throws NoBookshelfSpaceException if there's no space in the column indicated.
      * @throws NotSameSelectedException  if the player wants to insert cards different from the ones selected.
      */
@@ -299,7 +299,7 @@ public class GameModel implements ModelInterface {
         gameJson.addProperty("board", gson.toJson(board.getAsArrayList()));
         gameJson.addProperty("cardBag", gson.toJson(board.getCardBag().toArray()));
 
-        if(comGoalDone) {
+        if (comGoalDone) {
             gameJson.addProperty("firstComGoal", gson.toJson(comGoals.get(0), ComGoal.class));
             gameJson.addProperty("secondComGoal", gson.toJson(comGoals.get(1), ComGoal.class));
         }

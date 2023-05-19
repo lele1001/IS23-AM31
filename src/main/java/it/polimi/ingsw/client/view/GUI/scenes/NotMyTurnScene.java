@@ -26,30 +26,30 @@ public class NotMyTurnScene extends GUIScene {
     @Override
     public void initialize(ClientController clientController) {
         this.clientController = clientController;
-        int i= 0;
-        for(String s : clientController.getPlayersBookshelves().keySet()){
-            if(i == 0){
+        int i = 0;
+
+        for (String s : clientController.getPlayersBookshelves().keySet()) {
+            if (i == 0) {
                 player1tab.setText(s);
-            }else if(i == 1){
+            } else if (i == 1) {
                 player2tab.setText(s);
-            }else if(i == 2){
+            } else if (i == 2) {
                 player3tab.setText(s);
                 //ricordarsi di rendere o meno visibile in base a num giocatori
-            }else if(i == 3){
+            } else if (i == 3) {
                 player4tab.setText(s);
             }
+
             i++;
         }
     }
 
     @Override
     public void printError(String error) {
-
     }
 
     @Override
     public void bindEvents() {
-
     }
 
     public void updateCurrPlayer(String currPlayer) {
@@ -60,22 +60,26 @@ public class NotMyTurnScene extends GUIScene {
     public void updateBoard(ItemCard[][] board) {
         for (int i = 0; i < DIM_BOARD; i++) {
             for (int j = 0; j < DIM_BOARD; j++) {
-                if(board[i][j]!=null) {
+                if (board[i][j] != null) {
                     String itemName = board[i][j].getMyItem().toString().toLowerCase();
                     String itemNumber = board[i][j].getMyNum().toString();
                     String myItem = itemName + itemNumber;
                     boardPane.add(new ImageView(GUIResources.getItem(myItem)), i, j);
+
+                    boardPane.toFront();
                 }
             }
         }
+
+        boardPane.setVisible(true);
     }
 
     @Override
     public void updateBookshelf(String nickname, ItemCard[][] bookshelf) {
-        if(player1tab.getText().equals(nickname)){
+        if (player1tab.getText().equals(nickname)) {
             for (int i = 0; i < BOOKSHELF_HEIGHT; i++) {
                 for (int j = 0; j < BOOKSHELF_LENGTH; j++) {
-                    if(bookshelf[i][j]!=null) {
+                    if (bookshelf[i][j] != null) {
                         String itemName = bookshelf[i][j].getMyItem().toString().toLowerCase();
                         String itemNumber = bookshelf[i][j].getMyNum().toString();
                         String myItem = itemName + itemNumber;
@@ -83,11 +87,10 @@ public class NotMyTurnScene extends GUIScene {
                     }
                 }
             }
-        }
-        else if(player2tab.getText().equals(nickname)){
+        } else if (player2tab.getText().equals(nickname)) {
             for (int i = 0; i < BOOKSHELF_HEIGHT; i++) {
                 for (int j = 0; j < BOOKSHELF_LENGTH; j++) {
-                    if(bookshelf[i][j]!=null) {
+                    if (bookshelf[i][j] != null) {
                         String itemName = bookshelf[i][j].getMyItem().toString().toLowerCase();
                         String itemNumber = bookshelf[i][j].getMyNum().toString();
                         String myItem = itemName + itemNumber;
@@ -95,11 +98,10 @@ public class NotMyTurnScene extends GUIScene {
                     }
                 }
             }
-        }
-        else if(player3tab.getText().equals(nickname)){
+        } else if (player3tab.getText().equals(nickname)) {
             for (int i = 0; i < BOOKSHELF_HEIGHT; i++) {
                 for (int j = 0; j < BOOKSHELF_LENGTH; j++) {
-                    if(bookshelf[i][j]!=null) {
+                    if (bookshelf[i][j] != null) {
                         String itemName = bookshelf[i][j].getMyItem().toString().toLowerCase();
                         String itemNumber = bookshelf[i][j].getMyNum().toString();
                         String myItem = itemName + itemNumber;
@@ -107,11 +109,10 @@ public class NotMyTurnScene extends GUIScene {
                     }
                 }
             }
-        }
-        else if(player4tab.getText().equals(nickname)){
+        } else if (player4tab.getText().equals(nickname)) {
             for (int i = 0; i < BOOKSHELF_HEIGHT; i++) {
                 for (int j = 0; j < BOOKSHELF_LENGTH; j++) {
-                    if(bookshelf[i][j]!=null) {
+                    if (bookshelf[i][j] != null) {
                         String itemName = bookshelf[i][j].getMyItem().toString().toLowerCase();
                         String itemNumber = bookshelf[i][j].getMyNum().toString();
                         String myItem = itemName + itemNumber;

@@ -1,4 +1,5 @@
 package it.polimi.ingsw.client.view.GUI.scenes;
+
 import it.polimi.ingsw.client.ClientController;
 import it.polimi.ingsw.client.view.GUI.GUIResources;
 import it.polimi.ingsw.server.model.ItemCard;
@@ -28,7 +29,7 @@ public class TakeCardsScene extends GUIScene {
     public void updateBoard(ItemCard[][] board) {
         for (int i = 0; i < DIM_BOARD; i++) {
             for (int j = 0; j < DIM_BOARD; j++) {
-                if(board[i][j]!=null) {
+                if (board[i][j] != null) {
                     String itemName = board[i][j].getMyItem().toString().toLowerCase();
                     String itemNumber = board[i][j].getMyNum().toString();
                     String myItem = itemName + itemNumber;
@@ -44,7 +45,7 @@ public class TakeCardsScene extends GUIScene {
         if (clientController.getMyNickname().equals(nickname)) {
             for (int i = 0; i < BOOKSHELF_HEIGHT; i++) {
                 for (int j = 0; j < BOOKSHELF_LENGTH; j++) {
-                    if(bookshelf[i][j]!=null) {
+                    if (bookshelf[i][j] != null) {
                         String itemName = bookshelf[i][j].getMyItem().toString().toLowerCase();
                         String itemNumber = bookshelf[i][j].getMyNum().toString();
                         String myItem = itemName + itemNumber;

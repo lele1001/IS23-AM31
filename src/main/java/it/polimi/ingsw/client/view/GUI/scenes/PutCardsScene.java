@@ -50,7 +50,7 @@ public class PutCardsScene extends GUIScene {
         if (clientController.getMyNickname().equals(nickname)) {
             for (int i = 0; i < BOOKSHELF_HEIGHT; i++) {
                 for (int j = 0; j < BOOKSHELF_LENGTH; j++) {
-                    if(bookshelf[i][j]!=null) {
+                    if (bookshelf[i][j] != null) {
                         String itemName = bookshelf[i][j].getMyItem().toString().toLowerCase();
                         String itemNumber = bookshelf[i][j].getMyNum().toString();
                         String myItem = itemName + itemNumber;

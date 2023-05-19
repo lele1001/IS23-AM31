@@ -25,7 +25,7 @@ public class SceneController {
     public SceneController(ClientController clientController) {  //chiedere se devo rinominare queste righe per nome sbagliato ??
         this.clientController = clientController;
         this.createScene(GUIResources.loginFXML, "loginScene");
-       // this.createScene(GUIResources.errorFXML, "errorScene");
+        // this.createScene(GUIResources.errorFXML, "errorScene");
         this.createScene(GUIResources.putCardsFXML, "putCardsScene");
         this.createScene(GUIResources.takeCardsFXML, "takeCardsScene");
         //this.createScene(GUIResources.endGameWinFXML, "endGameWinScene");
