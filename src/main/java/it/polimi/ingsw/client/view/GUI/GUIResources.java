@@ -45,6 +45,7 @@ public final class GUIResources {
     public final static Image trophyFirst = new Image(Objects.requireNonNull(GUIResources.class.getResource("/images/itemTiles/Trofei1.png")).toString());
     public final static Image trophySecond = new Image(Objects.requireNonNull(GUIResources.class.getResource("/images/itemTiles/Trofei2.png")).toString());
     public final static Image trophyThird = new Image(Objects.requireNonNull(GUIResources.class.getResource("/images/itemTiles/Trofei3.png")).toString());
+
     //common goals
     public final static Image cg01 = new Image(Objects.requireNonNull(GUIResources.class.getResource("/images/commonGoalCards/1.jpg")).toString());
     public final static Image cg02 = new Image(Objects.requireNonNull(GUIResources.class.getResource("/images/commonGoalCards/2.jpg")).toString());
@@ -59,46 +60,43 @@ public final class GUIResources {
     public final static Image cg11 = new Image(Objects.requireNonNull(GUIResources.class.getResource("/images/commonGoalCards/11.jpg")).toString());
     public final static Image cg12 = new Image(Objects.requireNonNull(GUIResources.class.getResource("/images/commonGoalCards/12.jpg")).toString());
 
+    // maps that associate a string to the image
+    private static final Map<String, Image> itemTiles = new HashMap<>() {{
+        put("frameFirst", frameFirst);
+        put("frameSecond", frameSecond);
+        put("frameThird", franeThird);
+        put("catFirst", catFirst);
+        put("catSecond", catSecond);
+        put("catThird", catThird);
+        put("gamesFirst", gamesFirst);
+        put("gamesSecond", gamesSecond);
+        put("gamesThird", gamesThird);
+        put("booksFirst", booksFirst);
+        put("booksSecond", booksSecond);
+        put("booksThird", booksThird);
+        put("plantsFirst", plantsFirst);
+        put("plantsSecond", plantsSecond);
+        put("plantsThird", plantsThird);
+        put("trophyFirst", trophyFirst);
+        put("trophySecond", trophySecond);
+        put("trophyThird", trophyThird);
+    }};
+    private static final Map<String, Image> comGoals = new HashMap<>() {{
+        put("cg01", cg01);
+        put("cg02", cg02);
+        put("cg03", cg03);
+        put("cg04", cg04);
+        put("cg05", cg05);
+        put("cg06", cg06);
+        put("cg07", cg07);
+        put("cg08", cg08);
+        put("cg09", cg09);
+        put("cg10", cg10);
+        put("cg11", cg11);
+        put("cg12", cg12);
+    }};
 
-    private static final Map<String, Image> itemTiles = new HashMap<String, Image>();
-    private static final Map<String, Image> comGoals = new HashMap<>();
-
-    private GUIResources() {
-        //mappare item tiles
-        itemTiles.put("frameFirst", frameFirst);
-        itemTiles.put("frameSecond", frameSecond);
-        itemTiles.put("frameThird", franeThird);
-        itemTiles.put("catFirst", catFirst);
-        itemTiles.put("catSecond", catSecond);
-        itemTiles.put("catThird", catThird);
-        itemTiles.put("gamesFirst", gamesFirst);
-        itemTiles.put("gamesSecond", gamesSecond);
-        itemTiles.put("gamesThird", gamesThird);
-        itemTiles.put("booksFirst", booksFirst);
-        itemTiles.put("booksSecond", booksSecond);
-        itemTiles.put("booksThird", booksThird);
-        itemTiles.put("plantsFirst", plantsFirst);
-        itemTiles.put("plantsSecond", plantsSecond);
-        itemTiles.put("plantsThird", plantsThird);
-        itemTiles.put("trophyFirst", trophyFirst);
-        itemTiles.put("trophySecond", trophySecond);
-        itemTiles.put("trophyThird", trophyThird);
-
-        comGoals.put("cg01", cg01);
-        comGoals.put("cg02", cg02);
-        comGoals.put("cg03", cg03);
-        comGoals.put("cg04", cg04);
-        comGoals.put("cg05", cg05);
-        comGoals.put("cg06", cg06);
-        comGoals.put("cg07", cg07);
-        comGoals.put("cg08", cg08);
-        comGoals.put("cg09", cg09);
-        comGoals.put("cg10", cg10);
-        comGoals.put("cg11", cg11);
-        comGoals.put("cg12", cg12);
-
-
-    }
+    private GUIResources() {}
 
     public static Image getItem(String myItem) {
         return itemTiles.get(myItem);

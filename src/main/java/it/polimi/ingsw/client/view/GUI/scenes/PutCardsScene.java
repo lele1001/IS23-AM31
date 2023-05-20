@@ -54,7 +54,11 @@ public class PutCardsScene extends GUIScene {
                         String itemName = bookshelf[i][j].getMyItem().toString().toLowerCase();
                         String itemNumber = bookshelf[i][j].getMyNum().toString();
                         String myItem = itemName + itemNumber;
-                        bookshelfPane.add(new ImageView(GUIResources.getItem(myItem)), i, j);
+                        ImageView tileImage = new ImageView(GUIResources.getItem(myItem));
+                        tileImage.setPreserveRatio(true);
+                        tileImage.setFitHeight(48);
+                        tileImage.setFitWidth(48);
+                        bookshelfPane.add(tileImage, i, j);
                     }
                 }
             }
@@ -69,7 +73,11 @@ public class PutCardsScene extends GUIScene {
             if (i < 10) {
                 cgNum = "0" + cgNum;
             }
-            comGoals.add(new ImageView(GUIResources.getComGoal("cg" + cgNum)), n, 0);
+            ImageView comGoalImage = new ImageView(GUIResources.getItem("cg"+cgNum));
+            comGoalImage.setPreserveRatio(true);
+            comGoalImage.setFitHeight(60);
+            comGoalImage.setFitWidth(60);
+            comGoals.add(comGoalImage, n, 0);
             n++;
         }
     }

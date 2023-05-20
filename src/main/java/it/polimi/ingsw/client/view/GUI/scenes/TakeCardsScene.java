@@ -4,9 +4,8 @@ import it.polimi.ingsw.client.ClientController;
 import it.polimi.ingsw.client.view.GUI.GUIResources;
 import it.polimi.ingsw.server.model.ItemCard;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.RowConstraints;
+
 
 import java.awt.*;
 import java.util.Map;
@@ -33,7 +32,11 @@ public class TakeCardsScene extends GUIScene {
                     String itemName = board[i][j].getMyItem().toString().toLowerCase();
                     String itemNumber = board[i][j].getMyNum().toString();
                     String myItem = itemName + itemNumber;
-                    boardPane.add(new ImageView(GUIResources.getItem(myItem)), i, j);
+                    ImageView tileImage = new ImageView(GUIResources.getItem(myItem));
+                    tileImage.setPreserveRatio(true);
+                    tileImage.setFitHeight(50);
+                    tileImage.setFitWidth(50);
+                    bookshelfPane.add(tileImage, i, j);
                 }
             }
         }
@@ -49,7 +52,11 @@ public class TakeCardsScene extends GUIScene {
                         String itemName = bookshelf[i][j].getMyItem().toString().toLowerCase();
                         String itemNumber = bookshelf[i][j].getMyNum().toString();
                         String myItem = itemName + itemNumber;
-                        bookshelfPane.add(new ImageView(GUIResources.getItem(myItem)), i, j);
+                        ImageView tileImage = new ImageView(GUIResources.getItem(myItem));
+                        tileImage.setPreserveRatio(true);
+                        tileImage.setFitHeight(30);
+                        tileImage.setFitWidth(30);
+                        bookshelfPane.add(tileImage, i, j);
                     }
                 }
             }
@@ -64,7 +71,11 @@ public class TakeCardsScene extends GUIScene {
             if (i < 10) {
                 cgNum = "0" + cgNum;
             }
-            comGoals.add(new ImageView(GUIResources.getComGoal("cg" + cgNum)), n, 0);
+            ImageView comGoalImage = new ImageView(GUIResources.getItem("cg"+cgNum));
+            comGoalImage.setPreserveRatio(true);
+            comGoalImage.setFitHeight(150);
+            comGoalImage.setFitWidth(200);
+            comGoals.add(comGoalImage, n, 0);
             n++;
         }
     }

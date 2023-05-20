@@ -64,9 +64,11 @@ public class NotMyTurnScene extends GUIScene {
                     String itemName = board[i][j].getMyItem().toString().toLowerCase();
                     String itemNumber = board[i][j].getMyNum().toString();
                     String myItem = itemName + itemNumber;
-                    boardPane.add(new ImageView(GUIResources.getItem(myItem)), i, j);
-
-                    boardPane.toFront();
+                    ImageView tileImage = new ImageView(GUIResources.getItem(myItem));
+                    tileImage.setPreserveRatio(true);
+                    tileImage.setFitHeight(60);
+                    tileImage.setFitWidth(60);
+                    boardPane.add(tileImage, i, j);
                 }
             }
         }
@@ -83,7 +85,11 @@ public class NotMyTurnScene extends GUIScene {
                         String itemName = bookshelf[i][j].getMyItem().toString().toLowerCase();
                         String itemNumber = bookshelf[i][j].getMyNum().toString();
                         String myItem = itemName + itemNumber;
-                        bookshelf1.add(new ImageView(GUIResources.getItem(myItem)), i, j);
+                        ImageView tileImage = new ImageView(GUIResources.getItem(myItem));
+                        tileImage.setPreserveRatio(true);
+                        tileImage.setFitHeight(25);
+                        tileImage.setFitWidth(25);
+                        bookshelf1.add(tileImage, i, j);
                     }
                 }
             }
@@ -94,7 +100,11 @@ public class NotMyTurnScene extends GUIScene {
                         String itemName = bookshelf[i][j].getMyItem().toString().toLowerCase();
                         String itemNumber = bookshelf[i][j].getMyNum().toString();
                         String myItem = itemName + itemNumber;
-                        bookshelf2.add(new ImageView(GUIResources.getItem(myItem)), i, j);
+                        ImageView tileImage = new ImageView(GUIResources.getItem(myItem));
+                        tileImage.setPreserveRatio(true);
+                        tileImage.setFitHeight(25);
+                        tileImage.setFitWidth(25);
+                        bookshelf2.add(tileImage, i, j);
                     }
                 }
             }
@@ -105,7 +115,11 @@ public class NotMyTurnScene extends GUIScene {
                         String itemName = bookshelf[i][j].getMyItem().toString().toLowerCase();
                         String itemNumber = bookshelf[i][j].getMyNum().toString();
                         String myItem = itemName + itemNumber;
-                        bookshelf3.add(new ImageView(GUIResources.getItem(myItem)), i, j);
+                        ImageView tileImage = new ImageView(GUIResources.getItem(myItem));
+                        tileImage.setPreserveRatio(true);
+                        tileImage.setFitHeight(25);
+                        tileImage.setFitWidth(25);
+                        bookshelf3.add(tileImage, i, j);
                     }
                 }
             }
@@ -116,7 +130,11 @@ public class NotMyTurnScene extends GUIScene {
                         String itemName = bookshelf[i][j].getMyItem().toString().toLowerCase();
                         String itemNumber = bookshelf[i][j].getMyNum().toString();
                         String myItem = itemName + itemNumber;
-                        bookshelf4.add(new ImageView(GUIResources.getItem(myItem)), i, j);
+                        ImageView tileImage = new ImageView(GUIResources.getItem(myItem));
+                        tileImage.setPreserveRatio(true);
+                        tileImage.setFitHeight(25);
+                        tileImage.setFitWidth(25);
+                        bookshelf4.add(tileImage, i, j);
                     }
                 }
             }
@@ -132,7 +150,11 @@ public class NotMyTurnScene extends GUIScene {
             if (i < 10) {
                 cgNum = "0" + cgNum;
             }
-            comGoals.add(new ImageView(GUIResources.getComGoal("cg" + cgNum)), n, 0);
+            ImageView comGoalImage = new ImageView(GUIResources.getItem("cg" + cgNum));
+            comGoalImage.setPreserveRatio(true);
+            comGoalImage.setFitHeight(150);
+            comGoalImage.setFitWidth(200);
+            comGoals.add(comGoalImage, n, 0);
             n++;
         }
     }
