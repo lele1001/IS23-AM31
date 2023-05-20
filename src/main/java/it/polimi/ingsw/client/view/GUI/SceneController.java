@@ -204,8 +204,10 @@ public class SceneController {
     }
 
     public void updateBoard(ItemCard[][] board) {
-        for (GUIScene gs : scenesMap.values())
-            gs.updateBoard(board);
+       // for (GUIScene gs : scenesMap.values())
+       //     gs.updateBoard(board);
+        this.scenesMap.get("takeCardsScene").updateBoard(board);
+        this.scenesMap.get("notMyTurnScene").updateBoard(board);
     }
 
     public void updateBookshelf(String nickname, ItemCard[][] bookshelf) {

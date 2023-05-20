@@ -1,10 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.view.GUI.scenes.NotMyTurnScene">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.view.GUI.scenes.NotMyTurnScene">
 
                 <ImageView fitHeight="628.0" fitWidth="743.0" layoutX="15.0" layoutY="15.0" pickOnBounds="true" preserveRatio="true">
         <Image url="@../images/misc/sfondoParquet.jpg" />
@@ -14,7 +20,7 @@
         <Image url="@../images/boards/livingroom.png" />
     </ImageView>
 
-    <GridPane fx:id="comGoals" layoutX="800.0" layoutY="475.0" prefHeight="125.0" prefWidth="305.0">
+    <GridPane fx:id="comGoals" focusTraversable="true" layoutX="800.0" layoutY="475.0" prefHeight="125.0" prefWidth="305.0">
         <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -26,25 +32,25 @@
 
     <TabPane layoutX="790.0" layoutY="30.0" prefHeight="300.0" prefWidth="450.0" tabClosingPolicy="UNAVAILABLE" tabMaxHeight="25.0" tabMaxWidth="96.0" tabMinHeight="25.0" tabMinWidth="96.0">
         <Tab fx:id="player1tab" closable="false" text="Player1">
-            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="203.0" prefWidth="389.0">
+            <AnchorPane focusTraversable="true" minHeight="0.0" minWidth="0.0" prefHeight="203.0" prefWidth="389.0">
                 <ImageView fitHeight="232.0" fitWidth="228.0" layoutX="25.0" layoutY="25.0" pickOnBounds="true" preserveRatio="true">
                     <Image url="@../images/boards/bookshelf.png" />
                 </ImageView>
-                <GridPane fx:id="bookshelf1" hgap="8.0" layoutX="54.0" layoutY="41.0" prefHeight="181.0" prefWidth="172.0" vgap="4.0">
+                <GridPane fx:id="bookshelf1" focusTraversable="true" hgap="8.0" layoutX="54.0" layoutY="41.0" prefHeight="181.0" prefWidth="172.0" vgap="4.0">
                     <columnConstraints>
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="-Infinity" prefWidth="28.0" maxWidth="-Infinity"/>
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="-Infinity" prefWidth="28.0" maxWidth="-Infinity"/>
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="-Infinity" prefWidth="28.0" maxWidth="-Infinity"/>
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="-Infinity" prefWidth="28.0" maxWidth="-Infinity"/>
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="-Infinity" prefWidth="28.0" maxWidth="-Infinity"/>
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="28.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="28.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="28.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="28.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="28.0" />
                     </columnConstraints>
                     <rowConstraints>
-                        <RowConstraints minHeight="-Infinity" prefHeight="27.0" vgrow="SOMETIMES" maxHeight="-Infinity"/>
-                        <RowConstraints minHeight="-Infinity" prefHeight="27.0" vgrow="SOMETIMES" maxHeight="-Infinity"/>
-                        <RowConstraints minHeight="-Infinity" prefHeight="27.0" vgrow="SOMETIMES" maxHeight="-Infinity"/>
-                        <RowConstraints minHeight="-Infinity" prefHeight="27.0" vgrow="SOMETIMES" maxHeight="-Infinity"/>
-                        <RowConstraints minHeight="-Infinity" prefHeight="27.0" vgrow="SOMETIMES" maxHeight="-Infinity"/>
-                        <RowConstraints minHeight="-Infinity" prefHeight="27.0" vgrow="SOMETIMES" maxHeight="-Infinity"/>
+                        <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="27.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="27.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="27.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="27.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="27.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="27.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                 </GridPane>
             </AnchorPane>
@@ -55,7 +61,7 @@
                 <ImageView fitHeight="232.0" fitWidth="228.0" layoutX="25.0" layoutY="25.0" pickOnBounds="true" preserveRatio="true">
                     <Image url="@../images/boards/bookshelf.png" />
                 </ImageView>
-                <GridPane fx:id="bookshelf2" hgap="8.0" layoutX="54.0" layoutY="41.0" prefHeight="181.0" prefWidth="172.0" vgap="4.0">
+                <GridPane fx:id="bookshelf2" focusTraversable="true" hgap="8.0" layoutX="54.0" layoutY="41.0" prefHeight="181.0" prefWidth="172.0" vgap="4.0">
                    <columnConstraints>
                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -79,7 +85,7 @@
                 <ImageView fitHeight="232.0" fitWidth="228.0" layoutX="25.0" layoutY="25.0" pickOnBounds="true" preserveRatio="true">
                     <Image url="@../images/boards/bookshelf.png" />
                 </ImageView>
-                <GridPane fx:id="bookshelf3" hgap="8.0" layoutX="54.0" layoutY="41.0" prefHeight="181.0" prefWidth="172.0" vgap="4.0">
+                <GridPane fx:id="bookshelf3" focusTraversable="true" hgap="8.0" layoutX="54.0" layoutY="41.0" prefHeight="181.0" prefWidth="172.0" vgap="4.0">
                    <columnConstraints>
                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -103,7 +109,7 @@
                 <ImageView fitHeight="232.0" fitWidth="228.0" layoutX="25.0" layoutY="25.0" pickOnBounds="true" preserveRatio="true">
                     <Image url="@../images/boards/bookshelf.png" />
                 </ImageView>
-                <GridPane fx:id="bookshelf4" hgap="8.0" layoutX="54.0" layoutY="41.0" prefHeight="181.0" prefWidth="172.0" vgap="4.0">
+                <GridPane fx:id="bookshelf4" focusTraversable="true" hgap="8.0" layoutX="54.0" layoutY="41.0" prefHeight="181.0" prefWidth="172.0" vgap="4.0">
                    <columnConstraints>
                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />

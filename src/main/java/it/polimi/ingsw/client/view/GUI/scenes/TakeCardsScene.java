@@ -36,7 +36,7 @@ public class TakeCardsScene extends GUIScene {
                     tileImage.setPreserveRatio(true);
                     tileImage.setFitHeight(50);
                     tileImage.setFitWidth(50);
-                    bookshelfPane.add(tileImage, i, j);
+                    boardPane.add(tileImage, i, j);
                 }
             }
         }
