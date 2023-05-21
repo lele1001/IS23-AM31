@@ -11,6 +11,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 
 import java.io.IOException;
@@ -18,13 +19,13 @@ import java.util.Map;
 
 public class NumberOfPlayersScene extends GUIScene {
     @FXML
-    public GridPane firstPlayerPane;
+    GridPane firstPlayerPane;
     @FXML
-    public TextField playersNum;
+    TextField playersNum, gameName;
     @FXML
-    public TextField gameName;
+    Button submitButton;
     @FXML
-    public Button submitButton;
+    AnchorPane playersScenePane;
     @FXML
     TextArea errorArea;
     private ClientController clientController;
@@ -37,7 +38,6 @@ public class NumberOfPlayersScene extends GUIScene {
     @Override
     public void initialize(ClientController clientController) {
         this.clientController = clientController;
-        //playersNum = new Spinner<Integer>(1, 4, 2);
 
         bindEvents();
     }
@@ -62,6 +62,7 @@ public class NumberOfPlayersScene extends GUIScene {
      */
     public void submitAction() {
         int players = Integer.parseInt(playersNum.getText());
+
         if (players <= 0 || players >= 5) {
             printError("Error: insert a valid number of players");
             submitButton.setDisable(false);
@@ -80,19 +81,11 @@ public class NumberOfPlayersScene extends GUIScene {
     }
 
     @Override
-    public void updateBookshelf(String nickname, ItemCard[][] bookshelf) {
-    }
-
+    public void updateBookshelf(String nickname, ItemCard[][] bookshelf) {}
     @Override
-    public void comGoal(Map<Integer, Integer> playerCommonGoal) {
-
-    }
-
+    public void comGoal(Map<Integer, Integer> playerCommonGoal) {}
     @Override
-    public void updateBoard(ItemCard[][] board) {
-    }
-
+    public void updateBoard(ItemCard[][] board) {}
     @Override
-    public void updateCurrPlayer(String player) {
-    }
+    public void updateCurrPlayer(String player) {}
 }
