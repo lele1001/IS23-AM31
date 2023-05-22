@@ -58,7 +58,7 @@ public class PutCardsScene extends GUIScene {
                         tileImage.setPreserveRatio(true);
                         tileImage.setFitHeight(48);
                         tileImage.setFitWidth(48);
-                        bookshelfPane.add(tileImage, i, j);
+                        bookshelfPane.add(tileImage, j, i);
                     }
                 }
             }

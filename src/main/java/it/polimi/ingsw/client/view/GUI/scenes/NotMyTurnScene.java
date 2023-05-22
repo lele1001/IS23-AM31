@@ -68,7 +68,7 @@ public class NotMyTurnScene extends GUIScene {
                     tileImage.setPreserveRatio(true);
                     tileImage.setFitHeight(60);
                     tileImage.setFitWidth(60);
-                    boardPane.add(tileImage, i, j);
+                    boardPane.add(tileImage, j, i);
                 }
             }
         }
@@ -89,7 +89,7 @@ public class NotMyTurnScene extends GUIScene {
                         tileImage.setPreserveRatio(true);
                         tileImage.setFitHeight(25);
                         tileImage.setFitWidth(25);
-                        bookshelf1.add(tileImage, i, j);
+                        bookshelf1.add(tileImage, j, i);
                     }
                 }
             }
@@ -104,7 +104,7 @@ public class NotMyTurnScene extends GUIScene {
                         tileImage.setPreserveRatio(true);
                         tileImage.setFitHeight(25);
                         tileImage.setFitWidth(25);
-                        bookshelf2.add(tileImage, i, j);
+                        bookshelf2.add(tileImage, j, i);
                     }
                 }
             }
@@ -119,7 +119,7 @@ public class NotMyTurnScene extends GUIScene {
                         tileImage.setPreserveRatio(true);
                         tileImage.setFitHeight(25);
                         tileImage.setFitWidth(25);
-                        bookshelf3.add(tileImage, i, j);
+                        bookshelf3.add(tileImage, j, i);
                     }
                 }
             }
@@ -134,7 +134,7 @@ public class NotMyTurnScene extends GUIScene {
                         tileImage.setPreserveRatio(true);
                         tileImage.setFitHeight(25);
                         tileImage.setFitWidth(25);
-                        bookshelf4.add(tileImage, i, j);
+                        bookshelf4.add(tileImage, j, i);
                     }
                 }
             }
