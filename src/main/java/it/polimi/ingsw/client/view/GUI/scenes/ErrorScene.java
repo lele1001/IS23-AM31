@@ -12,9 +12,9 @@ import java.util.Map;
 public class ErrorScene extends GUIScene {
     private ClientController clientController;
     @FXML
-    private Label errorDescription;
+    Label errorDescription, errorArea;
     @FXML
-    public Button closeButton;
+    Button closeButton;
 
     @Override
     public void initialize(ClientController clientController) {
@@ -23,7 +23,8 @@ public class ErrorScene extends GUIScene {
 
     @Override
     public void printError(String error) {
-        this.errorDescription.setText(error);
+        errorDescription.setText(error);
+        errorDescription.setVisible(true);
     }
 
     @Override
@@ -36,19 +37,11 @@ public class ErrorScene extends GUIScene {
     }
 
     @Override
-    public void updateBoard(ItemCard[][] board) {
-    }
-
+    public void updateBoard(ItemCard[][] board) {}
     @Override
-    public void updateBookshelf(String nickname, ItemCard[][] bookshelf) {
-    }
-
+    public void updateBookshelf(String nickname, ItemCard[][] bookshelf) {}
     @Override
-    public void comGoal(Map<Integer, Integer> playerCommonGoal) {
-
-    }
-
+    public void comGoal(Map<Integer, Integer> playerCommonGoal) {}
     @Override
-    public void updateCurrPlayer(String player) {
-    }
+    public void updateCurrPlayer(String player) {}
 }

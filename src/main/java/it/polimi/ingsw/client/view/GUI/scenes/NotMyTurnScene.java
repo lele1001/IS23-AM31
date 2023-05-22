@@ -72,8 +72,6 @@ public class NotMyTurnScene extends GUIScene {
                 }
             }
         }
-
-        boardPane.setVisible(true);
     }
 
     @Override
@@ -139,17 +137,19 @@ public class NotMyTurnScene extends GUIScene {
                 }
             }
         }
-
     }
 
     @Override
     public void comGoal(Map<Integer, Integer> playerCommonGoal) {
         int n = 0;
+
         for (Integer i : playerCommonGoal.keySet()) {
             String cgNum = i.toString();
+
             if (i < 10) {
                 cgNum = "0" + cgNum;
             }
+
             ImageView comGoalImage = new ImageView(GUIResources.getItem("cg" + cgNum));
             comGoalImage.setPreserveRatio(true);
             comGoalImage.setFitHeight(150);

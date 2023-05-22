@@ -42,7 +42,6 @@ public class TakeCardsScene extends GUIScene {
         }
     }
 
-
     @Override
     public void updateBookshelf(String nickname, ItemCard[][] bookshelf) {
         if (clientController.getMyNickname().equals(nickname)) {
