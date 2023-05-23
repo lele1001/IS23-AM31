@@ -51,8 +51,9 @@ public interface View {
      * Implementation for Cli and Gui of the printing of the player's personal goal
      *
      * @param myPersGoal Personal goal of the player
+     * @param newValue   String that defines the PersonalGoal
      */
-    void printPersGoal(Map<Integer, HouseItem> myPersGoal);
+    void printPersGoal(Map<Integer, HouseItem> myPersGoal, String newValue);
 
     /**
      * Implementation for Cli and Gui of the printing of the Tiles chosen by the player in the last Phase of the turn

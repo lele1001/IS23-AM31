@@ -6,7 +6,6 @@ import it.polimi.ingsw.server.model.HouseItem;
 import it.polimi.ingsw.server.model.ItemCard;
 import javafx.application.Platform;
 
-import java.sql.SQLOutput;
 import java.util.List;
 import java.util.Map;
 
@@ -97,9 +96,10 @@ public class GUI implements View {
      * Implementation for Cli and Gui of the printing of the player's personal goal
      *
      * @param myPersGoal Personal goal of the player
+     * @param newValue   String that defines the PersonalGoal
      */
     @Override
-    public void printPersGoal(Map<Integer, HouseItem> myPersGoal) {
+    public void printPersGoal(Map<Integer, HouseItem> myPersGoal, String newValue) {
 
     }
 
@@ -110,7 +110,7 @@ public class GUI implements View {
      */
     @Override
     public void printSelectedTiles(Map<Integer, ItemCard> selectedTiles) {
-
+        sceneController.printSelectedTiles(selectedTiles);
     }
 
     /**

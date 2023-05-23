@@ -14,8 +14,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
-import static it.polimi.ingsw.server.controller.TurnPhase.NULL;
-
 public class CLI implements View {
     private static final int DIM_BOARD = 9;
     private static final int BOOKSHELF_HEIGHT = 6;
@@ -231,7 +229,8 @@ public class CLI implements View {
                         }
                     }
                     case "@comgoal" -> printCommonGoal(clientController.getPlayerComGoal());
-                    case "@persgoal" -> printPersGoal(clientController.getMyPersGoal());
+                    case "@persgoal" ->
+                            printPersGoal(clientController.getMyPersGoal(), clientController.getPersGoalValue());
                     case "@score" -> printPoints(clientController.getMyPoint());
                     case "@board" -> {
                         if (clientController.isGameStarted()) {
@@ -569,18 +568,21 @@ public class CLI implements View {
      * Prints the personalGoal associated to the player
      *
      * @param myPersGoal is a map with key the position and value the houseItem in that position
+     * @param newValue   String that defines the PersonalGoal
      */
     @Override
-    public synchronized void printPersGoal(Map<Integer, HouseItem> myPersGoal) {
+    public synchronized void printPersGoal(Map<Integer, HouseItem> myPersGoal, String newValue) {
         System.out.println((char) 27 + "[0;39m" + "Your personal goal is: ");
         System.out.println("    0   1   2   3   4");
 
         for (int i = 0; i < BOOKSHELF_HEIGHT; i++) {
             for (int j = 0; j < BOOKSHELF_LENGTH; j++) {
                 int k = i * 10 + j;
+
                 if (j == 0) {
                     System.out.print((char) 27 + "[39m" + i + " | ");
                 }
+
                 if (myPersGoal.containsKey(k)) {
                     char itemChar = myPersGoal.get(k).toString().charAt(0);
 
@@ -588,12 +590,15 @@ public class CLI implements View {
                 } else {
                     System.out.print(" ");
                 }
+
                 if (j < BOOKSHELF_LENGTH - 1) {
                     System.out.print((char) 27 + "[39m" + " | ");
                 }
             }
+
             System.out.println();
         }
+
         System.out.println();
     }
 

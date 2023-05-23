@@ -5,7 +5,8 @@ import it.polimi.ingsw.server.model.ItemCard;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.*;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.GridPane;
 
 import java.util.Map;
 
@@ -87,7 +88,7 @@ public class LoginScene extends GUIScene {
         try {
             clientController.startConnection(select, username.getText(), ipAddress.getText(), port);
         } catch (Exception e) {
-            printError("ERROR: " + e.getMessage());
+            printError("ERROR: server error");
             loginButton.setDisable(false);
         }
     }
@@ -140,7 +141,6 @@ public class LoginScene extends GUIScene {
 
     @Override
     public void comGoal(Map<Integer, Integer> playerCommonGoal) {
-
     }
 
     @Override

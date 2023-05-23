@@ -3,6 +3,7 @@ package it.polimi.ingsw.client.view.GUI.scenes;
 import it.polimi.ingsw.client.ClientController;
 import it.polimi.ingsw.client.view.GUI.GUIResources;
 import it.polimi.ingsw.server.model.ItemCard;
+import javafx.fxml.FXML;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 
@@ -13,15 +14,13 @@ public class PutCardsScene extends GUIScene {
     private static final int DIM_BOARD = 9;
     private static final int BOOKSHELF_HEIGHT = 6;
     private static final int BOOKSHELF_LENGTH = 5;
-    public GridPane bookshelfPane;
-    public GridPane comGoals;
+    @FXML
+    GridPane bookshelfPane, comGoals, persGoal;
     private ClientController clientController;
-    public GridPane boardPane;
 
     @Override
     public void initialize(ClientController clientController) {
         this.clientController = clientController;
-
     }
 
     @Override
@@ -54,10 +53,12 @@ public class PutCardsScene extends GUIScene {
                         String itemName = bookshelf[i][j].getMyItem().toString().toLowerCase();
                         String itemNumber = bookshelf[i][j].getMyNum().toString();
                         String myItem = itemName + itemNumber;
+
                         ImageView tileImage = new ImageView(GUIResources.getItem(myItem));
                         tileImage.setPreserveRatio(true);
                         tileImage.setFitHeight(48);
                         tileImage.setFitWidth(48);
+
                         bookshelfPane.add(tileImage, j, i);
                     }
                 }
@@ -75,10 +76,11 @@ public class PutCardsScene extends GUIScene {
             if (i < 10) {
                 cgNum = "0" + cgNum;
             }
-            ImageView comGoalImage = new ImageView(GUIResources.getItem("cg"+cgNum));
+            ImageView comGoalImage = new ImageView(GUIResources.getComGoal("cg" + cgNum));
             comGoalImage.setPreserveRatio(true);
             comGoalImage.setFitHeight(60);
             comGoalImage.setFitWidth(60);
+
             comGoals.add(comGoalImage, n, 0);
             n++;
         }

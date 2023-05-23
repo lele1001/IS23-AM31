@@ -1,15 +1,10 @@
 package it.polimi.ingsw.client.view.GUI;
 
 import it.polimi.ingsw.client.ClientController;
-import it.polimi.ingsw.client.view.GUI.scenes.GUIScene;
 import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
 import javafx.stage.Stage;
-
-import java.awt.*;
-import java.util.Objects;
 
 public class GUIApp extends Application {
     @FXML

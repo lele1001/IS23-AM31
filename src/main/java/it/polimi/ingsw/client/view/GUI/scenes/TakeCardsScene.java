@@ -1,28 +1,34 @@
 package it.polimi.ingsw.client.view.GUI.scenes;
 
 import it.polimi.ingsw.client.ClientController;
+import it.polimi.ingsw.client.InputController;
 import it.polimi.ingsw.client.view.GUI.GUIResources;
 import it.polimi.ingsw.server.model.ItemCard;
+import it.polimi.ingsw.server.model.Position;
+import javafx.fxml.FXML;
+import javafx.scene.Node;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 
-
-import java.awt.*;
+import java.util.ArrayList;
 import java.util.Map;
-import java.util.Objects;
 
 
 public class TakeCardsScene extends GUIScene {
-
     private static final int DIM_BOARD = 9;
     private static final int BOOKSHELF_HEIGHT = 6;
     private static final int BOOKSHELF_LENGTH = 5;
-
-    public GridPane boardPane;
-    public GridPane comGoals;
-    public GridPane bookshelfPane;
-
+    @FXML
+    GridPane boardPane, comGoals, bookshelfPane, persGoal, youSelectedThis;
+    @FXML
+    Label errorArea;
+    @FXML
+    Button selectTiles;
     private ClientController clientController;
+    private ArrayList<Integer> selectedTiles;
 
     @Override
     public void updateBoard(ItemCard[][] board) {
@@ -32,10 +38,12 @@ public class TakeCardsScene extends GUIScene {
                     String itemName = board[i][j].getMyItem().toString().toLowerCase();
                     String itemNumber = board[i][j].getMyNum().toString();
                     String myItem = itemName + itemNumber;
+
                     ImageView tileImage = new ImageView(GUIResources.getItem(myItem));
                     tileImage.setPreserveRatio(true);
                     tileImage.setFitHeight(50);
                     tileImage.setFitWidth(50);
+
                     boardPane.add(tileImage, j, i);
                 }
             }
@@ -51,10 +59,12 @@ public class TakeCardsScene extends GUIScene {
                         String itemName = bookshelf[i][j].getMyItem().toString().toLowerCase();
                         String itemNumber = bookshelf[i][j].getMyNum().toString();
                         String myItem = itemName + itemNumber;
+
                         ImageView tileImage = new ImageView(GUIResources.getItem(myItem));
                         tileImage.setPreserveRatio(true);
                         tileImage.setFitHeight(30);
                         tileImage.setFitWidth(30);
+
                         bookshelfPane.add(tileImage, j, i);
                     }
                 }
@@ -70,10 +80,12 @@ public class TakeCardsScene extends GUIScene {
             if (i < 10) {
                 cgNum = "0" + cgNum;
             }
-            ImageView comGoalImage = new ImageView(GUIResources.getItem("cg"+cgNum));
+
+            ImageView comGoalImage = new ImageView(GUIResources.getItem("cg" + cgNum));
             comGoalImage.setPreserveRatio(true);
             comGoalImage.setFitHeight(150);
             comGoalImage.setFitWidth(200);
+
             comGoals.add(comGoalImage, n, 0);
             n++;
         }
@@ -82,23 +94,73 @@ public class TakeCardsScene extends GUIScene {
     @Override
     public void initialize(ClientController clientController) {
         this.clientController = clientController;
+        errorArea.setVisible(false);
+        selectedTiles = new ArrayList<>();
+        bindEvents();
     }
 
     @Override
     public void printError(String error) {
-
+        errorArea.setVisible(true);
+        errorArea.setText(error);
     }
 
     @Override
     public void bindEvents() {
+        boardPane.addEventHandler(MouseEvent.MOUSE_CLICKED, this::highlightTile);
+        selectTiles.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> selectTiles());
 
     }
 
-    public void highlightTiles() {
+    public void highlightTile(MouseEvent event) {
+        Node clickedNode = event.getPickResult().getIntersectedNode();
+        int clickedColumn = GridPane.getColumnIndex(clickedNode);
+        int clickedRow = GridPane.getRowIndex(clickedNode);
+
+        if (boardPane.getChildren().contains(clickedNode)) {
+            ImageView imageView = (ImageView) clickedNode;
+            printError("You selected " + selectedTiles.size() + " tiles");
+
+            if (imageView != null && selectedTiles.size() < 3) {
+                imageView.setOpacity(0.3);
+                removeTile(imageView, clickedColumn, clickedRow);
+            }
+        }
+    }
+
+    public void removeTile(ImageView imageView, int clickedColumn, int clickedRow) {
+        int coord = Position.getNumber(clickedColumn, clickedRow);
+        printError("You selected position " + coord);
+        selectedTiles.add(coord);
+
+        imageView.setPreserveRatio(true);
+        imageView.setOpacity(1);
+        imageView.setFitWidth(50);
+        imageView.setFitWidth(50);
+
+        youSelectedThis.add(imageView, selectedTiles.size(), 0);
     }
 
     public void updateCurrPlayer(String player) {
-        //TODO: print the input string
+        selectedTiles.clear();
+        selectTiles.setDisable(false);
+    }
+
+    public void selectTiles() {
+        InputController inputController = new InputController(clientController);
+
+        if (!inputController.checkSelection(selectedTiles)) {
+            printError("ERROR: wrong selection");
+        }
+
+        clientController.setSelectedTiles(selectedTiles);
+
+        try {
+            clientController.selectCard();
+            selectTiles.setDisable(true);
+        } catch (Exception e) {
+            printError("ERROR: server error");
+        }
     }
 
 

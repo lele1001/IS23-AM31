@@ -27,7 +27,7 @@ public class ClientController {
     private static final int DIM_BOARD = 9;
     private static final int BOOKSHELF_LENGTH = 5;
     private static final int BOOKSHELF_HEIGHT = 6;
-    private String myNickname;
+    private String myNickname, myPersGoalNumber;
     private ItemCard[][] board = new ItemCard[DIM_BOARD][DIM_BOARD];
     private Map<String, ItemCard[][]> playersBookshelf = new HashMap<>();
     private Map<Integer, Integer> playerComGoal = new HashMap<>();
@@ -64,7 +64,7 @@ public class ClientController {
         phase = INSERTCARDS;
         view.onInsert();
         view.printSelectedTiles(selectedTiles);
-        view.printPersGoal(myPersGoal);
+        view.printPersGoal(myPersGoal, myPersGoalNumber);
         view.printBookshelf(playersBookshelf.get(myNickname), myNickname);
     }
 
@@ -211,8 +211,7 @@ public class ClientController {
 
         Gson gson = new Gson();
 
-        Type cardsType = new TypeToken<Map<String, ArrayList<Integer>>>() {
-        }.getType();
+        Type cardsType = new TypeToken<Map<String, ArrayList<Integer>>>() {}.getType();
         Map<String, ArrayList<Integer>> cards = gson.fromJson(json, cardsType);
         List<Integer> index = cards.get(newValue);
 
@@ -221,8 +220,8 @@ public class ClientController {
         for (int i = 0; i < items.size(); i++) {
             myPersGoal.put(index.get(i), items.get(i));
         }
-
-        view.printPersGoal(myPersGoal);
+        myPersGoalNumber = newValue;
+        view.printPersGoal(myPersGoal, myPersGoalNumber);
     }
 
     /**
@@ -466,4 +465,5 @@ public class ClientController {
         view.printWinners(winners);
     }
 
+    public String getPersGoalValue(){return myPersGoalNumber;}
 }

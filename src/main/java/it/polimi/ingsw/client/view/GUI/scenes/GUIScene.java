@@ -35,16 +35,7 @@ public abstract class GUIScene {
 
     public abstract void comGoal(Map<Integer, Integer> playerCommonGoal);
 
-/* TODO:
     void updateBoard(ItemCard[][] board);
 
-    void updateBookshelves(Map<String, ItemCard[][]> bookshelves);
 
-    void updateCommonGoal(Map<Integer, Integer> playerComGoal);
-
-    void updatePoints(int points);
-
-    ...
-
-     */
 }

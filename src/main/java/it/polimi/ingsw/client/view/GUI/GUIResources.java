@@ -96,7 +96,8 @@ public final class GUIResources {
         put("cg12", cg12);
     }};
 
-    private GUIResources() {}
+    private GUIResources() {
+    }
 
     public static Image getItem(String myItem) {
         return itemTiles.get(myItem);

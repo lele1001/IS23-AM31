@@ -1,18 +1,17 @@
 package it.polimi.ingsw.client.view.GUI;
 
 import it.polimi.ingsw.client.ClientController;
-import it.polimi.ingsw.client.view.GUI.scenes.*;
+import it.polimi.ingsw.client.view.GUI.scenes.GUIScene;
 import it.polimi.ingsw.server.model.ItemCard;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.image.Image;
-import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
 import java.awt.*;
 import java.io.IOException;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 
 public class SceneController {
     private final ClientController clientController;
@@ -103,6 +102,7 @@ public class SceneController {
             return;
         }
 
+        this.activeStage.setTitle("My Shelfie | " + clientController.getMyNickname());
         this.activeStage.setScene(new Scene(root));
     }
 
@@ -199,32 +199,35 @@ public class SceneController {
     }
 
     public void updateCurrPlayer(String player) {
-        for (GUIScene gs : scenesMap.values())
+        for (GUIScene gs : scenesMap.values()) {
             gs.updateCurrPlayer(player);
+        }
     }
 
     public void updateBoard(ItemCard[][] board) {
-       // for (GUIScene gs : scenesMap.values())
-       //     gs.updateBoard(board);
-        this.scenesMap.get("takeCardsScene").updateBoard(board);
-        this.scenesMap.get("notMyTurnScene").updateBoard(board);
+        for (GUIScene gs : scenesMap.values()) {
+            gs.updateBoard(board);
+        }
+
     }
 
     public void updateBookshelf(String nickname, ItemCard[][] bookshelf) {
-        for (GUIScene gs : scenesMap.values())
+        for (GUIScene gs : scenesMap.values()) {
             gs.updateBookshelf(nickname, bookshelf);
+        }
     }
 
     public void printError(String error) {
         this.currentController.printError(error);
     }
 
-    public void updateSelectedTiles(Map<Integer, ItemCard> selectedTiles) {
+    public void printSelectedTiles(Map<Integer, ItemCard> selectedTiles) {
         this.scenesMap.get("putCardsScene").updateSelectedTiles(selectedTiles);
     }
 
     public void comGoal(Map<Integer, Integer> playerCommonGoal) {
-        for (GUIScene gs : scenesMap.values())
+        for (GUIScene gs : scenesMap.values()) {
             gs.comGoal(playerCommonGoal);
+        }
     }
 }
