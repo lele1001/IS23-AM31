@@ -81,7 +81,7 @@ public class TakeCardsScene extends GUIScene {
                 cgNum = "0" + cgNum;
             }
 
-            ImageView comGoalImage = new ImageView(GUIResources.getItem("cg" + cgNum));
+            ImageView comGoalImage = new ImageView(GUIResources.getComGoal("cg" + cgNum));
             comGoalImage.setPreserveRatio(true);
             comGoalImage.setFitHeight(150);
             comGoalImage.setFitWidth(200);
