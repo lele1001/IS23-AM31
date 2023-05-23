@@ -74,6 +74,12 @@ public final class GUIResources {
     public final static Image pg11 = new Image(Objects.requireNonNull(GUIResources.class.getResource("/images/personalGoalCards/Personal_Goals11.png")).toString());
     public final static Image pg12 = new Image(Objects.requireNonNull(GUIResources.class.getResource("/images/personalGoalCards/Personal_Goals12.png")).toString());
 
+    //scoring
+    public final static Image sc01 = new Image(Objects.requireNonNull(GUIResources.class.getResource("/images/scoringTokens/endGame.jpg")).toString());
+    public final static Image sc02 = new Image(Objects.requireNonNull(GUIResources.class.getResource("/images/scoringTokens/scoring_2.jpg")).toString());
+    public final static Image sc04 = new Image(Objects.requireNonNull(GUIResources.class.getResource("/images/scoringTokens/scoring_4.jpg")).toString());
+    public final static Image sc06 = new Image(Objects.requireNonNull(GUIResources.class.getResource("/images/scoringTokens/scoring_6.jpg")).toString());
+    public final static Image sc08 = new Image(Objects.requireNonNull(GUIResources.class.getResource("/images/scoringTokens/scoring_8.jpg")).toString());
 
     // maps that associate a string to the image
     private static final Map<String, Image> itemTiles = new HashMap<>() {{
@@ -125,6 +131,13 @@ public final class GUIResources {
         put("pg11", pg11);
         put("pg12", pg12);
     }};
+    private static final Map<String, Image> scoringTokens = new HashMap<>() {{
+        put("sc01", sc01);
+        put("sc02", sc02);
+        put("sc04", sc04);
+        put("sc06", sc06);
+        put("sc08", sc08);
+    }};
 
 
     private GUIResources() {
@@ -139,4 +152,6 @@ public final class GUIResources {
     }
 
     public static Image getPersGoal(String persGoal){return persGoals.get(persGoal);}
+
+    public static Image getScore(String s) {return scoringTokens.get(s); }
 }

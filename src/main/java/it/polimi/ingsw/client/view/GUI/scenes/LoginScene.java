@@ -31,6 +31,8 @@ public class LoginScene extends GUIScene {
     public void initialize(ClientController clientController) {
         this.clientController = clientController;
         errorArea.setVisible(false);
+        ipPort.setText("1501");
+        ipAddress.setText("127.0.0.1");
 
         connectionPane.setDisable(false);
         connectionPane.setVisible(true);
@@ -38,6 +40,7 @@ public class LoginScene extends GUIScene {
         ToggleGroup connectionGroup = new ToggleGroup();
         connectionRMI.setToggleGroup(connectionGroup);
         connectionSocket.setToggleGroup(connectionGroup);
+        connectionRMI.setSelected(true);
     }
 
     /**

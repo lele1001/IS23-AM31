@@ -5,6 +5,7 @@ import it.polimi.ingsw.client.view.GUI.GUIResources;
 import it.polimi.ingsw.server.model.ItemCard;
 import javafx.fxml.FXML;
 import javafx.scene.control.Tab;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
@@ -20,7 +21,7 @@ public class NotMyTurnScene extends GUIScene {
     @FXML
     Tab player1tab, player2tab, player3tab, player4tab;
     @FXML
-    GridPane bookshelf1, bookshelf2, bookshelf3, bookshelf4, boardPane, comGoals, persGoal;
+    GridPane bookshelf1, bookshelf2, bookshelf3, bookshelf4, boardPane, comGoals, persGoal,score_0, score_1;
     private ClientController clientController;
 
     @Override
@@ -167,6 +168,16 @@ public class NotMyTurnScene extends GUIScene {
             comGoalImage.setFitWidth(200);
 
             comGoals.add(comGoalImage, n, 0);
+
+            ImageView scoreImage = new ImageView(GUIResources.getScore("sc0" + playerCommonGoal.get(i)));
+            System.out.println(scoreImage);
+            scoreImage.setFitHeight(85);
+            scoreImage.setFitWidth(85);
+            if(n==0){
+                score_0.add(scoreImage,0,0);
+            }else{
+                score_1.add(scoreImage,0,0);
+            }
             n++;
         }
     }
