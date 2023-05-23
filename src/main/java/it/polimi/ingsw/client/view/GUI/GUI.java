@@ -100,7 +100,7 @@ public class GUI implements View {
      */
     @Override
     public void printPersGoal(Map<Integer, HouseItem> myPersGoal, String newValue) {
-
+        sceneController.persGoal(newValue);
     }
 
     /**

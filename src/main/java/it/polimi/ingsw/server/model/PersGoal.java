@@ -11,7 +11,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public enum PersGoal {
-    Card1, Card2, Card3, Card4, Card5, Card6, Card7, Card8, Card9, Card10, Card11, Card12;
+    pg01, pg02, pg03, pg04, pg05, pg06, pg07, pg08, pg09, pg10, pg11, pg12;
 
     /**
      * An ordered list of different scores based on the number of correct ItemCard

@@ -144,6 +144,11 @@ public class LoginScene extends GUIScene {
     }
 
     @Override
+    public void persGoal(String newValue) {
+
+    }
+
+    @Override
     public void updateCurrPlayer(String player) {
     }
 

@@ -166,4 +166,9 @@ public class NotMyTurnScene extends GUIScene {
             n++;
         }
     }
+
+    @Override
+    public void persGoal(String newValue) {
+
+    }
 }

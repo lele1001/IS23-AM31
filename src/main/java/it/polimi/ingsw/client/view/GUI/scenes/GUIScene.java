@@ -35,5 +35,5 @@ public abstract class GUIScene {
 
     public abstract void comGoal(Map<Integer, Integer> playerCommonGoal);
 
-
+    public abstract void persGoal(String newValue);
 }

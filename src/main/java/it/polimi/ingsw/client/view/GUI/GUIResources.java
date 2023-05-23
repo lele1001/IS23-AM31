@@ -60,6 +60,21 @@ public final class GUIResources {
     public final static Image cg11 = new Image(Objects.requireNonNull(GUIResources.class.getResource("/images/commonGoalCards/11.jpg")).toString());
     public final static Image cg12 = new Image(Objects.requireNonNull(GUIResources.class.getResource("/images/commonGoalCards/12.jpg")).toString());
 
+    //personal goals
+    public final static Image pg01 = new Image(Objects.requireNonNull(GUIResources.class.getResource("/images/personalGoalCards/Personal_Goals.png")).toString());
+    public final static Image pg02 = new Image(Objects.requireNonNull(GUIResources.class.getResource("/images/personalGoalCards/Personal_Goals2.png")).toString());
+    public final static Image pg03 = new Image(Objects.requireNonNull(GUIResources.class.getResource("/images/personalGoalCards/Personal_Goals3.png")).toString());
+    public final static Image pg04 = new Image(Objects.requireNonNull(GUIResources.class.getResource("/images/personalGoalCards/Personal_Goals4.png")).toString());
+    public final static Image pg05 = new Image(Objects.requireNonNull(GUIResources.class.getResource("/images/personalGoalCards/Personal_Goals5.png")).toString());
+    public final static Image pg06 = new Image(Objects.requireNonNull(GUIResources.class.getResource("/images/personalGoalCards/Personal_Goals6.png")).toString());
+    public final static Image pg07 = new Image(Objects.requireNonNull(GUIResources.class.getResource("/images/personalGoalCards/Personal_Goals7.png")).toString());
+    public final static Image pg08 = new Image(Objects.requireNonNull(GUIResources.class.getResource("/images/personalGoalCards/Personal_Goals8.png")).toString());
+    public final static Image pg09 = new Image(Objects.requireNonNull(GUIResources.class.getResource("/images/personalGoalCards/Personal_Goals9.png")).toString());
+    public final static Image pg10 = new Image(Objects.requireNonNull(GUIResources.class.getResource("/images/personalGoalCards/Personal_Goals10.png")).toString());
+    public final static Image pg11 = new Image(Objects.requireNonNull(GUIResources.class.getResource("/images/personalGoalCards/Personal_Goals11.png")).toString());
+    public final static Image pg12 = new Image(Objects.requireNonNull(GUIResources.class.getResource("/images/personalGoalCards/Personal_Goals12.png")).toString());
+
+
     // maps that associate a string to the image
     private static final Map<String, Image> itemTiles = new HashMap<>() {{
         put("frameFirst", frameFirst);
@@ -96,6 +111,22 @@ public final class GUIResources {
         put("cg12", cg12);
     }};
 
+    private static final Map<String, Image> persGoals = new HashMap<>() {{
+        put("pg01", pg01);
+        put("pg02", pg02);
+        put("pg03", pg03);
+        put("pg04", pg04);
+        put("pg05", pg05);
+        put("pg06", pg06);
+        put("pg07", pg07);
+        put("pg08", pg08);
+        put("pg09", pg09);
+        put("pg10", pg10);
+        put("pg11", pg11);
+        put("pg12", pg12);
+    }};
+
+
     private GUIResources() {
     }
 
@@ -106,4 +137,6 @@ public final class GUIResources {
     public static Image getComGoal(String comGoal) {
         return comGoals.get(comGoal);
     }
+
+    public static Image getPersGoal(String persGoal){return persGoals.get(persGoal);}
 }

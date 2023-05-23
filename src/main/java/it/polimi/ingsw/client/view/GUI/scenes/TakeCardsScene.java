@@ -92,6 +92,15 @@ public class TakeCardsScene extends GUIScene {
     }
 
     @Override
+    public void persGoal(String newValue) {
+        ImageView persGoalImage = new ImageView(GUIResources.getPersGoal(newValue));
+        persGoalImage.setPreserveRatio(true);
+        persGoalImage.setFitHeight(200);
+        persGoalImage.setFitWidth(150);
+        persGoal.add(persGoalImage, 0, 0);
+    }
+
+    @Override
     public void initialize(ClientController clientController) {
         this.clientController = clientController;
         errorArea.setVisible(false);

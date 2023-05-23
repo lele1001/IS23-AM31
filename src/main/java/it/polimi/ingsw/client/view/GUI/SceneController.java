@@ -230,4 +230,10 @@ public class SceneController {
             gs.comGoal(playerCommonGoal);
         }
     }
+
+    public void persGoal(String newValue) {
+        for(GUIScene gs : scenesMap.values()){
+            gs.persGoal(newValue);
+        }
+    }
 }
