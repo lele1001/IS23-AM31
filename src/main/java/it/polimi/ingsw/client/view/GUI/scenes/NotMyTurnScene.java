@@ -55,6 +55,8 @@ public class NotMyTurnScene extends GUIScene {
 
     @Override
     public void updateBoard(ItemCard[][] board) {
+        boardPane.getChildren().clear();
+
         for (int i = 0; i < DIM_BOARD; i++) {
             for (int j = 0; j < DIM_BOARD; j++) {
                 if (board[i][j] != null) {

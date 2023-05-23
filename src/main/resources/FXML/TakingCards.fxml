@@ -27,7 +27,7 @@
         <Image url="@../images/boards/bookshelf.png" />
     </ImageView>
 
-    <GridPane fx:id="comGoals" focusTraversable="true" layoutX="620.0" layoutY="421.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="150.0" prefWidth="400.0">
+    <GridPane fx:id="comGoals" focusTraversable="true" gridLinesVisible="true" layoutX="620.0" layoutY="400.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="150.0" prefWidth="400.0">
         <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="200.0" />
             <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="200.0" />
@@ -39,7 +39,7 @@
 
     <Label layoutX="1066.0" layoutY="35.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="640.0" prefWidth="200.0" text="qui ci andrà la chat" textAlignment="CENTER" />
 
-    <GridPane fx:id="persGoal" focusTraversable="true" layoutX="620.0" layoutY="47.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="150.0">
+    <GridPane fx:id="persGoal" focusTraversable="true" gridLinesVisible="true" layoutX="620.0" layoutY="47.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="150.0">
         <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="150.0" />
         </columnConstraints>
@@ -54,19 +54,19 @@
         </font>
     </Label>
 
-    <Button fx:id="selectTiles" layoutX="400.0" layoutY="600.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="84.0" text="OK">
+    <Button fx:id="selectTiles" layoutX="400.0" layoutY="600.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="100.0" text="OK">
         <font>
             <Font name="Bauhaus 93" size="18.0" />
         </font>
     </Button>
 
-    <GridPane fx:id="bookshelfPane" focusTraversable="true" hgap="5.0" layoutX="837.0" layoutY="58.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="160.0" prefWidth="156.0" vgap="1.5">
+    <GridPane fx:id="bookshelfPane" focusTraversable="true" hgap="5.0" layoutX="840.0" layoutY="58.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="160.0" prefWidth="150.0" vgap="2.0">
         <columnConstraints>
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="27.0" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="27.0" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="27.0" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="27.0" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="27.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="26.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="26.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="26.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="26.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="26.0" />
         </columnConstraints>
         <rowConstraints>
             <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="25.0" vgrow="SOMETIMES" />
@@ -103,7 +103,7 @@
         </rowConstraints>
     </GridPane>
 
-    <GridPane fx:id="youSelectedThis" focusTraversable="true" hgap="4.0" layoutX="150.0" layoutY="600.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="158.0" vgap="4.0">
+    <GridPane fx:id="youSelectedThis" focusTraversable="true" gridLinesVisible="true" hgap="4.0" layoutX="203.0" layoutY="600.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="158.0" vgap="4.0">
             <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="50.0" />
                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="50.0" />
@@ -114,4 +114,9 @@
             </RowConstraints>
         </rowConstraints>
     </GridPane>
+   <Button fx:id="undoSelection" layoutX="64.0" layoutY="600.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="100.0" text="undo">
+      <font>
+         <Font name="Bauhaus 93" size="18.0" />
+      </font>
+   </Button>
 </Pane>

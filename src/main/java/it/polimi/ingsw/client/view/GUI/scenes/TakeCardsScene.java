@@ -26,12 +26,14 @@ public class TakeCardsScene extends GUIScene {
     @FXML
     Label errorArea;
     @FXML
-    Button selectTiles;
+    Button selectTiles, undoSelection;
     private ClientController clientController;
     private ArrayList<Integer> selectedTiles;
 
     @Override
     public void updateBoard(ItemCard[][] board) {
+        boardPane.getChildren().clear();
+
         for (int i = 0; i < DIM_BOARD; i++) {
             for (int j = 0; j < DIM_BOARD; j++) {
                 if (board[i][j] != null) {
@@ -168,6 +170,7 @@ public class TakeCardsScene extends GUIScene {
             clientController.selectCard();
             selectTiles.setDisable(true);
         } catch (Exception e) {
+            e.printStackTrace();
             printError("ERROR: server error");
         }
     }

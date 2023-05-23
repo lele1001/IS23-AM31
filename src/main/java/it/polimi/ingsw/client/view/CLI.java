@@ -83,11 +83,15 @@ public class CLI implements View {
     @Override
     public void onSelect() {
         print((char) 27 + "[0;39m" + "Type @TAKE to choose from 1 to 3 tiles from the board, followed by their coordinates (xy)");
+        printBoard(clientController.getBoard());
     }
 
     @Override
     public void onInsert() {
         print((char) 27 + "[0;39m" + "Type @PUT followed by the column number and the board coordinates of the tiles (from bottom to top)");
+        printSelectedTiles(clientController.getSelectedTiles());
+        printPersGoal(clientController.getMyPersGoal(), clientController.getPersGoalValue());
+        printBookshelf(clientController.getPlayersBookshelves().get(clientController.getMyNickname()), clientController.getMyNickname());
     }
 
     @Override

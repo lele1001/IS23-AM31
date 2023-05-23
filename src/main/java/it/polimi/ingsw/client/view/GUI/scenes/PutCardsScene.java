@@ -77,8 +77,8 @@ public class PutCardsScene extends GUIScene {
             }
             ImageView comGoalImage = new ImageView(GUIResources.getComGoal("cg" + cgNum));
             comGoalImage.setPreserveRatio(true);
-            comGoalImage.setFitHeight(60);
-            comGoalImage.setFitWidth(60);
+            comGoalImage.setFitHeight(150);
+            comGoalImage.setFitWidth(200);
 
             comGoals.add(comGoalImage, n, 0);
             n++;

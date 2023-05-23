@@ -44,8 +44,8 @@ public class GUI implements View {
      */
     @Override
     public void printBoard(ItemCard[][] board) {
-        sceneController.updateBoard(board);
-    }
+        Platform.runLater(() -> sceneController.updateBoard(board));
+    };
 
 
     /**
@@ -55,7 +55,7 @@ public class GUI implements View {
      */
     @Override
     public void printError(String error) {
-        sceneController.printError(error);
+        Platform.runLater(() -> sceneController.printError(error));
     }
 
     /**
@@ -65,7 +65,7 @@ public class GUI implements View {
      */
     @Override
     public void printCommonGoal(Map<Integer, Integer> playerComGoal) {
-        sceneController.comGoal(playerComGoal);
+        Platform.runLater(() -> sceneController.comGoal(playerComGoal));
     }
 
     @Override
@@ -75,7 +75,7 @@ public class GUI implements View {
 
     @Override
     public void onChangeTurn(String currPlayer) {
-        sceneController.updateCurrPlayer(currPlayer);
+        Platform.runLater(() -> sceneController.updateCurrPlayer(currPlayer));
 
         if (!currPlayer.equals(clientController.getMyNickname())) {
             Platform.runLater(this.sceneController::notMyTurn);
@@ -110,7 +110,7 @@ public class GUI implements View {
      */
     @Override
     public void printSelectedTiles(Map<Integer, ItemCard> selectedTiles) {
-        sceneController.printSelectedTiles(selectedTiles);
+        Platform.runLater(() -> sceneController.printSelectedTiles(selectedTiles));
     }
 
     /**
@@ -131,7 +131,7 @@ public class GUI implements View {
      */
     @Override
     public void printBookshelf(ItemCard[][] book, String nickname) {
-        sceneController.updateBookshelf(nickname, book);
+        Platform.runLater(() -> sceneController.updateBookshelf(nickname, book));
     }
 
     /**
