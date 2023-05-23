@@ -4,6 +4,7 @@ import it.polimi.ingsw.client.ClientController;
 import it.polimi.ingsw.client.view.GUI.GUIResources;
 import it.polimi.ingsw.server.model.ItemCard;
 import javafx.fxml.FXML;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tab;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
@@ -16,11 +17,13 @@ public class NotMyTurnScene extends GUIScene {
     private static final int BOOKSHELF_HEIGHT = 6;
     private static final int BOOKSHELF_LENGTH = 5;
     @FXML
+    ScrollPane chatPane;
+    @FXML
     AnchorPane notYourPane;
     @FXML
     Tab player1tab, player2tab, player3tab, player4tab;
     @FXML
-    GridPane bookshelf1, bookshelf2, bookshelf3, bookshelf4, boardPane, comGoals, persGoal,score_0, score_1;
+    GridPane bookshelf1, bookshelf2, bookshelf3, bookshelf4, boardPane, comGoals, persGoal, score_0, score_1;
     private ClientController clientController;
 
     @Override
@@ -69,8 +72,8 @@ public class NotMyTurnScene extends GUIScene {
 
                     ImageView tileImage = new ImageView(GUIResources.getItem(myItem));
                     tileImage.setPreserveRatio(true);
-                    tileImage.setFitHeight(60);
-                    tileImage.setFitWidth(60);
+                    tileImage.setFitHeight(40);
+                    tileImage.setFitWidth(40);
 
                     boardPane.add(tileImage, j, i);
                 }
@@ -97,6 +100,7 @@ public class NotMyTurnScene extends GUIScene {
                     }
                 }
             }
+
         } else if (player2tab.getText().equals(nickname)) {
             for (int i = 0; i < BOOKSHELF_HEIGHT; i++) {
                 for (int j = 0; j < BOOKSHELF_LENGTH; j++) {
@@ -156,28 +160,27 @@ public class NotMyTurnScene extends GUIScene {
         int n = 0;
 
         for (Integer i : playerCommonGoal.keySet()) {
-            String cgNum = i.toString();
             ImageView scoreImage = new ImageView(GUIResources.getScore("sc0" + playerCommonGoal.get(i).toString()));
-            System.out.println(scoreImage);
-            scoreImage.setFitHeight(85);
-            scoreImage.setFitWidth(85);
-            if(n==0){
-                score_0.add(scoreImage,0,0);
-            }else{
-                score_1.add(scoreImage,0,0);
+            scoreImage.setFitHeight(45);
+            scoreImage.setFitWidth(45);
+
+            if (n == 0) {
+                score_0.add(scoreImage, 0, 0);
+            } else {
+                score_1.add(scoreImage, 0, 0);
             }
+
+            String cgNum = i.toString();
             if (i < 10) {
                 cgNum = "0" + cgNum;
             }
 
             ImageView comGoalImage = new ImageView(GUIResources.getComGoal("cg" + cgNum));
-            comGoalImage.setFitHeight(150);
-            comGoalImage.setFitWidth(200);
+            comGoalImage.setFitHeight(100);
+            comGoalImage.setFitWidth(175);
 
             comGoals.add(comGoalImage, n, 0);
-
             n++;
-
         }
     }
 

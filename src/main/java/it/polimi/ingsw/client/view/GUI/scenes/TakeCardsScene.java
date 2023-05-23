@@ -9,6 +9,7 @@ import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -23,9 +24,11 @@ public class TakeCardsScene extends GUIScene {
     private static final int BOOKSHELF_HEIGHT = 6;
     private static final int BOOKSHELF_LENGTH = 5;
     @FXML
+    ScrollPane chatPane;
+    @FXML
     AnchorPane takeCardsPane;
     @FXML
-    GridPane boardPane, comGoals, bookshelfPane, persGoal, youSelectedThis;
+    GridPane boardPane, comGoals, bookshelfPane, persGoal, youSelectedThis, score_0, score_1;
     @FXML
     Label errorArea;
     @FXML
@@ -67,8 +70,8 @@ public class TakeCardsScene extends GUIScene {
 
                         ImageView tileImage = new ImageView(GUIResources.getItem(myItem));
                         tileImage.setPreserveRatio(true);
-                        tileImage.setFitHeight(30);
-                        tileImage.setFitWidth(30);
+                        tileImage.setFitHeight(24);
+                        tileImage.setFitWidth(24);
 
                         bookshelfPane.add(tileImage, j, i);
                     }
@@ -81,6 +84,16 @@ public class TakeCardsScene extends GUIScene {
     public void comGoal(Map<Integer, Integer> playerCommonGoal) {
         int n = 0;
         for (Integer i : playerCommonGoal.keySet()) {
+            ImageView scoreImage = new ImageView(GUIResources.getScore("sc0" + playerCommonGoal.get(i).toString()));
+            scoreImage.setFitHeight(60);
+            scoreImage.setFitWidth(60);
+
+            if (n == 0) {
+                score_0.add(scoreImage, 0, 0);
+            } else {
+                score_1.add(scoreImage, 0, 0);
+            }
+
             String cgNum = i.toString();
             if (i < 10) {
                 cgNum = "0" + cgNum;
@@ -135,7 +148,6 @@ public class TakeCardsScene extends GUIScene {
             printError("You selected " + selectedTiles.size() + " tiles");
 
             if (imageView != null && selectedTiles.size() < 3) {
-                imageView.setOpacity(0.3);
                 removeTile(imageView, clickedColumn, clickedRow);
             }
         }
@@ -151,7 +163,7 @@ public class TakeCardsScene extends GUIScene {
         imageView.setFitWidth(50);
         imageView.setFitWidth(50);
 
-        youSelectedThis.add(imageView, selectedTiles.size(), 0);
+        youSelectedThis.add(imageView, selectedTiles.size() - 1, 0);
     }
 
     public void updateCurrPlayer(String player) {

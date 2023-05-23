@@ -122,7 +122,7 @@ public class SceneController {
     public void loadTake() {
         this.currentController = this.scenesMap.get("takeCardsScene");
         this.activeStage.setScene(currentController.getMyScene());
-        this.activeStage.setResizable(true);
+        this.activeStage.setResizable(false);
     }
 
     /**
@@ -132,7 +132,7 @@ public class SceneController {
     public void loadPut() {
         this.currentController = this.scenesMap.get("putCardsScene");
         this.activeStage.setScene(currentController.getMyScene());
-        this.activeStage.setResizable(true);
+        this.activeStage.setResizable(false);
     }
 
     /**
@@ -142,7 +142,7 @@ public class SceneController {
     public void notMyTurn() {
         this.currentController = this.scenesMap.get("notMyTurnScene");
         this.activeStage.setScene(currentController.getMyScene());
-        this.activeStage.setResizable(true);
+        this.activeStage.setResizable(false);
     }
 
     /**

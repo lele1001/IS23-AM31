@@ -4,9 +4,12 @@ import it.polimi.ingsw.client.ClientController;
 import it.polimi.ingsw.client.view.GUI.GUIResources;
 import it.polimi.ingsw.server.model.ItemCard;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.shape.Circle;
 
 import java.util.Map;
 
@@ -15,9 +18,15 @@ public class PutCardsScene extends GUIScene {
     private static final int BOOKSHELF_HEIGHT = 6;
     private static final int BOOKSHELF_LENGTH = 5;
     @FXML
+    Circle col1, col2, col3, col4, col5;
+    @FXML
     AnchorPane putCardsPane;
     @FXML
-    GridPane bookshelfPane, comGoals, persGoal;
+    GridPane bookshelfPane, comGoals, persGoal, score_0, score_1, youSelectedThis;
+    @FXML
+    ScrollPane chatPane;
+    @FXML
+    Button undoSelection, selectTiles;
     private ClientController clientController;
 
     @Override
@@ -58,8 +67,8 @@ public class PutCardsScene extends GUIScene {
 
                         ImageView tileImage = new ImageView(GUIResources.getItem(myItem));
                         tileImage.setPreserveRatio(true);
-                        tileImage.setFitHeight(48);
-                        tileImage.setFitWidth(48);
+                        tileImage.setFitHeight(46);
+                        tileImage.setFitWidth(46);
 
                         bookshelfPane.add(tileImage, j, i);
                     }
@@ -73,11 +82,21 @@ public class PutCardsScene extends GUIScene {
         int n = 0;
 
         for (Integer i : playerCommonGoal.keySet()) {
-            String cgNum = i.toString();
+            ImageView scoreImage = new ImageView(GUIResources.getScore("sc0" + playerCommonGoal.get(i).toString()));
+            scoreImage.setFitHeight(60);
+            scoreImage.setFitWidth(60);
 
+            if (n == 0) {
+                score_0.add(scoreImage, 0, 0);
+            } else {
+                score_1.add(scoreImage, 0, 0);
+            }
+
+            String cgNum = i.toString();
             if (i < 10) {
                 cgNum = "0" + cgNum;
             }
+
             ImageView comGoalImage = new ImageView(GUIResources.getComGoal("cg" + cgNum));
             comGoalImage.setFitHeight(150);
             comGoalImage.setFitWidth(200);
