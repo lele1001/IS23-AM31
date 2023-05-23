@@ -5,7 +5,6 @@ import it.polimi.ingsw.client.view.GUI.GUIResources;
 import it.polimi.ingsw.server.model.ItemCard;
 import javafx.fxml.FXML;
 import javafx.scene.control.Tab;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
@@ -158,7 +157,15 @@ public class NotMyTurnScene extends GUIScene {
 
         for (Integer i : playerCommonGoal.keySet()) {
             String cgNum = i.toString();
-
+            ImageView scoreImage = new ImageView(GUIResources.getScore("sc0" + playerCommonGoal.get(i).toString()));
+            System.out.println(scoreImage);
+            scoreImage.setFitHeight(85);
+            scoreImage.setFitWidth(85);
+            if(n==0){
+                score_0.add(scoreImage,0,0);
+            }else{
+                score_1.add(scoreImage,0,0);
+            }
             if (i < 10) {
                 cgNum = "0" + cgNum;
             }
@@ -169,16 +176,8 @@ public class NotMyTurnScene extends GUIScene {
 
             comGoals.add(comGoalImage, n, 0);
 
-            ImageView scoreImage = new ImageView(GUIResources.getScore("sc0" + playerCommonGoal.get(i)));
-            System.out.println(scoreImage);
-            scoreImage.setFitHeight(85);
-            scoreImage.setFitWidth(85);
-            if(n==0){
-                score_0.add(scoreImage,0,0);
-            }else{
-                score_1.add(scoreImage,0,0);
-            }
             n++;
+
         }
     }
 
