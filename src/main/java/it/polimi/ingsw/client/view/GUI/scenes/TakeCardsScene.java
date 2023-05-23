@@ -11,6 +11,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 
 import java.util.ArrayList;
@@ -21,6 +22,8 @@ public class TakeCardsScene extends GUIScene {
     private static final int DIM_BOARD = 9;
     private static final int BOOKSHELF_HEIGHT = 6;
     private static final int BOOKSHELF_LENGTH = 5;
+    @FXML
+    AnchorPane takeCardsPane;
     @FXML
     GridPane boardPane, comGoals, bookshelfPane, persGoal, youSelectedThis;
     @FXML
@@ -84,7 +87,6 @@ public class TakeCardsScene extends GUIScene {
             }
 
             ImageView comGoalImage = new ImageView(GUIResources.getComGoal("cg" + cgNum));
-            comGoalImage.setPreserveRatio(true);
             comGoalImage.setFitHeight(150);
             comGoalImage.setFitWidth(200);
 
@@ -96,9 +98,9 @@ public class TakeCardsScene extends GUIScene {
     @Override
     public void persGoal(String newValue) {
         ImageView persGoalImage = new ImageView(GUIResources.getPersGoal(newValue));
-        persGoalImage.setPreserveRatio(true);
         persGoalImage.setFitHeight(200);
         persGoalImage.setFitWidth(150);
+
         persGoal.add(persGoalImage, 0, 0);
     }
 

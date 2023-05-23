@@ -1,0 +1,5 @@
+#putCardsPane, #takeCardsPane, #notYourPane {
+    -fx-background-image: url('../images/misc/basePagina2.jpg');
+    -fx-background-size: 100%;
+    -fx-effect: dropshadow(gaussian, white, 127, 1, 0, 0);
+}
