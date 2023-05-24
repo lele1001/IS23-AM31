@@ -3,14 +3,17 @@
 <?import javafx.geometry.Rectangle2D?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.SplitMenuButton?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane fx:id="putCardsPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="640.0" prefWidth="1280.0" stylesheets="@../CSS/gamePages.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.view.GUI.scenes.PutCardsScene">
@@ -92,15 +95,13 @@
 
     <Button fx:id="undoSelection" layoutX="670.0" layoutY="298.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="80.0" text="undo" />
 
-    <ScrollPane fx:id="chatPane" hbarPolicy="NEVER" layoutX="1060.0" layoutY="20.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="200.0">
-        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="200.0" />
+    <ScrollPane fx:id="chatPane" hbarPolicy="NEVER" layoutX="1060.0" layoutY="20.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="560.0" prefWidth="200.0">
+        <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="560.0" prefWidth="200.0">
+            <TextField layoutY="510.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="180.0" promptText="Insert your message" />
+        </AnchorPane>
     </ScrollPane>
 
-    <Circle fx:id="col1" fill="WHITE" layoutX="110.0" layoutY="130.0" radius="20.0" stroke="BLACK" strokeType="INSIDE" />
-   <Circle fx:id="col2" fill="WHITE" layoutX="185.0" layoutY="130.0" radius="20.0" stroke="BLACK" strokeType="INSIDE" />
-   <Circle fx:id="col3" fill="WHITE" layoutX="260.0" layoutY="130.0" radius="20.0" stroke="BLACK" strokeType="INSIDE" />
-   <Circle fx:id="col4" fill="WHITE" layoutX="335.0" layoutY="130.0" radius="20.0" stroke="BLACK" strokeType="INSIDE" />
-   <Circle fx:id="col5" fill="WHITE" layoutX="410.0" layoutY="130.0" radius="20.0" stroke="BLACK" strokeType="INSIDE" />
+   <Button fx:id="sendMessage" layoutX="1210.0" layoutY="590.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="30.0" prefWidth="50.0" text="OK" />
 
     <GridPane fx:id="youSelectedThis" focusTraversable="true" gridLinesVisible="true" layoutX="575.0" layoutY="200.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="158.0" prefWidth="50.0" vgap="4.0">
       <columnConstraints>
@@ -113,9 +114,19 @@
       </rowConstraints>
    </GridPane>
    <Label layoutX="82.0" layoutY="20.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="70.0" prefWidth="350.0" text="Chose the Tile order and the column in which you want to put them" textAlignment="CENTER" wrapText="true" />
-   <Label alignment="CENTER" contentDisplay="CENTER" layoutX="570.0" layoutY="40.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0" prefWidth="400.0" text="Your points" textFill="WHITE" wrapText="true">
+   <Label fx:id="yourPoints" alignment="CENTER" contentDisplay="CENTER" layoutX="570.0" layoutY="40.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0" prefWidth="400.0" text="Your points" textFill="WHITE" wrapText="true">
       <font>
          <Font name="Bauhaus 93" size="24.0" />
       </font>
    </Label>
+   <RadioButton fx:id="col1" contentDisplay="GRAPHIC_ONLY" graphicTextGap="0.0" layoutX="98.0" layoutY="118.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" scaleX="1.5" scaleY="1.5" textAlignment="CENTER" />
+   <RadioButton fx:id="col2" contentDisplay="GRAPHIC_ONLY" graphicTextGap="0.0" layoutX="173.0" layoutY="118.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" scaleX="1.5" scaleY="1.5" textAlignment="CENTER" />
+   <RadioButton fx:id="col3" contentDisplay="GRAPHIC_ONLY" graphicTextGap="0.0" layoutX="248.0" layoutY="118.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" scaleX="1.5" scaleY="1.5" textAlignment="CENTER" />
+   <RadioButton fx:id="col4" contentDisplay="GRAPHIC_ONLY" graphicTextGap="0.0" layoutX="323.0" layoutY="118.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" scaleX="1.5" scaleY="1.5" textAlignment="CENTER" />
+   <RadioButton fx:id="col5" contentDisplay="GRAPHIC_ONLY" graphicTextGap="0.0" layoutX="398.0" layoutY="118.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" scaleX="1.5" scaleY="1.5" textAlignment="CENTER" />
+   <SplitMenuButton fx:id="destination" layoutX="1060.0" layoutY="590.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" popupSide="TOP" prefHeight="30.0" prefWidth="150.0" text="destination">
+     <items>
+       <MenuItem mnemonicParsing="false" text="everybody" />
+     </items>
+   </SplitMenuButton>
 </AnchorPane>

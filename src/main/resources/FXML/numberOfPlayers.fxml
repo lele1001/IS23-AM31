@@ -2,7 +2,6 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
 
 <AnchorPane fx:id="playersScenePane" stylesheets="@../CSS/dialogPages.css" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
             minWidth="-Infinity" prefHeight="300.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/17.0.2-ea"
@@ -44,7 +43,7 @@
 
         <Button fx:id="submitButton" alignment="CENTER" contentDisplay="CENTER" prefWidth="100.0" text="OK"
                 textAlignment="CENTER" textOverrun="CLIP" GridPane.columnIndex="1" GridPane.halignment="CENTER"
-                GridPane.rowIndex="4" GridPane.valignment="CENTER">
+                GridPane.rowIndex="4" GridPane.valignment="CENTER" onAction="#submitAction">
         </Button>
 
         <TextArea fx:id="errorArea" editable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
