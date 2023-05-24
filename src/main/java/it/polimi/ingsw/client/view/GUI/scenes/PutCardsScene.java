@@ -6,6 +6,7 @@ import it.polimi.ingsw.server.model.ItemCard;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.shape.Circle;
@@ -57,10 +58,11 @@ public class PutCardsScene extends GUIScene {
 
     @Override
     public void bindEvents() {
-
+        youSelectedThis.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> orderTiles());
     }
 
     public void orderTiles() {
+
     }
 
     public void updateCurrPlayer(String player) {
@@ -133,5 +135,24 @@ public class PutCardsScene extends GUIScene {
     @Override
     public void printPoints(int myPoint) {
         yourPoints.setText("You have " + myPoint + " points");
+    }
+
+    @Override
+    public void updateSelectedTiles(Map<Integer, ItemCard> selectedTiles){
+        int i = 0;
+        for(ItemCard itemCard : clientController.getSelectedTiles().values()){
+            String itemName = itemCard.getMyItem().toString().toLowerCase();
+            String itemNumber = itemCard.getMyNum().toString();
+            String myItem = itemName + itemNumber;
+
+            ImageView tileImage = new ImageView(GUIResources.getItem(myItem));
+            tileImage.setPreserveRatio(true);
+            tileImage.setFitWidth(50);
+            tileImage.setFitHeight(50);
+
+            youSelectedThis.add(tileImage, 0, i);
+            i++;
+        }
+
     }
 }
