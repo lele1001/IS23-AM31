@@ -164,6 +164,10 @@ public class NotMyTurnScene extends GUIScene {
     }
 
     @Override
+    public void updateSelectedTiles(Map<Integer, ItemCard> selectedTiles) {
+    }
+
+    @Override
     public void comGoal(Map<Integer, Integer> playerCommonGoal) {
         int n = 0;
 

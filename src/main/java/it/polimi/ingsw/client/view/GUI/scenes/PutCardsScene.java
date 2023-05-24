@@ -146,7 +146,7 @@ public class PutCardsScene extends GUIScene {
             tileImage.setFitWidth(50);
             tileImage.setFitHeight(50);
 
-            youSelectedThis.add(tileImage, 0, i);
+            youSelectedThis.add(tileImage, i, 0);
             i++;
         }
 

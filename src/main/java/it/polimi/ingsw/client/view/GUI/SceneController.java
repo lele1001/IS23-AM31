@@ -222,7 +222,9 @@ public class SceneController {
     }
 
     public void printSelectedTiles(Map<Integer, ItemCard> selectedTiles) {
-        this.scenesMap.get("putCardsScene").updateSelectedTiles(selectedTiles);
+        for (GUIScene gs : scenesMap.values()) {
+            gs.updateSelectedTiles(selectedTiles);
+        }
     }
 
     public void comGoal(Map<Integer, Integer> playerCommonGoal) {

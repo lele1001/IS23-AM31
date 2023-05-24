@@ -52,7 +52,6 @@ public class ClientController {
     public void onSelect() {
         phase = SELECTCARDS;
         selectedTiles.clear();
-        //view.printBoard(board);
         view.onSelect();
     }
 
@@ -63,9 +62,6 @@ public class ClientController {
     public void onInsert() {
         phase = INSERTCARDS;
         view.onInsert();
-     /*   view.printSelectedTiles(selectedTiles);
-        view.printPersGoal(myPersGoal, myPersGoalNumber);
-        view.printBookshelf(playersBookshelf.get(myNickname), myNickname);*/
     }
 
     /**

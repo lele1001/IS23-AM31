@@ -34,6 +34,7 @@ public class GUI implements View {
 
     @Override
     public void onInsert() {
+        printSelectedTiles(clientController.getSelectedTiles());
         Platform.runLater(this.sceneController::loadPut);
     }
 

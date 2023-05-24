@@ -81,6 +81,10 @@ public class TakeCardsScene extends GUIScene {
     }
 
     @Override
+    public void updateSelectedTiles(Map<Integer, ItemCard> selectedTiles) {
+    }
+
+    @Override
     public void comGoal(Map<Integer, Integer> playerCommonGoal) {
         int n = 0;
         for (Integer i : playerCommonGoal.keySet()) {
@@ -191,6 +195,4 @@ public class TakeCardsScene extends GUIScene {
             printError("ERROR: server error");
         }
     }
-
-
 }

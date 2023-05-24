@@ -29,8 +29,7 @@ public abstract class GUIScene {
 
     public abstract void updateBookshelf(String nickname, ItemCard[][] bookshelf);
 
-    public void updateSelectedTiles(Map<Integer, ItemCard> selectedTiles) {
-    }
+    public abstract void updateSelectedTiles(Map<Integer, ItemCard> selectedTiles);
 
     public abstract void comGoal(Map<Integer, Integer> playerCommonGoal);
 

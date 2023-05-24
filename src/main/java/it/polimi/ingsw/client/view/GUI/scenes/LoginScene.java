@@ -143,21 +143,22 @@ public class LoginScene extends GUIScene {
     }
 
     @Override
+    public void updateSelectedTiles(Map<Integer, ItemCard> selectedTiles) {
+    }
+
+    @Override
     public void comGoal(Map<Integer, Integer> playerCommonGoal) {
     }
 
     @Override
     public void persGoal(String newValue) {
-
     }
 
     @Override
     public void printPoints(int myPoint) {
-
     }
 
     @Override
     public void updateCurrPlayer(String player) {
     }
-
 }
