@@ -77,6 +77,22 @@
     <Button fx:id="selectTiles" layoutX="400.0" layoutY="565.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="100.0" text="OK">
     </Button>
 
+    <GridPane fx:id="youSelectedThis" focusTraversable="true" hgap="4.0" layoutX="203.0" layoutY="565.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="158.0" vgap="4.0">
+        <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="50.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="50.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="50.0" />
+        </columnConstraints>
+        <rowConstraints>
+            <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="50.0" vgrow="SOMETIMES">
+            </RowConstraints>
+        </rowConstraints>
+    </GridPane>
+    
+    <Button fx:id="undoSelection" layoutX="64.0" layoutY="565.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="100.0" text="undo" />
+
+   <Label fx:id="yourPoints" alignment="CENTER" contentDisplay="CENTER" layoutX="620.0" layoutY="50.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0" prefWidth="400.0" text="Your points" textFill="WHITE" wrapText="true" />
+
     <GridPane fx:id="bookshelfPane" focusTraversable="true" hgap="5.0" layoutX="840.0" layoutY="190.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="160.0" prefWidth="150.0" vgap="2.0">
         <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="26.0" />
@@ -119,20 +135,4 @@
             <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="52.0" vgrow="SOMETIMES" />
         </rowConstraints>
     </GridPane>
-
-    <GridPane fx:id="youSelectedThis" focusTraversable="true" hgap="4.0" layoutX="203.0" layoutY="565.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="158.0" vgap="4.0">
-        <columnConstraints>
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="50.0" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="50.0" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="50.0" />
-        </columnConstraints>
-        <rowConstraints>
-            <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="50.0" vgrow="SOMETIMES">
-            </RowConstraints>
-        </rowConstraints>
-    </GridPane>
-    
-    <Button fx:id="undoSelection" layoutX="64.0" layoutY="565.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="100.0" text="undo" />
-
-   <Label fx:id="yourPoints" alignment="CENTER" contentDisplay="CENTER" layoutX="620.0" layoutY="50.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0" prefWidth="400.0" text="Your points" textFill="WHITE" wrapText="true" />
 </AnchorPane>

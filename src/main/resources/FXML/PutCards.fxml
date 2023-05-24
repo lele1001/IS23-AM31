@@ -14,6 +14,7 @@
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.shape.Polygon?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane fx:id="putCardsPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="640.0" prefWidth="1280.0" stylesheets="@../CSS/gamePages.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.view.GUI.scenes.PutCardsScene">
@@ -32,17 +33,75 @@
         <Image url="@../images/boards/bookshelf.png" />
     </ImageView>
 
-    <GridPane fx:id="comGoals" focusTraversable="true" gridLinesVisible="true" hgap="5.0" layoutX="575.0" layoutY="450.0" prefHeight="150.0" prefWidth="405.0">
+    <GridPane fx:id="persGoal" layoutX="830.0" layoutY="50.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="150.0">
         <columnConstraints>
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="200.0" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="200.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="150.0" />
         </columnConstraints>
         <rowConstraints>
-            <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="150.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="200.0" vgrow="SOMETIMES" />
         </rowConstraints>
     </GridPane>
 
-    <AnchorPane layoutX="575.0" layoutY="450.0" prefHeight="150.0" prefWidth="200.0">
+    <Button fx:id="selectTiles" layoutX="650.0" layoutY="370.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="80.0" text="OK" />
+
+    <Button fx:id="undoSelection" layoutX="650.0" layoutY="458.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="80.0" text="undo" />
+
+    <ScrollPane fx:id="chatPane" hbarPolicy="NEVER" layoutX="1060.0" layoutY="20.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="560.0" prefWidth="200.0">
+        <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="560.0" prefWidth="200.0">
+            <TextField layoutY="510.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="180.0" promptText="Insert your message" />
+        </AnchorPane>
+    </ScrollPane>
+
+   <Button fx:id="sendMessage" layoutX="1210.0" layoutY="590.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="30.0" prefWidth="50.0" text="OK" />
+
+    <GridPane fx:id="youPutThis" focusTraversable="true" layoutX="575.0" layoutY="360.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="158.0" prefWidth="50.0" vgap="4.0">
+      <columnConstraints>
+         <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="50.0" />
+      </columnConstraints>
+      <rowConstraints>
+         <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="50.0" vgrow="SOMETIMES" />
+         <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="50.0" vgrow="SOMETIMES" />
+         <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="50.0" vgrow="SOMETIMES" />
+      </rowConstraints>
+   </GridPane>
+   <Label layoutX="82.0" layoutY="20.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="70.0" prefWidth="350.0" text="Chose the Tile order and then the column in which you want to put them" textAlignment="CENTER" wrapText="true" />
+   <Label fx:id="yourPoints" alignment="CENTER" contentDisplay="CENTER" layoutX="551.0" layoutY="80.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="100.0" prefWidth="200.0" text="Your points" textFill="WHITE" wrapText="true">
+      <font>
+         <Font name="Bauhaus 93" size="24.0" />
+      </font>
+   </Label>
+   <RadioButton fx:id="col1" contentDisplay="GRAPHIC_ONLY" graphicTextGap="0.0" layoutX="98.0" layoutY="118.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" scaleX="1.5" scaleY="1.5" textAlignment="CENTER" />
+   <RadioButton fx:id="col2" contentDisplay="GRAPHIC_ONLY" graphicTextGap="0.0" layoutX="173.0" layoutY="118.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" scaleX="1.5" scaleY="1.5" textAlignment="CENTER" />
+   <RadioButton fx:id="col3" contentDisplay="GRAPHIC_ONLY" graphicTextGap="0.0" layoutX="248.0" layoutY="118.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" scaleX="1.5" scaleY="1.5" textAlignment="CENTER" />
+   <RadioButton fx:id="col4" contentDisplay="GRAPHIC_ONLY" graphicTextGap="0.0" layoutX="323.0" layoutY="118.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" scaleX="1.5" scaleY="1.5" textAlignment="CENTER" />
+   <RadioButton fx:id="col5" contentDisplay="GRAPHIC_ONLY" graphicTextGap="0.0" layoutX="398.0" layoutY="118.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" scaleX="1.5" scaleY="1.5" textAlignment="CENTER" />
+   <SplitMenuButton fx:id="destination" layoutX="1060.0" layoutY="590.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" popupSide="TOP" prefHeight="30.0" prefWidth="150.0" text="destination">
+     <items>
+       <MenuItem mnemonicParsing="false" text="everybody" />
+     </items>
+   </SplitMenuButton>
+   <GridPane fx:id="youSelectedThis" focusTraversable="true" hgap="4.0" layoutX="575.0" layoutY="260.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="158.0" vgap="4.0">
+      <columnConstraints>
+         <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="50.0" />
+         <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="50.0" />
+         <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="50.0" />
+      </columnConstraints>
+      <rowConstraints>
+         <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="50.0" vgrow="SOMETIMES" />
+      </rowConstraints>
+   </GridPane>
+   <Polygon fill="WHITE" layoutX="600.0" layoutY="550.0" points="-50.0, 40.0, 50.0, 40.0, 0.0, -60.0" rotate="180.0" scaleX="0.5" scaleY="0.4" stroke="WHITE" strokeType="INSIDE" />
+   <GridPane fx:id="comGoals" alignment="CENTER_RIGHT" focusTraversable="true" hgap="5.0" layoutX="805.0" layoutY="280.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="320.0" prefWidth="200.0" vgap="20.0">
+      <columnConstraints>
+         <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="200.0" />
+      </columnConstraints>
+      <rowConstraints>
+         <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="150.0" vgrow="SOMETIMES" />
+         <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="150.0" vgrow="SOMETIMES" />
+      </rowConstraints>
+   </GridPane>
+
+    <AnchorPane layoutX="805.0" layoutY="280.0" prefHeight="150.0" prefWidth="200.0">
         <GridPane fx:id="score_0" layoutX="114.0" layoutY="38.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="60.0" prefWidth="60.0" rotate="352.0">
             <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -53,7 +112,7 @@
         </GridPane>
     </AnchorPane>
 
-    <AnchorPane layoutX="780.0" layoutY="450.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="150.0" prefWidth="200.0">
+    <AnchorPane layoutX="805.0" layoutY="450.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="150.0" prefWidth="200.0">
         <GridPane fx:id="score_1" layoutX="114.0" layoutY="38.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="60.0" prefWidth="60.0" rotate="352.0">
             <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -81,52 +140,4 @@
             <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="46.0" vgrow="SOMETIMES" />
         </rowConstraints>
     </GridPane>
-
-    <GridPane fx:id="persGoal" gridLinesVisible="true" layoutX="800.0" layoutY="175.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="150.0">
-        <columnConstraints>
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="150.0" />
-        </columnConstraints>
-        <rowConstraints>
-            <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="200.0" vgrow="SOMETIMES" />
-        </rowConstraints>
-    </GridPane>
-
-    <Button fx:id="selectTiles" layoutX="670.0" layoutY="210.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="80.0" text="OK" />
-
-    <Button fx:id="undoSelection" layoutX="670.0" layoutY="298.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="80.0" text="undo" />
-
-    <ScrollPane fx:id="chatPane" hbarPolicy="NEVER" layoutX="1060.0" layoutY="20.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="560.0" prefWidth="200.0">
-        <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="560.0" prefWidth="200.0">
-            <TextField layoutY="510.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="180.0" promptText="Insert your message" />
-        </AnchorPane>
-    </ScrollPane>
-
-   <Button fx:id="sendMessage" layoutX="1210.0" layoutY="590.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="30.0" prefWidth="50.0" text="OK" />
-
-    <GridPane fx:id="youSelectedThis" focusTraversable="true" gridLinesVisible="true" layoutX="575.0" layoutY="200.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="158.0" prefWidth="50.0" vgap="4.0">
-      <columnConstraints>
-         <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="50.0" />
-      </columnConstraints>
-      <rowConstraints>
-         <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="50.0" vgrow="SOMETIMES" />
-         <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="50.0" vgrow="SOMETIMES" />
-         <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="50.0" vgrow="SOMETIMES" />
-      </rowConstraints>
-   </GridPane>
-   <Label layoutX="82.0" layoutY="20.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="70.0" prefWidth="350.0" text="Chose the Tile order and the column in which you want to put them" textAlignment="CENTER" wrapText="true" />
-   <Label fx:id="yourPoints" alignment="CENTER" contentDisplay="CENTER" layoutX="570.0" layoutY="40.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0" prefWidth="400.0" text="Your points" textFill="WHITE" wrapText="true">
-      <font>
-         <Font name="Bauhaus 93" size="24.0" />
-      </font>
-   </Label>
-   <RadioButton fx:id="col1" contentDisplay="GRAPHIC_ONLY" graphicTextGap="0.0" layoutX="98.0" layoutY="118.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" scaleX="1.5" scaleY="1.5" textAlignment="CENTER" />
-   <RadioButton fx:id="col2" contentDisplay="GRAPHIC_ONLY" graphicTextGap="0.0" layoutX="173.0" layoutY="118.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" scaleX="1.5" scaleY="1.5" textAlignment="CENTER" />
-   <RadioButton fx:id="col3" contentDisplay="GRAPHIC_ONLY" graphicTextGap="0.0" layoutX="248.0" layoutY="118.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" scaleX="1.5" scaleY="1.5" textAlignment="CENTER" />
-   <RadioButton fx:id="col4" contentDisplay="GRAPHIC_ONLY" graphicTextGap="0.0" layoutX="323.0" layoutY="118.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" scaleX="1.5" scaleY="1.5" textAlignment="CENTER" />
-   <RadioButton fx:id="col5" contentDisplay="GRAPHIC_ONLY" graphicTextGap="0.0" layoutX="398.0" layoutY="118.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" scaleX="1.5" scaleY="1.5" textAlignment="CENTER" />
-   <SplitMenuButton fx:id="destination" layoutX="1060.0" layoutY="590.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" popupSide="TOP" prefHeight="30.0" prefWidth="150.0" text="destination">
-     <items>
-       <MenuItem mnemonicParsing="false" text="everybody" />
-     </items>
-   </SplitMenuButton>
 </AnchorPane>

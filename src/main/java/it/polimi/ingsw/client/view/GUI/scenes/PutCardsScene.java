@@ -9,11 +9,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.shape.Circle;
-
 import java.util.Map;
-import java.util.Spliterator;
-
 
 public class PutCardsScene extends GUIScene {
     private static final int BOOKSHELF_HEIGHT = 6;
@@ -118,7 +114,7 @@ public class PutCardsScene extends GUIScene {
             comGoalImage.setFitHeight(150);
             comGoalImage.setFitWidth(200);
 
-            comGoals.add(comGoalImage, n, 0);
+            comGoals.add(comGoalImage, 0, n);
             n++;
         }
     }

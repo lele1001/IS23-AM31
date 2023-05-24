@@ -5,3 +5,11 @@
     -fx-font-family: "Bauhaus 93";
     -fx-font-size: 18;
 }
+
+#yourPoints, #userTurn {
+    -fx-font-size: 22;
+}
+
+#yourMessage, #chatPane {
+    -fx-font-size: 16;
+}

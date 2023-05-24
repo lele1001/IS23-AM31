@@ -9,14 +9,14 @@ import java.util.Objects;
 public final class GUIResources {
     //fxml files
     public final static String loginFXML = "FXML/login.fxml";
-    public static String lobbyFXML = "FXML/lobby.fxml";
-    public static String numberOfPlayerFXML = "FXML/numberOfPlayers.fxml";
-    public static String notMyTurnFXML = "FXML/NotYourTurnScene.fxml";
-    public static String endGameWinFXML = "FXML/endGameWin.fxml";
-    public static String endGameLoseFXML = "FXML/endGameLose.fxml";
-    public static String putCardsFXML = "FXML/PutCards.fxml";
-    public static String takeCardsFXML = "FXML/TakingCards.fxml";
-    public static String errorFXML = "FXML/error.fxml";
+    public final static String lobbyFXML = "FXML/lobby.fxml";
+    public final static String numberOfPlayerFXML = "FXML/numberOfPlayers.fxml";
+    public final static String notMyTurnFXML = "FXML/NotYourTurnScene.fxml";
+    public final static String endGameWinFXML = "FXML/endGameWin.fxml";
+    public final static String endGameLoseFXML = "FXML/endGameLose.fxml";
+    public final static String putCardsFXML = "FXML/PutCards.fxml";
+    public final static String takeCardsFXML = "FXML/TakingCards.fxml";
+    public final static String errorFXML = "FXML/error.fxml";
 
     //images
     public final Image background = new Image(Objects.requireNonNull(GUIResources.class.getResource("/image/misc/basepagine2.png")).toString());

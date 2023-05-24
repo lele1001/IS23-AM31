@@ -30,11 +30,9 @@ public class TakeCardsScene extends GUIScene {
     @FXML
     GridPane boardPane, comGoals, bookshelfPane, persGoal, youSelectedThis, score_0, score_1;
     @FXML
-    Label errorArea;
+    Label errorArea, yourPoints;
     @FXML
     Button selectTiles, undoSelection;
-    @FXML
-    Label yourPoints;
     private ClientController clientController;
     private ArrayList<Integer> selectedTiles;
 
@@ -143,7 +141,6 @@ public class TakeCardsScene extends GUIScene {
     public void bindEvents() {
         boardPane.addEventHandler(MouseEvent.MOUSE_CLICKED, this::highlightTile);
         selectTiles.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> selectTiles());
-
     }
 
     public void highlightTile(MouseEvent event) {
@@ -162,7 +159,6 @@ public class TakeCardsScene extends GUIScene {
 
     public void removeTile(ImageView imageView, int clickedColumn, int clickedRow) {
         int coord = Position.getNumber(clickedColumn, clickedRow);
-        printError("You selected position " + coord);
         selectedTiles.add(coord);
 
         imageView.setPreserveRatio(true);

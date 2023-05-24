@@ -26,13 +26,13 @@ public class NotMyTurnScene extends GUIScene {
     @FXML
     GridPane bookshelf1, bookshelf2, bookshelf3, bookshelf4, boardPane, comGoals, persGoal, score_0, score_1;
     @FXML
-    Label yourPoint, userTurn;
+    Label yourPoints, userTurn;
     private ClientController clientController;
 
     @Override
     public void initialize(ClientController clientController) {
         this.clientController = clientController;
-        yourPoint.setText("You have 0 points");
+        yourPoints.setText("You have 0 points");
         int i = 0;
 
         for (String s : clientController.getPlayersBookshelves().keySet()) {
@@ -187,7 +187,7 @@ public class NotMyTurnScene extends GUIScene {
             comGoalImage.setFitHeight(100);
             comGoalImage.setFitWidth(175);
 
-            comGoals.add(comGoalImage, n, 0);
+            comGoals.add(comGoalImage, 0, n);
             n++;
         }
     }
@@ -203,6 +203,6 @@ public class NotMyTurnScene extends GUIScene {
 
     @Override
     public void printPoints(int myPoint) {
-
+        yourPoints.setText("You have " + myPoint + " points");
     }
 }
