@@ -33,6 +33,8 @@ public class TakeCardsScene extends GUIScene {
     Label errorArea;
     @FXML
     Button selectTiles, undoSelection;
+    @FXML
+    Label yourPoints;
     private ClientController clientController;
     private ArrayList<Integer> selectedTiles;
 
@@ -119,12 +121,13 @@ public class TakeCardsScene extends GUIScene {
 
     @Override
     public void printPoints(int myPoint) {
-
+        yourPoints.setText("You have " + myPoint + " points");
     }
 
     @Override
     public void initialize(ClientController clientController) {
         this.clientController = clientController;
+        yourPoints.setText("You have 0 points");
         errorArea.setVisible(false);
         selectedTiles = new ArrayList<>();
         bindEvents();
@@ -150,7 +153,6 @@ public class TakeCardsScene extends GUIScene {
 
         if (boardPane.getChildren().contains(clickedNode)) {
             ImageView imageView = (ImageView) clickedNode;
-            printError("You selected " + selectedTiles.size() + " tiles");
 
             if (imageView != null && selectedTiles.size() < 3) {
                 removeTile(imageView, clickedColumn, clickedRow);

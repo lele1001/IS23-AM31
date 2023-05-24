@@ -60,7 +60,11 @@ public class NotMyTurnScene extends GUIScene {
     }
 
     public void updateCurrPlayer(String currPlayer) {
-        //TODO: print the name of the current player
+        if(!clientController.getMyNickname().equals(currPlayer)){
+            userTurn.setText("It is " + currPlayer + "'s turn");
+        }else{
+            userTurn.setText("It is your turn");
+        }
     }
 
     @Override
