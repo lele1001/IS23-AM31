@@ -4,6 +4,7 @@ import it.polimi.ingsw.client.ClientController;
 import it.polimi.ingsw.client.view.GUI.GUIResources;
 import it.polimi.ingsw.server.model.ItemCard;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tab;
 import javafx.scene.image.ImageView;
@@ -24,11 +25,14 @@ public class NotMyTurnScene extends GUIScene {
     Tab player1tab, player2tab, player3tab, player4tab;
     @FXML
     GridPane bookshelf1, bookshelf2, bookshelf3, bookshelf4, boardPane, comGoals, persGoal, score_0, score_1;
+    @FXML
+    Label yourPoint, userTurn;
     private ClientController clientController;
 
     @Override
     public void initialize(ClientController clientController) {
         this.clientController = clientController;
+        yourPoint.setText("You have 0 points");
         int i = 0;
 
         for (String s : clientController.getPlayersBookshelves().keySet()) {
@@ -191,5 +195,10 @@ public class NotMyTurnScene extends GUIScene {
         persGoalImage.setFitWidth(150);
 
         persGoal.add(persGoalImage, 0, 0);
+    }
+
+    @Override
+    public void printPoints(int myPoint) {
+
     }
 }

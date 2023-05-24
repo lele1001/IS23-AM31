@@ -112,7 +112,12 @@ public class InputController {
             }
         }
 
-        return checkStraightSelection(position) && checkClearSideSelection(position);
+        if(position.size() > 1){
+            return checkStraightSelection(position) && checkClearSideSelection(position);
+        } else{
+            return checkClearSideSelection(position);
+        }
+
     }
 
     /**

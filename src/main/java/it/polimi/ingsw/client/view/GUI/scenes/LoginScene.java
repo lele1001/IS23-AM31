@@ -152,6 +152,11 @@ public class LoginScene extends GUIScene {
     }
 
     @Override
+    public void printPoints(int myPoint) {
+
+    }
+
+    @Override
     public void updateCurrPlayer(String player) {
     }
 

@@ -55,6 +55,11 @@ public class ErrorScene extends GUIScene {
     }
 
     @Override
+    public void printPoints(int myPoint) {
+
+    }
+
+    @Override
     public void updateCurrPlayer(String player) {
     }
 }

@@ -89,7 +89,7 @@ public class GUI implements View {
      */
     @Override
     public void printPoints(int myPoint) {
-        //TODO: chiamo updatePoints(... su tutte le scene che contengono il punteggio
+        Platform.runLater(()-> sceneController.printPoints(myPoint));
     }
 
     /**

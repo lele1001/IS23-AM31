@@ -236,4 +236,10 @@ public class SceneController {
             gs.persGoal(newValue);
         }
     }
+
+    public void printPoints(int myPoint) {
+        for(GUIScene gs : scenesMap.values()){
+            gs.printPoints(myPoint);
+        }
+    }
 }

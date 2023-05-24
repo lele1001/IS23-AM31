@@ -118,6 +118,11 @@ public class TakeCardsScene extends GUIScene {
     }
 
     @Override
+    public void printPoints(int myPoint) {
+
+    }
+
+    @Override
     public void initialize(ClientController clientController) {
         this.clientController = clientController;
         errorArea.setVisible(false);

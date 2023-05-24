@@ -4,21 +4,21 @@ import it.polimi.ingsw.client.ClientController;
 import it.polimi.ingsw.client.view.GUI.GUIResources;
 import it.polimi.ingsw.server.model.ItemCard;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.ScrollPane;
+import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.shape.Circle;
 
 import java.util.Map;
+import java.util.Spliterator;
 
 
 public class PutCardsScene extends GUIScene {
     private static final int BOOKSHELF_HEIGHT = 6;
     private static final int BOOKSHELF_LENGTH = 5;
     @FXML
-    Circle col1, col2, col3, col4, col5;
+    SplitMenuButton destination;
     @FXML
     AnchorPane putCardsPane;
     @FXML
@@ -26,12 +26,28 @@ public class PutCardsScene extends GUIScene {
     @FXML
     ScrollPane chatPane;
     @FXML
-    Button undoSelection, selectTiles;
+    Button undoSelection, selectTiles, sendMessage;
+    @FXML
+    Label yourPoints;
+    @FXML
+    RadioButton col1, col2, col3, col4, col5;
+    @FXML
+    ToggleGroup columns;
     private ClientController clientController;
 
     @Override
     public void initialize(ClientController clientController) {
         this.clientController = clientController;
+        yourPoints.setText("You have 0 points");
+
+        columns = new ToggleGroup();
+        col1.setToggleGroup(columns);
+        col2.setToggleGroup(columns);
+        col3.setToggleGroup(columns);
+        col4.setToggleGroup(columns);
+        col5.setToggleGroup(columns);
+
+        bindEvents();
     }
 
     @Override
@@ -48,7 +64,6 @@ public class PutCardsScene extends GUIScene {
     }
 
     public void updateCurrPlayer(String player) {
-        //TODO: print the input string
     }
 
     @Override
@@ -113,5 +128,10 @@ public class PutCardsScene extends GUIScene {
         persGoalImage.setFitWidth(150);
 
         persGoal.add(persGoalImage, 0, 0);
+    }
+
+    @Override
+    public void printPoints(int myPoint) {
+        yourPoints.setText("You have " + myPoint + " points");
     }
 }
