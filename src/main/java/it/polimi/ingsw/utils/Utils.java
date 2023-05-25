@@ -12,7 +12,7 @@ public class Utils {
     public static final int BOOKSHELF_LENGTH = 5;
     public static final int DIM_BOARD = 9;
     public static final int minNumberOfPlayers = 2;
-    public static final int maxNumberOfPlayers = 2;
+    public static final int maxNumberOfPlayers = 4;
     public static final int timeOfReturning = 60000;
     public static final int timeOfTurn = 180000;
     public static final int timeOfSleep = 500;
