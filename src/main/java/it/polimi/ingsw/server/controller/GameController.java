@@ -61,6 +61,13 @@ public class GameController implements PropertyChangeListener {
         gameModel.CreateGame(this.playersList, gameFilePath);
     }
 
+    /**
+     * Called to resume game from file.
+     * @param onlinePlayers: players already online to play their game.
+     * @param playersList: all the players of the game.
+     * @param json: the jsonObject with game's details.
+     * @param gameFilePath: the path of the file with game's details.
+     */
     public void resumeGame(ArrayList<String> onlinePlayers, List<String> playersList, JsonObject json, String gameFilePath) {
         this.gameFilePath = gameFilePath;
         this.playersList.addAll(playersList);
@@ -332,5 +339,6 @@ public class GameController implements PropertyChangeListener {
      */
     public void sendGameDetails(String nickname) {
         gameModel.sendGameDetails(nickname);
+        connectionControl.sendPlayerTurn(currPlayer);
     }
 }
