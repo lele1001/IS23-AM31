@@ -44,7 +44,7 @@ The final version includes:
 | Functionality                | Status |
 |:-----------------------------|:------:|
 | Multiple simultaneous games  |   ⛔     |
-| Persistence                  | :arrows_counterclockwise: |
+| Persistence                  | ✅  |
 | Resilience to disconnections |             ✅             |
 | Chat                         |             ✅             |
 
