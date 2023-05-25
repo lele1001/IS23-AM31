@@ -11,7 +11,7 @@ import java.util.Map;
 
 public class GUI implements View {
     ClientController clientController;
-    private SceneController sceneController;
+    private final SceneController sceneController;
 
     public GUI(ClientController clientController) {
         this.clientController = clientController;
@@ -46,8 +46,7 @@ public class GUI implements View {
     @Override
     public void printBoard(ItemCard[][] board) {
         Platform.runLater(() -> sceneController.updateBoard(board));
-    };
-
+    }
 
     /**
      * Implementation for Cli and Gui of the printing of an error message
@@ -90,7 +89,7 @@ public class GUI implements View {
      */
     @Override
     public void printPoints(int myPoint) {
-        Platform.runLater(()-> sceneController.printPoints(myPoint));
+        Platform.runLater(() -> sceneController.printPoints(myPoint));
     }
 
     /**
@@ -121,7 +120,6 @@ public class GUI implements View {
      */
     @Override
     public void print(String yourTurn) {
-
     }
 
     /**
@@ -143,7 +141,6 @@ public class GUI implements View {
      */
     @Override
     public void chatToMe(String sender, String message) {
-
     }
 
     /**
@@ -177,7 +174,6 @@ public class GUI implements View {
      */
     @Override
     public void printStartGame() {
-
     }
 
     /**

@@ -16,7 +16,8 @@ import it.polimi.ingsw.server.model.HouseItem;
 import it.polimi.ingsw.server.model.ItemCard;
 import it.polimi.ingsw.server.model.Position;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.lang.reflect.Type;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -29,10 +30,10 @@ public class ClientController {
     private static final int BOOKSHELF_HEIGHT = 6;
     private String myNickname, myPersGoalNumber;
     private ItemCard[][] board = new ItemCard[DIM_BOARD][DIM_BOARD];
-    private Map<String, ItemCard[][]> playersBookshelf = new HashMap<>();
-    private Map<Integer, Integer> playerComGoal = new HashMap<>();
+    private final Map<String, ItemCard[][]> playersBookshelf = new HashMap<>();
+    private final Map<Integer, Integer> playerComGoal = new HashMap<>();
     private boolean myTurn = false;
-    private Map<Integer, ItemCard> selectedTiles = new HashMap<>();
+    private final Map<Integer, ItemCard> selectedTiles = new HashMap<>();
     private int myPoint = 0;
     private View view;
     private final Map<Integer, HouseItem> myPersGoal = new HashMap<>();
@@ -43,7 +44,6 @@ public class ClientController {
     private boolean selectSavedGame = false;
     private List<String> savedGames;
     private List<String> notAvailableNames;
-// new methods for failed login
 
     /**
      * Method called by the server to ask for the selection of the item cards to the client
@@ -144,8 +144,9 @@ public class ClientController {
      */
     public void onCommonGoalCreated(Integer comGoalID, Integer score) {
         playerComGoal.put(comGoalID, score);
-        if (playerComGoal.size() > 1)
+        if (playerComGoal.size() > 1) {
             view.printCommonGoal(playerComGoal);
+        }
     }
 
     /**
@@ -207,7 +208,8 @@ public class ClientController {
 
         Gson gson = new Gson();
 
-        Type cardsType = new TypeToken<Map<String, ArrayList<Integer>>>() {}.getType();
+        Type cardsType = new TypeToken<Map<String, ArrayList<Integer>>>() {
+        }.getType();
         Map<String, ArrayList<Integer>> cards = gson.fromJson(json, cardsType);
         List<Integer> index = cards.get(newValue);
 
@@ -216,6 +218,7 @@ public class ClientController {
         for (int i = 0; i < items.size(); i++) {
             myPersGoal.put(index.get(i), items.get(i));
         }
+
         myPersGoalNumber = newValue;
         view.printPersGoal(myPersGoal, myPersGoalNumber);
     }
@@ -233,6 +236,7 @@ public class ClientController {
             phase = NULL;
             myTurn = false;
         }
+
         view.onChangeTurn(nickname);
     }
 
@@ -251,7 +255,6 @@ public class ClientController {
                 System.out.println("GUI added to ClientController");
             }
         }
-        //view.printBookshelf(playersBookshelf.get(myNickname));
     }
 
     /**
@@ -270,10 +273,8 @@ public class ClientController {
 
         if (select == 0) {
             connectionClient = new ConnectionRMI(this, address, port);
-            //System.out.println("Created RMI connection!");
         } else {
             connectionClient = new ConnectionSocket(this, address, port);
-            //System.out.println("Created Socket connection!");
         }
 
         connectionClient.startConnection();
@@ -367,8 +368,10 @@ public class ClientController {
      * @throws Exception if an error occurred calling the server (Socket or RMI)
      */
     public void setPlayersNumber(int players, String gameName) throws Exception {
-        if ((notAvailableNames.contains(gameName)) || gameName.contains("."))
+        if ((notAvailableNames.contains(gameName)) || gameName.contains(".")) {
             throw new NotAvailableNameException();
+        }
+
         selectNumberOfPlayers = false;
         connectionClient.setPlayersNumber(players, gameName);
         printWaitingForGame();
@@ -381,10 +384,14 @@ public class ClientController {
     }
 
     public void setSavedGame(boolean wantToSave, String gameName) throws Exception {
-        if (!selectSavedGame)
+        if (!selectSavedGame) {
             throw new NotAskedException();
-        if ((wantToSave) && (!savedGames.contains(gameName)))
+        }
+
+        if ((wantToSave) && (!savedGames.contains(gameName))) {
             throw new NotExistingGameException();
+        }
+
         selectSavedGame = false;
         connectionClient.setSavedGame(wantToSave, gameName);
     }
@@ -448,6 +455,7 @@ public class ClientController {
         for (String player : playersList) {
             playersBookshelf.put(player, new ItemCard[BOOKSHELF_HEIGHT][BOOKSHELF_LENGTH]);
         }
+
         this.gameStarted = gameStarted;
         view.printStartGame();
     }
@@ -461,5 +469,7 @@ public class ClientController {
         view.printWinners(winners);
     }
 
-    public String getPersGoalValue(){return myPersGoalNumber;}
+    public String getPersGoalValue() {
+        return myPersGoalNumber;
+    }
 }

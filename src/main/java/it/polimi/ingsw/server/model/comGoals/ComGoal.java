@@ -12,6 +12,7 @@ public abstract class ComGoal {
 
     public ComGoal(int playerNum, int CGID) {
         this.CGID = CGID;
+
         if (playerNum == 2) {
             score.add(0, 8);
             score.add(1, 4);

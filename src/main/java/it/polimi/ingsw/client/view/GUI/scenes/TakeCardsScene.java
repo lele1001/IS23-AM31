@@ -143,11 +143,12 @@ public class TakeCardsScene extends GUIScene {
 
     @Override
     public void bindEvents() {
-        boardPane.addEventHandler(MouseEvent.MOUSE_CLICKED, this::highlightTile);
+        boardPane.addEventHandler(MouseEvent.MOUSE_CLICKED, this::remove);
         selectTiles.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> selectTiles());
+        undoSelection.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> revert());
     }
 
-    public void highlightTile(MouseEvent event) {
+    private void remove(MouseEvent event) {
         Node clickedNode = event.getPickResult().getIntersectedNode();
         int clickedColumn = GridPane.getColumnIndex(clickedNode);
         int clickedRow = GridPane.getRowIndex(clickedNode);
@@ -161,16 +162,30 @@ public class TakeCardsScene extends GUIScene {
         }
     }
 
-    public void removeTile(ImageView imageView, int clickedColumn, int clickedRow) {
+    private void removeTile(ImageView imageView, int clickedColumn, int clickedRow) {
         int coord = Position.getNumber(clickedColumn, clickedRow);
         selectedTiles.add(coord);
 
         imageView.setPreserveRatio(true);
-        imageView.setOpacity(1);
         imageView.setFitWidth(50);
         imageView.setFitWidth(50);
 
         youSelectedThis.add(imageView, selectedTiles.size() - 1, 0);
+    }
+
+    private void revert() {
+        for (int i = youSelectedThis.getChildren().size() - 1; i >= 0; i--) {
+            ImageView imageView = (ImageView) youSelectedThis.getChildren().get(i);
+
+            if (imageView != null && !selectedTiles.isEmpty()) {
+                imageView.setPreserveRatio(true);
+                imageView.setFitWidth(50);
+                imageView.setFitWidth(50);
+
+                boardPane.add(imageView, Position.getColumn(selectedTiles.get(i)), Position.getRow(selectedTiles.get(i)));
+                selectedTiles.remove(i);
+            }
+        }
     }
 
     public void updateCurrPlayer(String player) {

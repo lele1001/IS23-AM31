@@ -12,6 +12,8 @@ public class Board {
     private final ItemCard[][] oldBoard = new ItemCard[DIM_BOARD][DIM_BOARD];
     ArrayList<ItemCard> cardBag = new ArrayList<>();
     int numPlayers;
+
+    //Matrix used for creating the board using the minimum number of players required to put an Itemcard in the Cell
     int[][] numMinPlayer = new int[][]{
             {5, 5, 5, 3, 4, 5, 5, 5, 5},
             {5, 5, 5, 2, 2, 4, 5, 5, 5},
@@ -21,9 +23,8 @@ public class Board {
             {3, 2, 2, 2, 2, 2, 2, 4, 5},
             {5, 5, 3, 2, 2, 2, 3, 5, 5},
             {5, 5, 5, 4, 2, 2, 5, 5, 5},
-            {5, 5, 5, 5, 4, 3, 5, 5, 5}};
-
-    //Arraylist used for creating the board using the minimum number of players to put an Itemcard in the Cell
+            {5, 5, 5, 5, 4, 3, 5, 5, 5}
+    };
 
     /**
      * Creation of the Board with a matrix containing the minimum number of players to insert an Itemcard during the refill of the board
@@ -47,13 +48,13 @@ public class Board {
      * If the exception is thrown, the Game controller has to be notified
      */
     public void fillBoard() throws EmptyCardBagException {
-
         for (int i = 0; i < DIM_BOARD; i++) {
             for (int j = 0; j < DIM_BOARD; j++) {
                 if (board[i][j] == null) {
                     if (numMinPlayer[i][j] <= numPlayers) {
                         board[i][j] = cardBag.get(0);
                         cardBag.remove(0);
+
                         if (cardBag.isEmpty()) {
                             throw new EmptyCardBagException();
                         }
@@ -75,18 +76,22 @@ public class Board {
      */
     public synchronized boolean checkRefill() throws EmptyCardBagException {
         boolean refill = true;
+
         for (int i = 0; i < DIM_BOARD && refill; i++) {
             for (int j = 0; j < DIM_BOARD && refill; j++) {
-                if (((i == 0 || i == 8) || (j == 0 || j == 8)) && board[i][j] != null && numMinPlayer[i][j] <= numPlayers)
+                if (((i == 0 || i == 8) || (j == 0 || j == 8)) && board[i][j] != null && numMinPlayer[i][j] <= numPlayers) {
                     refill = checkSide(i, j);
-                else if (board[i][j] != null && numMinPlayer[i][j] <= numPlayers)
+                } else if (board[i][j] != null && numMinPlayer[i][j] <= numPlayers) {
                     refill = checkPosition(i, j);
+                }
             }
         }
+
         if (refill && !cardBag.isEmpty()) {
             System.out.println("REFILLING THE BOARD");
             fillBoard();
         }
+
         return (refill && !cardBag.isEmpty());
     }
 
@@ -100,20 +105,27 @@ public class Board {
 
     private boolean checkSide(int i, int j) {
         if (i == 0) {
-            if (board[i + 1][j] != null || board[i][j + 1] != null || board[i][j - 1] != null)
+            if (board[i + 1][j] != null || board[i][j + 1] != null || board[i][j - 1] != null) {
                 return false;
+            }
         }
+
         if (i == 8) {
-            if (board[i - 1][j] != null || board[i][j + 1] != null || board[i][j - 1] != null)
+            if (board[i - 1][j] != null || board[i][j + 1] != null || board[i][j - 1] != null) {
                 return false;
+            }
         }
+
         if (j == 0) {
-            if (board[i + 1][j] != null || board[i - 1][j] != null || board[i][j + 1] != null)
+            if (board[i + 1][j] != null || board[i - 1][j] != null || board[i][j + 1] != null) {
                 return false;
+            }
         }
+
         if (j == 8) {
             return board[i + 1][j] == null && board[i - 1][j] == null && board[i][j - 1] == null;
         }
+
         return true;
     }
 
@@ -134,7 +146,7 @@ public class Board {
      * Second check controls that in the selected Cells there are the ItemCards
      * Called two separate methods to do other controls
      *
-     * @param position number from which we can extract row and column
+     * @param position is the number from which we can extract row and column
      * @return true if the Itemcard can be deleted
      */
     public boolean checkSelection(ArrayList<Integer> position) {
@@ -145,6 +157,7 @@ public class Board {
                 return false;
             }
         }
+
         for (Integer pos : position) {
             if (board[Position.getRow(pos)][Position.getColumn(pos)] == null) {
                 return false;
@@ -158,7 +171,7 @@ public class Board {
      * Private method called by checkSelection that controls that all the tiles
      * in the ArrayList position have at least 1 clear side from other ItemCards
      *
-     * @param position number from which we can extract row and column
+     * @param position is the number from which we can extract row and column
      * @return true if a side of an Itemcard is clear from others
      */
     private boolean checkClearSideSelection(ArrayList<Integer> position) {
@@ -166,13 +179,16 @@ public class Board {
         int i;
         int j;
         boolean sideClear = true;
+
         for (int k = 0; k < position.size() && sideClear; k++) {
             i = Position.getRow(position.get(k));
             j = Position.getColumn(position.get(k));
+
             if (i != 0 && i != 8 && j != 0 && j != 8) {
                 sideClear = board[i + 1][j] == null || board[i - 1][j] == null || board[i][j - 1] == null || board[i][j + 1] == null;
             }
         }
+
         return sideClear;
     }
 
@@ -180,22 +196,30 @@ public class Board {
      * Private method called by checkSelection that controls that the selected tiles
      * form a straight line (change of row_position or column_position)
      *
-     * @param position number from which we can extract row and column
+     * @param position is the number from which we can extract row and column
      * @return true if the ItemCards are in a straight line
      */
     private boolean checkStraightSelection(ArrayList<Integer> position) {
         if (position.size() == 3) {
-            if ((Position.getRow(position.get(0)) == Position.getRow(position.get(1)) - 1) && (Position.getRow(position.get(1)) == Position.getRow(position.get(2)) - 1) && (Position.getColumn(position.get(0)) == Position.getColumn(position.get(1))) && (Position.getColumn(position.get(1)) == Position.getColumn(position.get(2))))
+            if ((Position.getRow(position.get(0)) == Position.getRow(position.get(1)) - 1) && (Position.getRow(position.get(1)) == Position.getRow(position.get(2)) - 1) && (Position.getColumn(position.get(0)) == Position.getColumn(position.get(1))) && (Position.getColumn(position.get(1)) == Position.getColumn(position.get(2)))) {
                 return true;
-            if ((Position.getColumn(position.get(0)) == Position.getColumn(position.get(1)) - 1) && (Position.getColumn(position.get(1)) == Position.getColumn(position.get(2)) - 1) && (Position.getRow(position.get(0)) == Position.getRow(position.get(1))) && (Position.getRow(position.get(1)) == Position.getRow(position.get(2))))
+            }
+
+            if ((Position.getColumn(position.get(0)) == Position.getColumn(position.get(1)) - 1) && (Position.getColumn(position.get(1)) == Position.getColumn(position.get(2)) - 1) && (Position.getRow(position.get(0)) == Position.getRow(position.get(1))) && (Position.getRow(position.get(1)) == Position.getRow(position.get(2)))) {
                 return true;
+            }
         }
+
         if (position.size() == 2) {
-            if ((Position.getRow(position.get(0)) == Position.getRow(position.get(1)) - 1) && (Position.getColumn(position.get(0)) == Position.getColumn(position.get(1))))
+            if ((Position.getRow(position.get(0)) == Position.getRow(position.get(1)) - 1) && (Position.getColumn(position.get(0)) == Position.getColumn(position.get(1)))) {
                 return true;
-            if ((Position.getColumn(position.get(0)) == Position.getColumn(position.get(1)) - 1) && (Position.getRow(position.get(0)) == Position.getRow(position.get(1))))
+            }
+
+            if ((Position.getColumn(position.get(0)) == Position.getColumn(position.get(1)) - 1) && (Position.getRow(position.get(0)) == Position.getRow(position.get(1)))) {
                 return true;
+            }
         }
+
         return position.size() == 1;
     }
 
@@ -208,21 +232,24 @@ public class Board {
 
     public synchronized ArrayList<ItemCard> deleteSelection(ArrayList<Integer> position) throws NoRightItemCardSelection {
         Collections.sort(position);
+
         if (!checkSelection(position)) {
             throw new NoRightItemCardSelection();
         }
 
-        // Salvo una copia della vecchia board
+        //Saves a copy of the old board
         for (int i = 0; i < DIM_BOARD; i++) {
             System.arraycopy(board[i], 0, oldBoard[i], 0, DIM_BOARD);
         }
 
         ArrayList<ItemCard> toBeReturned = new ArrayList<>();
-        // Rimuovo dalla board le posizioni indicate
+
+        //Removes from the board the selected positions
         for (Integer pos : position) {
             toBeReturned.add(board[Position.getRow(pos)][Position.getColumn(pos)]);
             board[Position.getRow(pos)][Position.getColumn(pos)] = null;
         }
+
         return toBeReturned;
     }
 
@@ -239,14 +266,15 @@ public class Board {
     }
 
     public void createcardBag() {
-
         for (HouseItem item : HouseItem.values()) {
             for (int i = 0; i < 8; i++) {
                 cardBag.add(new ItemCard(item, ItemNumber.First));
             }
+
             for (int i = 0; i < 7; i++) {
                 cardBag.add(new ItemCard(item, ItemNumber.Second));
             }
+
             for (int i = 0; i < 7; i++) {
                 cardBag.add(new ItemCard(item, ItemNumber.Third));
             }
@@ -255,14 +283,15 @@ public class Board {
 
     public synchronized ItemCard[][] getAsArrayList() {
         ItemCard[][] toBeReturned = new ItemCard[DIM_BOARD][DIM_BOARD];
+
         for (int i = 0; i < DIM_BOARD; i++) {
             System.arraycopy(board[i], 0, toBeReturned[i], 0, DIM_BOARD);
         }
+
         return toBeReturned;
     }
 
     public ArrayList<ItemCard> getCardBag() {
         return cardBag;
     }
-
 }

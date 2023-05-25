@@ -56,16 +56,13 @@ public class ConnectionControl {
         synchronized (clientHandlerMap) {
             if (gameController.isGameIsActive()) {
                 if ((clientStatusMap.containsKey(nickname)) && (!clientStatusMap.get(nickname))) {
-/*                    if (clientStatusMap.get(nickname)) {
-                        // There's a client in the game playing with the same nickname!
-                        clientHandler.sendError("There's already an active game. Please, try later.");
-                        return false;
-                    }*/
-                    // Client's nickname is already in the map: it went offline during the game. Setting him as online...
+                    // Client's nickname is already in the map: it went offline during the game.
+                    // Setting him as online...
                     clientHandler.sendError("Welcome back " + nickname + "!");
                     clientHandlerMap.put(nickname, clientHandler);
                     clientStatusMap.replace(nickname, true);
                     System.out.println(nickname + " is back!");
+
                     System.out.println("Sending him game details...");
                     this.sendGameIsStarting(new ArrayList<>(getClientHandlerMap().keySet()), nickname);
                     gameController.sendGameDetails(nickname);
@@ -75,17 +72,20 @@ public class ConnectionControl {
                     return false;
                 }
             }
+
             if (clientHandlerMap.containsKey(nickname)) {
                 clientHandler.sendError("There's already a player with your nickname. Please, try again with another one.");
                 return false;
             }
+
             this.clientHandlerMap.put(nickname, clientHandler);
             System.out.println("put in handlerMap");
+
             this.clientStatusMap.put(nickname, true);
             System.out.println("put in status");
+
             this.server.addInQueue(nickname);
             System.out.println(nickname + " added in queue.");
-            //System.out.println("ritornato da addQueue");
             return true;
         }
     }
@@ -123,15 +123,20 @@ public class ConnectionControl {
      * @param receiver    the nickname of the receiver of the message (if null, the message has to be sent to all clients).
      */
     public void sendGameIsStarting(ArrayList<String> playersList, String receiver) {
-        if (receiver == null) { // Send it to all clients
+        if (receiver == null) {
+            // Send it to all clients
             System.out.println("Game is starting... sending it to clients.");
+
             for (ClientHandler c : getClientHandlerMap().values()) {
                 c.sendGameIsStarting(playersList);
             }
-        } else {    // Send it only to receiver
+        } else {
+            // Send it only to receiver
             ClientHandler c_receiver = getClientHandlerMap().get(receiver);
-            if (c_receiver != null)
+
+            if (c_receiver != null) {
                 c_receiver.sendGameIsStarting(playersList);
+            }
         }
 
     }
@@ -144,22 +149,25 @@ public class ConnectionControl {
     public void changePlayerStatus(String nickname, boolean adviceAll) {
         synchronized (clientHandlerMap) {
             this.clientStatusMap.put(nickname, false);
-            server.removeFromQueue(nickname);   // Removes it if it was in the queue.
+            server.removeFromQueue(nickname);
+
+            // Removes it if it was in the queue.
             if (clientHandlerMap.containsKey(nickname)) {
                 this.clientHandlerMap.get(nickname).disconnectPlayer();
                 this.clientHandlerMap.remove(nickname);
             }
         }
-        if (adviceAll)
+
+        if (adviceAll) {
             sendErrorToEveryone(nickname + " is disconnected from the game.");
-        //gameController.changePlayerStatus(nickname);
+        }
     }
 
     /**
      * Called by the client to select cards from the board.
      *
-     * @param nickname  of the client that wants to select.
-     * @param positions a list of integer that indicates the positions of the tiles to be selected.
+     * @param nickname  of the client that wants to select
+     * @param positions a list of integer that indicates the positions of the tiles to be selected
      */
     public void selectCard(String nickname, ArrayList<Integer> positions) {
         System.out.println(nickname + " wants to select cards in position: " + positions);
@@ -169,9 +177,9 @@ public class ConnectionControl {
     /**
      * Called by the client to insert cards in his bookshelf.
      *
-     * @param nickname of the client that wants to insert.
-     * @param cards    an ordered list of the ItemCards he wants to insert.
-     * @param column   to put ItemCards into.
+     * @param nickname of the client that wants to insert
+     * @param cards    an ordered list of the ItemCards he wants to insert
+     * @param column   to put ItemCards into
      */
     public void insertCard(String nickname, ArrayList<ItemCard> cards, int column) {
         System.out.println(nickname + " wants to insert cards: " + cards + " in column: " + column);
@@ -182,8 +190,9 @@ public class ConnectionControl {
         System.out.println(nickname + " sends to everyone: " + message);
         synchronized (clientHandlerMap) {
             for (String player : clientHandlerMap.keySet()) {
-                if (!player.equals(nickname))
+                if (!player.equals(nickname)) {
                     this.clientHandlerMap.get(player).chatToMe(nickname, message);
+                }
             }
         }
     }
@@ -198,8 +207,9 @@ public class ConnectionControl {
     public void chatToPlayer(String sender, String receiver, String message) {
         System.out.println(sender + " sends to " + receiver + ": " + message);
         synchronized (clientHandlerMap) {
-            if (clientHandlerMap.containsKey(receiver))
+            if (clientHandlerMap.containsKey(receiver)) {
                 this.clientHandlerMap.get(receiver).chatToMe(sender, message);
+            }
         }
     }
 
@@ -211,10 +221,11 @@ public class ConnectionControl {
     public void askSelect(String nickname) {
         System.out.println("Asking " + nickname + " to select cards.");
         synchronized (clientHandlerMap) {
-            if (clientHandlerMap.containsKey(nickname))
+            if (clientHandlerMap.containsKey(nickname)) {
                 this.clientHandlerMap.get(nickname).askSelect();
-            else
+            } else {
                 System.out.println("No connection available for " + nickname);
+            }
         }
     }
 
@@ -226,10 +237,11 @@ public class ConnectionControl {
     public void askInsert(String nickname) {
         System.out.println("Asking " + nickname + " to insert cards.");
         synchronized (clientHandlerMap) {
-            if (clientHandlerMap.containsKey(nickname))
+            if (clientHandlerMap.containsKey(nickname)) {
                 this.clientHandlerMap.get(nickname).askInsert();
-            else
+            } else {
                 System.out.println("No connection available for " + nickname);
+            }
         }
     }
 
@@ -240,12 +252,14 @@ public class ConnectionControl {
      * @param receiver the nickname of the receiver of the update. If null, the update has to be sent to all clients.
      */
     public void SendBoardChanged(ItemCard[][] newBoard, String receiver) {
-        if (receiver == null) { // Send it to all the players
+        if (receiver == null) {
+            // Send it to all the players
             System.out.println("Board has changed");
             c.printBoard(newBoard);
 
             // Just for tests: saving the board in a temporary file to check the insert.
             PrintStream printStream;
+
             try {
                 printStream = new PrintStream("src/main/boardTest.json");
                 Gson gson = new Gson();
@@ -255,11 +269,13 @@ public class ConnectionControl {
                 System.out.println("File BoardTest not found.");
             }
 
-            for (ClientHandler c : getClientHandlerMap().values())
+            for (ClientHandler c : getClientHandlerMap().values()) {
                 c.SendBoardChanged(newBoard);
-        }   // Send it only to receiver
-        else {
+            }
+        } else {
+            // Send it only to receiver
             ClientHandler c_receiver = getClientHandlerMap().get(receiver);
+
             if (c_receiver != null) {
                 System.out.println("Sending board update to " + receiver);
                 c_receiver.SendBoardChanged(newBoard);
@@ -278,11 +294,13 @@ public class ConnectionControl {
         if (receiver == null) {
             System.out.println("Player " + nickname + " has changed the bookshelf");
             c.printBookshelf(newBookshelf, nickname);
+
             for (ClientHandler c : getClientHandlerMap().values()) {
                 c.SendBookshelfChanged(nickname, newBookshelf);
             }
         } else {
             ClientHandler c_receiver = getClientHandlerMap().get(receiver);
+
             if (c_receiver != null) {
                 System.out.println("Sending bookshelf update to " + receiver);
                 c_receiver.SendBookshelfChanged(nickname, newBookshelf);
@@ -299,10 +317,11 @@ public class ConnectionControl {
     public void SendError(String error, String nickname) {
         System.out.println("Sending error: " + error + " to " + nickname);
         synchronized (clientHandlerMap) {
-            if (clientHandlerMap.containsKey(nickname))
+            if (clientHandlerMap.containsKey(nickname)) {
                 this.clientHandlerMap.get(nickname).sendError(error);
-            else
+            } else {
                 System.out.println("No connection available for " + nickname);
+            }
         }
     }
 
@@ -313,6 +332,7 @@ public class ConnectionControl {
      */
     public synchronized void sendErrorToEveryone(String error) {
         System.out.println("Sending error: " + error + " to everyone.");
+
         for (ClientHandler clientHandler : getClientHandlerMap().values()) {
             clientHandler.sendError(error);
         }
@@ -325,11 +345,13 @@ public class ConnectionControl {
      * @param score     the maximum score available for the Common Goal.
      */
     public void SendCommonGoalCreated(Integer comGoalID, Integer score, String receiver) {
-        if (receiver == null)
-            for (ClientHandler c : getClientHandlerMap().values())
+        if (receiver == null) {
+            for (ClientHandler c : getClientHandlerMap().values()) {
                 c.SendCommonGoalCreated(comGoalID, score);
-        else {
+            }
+        } else {
             ClientHandler c_receiver = getClientHandlerMap().get(receiver);
+
             if (c_receiver != null) {
                 System.out.println("Sending commonGoal update to " + receiver);
                 c_receiver.SendCommonGoalCreated(comGoalID, score);
@@ -342,6 +364,7 @@ public class ConnectionControl {
      */
     public void SendEmptyCardBag() {
         System.out.println("Cardbag is empty.");
+
         for (ClientHandler clientHandler : getClientHandlerMap().values()) {
             clientHandler.sendError("Cardbag is empty");
         }
@@ -356,6 +379,7 @@ public class ConnectionControl {
      */
     public void SendCommonGoalDone(String source, int[] details) {
         System.out.println(source + " has reached Common Goal number: " + details[0]);
+
         for (ClientHandler c : getClientHandlerMap().values()) {
             c.SendCommonGoalDone(source, details);
         }
@@ -369,10 +393,12 @@ public class ConnectionControl {
      */
     public void SendPersGoalCreated(String nickname, String persGoal) {
         synchronized (clientHandlerMap) {
-            if (clientHandlerMap.containsKey(nickname))
+
+            if (clientHandlerMap.containsKey(nickname)) {
                 clientHandlerMap.get(nickname).SendPersGoalCreated(persGoal);
-            else
+            } else {
                 System.out.println("No connection available for " + nickname);
+            }
         }
     }
 
@@ -384,11 +410,17 @@ public class ConnectionControl {
     public void SendBookshelfCompleted(String nickname) {
         System.out.println("Sending bookshelf completed to everyone.");
         ClientHandler first = getClientHandlerMap().get(nickname);
-        if (first != null)
+
+        if (first != null) {
             first.sendBookshelfCompleted();
-        for (ClientHandler clientHandler : getClientHandlerMap().values())
-            if (clientHandler != first)
+        }
+
+        for (ClientHandler clientHandler : getClientHandlerMap().values()) {
+            if (clientHandler != first) {
                 clientHandler.sendError(nickname + " has completed his Bookshelf. Let's go on for the last turn of the game.");
+
+            }
+        }
     }
 
     /**
@@ -398,6 +430,7 @@ public class ConnectionControl {
      */
     public void sendWinner(List<String> winners) {
         System.out.println("Sending winners' nickname...");
+
         for (ClientHandler c : getClientHandlerMap().values()) {
             c.sendWinner(winners);
         }
@@ -423,8 +456,10 @@ public class ConnectionControl {
     public void sendPlayerScore(String nickname, int score) {
         System.out.println("Sending actual score: " + score + " to " + nickname + ".");
         ClientHandler clientHandler = getClientHandlerMap().get(nickname);
-        if (clientHandler != null)
+
+        if (clientHandler != null) {
             clientHandler.sendPlayerScore(score);
+        }
     }
 
     /**
@@ -444,10 +479,12 @@ public class ConnectionControl {
      */
     public void onEndGame(String gameFilePath) {
         disconnectAll();
+
         synchronized (clientHandlerMap) {
             this.clientStatusMap.clear();
             this.clientHandlerMap.clear();
         }
+
         server.onEndGame(gameFilePath);
     }
 
@@ -456,6 +493,7 @@ public class ConnectionControl {
      */
     public void disconnectAll() {
         System.out.println("Connection control: disconnecting all players...");
+
         for (ClientHandler c : getClientHandlerMap().values()) {
             c.disconnectPlayer();
         }

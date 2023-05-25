@@ -9,8 +9,8 @@ public class ItemCard implements Serializable {
     /**
      * The default constructor.
      *
-     * @param myItem this ItemCard's HouseItem to be set.
-     * @param myNum  this ItemCard's ItemNumber to be set.
+     * @param myItem this ItemCard's HouseItem to be set
+     * @param myNum  this ItemCard's ItemNumber to be set
      */
     public ItemCard(HouseItem myItem, ItemNumber myNum) {
         this.houseItem = myItem;
@@ -20,7 +20,7 @@ public class ItemCard implements Serializable {
     /**
      * The default getter of this ItemCard's HouseItem.
      *
-     * @return the ItemCard's HouseItem.
+     * @return the ItemCard's HouseItem
      */
     public HouseItem getMyItem() {
         return houseItem;
@@ -29,7 +29,7 @@ public class ItemCard implements Serializable {
     /**
      * The default getter of this ItemCard's ItemNumber.
      *
-     * @return the ItemCard's ItemNumber.
+     * @return the ItemCard's ItemNumber
      */
     public ItemNumber getMyNum() {
         return itemNumber;
@@ -38,8 +38,8 @@ public class ItemCard implements Serializable {
     /**
      * The default implementation of the equal method to compare ItemCards.
      *
-     * @param o the object to compare with this ItemCard.
-     * @return true if o is the same ItemCard of this.
+     * @param o is the object to compare with this ItemCard
+     * @return true if o is the same ItemCard of this
      */
     @Override
     public boolean equals(Object o) {
@@ -56,9 +56,6 @@ public class ItemCard implements Serializable {
      */
     @Override
     public String toString() {
-        return "ItemCard{" +
-                "houseItem=" + houseItem +
-                ", itemNumber=" + itemNumber +
-                '}';
+        return "ItemCard{houseItem=" + houseItem + ", itemNumber=" + itemNumber + '}';
     }
 }

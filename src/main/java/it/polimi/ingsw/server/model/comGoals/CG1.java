@@ -35,7 +35,6 @@ public class CG1 extends ComGoal {
                             fakeLib[r + 1][c] = 1;
                             fakeLib[r + 1][c + 1] = 1;
 
-                            // ensures that there
                             if ((r < BookshelfHeight - 2) && (c < BookshelfWidth - 2)) {
                                 it1 = l.get(r + 2, c).getMyItem();
                                 it2 = l.get(r + 2, c + 1).getMyItem();
@@ -70,7 +69,6 @@ public class CG1 extends ComGoal {
         groupsFound = items.size();
 
         if (groupsFound >= 2) {
-            //Player.score += this.score.get(0);
             toReturn = this.score.get(0);
             this.score.remove(score.get(0));
         }

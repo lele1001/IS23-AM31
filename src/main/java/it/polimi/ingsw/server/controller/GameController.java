@@ -13,7 +13,6 @@ import java.beans.PropertyChangeListener;
 import java.util.*;
 
 public class GameController implements PropertyChangeListener {
-
     private final ConnectionControl connectionControl;
     private final ArrayList<String> playersList = new ArrayList<>();
     private String currPlayer;
@@ -40,6 +39,7 @@ public class GameController implements PropertyChangeListener {
      */
     public void createGame(ArrayList<String> playersList, String gameFilePath) {
         this.gameFilePath = gameFilePath;
+
         if (playersList.size() < 2 || playersList.size() > 4) {
             System.out.println("Error: number of players not correct.");
             return;
@@ -50,8 +50,10 @@ public class GameController implements PropertyChangeListener {
         Collections.shuffle(this.playersList);
         connectionControl.sendGameIsStarting(playersList, null);
         gameModel = new GameModel();
+
         // sets itself as a listener of the model
         gameModel.setListener(this);
+
         // creates the board, and the bookshelves
         // assigns personalGoals and commonGoals
         gameModel.CreateGame(this.playersList, gameFilePath);
@@ -62,12 +64,14 @@ public class GameController implements PropertyChangeListener {
         this.playersList.addAll(playersList);
         gameModel = new GameModel();
         gameModel.setListener(this);
+
         try {
             json.get("winner").getAsString();
             this.winner = true;
         } catch (Exception e) {
             System.out.println("Restored game doesn't have a winner yet.");
         }
+
         this.currPlayer = json.get("lastPlayer").getAsString();
         connectionControl.sendGameIsStarting(new ArrayList<>(playersList), null);
         gameModel.resumeGame(onlinePlayers, json, gameFilePath);
@@ -80,21 +84,25 @@ public class GameController implements PropertyChangeListener {
     public void run(int startFrom) {
         gameIsActive = true;
         int i = (startFrom >= playersList.size() ? 0 : startFrom);
+
         while (!winner) {
             Timer timer = new Timer();
+
             if (playersList.stream().filter(connectionControl::isOnline).count() < 2) {
                 System.out.println("Too many absents for this game.. waiting for players' returning in game.");
                 connectionControl.sendErrorToEveryone("Too many absents for this game.. waiting for players' returning in game.");
-
                 timer.schedule(new TimerTask() {
                     @Override
                     public void run() {
                         winner = true;
                     }
                 }, 60000);
+
                 while (!winner) {
-                    if (playersList.stream().filter(connectionControl::isOnline).count() >= 2)
+                    if (playersList.stream().filter(connectionControl::isOnline).count() >= 2) {
                         break;
+                    }
+
                     try {
                         Thread.sleep(500);
                     } catch (InterruptedException e) {
@@ -102,16 +110,20 @@ public class GameController implements PropertyChangeListener {
                         break;
                     }
                 }
+
                 timer.cancel();
 
-                if (winner) {   // Took too long! The winner is the remaining player (if it is still online!)
+                if (winner) {
+                    // Took too long! The winner is the remaining player (if it is still online!)
                     System.out.println("Took too long for returning... game is ending.");
                     connectionControl.sendErrorToEveryone("Took too long for returning... game is ending.");
                     List<String> remained = playersList.stream().filter(connectionControl::isOnline).toList();
+
                     if (remained.size() == 1) {
                         System.out.println("The winner of the game is " + remained.get(0));
                         connectionControl.sendWinner(remained);
                     }
+
                     connectionControl.onEndGame(gameFilePath);
                     return;
                 } else {
@@ -119,14 +131,15 @@ public class GameController implements PropertyChangeListener {
                 }
             }
             playerTurn(i);
-            if (i < playersList.size() - 1)
+
+            if (i < playersList.size() - 1) {
                 i++;
-            else
+            } else {
                 i = 0;
-
+            }
         }
-        runLastTurn(currPlayer);
 
+        runLastTurn(currPlayer);
     }
 
     /**
@@ -135,16 +148,20 @@ public class GameController implements PropertyChangeListener {
      */
     public void runLastTurn(String nickname) {
         int i = playersList.indexOf(nickname) + 1;
+
         while (i < playersList.size()) {
             playerTurn(i);
             i++;
         }
+
         ArrayList<String> gameWinners = gameModel.calcFinalScore();
+
         if (gameWinners.size() == 1) {
             System.out.println("The winner of the game is " + gameWinners.get(0));
         } else {
             System.out.println("Parity: winners are " + gameWinners);
         }
+
         connectionControl.sendWinner(gameWinners);
         connectionControl.onEndGame(gameFilePath);
     }
@@ -156,6 +173,7 @@ public class GameController implements PropertyChangeListener {
      */
     private void playerTurn(int indexCurrPlayer) {
         currPlayer = playersList.get(indexCurrPlayer);
+
         if (connectionControl.isOnline(currPlayer)) {
             Timer timer = new Timer();
             System.out.println(playersList.get(indexCurrPlayer) + "'s turn");
@@ -170,9 +188,12 @@ public class GameController implements PropertyChangeListener {
                     timeout = true;
                 }
             }, 180000);
+
             while (!timeout) {
-                if (!connectionControl.isOnline(currPlayer) || turnPhase == TurnPhase.ENDTURN)
+                if (!connectionControl.isOnline(currPlayer) || turnPhase == TurnPhase.ENDTURN) {
                     break;
+                }
+
                 try {
                     Thread.sleep(500);
                 } catch (InterruptedException e) {
@@ -180,17 +201,21 @@ public class GameController implements PropertyChangeListener {
                     break;
                 }
             }
+
             timer.cancel();
 
             if (turnPhase == TurnPhase.ENDTURN) {
                 gameModel.EndTurn(currPlayer);
             } else {
-                if (timeout) {  // Took too long: timer expired!
+                if (timeout) {
+                    // Took too long: timer expired!
                     connectionControl.SendError("Timeout exceeded: took too long! Disconnecting you from the game...", currPlayer);
                     connectionControl.changePlayerStatus(currPlayer, true);
                 }
-                if (turnPhase == TurnPhase.INSERTCARDS)
+
+                if (turnPhase == TurnPhase.INSERTCARDS) {
                     gameModel.resumeBoard();
+                }
             }
         }
     }
@@ -203,15 +228,16 @@ public class GameController implements PropertyChangeListener {
      * @param column   positions on the bookshelf
      */
     public void insertCard(String nickname, ArrayList<ItemCard> cards, int column) {
-
         if (!(nickname.equals(currPlayer)) || (turnPhase != TurnPhase.INSERTCARDS)) {
             connectionControl.SendError("NOT YOUR TURN", nickname);
             return;
         }
+
         if (cards.size() > 3 || cards.isEmpty()) {
             connectionControl.SendError("NUMBER NOT VALID", nickname);
             return;
         }
+
         try {
             gameModel.InsertCard(nickname, cards, column);
         } catch (NoBookshelfSpaceException e) {
@@ -234,13 +260,13 @@ public class GameController implements PropertyChangeListener {
             connectionControl.SendError("NOT YOUR TURN", nickname);
             return;
         }
+
         try {
             gameModel.selectCard(positions);
         } catch (NoRightItemCardSelection e) {
             connectionControl.SendError("NO RIGHT BOARD SELECTION", nickname);
             connectionControl.askSelect(nickname);
         }
-
     }
 
     /**
@@ -254,20 +280,23 @@ public class GameController implements PropertyChangeListener {
      * Called by the GameModel when it wants to notify its update/changes.
      * This method is used to implement a listener pattern.
      *
-     * @param evt A PropertyChangeEvent object describing the event source, and the property that has changed.
+     * @param evt is a PropertyChangeEvent object describing the event source, and the property that has changed.
      */
     public void propertyChange(PropertyChangeEvent evt) {
         if (evt.getPropertyName().matches("(.*)ERROR")) {
             connectionControl.SendError(evt.getPropertyName(), (String) evt.getSource());
-        } else
+        } else {
             switch (evt.getPropertyName()) {
                 case "BOOKSHELF_CHANGED" -> {
                     connectionControl.SendBookshelfChanged((String) evt.getSource(), (ItemCard[][]) evt.getNewValue(), (String) evt.getOldValue());
-                    if (evt.getOldValue() == null)
+
+                    if (evt.getOldValue() == null) {
                         turnPhase = TurnPhase.ENDTURN;
+                    }
                 }
                 case "BOARD_CHANGED" -> {
                     connectionControl.SendBoardChanged((ItemCard[][]) evt.getNewValue(), (String) evt.getOldValue());
+
                     if ((evt.getOldValue() == null) && (turnPhase == TurnPhase.SELECTCARDS)) {
                         turnPhase = TurnPhase.INSERTCARDS;
                         connectionControl.askInsert(currPlayer);
@@ -291,6 +320,7 @@ public class GameController implements PropertyChangeListener {
                 default -> {
                 }
             }
+        }
     }
 
     /**
@@ -301,5 +331,4 @@ public class GameController implements PropertyChangeListener {
     public void sendGameDetails(String nickname) {
         gameModel.sendGameDetails(nickname);
     }
-
 }

@@ -17,7 +17,7 @@ public class Player {
     /**
      * The constructor of the class initializes the player's bookshelf and common goals reached.
      *
-     * @param nickname of the player to be created.
+     * @param nickname of the player to be created
      */
     public Player(String nickname) {
         this.nickname = nickname;
@@ -28,7 +28,7 @@ public class Player {
     /**
      * Called at the beginning of the game, assigns a personal goal to the player.
      *
-     * @param persGoal assigned to the player.
+     * @param persGoal assigned to the player
      */
     public void assignPersGoal(PersGoal persGoal) {
         this.persGoal = persGoal;
@@ -54,15 +54,19 @@ public class Player {
      */
     public boolean checkComGoal(ComGoal comGoal) {
         for (Integer cg : comGoalsReached) {
-            if (cg == comGoal.getCGID())
+            if (cg == comGoal.getCGID()) {
                 return false;
+            }
         }
+
         int comGoalScore = comGoal.goalReached(myBookshelf);
+
         if (comGoalScore > 0) {
             score += comGoalScore;
             comGoalsReached.add(comGoal.getCGID());
             return true;
         }
+
         return false;
     }
 
@@ -71,9 +75,11 @@ public class Player {
      */
     public boolean checkEnd() {
         for (int i = 0; i < 5; i++) {
-            if (myBookshelf.checkSpace(i, 1))
+            if (myBookshelf.checkSpace(i, 1)) {
                 return false;
+            }
         }
+
         return true;
     }
 
@@ -86,13 +92,18 @@ public class Player {
      *                                   requires cards.size() <= 3
      */
     public boolean insertCard(List<ItemCard> cards, int column) throws NoBookshelfSpaceException {
-        if (!myBookshelf.checkSpace(column, cards.size()))
+        if (!myBookshelf.checkSpace(column, cards.size())) {
             throw new NoBookshelfSpaceException();
-        myBookshelf.insertCard(cards, column);
-        for (int i = 0; i < BOOKSHELF_LENGTH; i++) {
-            if (myBookshelf.checkSpace(i, 1))
-                return false;
         }
+
+        myBookshelf.insertCard(cards, column);
+
+        for (int i = 0; i < BOOKSHELF_LENGTH; i++) {
+            if (myBookshelf.checkSpace(i, 1)) {
+                return false;
+            }
+        }
+
         return true;
     }
 
@@ -123,5 +134,4 @@ public class Player {
     public String getPersGoal() {
         return this.persGoal.toString();
     }
-
 }

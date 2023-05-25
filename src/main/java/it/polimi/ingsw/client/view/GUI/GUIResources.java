@@ -151,7 +151,11 @@ public final class GUIResources {
         return comGoals.get(comGoal);
     }
 
-    public static Image getPersGoal(String persGoal){return persGoals.get(persGoal);}
+    public static Image getPersGoal(String persGoal) {
+        return persGoals.get(persGoal);
+    }
 
-    public static Image getScore(String s) {return scoringTokens.get(s); }
+    public static Image getScore(String s) {
+        return scoringTokens.get(s);
+    }
 }

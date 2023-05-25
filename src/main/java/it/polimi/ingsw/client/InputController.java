@@ -47,10 +47,12 @@ public class InputController {
                 return null;
             }
         }
+
         if (coords.size() > 1 && !checkSelection(coords)) {
             System.out.println("Position failed");
             return null;
         }
+
         return coords;
     }
 
@@ -112,12 +114,11 @@ public class InputController {
             }
         }
 
-        if(position.size() > 1){
+        if (position.size() > 1) {
             return checkStraightSelection(position) && checkClearSideSelection(position);
-        } else{
+        } else {
             return checkClearSideSelection(position);
         }
-
     }
 
     /**
@@ -295,7 +296,5 @@ public class InputController {
         }
 
         return playersNum;
-
     }
-
 }

@@ -43,6 +43,7 @@ public class ConnectionSocket extends ConnectionClient {
         } catch (Exception e) {
             throw new Exception("Error establishing socket connection.");
         }
+
         getController().onError("Connection established.");
         getController().onError("Sending nickname...");
         send(generateStandardMessage("nickname", getController().getMyNickname()));
@@ -103,7 +104,7 @@ public class ConnectionSocket extends ConnectionClient {
     /**
      * Called when the client wants to set players' number.
      *
-     * @param players is the players number to be set.
+     * @param players is the number of players to be set.
      */
     @Override
     public void setPlayersNumber(int players, String gameName) {
@@ -181,47 +182,30 @@ public class ConnectionSocket extends ConnectionClient {
             switch (jsonObject.get("Type").getAsString()) {
                 case "askPlayersNumber" ->
                         getController().onPlayerNumber(new ArrayList<>(Arrays.asList(gson.fromJson(jsonObject.get("Value").getAsString(), String[].class))));
-
                 case "disconnect" -> in.close();
-
                 case "savedGameFound" ->
                         getController().onSavedGame(new ArrayList<>(Arrays.asList(gson.fromJson(jsonObject.get("Value").getAsString(), String[].class))));
-
                 case "askSelect" -> getController().onSelect();
-
                 case "askInsert" -> getController().onInsert();
-
                 case "boardChanged" ->
                         getController().onBoardChanged(gson.fromJson(jsonObject.get("Value").getAsString(), ItemCard[][].class));
-
                 case "bookshelfChanged" ->
                         getController().onBookshelfChanged(jsonObject.get("nickname").getAsString(), gson.fromJson(jsonObject.get("Value").getAsString(), ItemCard[][].class));
-
                 case "error" -> getController().onError(jsonObject.get("Value").getAsString());
-
                 case "comGoalCreated" ->
                         getController().onCommonGoalCreated(jsonObject.get("Value").getAsInt(), jsonObject.get("score").getAsInt());
-
                 case "persGoalCreated" -> getController().onPersGoalCreated(jsonObject.get("Value").getAsString());
-
                 case "changeTurn" -> getController().onChangeTurn(jsonObject.get("Value").getAsString());
-
                 case "winner" ->
                         getController().onWinner(new ArrayList<>(Arrays.asList(gson.fromJson(jsonObject.get("Value").getAsString(), String[].class))));
-
                 case "commonGoalDone" ->
                         getController().onCommonGoalDone(jsonObject.get("source").getAsString(), gson.fromJson(jsonObject.get("Value").getAsString(), int[].class));
-
                 case "gameStarted" ->
                         getController().gameStarted(new ArrayList<>(Arrays.asList(gson.fromJson(jsonObject.get("Value").getAsString(), String[].class))), true);
-
                 case "player_score" -> getController().onPlayerScore(jsonObject.get("Value").getAsInt());
-
                 case "bookshelf_completed" -> getController().onBookshelfCompleted();
-
                 case "chatToMe" ->
                         getController().chatToMe(jsonObject.get("sender").getAsString(), jsonObject.get("Value").getAsString());
-
                 default -> getController().onError("Unknown message from server.");
 
             }

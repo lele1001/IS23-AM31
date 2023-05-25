@@ -38,7 +38,6 @@ public class CG9 extends ComGoal {
 
         for (i = 0; i < itemsCount.length; i++) {
             if (itemsCount[i] >= 8) {
-                //Player.score += this.score.get(0);
                 toReturn = this.score.get(0);
                 this.score.remove(score.get(0));
             }

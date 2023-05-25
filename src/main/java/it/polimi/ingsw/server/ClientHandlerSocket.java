@@ -23,18 +23,19 @@ public class ClientHandlerSocket extends ClientHandler implements Runnable {
     private Thread listeningThread;
     private volatile Boolean savedGame;
 
-
     public ClientHandlerSocket(Socket socket, Server server, ConnectionControl connectionControl) {
         this.socket = socket;
         this.server = server;
         this.connectionControl = connectionControl;
         playerNumberAsked = false;
         isConnected = true;
+
         try {
             socketOut = new PrintWriter(socket.getOutputStream());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+
         savedGame = null;
     }
 
@@ -46,6 +47,7 @@ public class ClientHandlerSocket extends ClientHandler implements Runnable {
         nickname = null;
         listeningThread = new Thread(this::listen);
         listeningThread.start();
+
         // Waiting for the nickname to be set.
         while (nickname == null) {
             Thread.onSpinWait();
@@ -56,9 +58,7 @@ public class ClientHandlerSocket extends ClientHandler implements Runnable {
             System.out.println("Sending " + nickname + " that game is not available.");
             sendError("Game not available.");
             disconnectPlayer();
-
         }
-
     }
 
     /**
@@ -77,13 +77,16 @@ public class ClientHandlerSocket extends ClientHandler implements Runnable {
         while (true) {
             try {
                 String line = in.readLine();
+
                 if (line != null) {
                     //System.out.println("Received: " + line);
                     onMessageReceived(line);
                 }
             } catch (IOException e) {
-                if ((nickname == null) || (Thread.interrupted()))
+                if ((nickname == null) || (Thread.interrupted())) {
                     return;
+                }
+
                 System.out.println("Client: " + nickname + " disconnected.");
                 isConnected = false;
                 connectionControl.changePlayerStatus(nickname, true);
@@ -102,7 +105,7 @@ public class ClientHandlerSocket extends ClientHandler implements Runnable {
     /**
      * A private method used to send to the client the generated json.
      *
-     * @param json to be converted in String and to be sent.
+     * @param json to be converted in String and to be sent
      */
     private void send(JsonObject json) {
         socketOut.println(json.toString());
@@ -112,18 +115,21 @@ public class ClientHandlerSocket extends ClientHandler implements Runnable {
     /**
      * A private method used to prevent repeated code:
      * it generates standard messages used during the communication with the client.
-     *
-     * @param type  of the message to be sent.
-     * @param value of the message to be sent.
-     * @return the jsonObject to be sent.
      * It doesn't call directly the “send”
      * method because sometimes the game needs to add other fields in the jsonObject before sending it.
+     *
+     * @param type  of the message to be sent
+     * @param value of the message to be sent
+     * @return the jsonObject to be sent
      */
     private JsonObject generateStandardMessage(String type, String value) {
         JsonObject json = new JsonObject();
         json.addProperty("Type", type);
-        if (value != null)
+
+        if (value != null) {
             json.addProperty("Value", value);
+        }
+
         return json;
     }
 
@@ -141,7 +147,7 @@ public class ClientHandlerSocket extends ClientHandler implements Runnable {
     /**
      * Sends an update of player's turn.
      *
-     * @param nickname of the client is going to play.
+     * @param nickname of the client is going to play
      */
     @Override
     public void sendPlayerTurn(String nickname) {
@@ -156,8 +162,11 @@ public class ClientHandlerSocket extends ClientHandler implements Runnable {
         if (isConnected) {
             isConnected = false;
             send(generateStandardMessage("disconnect", null));
-            if (listeningThread.isAlive())
+
+            if (listeningThread.isAlive()) {
                 listeningThread.interrupt();
+            }
+
             try {
                 socket.close();
             } catch (IOException e) {
@@ -169,20 +178,22 @@ public class ClientHandlerSocket extends ClientHandler implements Runnable {
     /**
      * Parses json messages received from the client.
      *
-     * @param json string to be parsed.
+     * @param json string to be parsed
      */
     private void onMessageReceived(String json) {
         JsonObject jsonObject = new JsonObject();
         Gson gson = new Gson();
+
         try {
             jsonObject = gson.fromJson(json, jsonObject.getClass());
         } catch (Exception e) {
             System.out.println("Unknown message from client.");
             return;
         }
+
         if (((jsonObject == null) || (jsonObject.isEmpty()) || !(jsonObject.has("Type")))) {
             System.out.println("Unknown message from client.");
-        } else
+        } else {
             try {
                 switch (jsonObject.get("Type").getAsString()) {
                     case "nickname" -> {
@@ -194,37 +205,34 @@ public class ClientHandlerSocket extends ClientHandler implements Runnable {
                     case "playersNumber" -> {
                         if (playerNumberAsked) {
                             int given = Integer.parseInt(jsonObject.get("Value").getAsString());
+
                             if ((given < 2) || (given > 4)) {
                                 sendError("Players' number not correct.");
-                                playerNumberAsked = false;
-                                //askPlayerNumber();
                             } else {
                                 server.setAvailablePlayers(given, jsonObject.get("gameName").getAsString());
-                                playerNumberAsked = false;
                             }
+
+                            playerNumberAsked = false;
                         }
                     }
                     case "savedGameFound" -> {
-                        if (savedGame)
+                        if (savedGame) {
                             server.setSavedGame(jsonObject.get("Value").getAsBoolean(), jsonObject.get("gameName").getAsString());
+                        }
                     }
                     case "selectCards" ->
                             connectionControl.selectCard(nickname, new ArrayList<>(Arrays.asList(gson.fromJson(jsonObject.get("Value").getAsString(), Integer[].class))));
-
                     case "insertCards" ->
                             connectionControl.insertCard(nickname, new ArrayList<>(Arrays.asList(gson.fromJson(jsonObject.get("Value").getAsString(), ItemCard[].class))), jsonObject.get("column").getAsInt());
-
                     case "chatToAll" -> connectionControl.chatToAll(nickname, jsonObject.get("Value").getAsString());
-
                     case "chatToPlayer" ->
                             connectionControl.chatToPlayer(nickname, jsonObject.get("receiver").getAsString(), jsonObject.get("Value").getAsString());
-
                     default -> System.out.println("Unknown message from client.");
                 }
             } catch (Exception e) {
                 System.out.println("Error de-parsing client " + nickname + "'s message.");
             }
-
+        }
     }
 
     /**
@@ -246,7 +254,7 @@ public class ClientHandlerSocket extends ClientHandler implements Runnable {
     /**
      * Generates an error message.
      *
-     * @param error to be sent.
+     * @param error to be sent
      */
     @Override
     public void sendError(String error) {
@@ -256,7 +264,7 @@ public class ClientHandlerSocket extends ClientHandler implements Runnable {
     /**
      * Generates a message to send board's update.
      *
-     * @param newBoard: the updated board.
+     * @param newBoard is the updated board
      */
     @Override
     public void SendBoardChanged(ItemCard[][] newBoard) {
@@ -267,8 +275,8 @@ public class ClientHandlerSocket extends ClientHandler implements Runnable {
     /**
      * Called to inform the client that a new commonGoal has been created (usually at the beginning of the game).
      *
-     * @param comGoalID that has been created.
-     * @param score     the maximum score that can be reached on the commonGoal.
+     * @param comGoalID that has been created
+     * @param score     is the maximum score that can be reached on the commonGoal
      */
     @Override
     public void SendCommonGoalCreated(Integer comGoalID, Integer score) {
@@ -280,7 +288,7 @@ public class ClientHandlerSocket extends ClientHandler implements Runnable {
     /**
      * Called to notify to the client his new PersonalGoal.
      *
-     * @param persGoal the string that indicates the number of the card assigned.
+     * @param persGoal indicates the number of the PersonalGoal assigned
      */
     @Override
     public void SendPersGoalCreated(String persGoal) {
@@ -290,8 +298,8 @@ public class ClientHandlerSocket extends ClientHandler implements Runnable {
     /**
      * Generates a message to send the bookshelf's update.
      *
-     * @param nickname     of the player the bookshelf is referred to.
-     * @param newBookshelf the updated bookshelf.
+     * @param nickname     of the player the bookshelf is referred to
+     * @param newBookshelf is the updated bookshelf
      */
     @Override
     public void SendBookshelfChanged(String nickname, ItemCard[][] newBookshelf) {
@@ -304,8 +312,8 @@ public class ClientHandlerSocket extends ClientHandler implements Runnable {
     /**
      * Called to inform that someone has reached a commonGoal.
      *
-     * @param source  the nickname of the client that reached it.
-     * @param details the ID of the commonGoal, and the score remained.
+     * @param source  is the nickname of the client that reached it
+     * @param details are the ID of the commonGoal, and the maximum score
      */
     @Override
     public void SendCommonGoalDone(String source, int[] details) {
@@ -317,7 +325,7 @@ public class ClientHandlerSocket extends ClientHandler implements Runnable {
     /**
      * It is the end of the game: there's a winner!
      *
-     * @param winners: winners' nickname.
+     * @param winners contains the winners' nicknames
      */
     @Override
     public void sendWinner(List<String> winners) {
@@ -327,8 +335,8 @@ public class ClientHandlerSocket extends ClientHandler implements Runnable {
     /**
      * Called when someone wants to send a message to this client.
      *
-     * @param sender   the nickname of the client sender.
-     * @param message: the message.
+     * @param sender  of the message
+     * @param message sent to somebody else
      */
     @Override
     public void chatToMe(String sender, String message) {
@@ -347,12 +355,17 @@ public class ClientHandlerSocket extends ClientHandler implements Runnable {
 
     /**
      * Generates a message to inform the client that game is not available.
+     *
+     * @param score of the player
      */
     @Override
     public void sendPlayerScore(int score) {
         send(generateStandardMessage("player_score", String.valueOf(score)));
     }
 
+    /**
+     * Called when a player completes his bookshelf
+     */
     @Override
     public void sendBookshelfCompleted() {
         send(generateStandardMessage("bookshelf_completed", null));

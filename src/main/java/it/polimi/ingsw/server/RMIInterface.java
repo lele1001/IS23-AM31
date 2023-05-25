@@ -24,8 +24,8 @@ public class RMIInterface implements RMI {
      * Method called from the client that pass to the server the position of the Tiles selected by the client
      * Send a request for the checking procedure in the gameController and update the Model if the controls are successfully done
      *
-     * @param nickname  this client
-     * @param positions Tiles selected by the client
+     * @param nickname  of this client
+     * @param positions of the Tiles selected by the client
      * @throws RemoteException if an error occurred calling the server RMI
      */
     @Override
@@ -37,15 +37,14 @@ public class RMIInterface implements RMI {
      * Method called by the client only if he is the first connected to the server
      * Check that he is the first and then set the number of players for the game
      *
-     * @param client the client that sends the request
-     * @param number number of players in the game
+     * @param client that sends the request
+     * @param number of players in the game
      * @throws RemoteException if an error occurred calling the server RMI
      */
     @Override
     public void setPlayerNumber(String client, int number, String gameName) throws RemoteException {
         if ((number < 2) || (number > 4)) {
             connectionControl.SendError("Players' number not correct.", client);
-            //connectionControl.askPlayerNumber(client);
         } else {
             server.setAvailablePlayers(number, gameName);
         }
@@ -55,8 +54,8 @@ public class RMIInterface implements RMI {
      * Method called from the client that pass to the server the chat message for all connected players of the game
      * The server sends to all the other clients the message
      *
-     * @param nickname this client
-     * @param message  String to send to all the connected players
+     * @param nickname of this client
+     * @param message  to send to all the connected players
      * @throws RemoteException if an error occurred calling the server RMI
      */
     @Override
@@ -68,9 +67,9 @@ public class RMIInterface implements RMI {
      * Method called from the client that pass to the server the chat message for all connected players of the game
      * The server sends to all the other clients the message
      *
-     * @param sender   the player that sends the message
-     * @param receiver the player that has to receive the message
-     * @param message  String to send to all the connected players
+     * @param sender   is the player that sends the message
+     * @param receiver is the player that has to receive the message
+     * @param message  to send to all the connected players
      * @throws RemoteException if an error occurred calling the server RMI
      */
     @Override
@@ -81,11 +80,10 @@ public class RMIInterface implements RMI {
     /**
      * Used only by the client to check if the server in Online
      *
-     * @throws RemoteException If the client cannot connect to the server
+     * @throws RemoteException if the client cannot connect to the server
      */
     @Override
     public void pong() throws RemoteException {
-
     }
 
     @Override
@@ -97,9 +95,9 @@ public class RMIInterface implements RMI {
      * Method called from the client that pass to the server the position of the Tiles selected by the client
      * Send a request for the checking procedure in the gameController and update the Model if the controls are successfully done
      *
-     * @param nickname nickname of the client
-     * @param cards    The Item cards selected by the client
-     * @param column   The column where the client wants to put the Item cards
+     * @param nickname of the client
+     * @param cards    selected by the client that will be inserted in the bookshelf
+     * @param column   where the client wants to put the selected ItemCards
      */
     @Override
     public void insertCard(String nickname, ArrayList<ItemCard> cards, int column) throws RemoteException {
@@ -110,17 +108,19 @@ public class RMIInterface implements RMI {
      * Waits for the client's nickname and RMI interface, then, tries to insert it into the game.
      * If the game is not available, sends the error and disconnects it.
      *
-     * @param nickname nickname of the client
-     * @param client   The client interface
+     * @param nickname of the client
+     * @param client   is the client interface
      */
     @Override
     public boolean login(String nickname, RMIClientConnection client) {        //deve prendere anche la classe del client
         ClientHandlerRmi clientHandlerRmi = new ClientHandlerRmi(connectionControl, nickname, client); //deve passargli la classe dell'interfaccia rmi client
+
         if (!connectionControl.tryAddInQueue(clientHandlerRmi, nickname)) {
             clientHandlerRmi.sendError("Game not available.");
             clientHandlerRmi.disconnectPlayer();
             return false;
         }
+
         return true;
     }
 }

@@ -138,7 +138,6 @@ public class CLI implements View {
         } while (port == -1);
 
         in.nextLine();
-        //System.out.println("The server IP port chosen is: " + port);
     }
 
     /**
@@ -152,7 +151,6 @@ public class CLI implements View {
                 address = in.next();
             }
         } while (address.equals(""));
-        //System.out.println("The server IP address chosen is: " + address);
     }
 
     /**

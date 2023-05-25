@@ -42,10 +42,12 @@ public enum PersGoal {
         Map<String, ArrayList<Integer>> cards = gson.fromJson(json, cardsType);
         List<Integer> index = cards.get(this.toString());
 
-        // Conventional order in which we read items from JsonConfiguration file.
+        //Conventional order in which we read items from JsonConfiguration file
         List<HouseItem> items = new ArrayList<>(List.of(HouseItem.Frame, HouseItem.Cat, HouseItem.Books, HouseItem.Games, HouseItem.Trophy, HouseItem.Plants));
-        for (int i = 0; i < items.size(); i++)
+
+        for (int i = 0; i < items.size(); i++) {
             positions.put(index.get(i), items.get(i));
+        }
     }
 
     /**
@@ -53,11 +55,13 @@ public enum PersGoal {
      */
     public int calcScore(Bookshelf l) {
         int numberOfDone = 0;
+
         for (int i : positions.keySet()) {
             if ((l.get(Position.getRow(i), Position.getColumn(i)) != null) && (l.get(Position.getRow(i), Position.getColumn(i)).getMyItem() == positions.get(i))) {
                 numberOfDone++;
             }
         }
+
         return scoreList.get(numberOfDone);
     }
 }

@@ -271,7 +271,6 @@ public class ConnectionRMI extends ConnectionClient implements RMIClientConnecti
             server = null;
             getController().disconnectMe();
         }
-
     }
 
     /**

@@ -28,7 +28,7 @@ public class CG11_12 extends ComGoal {
         int direction = 0;  // if = 0 from left to right, if = 1 from right to left.
         int offset = 0;
         int toReturn = 0;
-        int diagCount = 0; // number of diagonals that I check
+        int diagCount = 0; // number of diagonals that are checked
 
         while (diagCount < 4) {
             if (!found) {
@@ -46,7 +46,6 @@ public class CG11_12 extends ComGoal {
         }
 
         if (found) {
-            //Player.score += this.score.get(0);
             toReturn = this.score.get(0);
             this.score.remove(score.get(0));
         }

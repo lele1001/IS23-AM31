@@ -18,7 +18,7 @@ public class CG8 extends ComGoal {
         boolean cornersFound = false;
 
         if ((l.get(0, 0) != null) && (l.get(0, 4) != null)) {
-            // gets the items in all the corners of the Bookshelf
+            //Gets the items in all the corners of the Bookshelf
             myItem = l.get(0, 0).getMyItem();
             it1 = l.get(0, 4).getMyItem();
             it2 = l.get(5, 0).getMyItem();
@@ -30,7 +30,6 @@ public class CG8 extends ComGoal {
         }
 
         if (cornersFound) {
-            //Player.score += this.score.get(0);
             toReturn = this.score.get(0);
             this.score.remove(score.get(0));
         }

@@ -45,7 +45,6 @@ public class CG10 extends ComGoal {
         }
 
         if (found) {
-            //Player.score += this.score.get(0);
             toReturn = this.score.get(0);
             this.score.remove(score.get(0));
         }

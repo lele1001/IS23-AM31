@@ -6,7 +6,6 @@ import it.polimi.ingsw.server.gameExceptions.NoRightItemCardSelection;
 import it.polimi.ingsw.server.gameExceptions.NotSameSelectedException;
 
 import java.beans.PropertyChangeListener;
-import java.nio.file.Path;
 import java.util.ArrayList;
 
 public interface ModelInterface {
@@ -22,10 +21,10 @@ public interface ModelInterface {
     /**
      * Tries to insert cards in a nickname's bookshelf.
      *
-     * @param nickname the owner of the bookshelf.
-     * @param cards    to be inserted into the bookshelf.
-     * @param column   of the bookshelf to insert cards into.
-     * @throws NoBookshelfSpaceException if there's no space in the column indicated.
+     * @param nickname of the owner of the bookshelf
+     * @param cards    to be inserted into the bookshelf
+     * @param column   of the bookshelf to insert cards into
+     * @throws NoBookshelfSpaceException if there's no space in the column indicated
      * @throws NotSameSelectedException  if the player wants to insert cards different from the ones selected.
      */
     void InsertCard(String nickname, ArrayList<ItemCard> cards, int column) throws NoBookshelfSpaceException, NotSameSelectedException;
@@ -45,16 +44,12 @@ public interface ModelInterface {
      */
     void setListener(PropertyChangeListener listener);
 
-    //boolean isPlayerOnline(String nickname);
-
     /**
      * Calculates all the players' final score and sends it to each of them
      *
      * @return a set (whose size is > 1 only in case of parity) with all the winners.
      */
     ArrayList<String> calcFinalScore();
-
-    //void changePlayerStatus(String nickname);
 
     /**
      * Called at the end of a turn, checks if common goals have been reached from the current player,
@@ -63,7 +58,6 @@ public interface ModelInterface {
      * @param nickname of the current player.
      */
     void EndTurn(String nickname);
-
 
     /**
      * Called to resume the board when someone has selected tiles from it

@@ -12,7 +12,6 @@ import static it.polimi.ingsw.server.model.ItemNumber.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 class PlayerTest {
-
     /**
      * Testing the exception
      */
@@ -41,6 +40,7 @@ class PlayerTest {
         } catch (NoBookshelfSpaceException e) {
             assertEquals(1, 2); // Not to be executed
         }
+
         try {
             p.insertCard(new ArrayList<>(List.of(new ItemCard(Cat, First))), 1);
         } catch (NoBookshelfSpaceException e) {
@@ -56,6 +56,7 @@ class PlayerTest {
         } catch (NoBookshelfSpaceException e) {
             assertEquals(1, 2);  // Not to be executed
         }
+
         try {
             p.insertCard(new ArrayList<>(List.of(new ItemCard(Books, Third), new ItemCard(Frame, Second), new ItemCard(Cat, First))), 3);
         } catch (NoBookshelfSpaceException e) {
@@ -68,12 +69,12 @@ class PlayerTest {
         } catch (NoBookshelfSpaceException e) {
             assertEquals(1, 2); // Not to be executed
         }
+
         try {
             p.insertCard(new ArrayList<>(List.of(new ItemCard(Frame, Third))), 4);
         } catch (NoBookshelfSpaceException e) {
             assertEquals(1, 1); // To be executed
         }
-
     }
 
     @Test
@@ -81,7 +82,7 @@ class PlayerTest {
         // Creating the game
         Player p = new Player("Pippo");
         ArrayList<ComGoal> comGoals = new ArrayList<>(List.of(new CG2_5(3, 2), new CG1(3, 1)));
-        p.assignPersGoal(PersGoal.Card6);
+        p.assignPersGoal(PersGoal.pg06);
 
         // Creating player's bookshelf
         p.insertCard(new ArrayList<>(List.of(new ItemCard(Frame, First), new ItemCard(Books, Second), new ItemCard(Cat, First))), 4);
@@ -112,8 +113,8 @@ class PlayerTest {
         Player p = new Player("Luigi");
         Player p2 = new Player("Nico");
         ArrayList<ComGoal> comGoals = new ArrayList<>(List.of(new CG8(4, 8), new CG10(4, 10)));
-        p.assignPersGoal(PersGoal.Card11);
-        p2.assignPersGoal(PersGoal.Card7);
+        p.assignPersGoal(PersGoal.pg11);
+        p2.assignPersGoal(PersGoal.pg07);
 
         // Creating player's bookshelf
         p.insertCard(new ArrayList<>(List.of(new ItemCard(Cat, Third), new ItemCard(Games, First), new ItemCard(Trophy, Third))), 0);
@@ -150,7 +151,6 @@ class PlayerTest {
         assertTrue(p.checkComGoal(comGoals.get(1)));
         assertFalse(p.checkComGoal(comGoals.get(1)));
         assertEquals(14, p.calculateFinScore());
-
     }
 
     @Test
@@ -159,8 +159,8 @@ class PlayerTest {
         Player p = new Player("Luigi");
         Player p2 = new Player("Nico");
         ArrayList<ComGoal> comGoals = new ArrayList<>(List.of(new CG6_7(2, 6), new CG9(2, 9)));
-        p.assignPersGoal(PersGoal.Card1);
-        p2.assignPersGoal(PersGoal.Card9);
+        p.assignPersGoal(PersGoal.pg01);
+        p2.assignPersGoal(PersGoal.pg09);
 
         // Creating player's bookshelf
         p.insertCard(new ArrayList<>(List.of(new ItemCard(Cat, Third), new ItemCard(Games, First), new ItemCard(Games, Third))), 0);
@@ -251,6 +251,4 @@ class PlayerTest {
         p.insertCard(new ArrayList<>(List.of(new ItemCard(Frame, First))), 4);
         assertTrue(p.checkEnd());
     }
-
-
 }

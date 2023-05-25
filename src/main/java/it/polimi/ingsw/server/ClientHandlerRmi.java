@@ -14,7 +14,7 @@ public class ClientHandlerRmi extends ClientHandler {
     RMIClientConnection client;
     Timer timer = new Timer();
 
-    // come attributo serve il riferimento all'interfaccia client
+    //Requires the client interface reference as an attribute
     public ClientHandlerRmi(ConnectionControl connectionControl, String nickname, RMIClientConnection client) {
         this.connectionControl = connectionControl;
         this.nickname = nickname;
@@ -35,7 +35,7 @@ public class ClientHandlerRmi extends ClientHandler {
         try {
             client.pong();
         } catch (RemoteException e) {
-            // se si è disconnesso
+            //If it disconnects
             connectionControl.changePlayerStatus(nickname, true);
             timer.cancel();
             disconnectPlayer();
@@ -112,7 +112,7 @@ public class ClientHandlerRmi extends ClientHandler {
     /**
      * The RMI server calls the client's method in case of error on the server side
      *
-     * @param error String that describes the type of error
+     * @param error is the String that describes the type of error
      */
     @Override
     public void sendError(String error) {
@@ -127,8 +127,8 @@ public class ClientHandlerRmi extends ClientHandler {
     /**
      * The RMI server calls the client's method to update the client's side bookshelf of player nickname
      *
-     * @param playerName   the nickname of the player
-     * @param newBookshelf the updated bookshelf of the player nickname
+     * @param playerName   is the nickname of the player
+     * @param newBookshelf is the updated bookshelf of the player
      */
     @Override
     public void SendBookshelfChanged(String playerName, ItemCard[][] newBookshelf) {
@@ -142,8 +142,8 @@ public class ClientHandlerRmi extends ClientHandler {
     /**
      * The RMI server calls the client's method when a Common goal is completed by the player nickname
      *
-     * @param source  nickname of the player
-     * @param details Array of Common goal ID and new value of common goal
+     * @param source  is the nickname of the player
+     * @param details is an Array with the Common Goal ID and its new value
      */
     @Override
     public void SendCommonGoalDone(String source, int[] details) {
@@ -157,7 +157,7 @@ public class ClientHandlerRmi extends ClientHandler {
     /**
      * The RMI server calls the client's method when a Personal goal is created
      *
-     * @param persGoal String that determines the Personal goal from a Json file
+     * @param persGoal is the String that determines the PersonalGoal from a Json file
      */
     @Override
     public void SendPersGoalCreated(String persGoal) {
@@ -171,8 +171,8 @@ public class ClientHandlerRmi extends ClientHandler {
     /**
      * The RMI server calls the client's method when a Common goal is created
      *
-     * @param comGoalID ID of the Common goal
-     * @param score     Value if the client does the Common goal
+     * @param comGoalID of the Common goal
+     * @param score     is the value assigned if the client reaches the CommonGoal
      */
     @Override
     public void SendCommonGoalCreated(Integer comGoalID, Integer score) {
@@ -186,7 +186,7 @@ public class ClientHandlerRmi extends ClientHandler {
     /**
      * The RMI server calls the client's method to update the client's side board
      *
-     * @param newBoard the updated board
+     * @param newBoard is the updated board
      */
     @Override
     public void SendBoardChanged(ItemCard[][] newBoard) {
@@ -200,7 +200,7 @@ public class ClientHandlerRmi extends ClientHandler {
     /**
      * The RMI server calls the client's method when a player wins
      *
-     * @param winners is the player that won the game
+     * @param winners contains the winners' nicknames
      */
     @Override
     public void sendWinner(List<String> winners) {
@@ -242,7 +242,7 @@ public class ClientHandlerRmi extends ClientHandler {
     /**
      * The RMI server calls the client's method to update the player score when a player reconnects
      *
-     * @param score The score of the player
+     * @param score of the player
      */
     @Override
     public void sendPlayerScore(int score) {

@@ -63,7 +63,7 @@
         </GridPane>
     </AnchorPane>
 
-    <GridPane fx:id="persGoal" focusTraversable="true" layoutX="620.0" layoutY="180.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="150.0">
+    <GridPane fx:id="persGoal" focusTraversable="true" layoutX="620.0" layoutY="184.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="150.0">
         <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="150.0" />
         </columnConstraints>
@@ -91,7 +91,7 @@
     
     <Button fx:id="undoSelection" layoutX="64.0" layoutY="565.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="100.0" text="undo" />
 
-   <Label fx:id="yourPoints" alignment="CENTER" contentDisplay="CENTER" layoutX="620.0" layoutY="50.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0" prefWidth="400.0" text="Your points" textFill="WHITE" wrapText="true" />
+   <Label fx:id="yourPoints" alignment="CENTER" contentDisplay="CENTER" layoutX="620.0" layoutY="30.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="60.0" prefWidth="400.0" text="Your points" textFill="WHITE" wrapText="true" />
 
     <GridPane fx:id="bookshelfPane" focusTraversable="true" hgap="5.0" layoutX="840.0" layoutY="190.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="160.0" prefWidth="150.0" vgap="2.0">
         <columnConstraints>
@@ -135,4 +135,5 @@
             <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="52.0" vgrow="SOMETIMES" />
         </rowConstraints>
     </GridPane>
+   <Label alignment="CENTER" contentDisplay="CENTER" layoutX="630.0" layoutY="100.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="60.0" prefWidth="400.0" text="Select up to 3 Tiles from the board" textFill="WHITE" wrapText="true" />
 </AnchorPane>

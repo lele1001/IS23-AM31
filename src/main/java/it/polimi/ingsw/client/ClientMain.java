@@ -15,6 +15,7 @@ public class ClientMain {
         if (args.length > 0 && args[0].equalsIgnoreCase("CLI")) {
             int port = 0;
             String conn;
+
             if (args.length == 3 && (args[1].equalsIgnoreCase("RMI") || args[1].equalsIgnoreCase("SOCKET"))) {
                 try {
                     port = Integer.parseInt(args[2]);
@@ -22,11 +23,11 @@ public class ClientMain {
                     System.out.println("\n Wrong arguments");
                     System.exit(1);
                 }
+
                 conn = args[1].toLowerCase();
                 new CLI(new ClientController(), port, conn);
             } else {
                 new CLI(new ClientController());
-
             }
         } else {
             Application.launch(GUIApp.class);

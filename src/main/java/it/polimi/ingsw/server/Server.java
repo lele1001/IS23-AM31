@@ -36,7 +36,6 @@ public class Server {
     private final Map<String, JsonObject> savedGames = new HashMap<>();
     private final static String savedGamesPath = "C:\\MyShelfieSavedGames";
 
-
     public Server() {
     }
 
@@ -44,6 +43,7 @@ public class Server {
         System.out.println("Hello! Starting server...");
         System.out.println("Type \"stop\" to stop server.");
         new Thread(Server::listen).start();
+
         try {
             Server.port = Integer.parseInt(args[0]);
             int rmiPort = Server.port + 1;
@@ -53,6 +53,7 @@ public class Server {
             System.out.println("Setting default ports: socket 1500, RMI 1501.");
             Server.port = 1500;
         }
+
         Server server = new Server();
         server.start();
     }
@@ -64,10 +65,12 @@ public class Server {
         System.out.println("Initializing server...");
         stop = false;
         availablePlayers = -1;
+
         this.connectionControl = new ConnectionControl(this);
         this.gameController = new GameController(this.connectionControl);
         this.connectionControl.setGameController(gameController);
         this.queue = new ArrayList<>();
+
         playersNumberAsked = false;
         wantToSave = false;
         savedGameAsked = false;
@@ -82,10 +85,13 @@ public class Server {
         initialize();
         findSavedGames();
         new Thread(this::setGame).start();
+
         if (!startRMI()) {
             System.out.println("Error creating RMI interface.");
-        } else
+        } else {
             System.out.println("Server RMI is ready.");
+        }
+
         startSocket();
         System.out.println("Server stopped.");
         System.exit(0);
@@ -99,6 +105,7 @@ public class Server {
     public boolean startRMI() {
         rmiInterface = new RMIInterface(this, this.connectionControl);
         RMI stub;
+
         try {
             stub = (RMI) UnicastRemoteObject.exportObject(
                     rmiInterface, port + 1);
@@ -107,7 +114,9 @@ public class Server {
             e.printStackTrace();
             return false;
         }
+
         Registry registry;
+
         try {
             registry = LocateRegistry.createRegistry(port + 1);
         } catch (RemoteException e) {
@@ -115,6 +124,7 @@ public class Server {
             e.printStackTrace();
             return false;
         }
+
         try {
             registry.bind("MyShelfieServer", stub);
         } catch (RemoteException | AlreadyBoundException e) {
@@ -122,6 +132,7 @@ public class Server {
             e.printStackTrace();
             return false;
         }
+
         return true;
     }
 
@@ -130,15 +141,16 @@ public class Server {
      */
     public static void listen() {
         Scanner in = new Scanner(System.in);
+
         while (true) {
             String s = in.nextLine();
-            if (s.equals("stop") || s.equals("STOP") || s.equals("Stop")) {
+
+            if (s.equalsIgnoreCase("stop")) {
                 System.out.println("Stopping server...");
                 stop = true;
                 break;
             }
         }
-
     }
 
     /**
@@ -146,27 +158,32 @@ public class Server {
      */
     public void startSocket() {
         ExecutorService executor;
+
         try {
             executor = Executors.newCachedThreadPool();
         } catch (Exception e) {
             System.out.println("Socket error: creating threads.");
             return;
         }
+
         ServerSocket serverSocket;
-        //InetAddress address = InetAddress.getByAddress(InetAddress.getLocalHost().getAddress());
+
         try {
             serverSocket = new ServerSocket(port);
         } catch (Exception e) {
             System.err.println("Socket error: the specified port is not available.");
             return;
         }
+
         System.out.println("Server socket is ready.");
+
         try {
             serverSocket.setSoTimeout(20);
         } catch (SocketException e) {
             System.err.println("Socket timeout error.");
             stop = true;
         }
+
         while (!stop) {
             try {
                 Socket socket = serverSocket.accept();
@@ -177,23 +194,29 @@ public class Server {
                 //break;
             }
         }
+
         this.connectionControl.disconnectAll();
         System.out.println("Closing socket...");
+
         try {
             serverSocket.close();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+
         executor.shutdown();
     }
 
     public void findSavedGames() {
         File directory;
         Gson gson = new Gson();
+
         try {
             directory = new File(savedGamesPath);
-            for (File file : Objects.requireNonNull(directory.listFiles()))
+
+            for (File file : Objects.requireNonNull(directory.listFiles())) {
                 savedGames.put(file.getName().split("\\.")[0], gson.fromJson(Files.readString(file.toPath()), JsonObject.class));
+            }
         } catch (Exception e) {
             System.out.println("Unable to read from savedGames file.");
         }
@@ -209,6 +232,7 @@ public class Server {
         this.availablePlayers = availablePlayers;
         this.gameName = gameName;
         this.notifyAll();
+
         System.out.println("Players' number set to " + availablePlayers);
         System.out.println("Game name set to " + gameName);
     }
@@ -265,22 +289,22 @@ public class Server {
             if (!this.queue.isEmpty()) {
                 if (!firstAsked) {
                     List<String> savedNames = new ArrayList<>();
+
                     for (String s : savedGames.keySet()) {
                         try {
-                            if (Arrays.asList(gson.fromJson(savedGames.get(s).get("nicknames").getAsString(), String[].class)).contains(this.queue.get(0)) && !savedGameAsked)
+                            if (Arrays.asList(gson.fromJson(savedGames.get(s).get("nicknames").getAsString(), String[].class)).contains(this.queue.get(0)) && !savedGameAsked) {
                                 savedNames.add(s);
+                            }
                         } catch (Exception e) {
                             e.printStackTrace();
                             System.out.println(s + " non valid as a gameJson.");
                         }
-                        /*if (nicknames.get(s).contains(this.queue.get(0)) && (!savedGameAsked)) {
-                            savedNames.add(s);
-                        }*/
                     }
+
                     if (!savedGameAsked && !savedNames.isEmpty()) {
                         System.out.println("Found some saved games with client's nickname.. asking him if he wants to resume it.");
                         System.out.println(savedNames);
-                        this.connectionControl.askSavedGame(this.queue.get(0), savedNames);     //passare tutti i nomi possibii
+                        this.connectionControl.askSavedGame(this.queue.get(0), savedNames);     //passare tutti i nomi possibili
                         savedGameAsked = true;
                         firstAsked = true;
                     } else if (!playersNumberAsked) {
@@ -291,28 +315,21 @@ public class Server {
                 }
             }
             try {
-                //System.out.println("Waiting for the first.");
                 this.wait();
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
         }
-        /* while (this.queue.size() < availablePlayers) {
-            try {
-                this.wait();
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
-        }*/
+
         if (wantToSave) {
             List<String> players = Arrays.asList(gson.fromJson(savedGames.get(gameName).get("nicknames").getAsString(), String[].class));
             //System.out.println("ok. wants to save.");
             ArrayList<String> onlinePlayers = new ArrayList<>();
 
             for (String s : queue) {
-                if (players.contains(s))
+                if (players.contains(s)) {
                     onlinePlayers.add(s);
-                else {
+                } else {
                     connectionControl.SendError("Game not available.", s);
                     connectionControl.removeClient(s);
                 }
@@ -325,7 +342,6 @@ public class Server {
             }
 
             this.gameController.resumeGame(onlinePlayers, players, savedGames.get(gameName), Server.savedGamesPath + "\\" + gameName + ".json");
-
             new Thread(() -> this.gameController.run(players.indexOf(savedGames.get(gameName).get("lastPlayer").getAsString()) + 1)).start();
         } else {
             // Saying other players that game is not available for them.
@@ -333,7 +349,6 @@ public class Server {
                 if (queue.indexOf(s) >= availablePlayers) {
                     connectionControl.SendError("Game not available.", s);
                     connectionControl.removeClient(s);
-                    //queue.remove(s);
                 }
             }
 
@@ -349,14 +364,18 @@ public class Server {
      */
     public void onEndGame(String gameFilePath) {
         File file = new File(gameFilePath);
+
         if (file.delete()) {
             System.out.println("Game file successfully deleted.");
         } else {
             System.out.println("Game file deletion failed.");
         }
+
         initialize();
-        if (rmiInterface != null)
+
+        if (rmiInterface != null) {
             rmiInterface.setConnectionControl(connectionControl);
+        }
         new Thread(this::setGame).start();
     }
 }

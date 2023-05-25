@@ -15,7 +15,6 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.shape.Polygon?>
-<?import javafx.scene.text.Font?>
 
 <AnchorPane fx:id="putCardsPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="640.0" prefWidth="1280.0" stylesheets="@../CSS/gamePages.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.view.GUI.scenes.PutCardsScene">
     <ImageView fitHeight="614.0" fitWidth="500.0" layoutX="14.0" layoutY="14.0" pickOnBounds="true">
@@ -64,22 +63,23 @@
          <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="50.0" vgrow="SOMETIMES" />
       </rowConstraints>
    </GridPane>
-   <Label layoutX="82.0" layoutY="20.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="70.0" prefWidth="350.0" text="Chose the Tile order and then the column in which you want to put them" textAlignment="CENTER" wrapText="true" />
-   <Label fx:id="yourPoints" alignment="CENTER" contentDisplay="CENTER" layoutX="551.0" layoutY="80.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="100.0" prefWidth="200.0" text="Your points" textFill="WHITE" wrapText="true">
-      <font>
-         <Font name="Bauhaus 93" size="24.0" />
-      </font>
+   <Label layoutX="100.0" layoutY="20.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="70.0" prefWidth="300.0" text="Choose the column in which you want to put your Tiles" textAlignment="CENTER" wrapText="true" />
+
+    <Label fx:id="yourPoints" alignment="CENTER" contentDisplay="CENTER" layoutX="551.0" layoutY="50.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="100.0" prefWidth="200.0" text="Your points" textFill="WHITE" wrapText="true">
    </Label>
+
    <RadioButton fx:id="col1" contentDisplay="GRAPHIC_ONLY" graphicTextGap="0.0" layoutX="98.0" layoutY="118.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" scaleX="1.5" scaleY="1.5" textAlignment="CENTER" />
    <RadioButton fx:id="col2" contentDisplay="GRAPHIC_ONLY" graphicTextGap="0.0" layoutX="173.0" layoutY="118.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" scaleX="1.5" scaleY="1.5" textAlignment="CENTER" />
    <RadioButton fx:id="col3" contentDisplay="GRAPHIC_ONLY" graphicTextGap="0.0" layoutX="248.0" layoutY="118.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" scaleX="1.5" scaleY="1.5" textAlignment="CENTER" />
    <RadioButton fx:id="col4" contentDisplay="GRAPHIC_ONLY" graphicTextGap="0.0" layoutX="323.0" layoutY="118.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" scaleX="1.5" scaleY="1.5" textAlignment="CENTER" />
    <RadioButton fx:id="col5" contentDisplay="GRAPHIC_ONLY" graphicTextGap="0.0" layoutX="398.0" layoutY="118.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" scaleX="1.5" scaleY="1.5" textAlignment="CENTER" />
-   <SplitMenuButton fx:id="destination" layoutX="1060.0" layoutY="590.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" popupSide="TOP" prefHeight="30.0" prefWidth="150.0" text="destination">
+
+    <SplitMenuButton fx:id="destination" layoutX="1060.0" layoutY="590.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" popupSide="TOP" prefHeight="30.0" prefWidth="150.0" text="destination">
      <items>
        <MenuItem mnemonicParsing="false" text="everybody" />
      </items>
    </SplitMenuButton>
+
    <GridPane fx:id="youSelectedThis" focusTraversable="true" hgap="4.0" layoutX="575.0" layoutY="260.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="158.0" vgap="4.0">
       <columnConstraints>
          <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="50.0" />
@@ -90,8 +90,10 @@
          <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="50.0" vgrow="SOMETIMES" />
       </rowConstraints>
    </GridPane>
+
    <Polygon fill="WHITE" layoutX="600.0" layoutY="550.0" points="-50.0, 40.0, 50.0, 40.0, 0.0, -60.0" rotate="180.0" scaleX="0.5" scaleY="0.4" stroke="WHITE" strokeType="INSIDE" />
-   <GridPane fx:id="comGoals" alignment="CENTER_RIGHT" focusTraversable="true" hgap="5.0" layoutX="805.0" layoutY="280.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="320.0" prefWidth="200.0" vgap="20.0">
+
+    <GridPane fx:id="comGoals" alignment="CENTER_RIGHT" focusTraversable="true" hgap="5.0" layoutX="805.0" layoutY="280.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="320.0" prefWidth="200.0" vgap="20.0">
       <columnConstraints>
          <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="200.0" />
       </columnConstraints>
@@ -140,4 +142,5 @@
             <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="46.0" vgrow="SOMETIMES" />
         </rowConstraints>
     </GridPane>
+   <Label alignment="CENTER" layoutX="554.0" layoutY="190.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="200.0" text="Chose the Tile order" textAlignment="CENTER" textFill="WHITE" />
 </AnchorPane>

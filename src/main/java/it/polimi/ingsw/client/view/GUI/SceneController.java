@@ -8,7 +8,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-import java.awt.*;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -18,8 +17,6 @@ public class SceneController {
     private Stage activeStage = null;
     GUIScene currentController;
     private final Map<String, GUIScene> scenesMap = new HashMap<>();
-    private int windowHeight, windowWidth;
-
 
     public SceneController(ClientController clientController) {  //chiedere se devo rinominare queste righe per nome sbagliato ??
         this.clientController = clientController;
@@ -31,19 +28,6 @@ public class SceneController {
         //this.createScene(GUIResources.endGameLoseFXML, "endGameLoseScene");
         this.createScene(GUIResources.notMyTurnFXML, "notMyTurnScene");
         this.createScene(GUIResources.numberOfPlayerFXML, "numberOfPlayersScene");
-
-        //Initializes the window dimensions
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        windowHeight = screenSize.height;
-        windowWidth = screenSize.width;
-    }
-
-    public int getWindowHeight() {
-        return windowHeight;
-    }
-
-    public int getWindowWidth() {
-        return windowWidth;
     }
 
     public void createScene(String fxml, String name) {
@@ -208,7 +192,6 @@ public class SceneController {
         for (GUIScene gs : scenesMap.values()) {
             gs.updateBoard(board);
         }
-
     }
 
     public void updateBookshelf(String nickname, ItemCard[][] bookshelf) {
@@ -234,13 +217,13 @@ public class SceneController {
     }
 
     public void persGoal(String newValue) {
-        for(GUIScene gs : scenesMap.values()){
+        for (GUIScene gs : scenesMap.values()) {
             gs.persGoal(newValue);
         }
     }
 
     public void printPoints(int myPoint) {
-        for(GUIScene gs : scenesMap.values()){
+        for (GUIScene gs : scenesMap.values()) {
             gs.printPoints(myPoint);
         }
     }
