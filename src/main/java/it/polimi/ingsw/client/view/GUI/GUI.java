@@ -198,6 +198,16 @@ public class GUI implements View {
     }
 
     @Override
+    public void changeBoard(Map<Integer, ItemCard> tilesToRemove) {
+
+    }
+
+    @Override
+    public void changeBookshelf(Map<Integer, ItemCard> tilesToAdd,String player) {
+
+    }
+
+    @Override
     public void askForSavedGame(List<String> savedGames) {
 
     }

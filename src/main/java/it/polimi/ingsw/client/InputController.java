@@ -2,14 +2,12 @@ package it.polimi.ingsw.client;
 
 import it.polimi.ingsw.server.model.ItemCard;
 import it.polimi.ingsw.server.model.Position;
-
 import java.util.ArrayList;
 import java.util.Collections;
 
+import static it.polimi.ingsw.utils.Utils.*;
+
 public class InputController {
-    private static final int DIM_BOARD = 9;
-    private static final int BOOKSHELF_LENGTH = 5;
-    private static final int BOOKSHELF_HEIGHT = 6;
     private final ClientController clientController;
     ArrayList<Integer> coords = new ArrayList<>();
     int coord;

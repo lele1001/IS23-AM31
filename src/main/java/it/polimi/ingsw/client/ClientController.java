@@ -23,11 +23,12 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import static it.polimi.ingsw.server.controller.TurnPhase.*;
+import static it.polimi.ingsw.server.model.Position.getColumn;
+import static it.polimi.ingsw.server.model.Position.getRow;
+import static it.polimi.ingsw.utils.Utils.*;
 
 public class ClientController {
-    private static final int DIM_BOARD = 9;
-    private static final int BOOKSHELF_LENGTH = 5;
-    private static final int BOOKSHELF_HEIGHT = 6;
+
     private String myNickname, myPersGoalNumber;
     private ItemCard[][] board = new ItemCard[DIM_BOARD][DIM_BOARD];
     private final Map<String, ItemCard[][]> playersBookshelf = new HashMap<>();
@@ -72,7 +73,7 @@ public class ClientController {
 
     public void setSelectedTiles(ArrayList<Integer> coords) {
         for (Integer i : coords) {
-            selectedTiles.put(i, board[Position.getRow(i)][Position.getColumn(i)]);
+            selectedTiles.put(i, board[getRow(i)][Position.getColumn(i)]);
         }
     }
 
@@ -290,6 +291,11 @@ public class ClientController {
         ArrayList<Integer> integerSelected = new ArrayList<>(selectedTiles.keySet());
         connectionClient.selectCard(myNickname, integerSelected);
     }
+    /*
+    public void selectCard(ArrayList<Integer> integerSelected) throws Exception {
+        connectionClient.selectCard(myNickname, integerSelected);
+    }
+     */
 
     /**
      * Method called from the client that pass to the server the Tiles inserted by the client and in which column he wants to put them
@@ -471,5 +477,21 @@ public class ClientController {
 
     public String getPersGoalValue() {
         return myPersGoalNumber;
+    }
+    public void onBookshelfRenewed(Map<Integer, ItemCard> tilesToAdd,String player) {
+
+        for(Integer position:tilesToAdd.keySet()){
+            playersBookshelf.get(player)[getRow(position)][getColumn(position)]=tilesToAdd.get(position);
+        }
+            view.changeBookshelf(tilesToAdd, player);
+    }
+    public void onBoardRenewed(Map<Integer, ItemCard> tilesToRemove) {
+        if(isMyTurn()){
+            selectedTiles.putAll(tilesToRemove);
+        }
+        for(Integer position:tilesToRemove.keySet()){
+            board[getRow(position)][getColumn(position)]=null;
+        }
+        view.changeBoard(tilesToRemove);
     }
 }

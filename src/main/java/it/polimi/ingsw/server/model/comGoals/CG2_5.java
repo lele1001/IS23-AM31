@@ -5,6 +5,9 @@ import it.polimi.ingsw.server.model.HouseItem;
 
 import java.util.ArrayList;
 
+import static it.polimi.ingsw.utils.Utils.BOOKSHELF_HEIGHT;
+import static it.polimi.ingsw.utils.Utils.BOOKSHELF_LENGTH;
+
 /**
  * CG2: Two columns each formed by 6 different types of tiles.
  * One column can show the same or a different combination of the other column.
@@ -49,10 +52,10 @@ public class CG2_5 extends ComGoal {
         HouseItem myItem;
         ArrayList<HouseItem> items = new ArrayList<>();
 
-        for (c = 0; c < BookshelfWidth; c++) {
+        for (c = 0; c < BOOKSHELF_LENGTH; c++) {
             items.clear();
             if (l.get(0, c) != null) {
-                for (r = 0; r < BookshelfHeight; r++) {
+                for (r = 0; r < BOOKSHELF_HEIGHT; r++) {
                     if (l.get(r, c) != null) {
                         myItem = l.get(r, c).getMyItem();
 

@@ -6,8 +6,10 @@ import it.polimi.ingsw.server.gameExceptions.NoRightItemCardSelection;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import static it.polimi.ingsw.utils.Utils.DIM_BOARD;
+
 public class Board {
-    private static final int DIM_BOARD = 9;
+
     ItemCard[][] board = new ItemCard[DIM_BOARD][DIM_BOARD];
     private final ItemCard[][] oldBoard = new ItemCard[DIM_BOARD][DIM_BOARD];
     ArrayList<ItemCard> cardBag = new ArrayList<>();

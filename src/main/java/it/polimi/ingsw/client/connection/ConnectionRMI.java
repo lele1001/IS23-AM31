@@ -9,10 +9,7 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 
 public class ConnectionRMI extends ConnectionClient implements RMIClientConnection {
     private RMI server;
@@ -320,5 +317,15 @@ public class ConnectionRMI extends ConnectionClient implements RMIClientConnecti
     @Override
     public void onSavedGame(List<String> savedGames) throws RemoteException {
         getController().onSavedGame(savedGames);
+    }
+
+    @Override
+    public void onBookshelfRenewed(Map<Integer, ItemCard> tilesToAdd,String player) {
+        getController().onBookshelfRenewed(tilesToAdd,player);
+    }
+
+    @Override
+    public void onBoardRenewed(Map<Integer, ItemCard> tilesToRemove) {
+        getController().onBoardRenewed(tilesToRemove);
     }
 }

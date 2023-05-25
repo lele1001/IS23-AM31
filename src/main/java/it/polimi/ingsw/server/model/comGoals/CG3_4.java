@@ -3,6 +3,9 @@ package it.polimi.ingsw.server.model.comGoals;
 import it.polimi.ingsw.server.model.Bookshelf;
 import it.polimi.ingsw.server.model.HouseItem;
 
+import static it.polimi.ingsw.utils.Utils.BOOKSHELF_HEIGHT;
+import static it.polimi.ingsw.utils.Utils.BOOKSHELF_LENGTH;
+
 /**
  * CG3: Four groups each containing at least 4 tiles of the same type (not necessarily in the depicted shape).
  * The tiles of one group can be different from those of another group.
@@ -28,14 +31,14 @@ public class CG3_4 extends ComGoal {
         int toReturn = 0;
         boolean[][] matrix = new boolean[6][5];
 
-        for (int i = 0; i < BookshelfHeight; i++) {
-            for (int j = 0; j < BookshelfWidth; j++) {
+        for (int i = 0; i < BOOKSHELF_HEIGHT; i++) {
+            for (int j = 0; j < BOOKSHELF_LENGTH; j++) {
                 matrix[i][j] = false;
             }
         }
 
-        for (int i = 0; i < BookshelfHeight; i++) {
-            for (int j = 0; j < BookshelfWidth; j++) {
+        for (int i = 0; i < BOOKSHELF_HEIGHT; i++) {
+            for (int j = 0; j < BOOKSHELF_LENGTH; j++) {
                 if (!matrix[i][j] && (l.get(i, j) != null)) {
                     if (find(matrix, i, j, l) >= (2 * multiplier)) {
                         groupsFound++;

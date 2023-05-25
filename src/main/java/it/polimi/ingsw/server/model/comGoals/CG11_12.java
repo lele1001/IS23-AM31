@@ -3,6 +3,9 @@ package it.polimi.ingsw.server.model.comGoals;
 import it.polimi.ingsw.server.model.Bookshelf;
 import it.polimi.ingsw.server.model.HouseItem;
 
+import static it.polimi.ingsw.utils.Utils.BOOKSHELF_HEIGHT;
+import static it.polimi.ingsw.utils.Utils.BOOKSHELF_LENGTH;
+
 /**
  * CG11: Five tiles of the same item forming a diagonal.
  * CG12: Five columns of increasing or decreasing height.
@@ -61,7 +64,7 @@ public class CG11_12 extends ComGoal {
         if ((direction == 0) && (l.get(offset, 0) != null)) {
             myItem = l.get(offset, 0).getMyItem();
 
-            for (i = 0; i < BookshelfHeight - 1; i++) {
+            for (i = 0; i < BOOKSHELF_HEIGHT - 1; i++) {
                 if (l.get(i + offset, i) != null) {
                     if (color && l.get(i + offset, i).getMyItem().equals(myItem)) {
                         itemCount++;
@@ -73,16 +76,16 @@ public class CG11_12 extends ComGoal {
                     }
                 }
             }
-        } else if ((direction == 1) && (l.get(BookshelfWidth - offset, 0) != null)) {
-            myItem = l.get(BookshelfWidth - offset, 0).getMyItem();
+        } else if ((direction == 1) && (l.get(BOOKSHELF_LENGTH - offset, 0) != null)) {
+            myItem = l.get(BOOKSHELF_LENGTH - offset, 0).getMyItem();
 
-            for (i = 0; i < BookshelfHeight - 1; i++) {
-                if (l.get(5 - i - offset, i) != null) {
-                    if (color && l.get(BookshelfWidth - i - offset, i).getMyItem().equals(myItem)) {
+            for (i = 0; i < BOOKSHELF_HEIGHT - 1; i++) {
+                if (l.get(BOOKSHELF_LENGTH - i - offset, i) != null) {
+                    if (color && l.get(BOOKSHELF_LENGTH - i - offset, i).getMyItem().equals(myItem)) {
                         itemCount++;
                     } else if (!color) {
-                        if ((BookshelfWidth - i - offset == 0)) itemCount++;
-                        else if (l.get(BookshelfWidth - i - offset - 1, i) == null) {
+                        if ((BOOKSHELF_LENGTH - i - offset == 0)) itemCount++;
+                        else if (l.get(BOOKSHELF_LENGTH - i - offset - 1, i) == null) {
                             itemCount++;
                         }
                     }

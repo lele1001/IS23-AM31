@@ -12,6 +12,8 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.*;
 
+import static it.polimi.ingsw.utils.Utils.*;
+
 public class GameController implements PropertyChangeListener {
     private final ConnectionControl connectionControl;
     private final ArrayList<String> playersList = new ArrayList<>();
@@ -40,7 +42,7 @@ public class GameController implements PropertyChangeListener {
     public void createGame(ArrayList<String> playersList, String gameFilePath) {
         this.gameFilePath = gameFilePath;
 
-        if (playersList.size() < 2 || playersList.size() > 4) {
+        if (playersList.size() < minNumberOfPlayers || playersList.size() > maxNumberOfPlayers) {
             System.out.println("Error: number of players not correct.");
             return;
         }
@@ -96,7 +98,7 @@ public class GameController implements PropertyChangeListener {
                     public void run() {
                         winner = true;
                     }
-                }, 60000);
+                }, timeOfReturning);
 
                 while (!winner) {
                     if (playersList.stream().filter(connectionControl::isOnline).count() >= 2) {
@@ -104,7 +106,7 @@ public class GameController implements PropertyChangeListener {
                     }
 
                     try {
-                        Thread.sleep(500);
+                        Thread.sleep(timeOfSleep);
                     } catch (InterruptedException e) {
                         System.out.println("Sleep problem.");
                         break;
@@ -115,12 +117,12 @@ public class GameController implements PropertyChangeListener {
 
                 if (winner) {
                     // Took too long! The winner is the remaining player (if it is still online!)
-                    System.out.println("Took too long for returning... game is ending.");
-                    connectionControl.sendErrorToEveryone("Took too long for returning... game is ending.");
+                    System.out.println(endForTimeFinished);
+                    connectionControl.sendErrorToEveryone(endForTimeFinished);
                     List<String> remained = playersList.stream().filter(connectionControl::isOnline).toList();
 
                     if (remained.size() == 1) {
-                        System.out.println("The winner of the game is " + remained.get(0));
+                        System.out.println(oneWinnerEndPhrase + remained.get(0));
                         connectionControl.sendWinner(remained);
                     }
 
@@ -157,9 +159,9 @@ public class GameController implements PropertyChangeListener {
         ArrayList<String> gameWinners = gameModel.calcFinalScore();
 
         if (gameWinners.size() == 1) {
-            System.out.println("The winner of the game is " + gameWinners.get(0));
+            System.out.println(oneWinnerEndPhrase + gameWinners.get(0));
         } else {
-            System.out.println("Parity: winners are " + gameWinners);
+            System.out.println(moreWinnerEndPhrase + gameWinners);
         }
 
         connectionControl.sendWinner(gameWinners);
@@ -187,7 +189,7 @@ public class GameController implements PropertyChangeListener {
                 public void run() {
                     timeout = true;
                 }
-            }, 180000);
+            }, timeOfTurn);
 
             while (!timeout) {
                 if (!connectionControl.isOnline(currPlayer) || turnPhase == TurnPhase.ENDTURN) {
@@ -195,7 +197,7 @@ public class GameController implements PropertyChangeListener {
                 }
 
                 try {
-                    Thread.sleep(500);
+                    Thread.sleep(timeOfSleep);
                 } catch (InterruptedException e) {
                     System.out.println("Sleep problem.");
                     break;
@@ -229,22 +231,22 @@ public class GameController implements PropertyChangeListener {
      */
     public void insertCard(String nickname, ArrayList<ItemCard> cards, int column) {
         if (!(nickname.equals(currPlayer)) || (turnPhase != TurnPhase.INSERTCARDS)) {
-            connectionControl.SendError("NOT YOUR TURN", nickname);
+            connectionControl.SendError(notYourTurnResponse, nickname);
             return;
         }
 
-        if (cards.size() > 3 || cards.isEmpty()) {
-            connectionControl.SendError("NUMBER NOT VALID", nickname);
+        if (cards.size() > maxNumberOfSelectedCards || cards.isEmpty()) {
+            connectionControl.SendError(notValidNumberResponse, nickname);
             return;
         }
 
         try {
             gameModel.InsertCard(nickname, cards, column);
         } catch (NoBookshelfSpaceException e) {
-            connectionControl.SendError("NO BOOKSHELF SPACE", nickname);
+            connectionControl.SendError(noBookshelfSpaceResponse, nickname);
             connectionControl.askInsert(nickname);
         } catch (NotSameSelectedException e) {
-            connectionControl.SendError("CARDS YOU WANT TO INSERT ARE NOT THE SAME YOU SELECTED", nickname);
+            connectionControl.SendError(notSameCardsResponse, nickname);
             connectionControl.askInsert(nickname);
         }
     }
@@ -257,14 +259,14 @@ public class GameController implements PropertyChangeListener {
      */
     public void selectCard(String nickname, ArrayList<Integer> positions) {
         if (!(nickname.equals(currPlayer)) || (turnPhase != TurnPhase.SELECTCARDS)) {
-            connectionControl.SendError("NOT YOUR TURN", nickname);
+            connectionControl.SendError(notYourTurnResponse, nickname);
             return;
         }
 
         try {
             gameModel.selectCard(positions);
         } catch (NoRightItemCardSelection e) {
-            connectionControl.SendError("NO RIGHT BOARD SELECTION", nickname);
+            connectionControl.SendError(noRightBoardSelectionResponse, nickname);
             connectionControl.askSelect(nickname);
         }
     }

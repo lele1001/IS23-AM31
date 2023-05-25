@@ -5,6 +5,9 @@ import it.polimi.ingsw.server.model.HouseItem;
 
 import java.util.ArrayList;
 
+import static it.polimi.ingsw.utils.Utils.BOOKSHELF_HEIGHT;
+import static it.polimi.ingsw.utils.Utils.BOOKSHELF_LENGTH;
+
 /**
  * Two separate groups each containing four tiles of the same type in a 2×2 square.
  * The tiles of one square can be different from those of the other square.
@@ -20,11 +23,11 @@ public class CG1 extends ComGoal {
         long groupsFound;
         int toReturn = 0;
         HouseItem myItem, it1, it2, it3, it4;
-        int[][] fakeLib = new int[BookshelfHeight][BookshelfWidth];
+        int[][] fakeLib = new int[BOOKSHELF_HEIGHT][BOOKSHELF_LENGTH];
         ArrayList<HouseItem> items = new ArrayList<>();
 
-        for (c = 0; c < BookshelfWidth - 1; c++) {
-            for (r = 0; r < BookshelfHeight - 1; r++) {
+        for (c = 0; c < BOOKSHELF_LENGTH - 1; c++) {
+            for (r = 0; r < BOOKSHELF_HEIGHT - 1; r++) {
                 if ((l.get(r, c) != null) && (fakeLib[r][c] != 1)) {
                     myItem = l.get(r, c).getMyItem();
 
@@ -35,7 +38,7 @@ public class CG1 extends ComGoal {
                             fakeLib[r + 1][c] = 1;
                             fakeLib[r + 1][c + 1] = 1;
 
-                            if ((r < BookshelfHeight - 2) && (c < BookshelfWidth - 2)) {
+                            if ((r < BOOKSHELF_HEIGHT - 2) && (c < BOOKSHELF_LENGTH - 2)) {
                                 it1 = l.get(r + 2, c).getMyItem();
                                 it2 = l.get(r + 2, c + 1).getMyItem();
 

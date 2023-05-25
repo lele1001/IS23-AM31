@@ -5,6 +5,9 @@ import it.polimi.ingsw.server.model.HouseItem;
 
 import java.util.ArrayList;
 
+import static it.polimi.ingsw.utils.Utils.BOOKSHELF_HEIGHT;
+import static it.polimi.ingsw.utils.Utils.BOOKSHELF_LENGTH;
+
 /**
  * CG6: Two lines each formed by 5 different types of tiles.
  * One line can show the same or a different combination of the other line.
@@ -50,7 +53,7 @@ public class CG6_7 extends ComGoal {
         HouseItem myItem;
         ArrayList<HouseItem> items = new ArrayList<>();
 
-        for (r = 0; r < BookshelfHeight; r++) {
+        for (r = 0; r < BOOKSHELF_HEIGHT; r++) {
             nullCell = false;
 
             if (!items.isEmpty()) {
@@ -61,7 +64,7 @@ public class CG6_7 extends ComGoal {
                 }
             }
 
-            for (c = 0; c < BookshelfWidth; c++) {
+            for (c = 0; c < BOOKSHELF_LENGTH; c++) {
                 if (l.get(r, c) != null) {
                     myItem = l.get(r, c).getMyItem();
 

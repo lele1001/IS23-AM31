@@ -5,8 +5,6 @@ import it.polimi.ingsw.server.model.Bookshelf;
 import java.util.ArrayList;
 
 public abstract class ComGoal {
-    final static int BookshelfHeight = 6;
-    final static int BookshelfWidth = 5;
     final int CGID;
     ArrayList<Integer> score = new ArrayList<>();
 

@@ -6,6 +6,7 @@ import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public interface RMIClientConnection extends Remote {
     /**
@@ -143,4 +144,6 @@ public interface RMIClientConnection extends Remote {
     void onBookshelfCompleted() throws RemoteException;
 
     void onSavedGame(List<String> savedGames) throws RemoteException;
+    void onBookshelfRenewed(Map<Integer,ItemCard> tilesToAdd, String player)throws RemoteException;
+    void onBoardRenewed(Map<Integer,ItemCard> tilesToRemove)throws RemoteException;
 }

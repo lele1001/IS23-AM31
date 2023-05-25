@@ -14,10 +14,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
+import static it.polimi.ingsw.utils.Utils.*;
+
 public class CLI implements View {
-    private static final int DIM_BOARD = 9;
-    private static final int BOOKSHELF_HEIGHT = 6;
-    private static final int BOOKSHELF_LENGTH = 5;
+
     private static boolean stopListening;
     Scanner in = new Scanner(System.in);
     InputController checkInput;
@@ -178,8 +178,6 @@ public class CLI implements View {
         String choice;
         String[] splitString;
 
-        printLobby();
-
         while (!stopListening) {
             if (in.hasNextLine()) {
                 choice = in.nextLine();
@@ -280,12 +278,18 @@ public class CLI implements View {
 
         if (coords != null) {
             clientController.setSelectedTiles(coords);
-
             try {
                 clientController.selectCard();
             } catch (Exception e) {
                 System.out.println("Impossible to connect to the server");
             }
+            /*
+            try {
+                clientController.selectCard(coords);
+            } catch (Exception e) {
+                System.out.println("Impossible to connect to the server");
+            }
+             */
         }
     }
 
@@ -688,5 +692,15 @@ public class CLI implements View {
             System.out.println("Waiting for other players to connect...");
             waitForGameMenu();
         }
+    }
+
+    @Override
+    public void changeBoard(Map<Integer, ItemCard> tilesToRemove) {
+        printBoard(clientController.getBoard());
+    }
+
+    @Override
+    public void changeBookshelf(Map<Integer, ItemCard> tilesToAdd, String player) {
+        printBookshelf(clientController.getPlayersBookshelves().get(player), player);
     }
 }

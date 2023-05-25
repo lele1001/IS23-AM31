@@ -3,6 +3,9 @@ package it.polimi.ingsw.server.model.comGoals;
 import it.polimi.ingsw.server.model.Bookshelf;
 import it.polimi.ingsw.server.model.HouseItem;
 
+import static it.polimi.ingsw.utils.Utils.BOOKSHELF_HEIGHT;
+import static it.polimi.ingsw.utils.Utils.BOOKSHELF_LENGTH;
+
 /**
  * Five tiles of the same type forming an X
  */
@@ -19,9 +22,9 @@ public class CG10 extends ComGoal {
         boolean found = false;
         HouseItem myItem, it1, it2, it3;
 
-        while ((r < BookshelfHeight - 2) && !found) {
+        while ((r < BOOKSHELF_HEIGHT - 2) && !found) {
             c = 0;
-            while ((c < BookshelfWidth - 2) && !found) {
+            while ((c < BOOKSHELF_LENGTH - 2) && !found) {
                 if (l.get(r, c) != null) {
                     myItem = l.get(r, c).getMyItem();
 

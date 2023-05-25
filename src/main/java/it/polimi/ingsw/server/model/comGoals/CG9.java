@@ -5,6 +5,9 @@ import it.polimi.ingsw.server.model.HouseItem;
 
 import java.util.ArrayList;
 
+import static it.polimi.ingsw.utils.Utils.BOOKSHELF_HEIGHT;
+import static it.polimi.ingsw.utils.Utils.BOOKSHELF_LENGTH;
+
 /**
  * Eight tiles of the same type. There is no restriction about the position of these tiles.
  */
@@ -18,11 +21,11 @@ public class CG9 extends ComGoal {
         int r, c, i;
         int toReturn = 0;
         HouseItem myItem;
-        int[] itemsCount = new int[BookshelfHeight];
+        int[] itemsCount = new int[BOOKSHELF_HEIGHT];
         ArrayList<HouseItem> items = new ArrayList<>();
 
-        for (r = BookshelfHeight - 1; r >= 0; r--) {
-            for (c = 0; c < BookshelfWidth; c++) {
+        for (r = BOOKSHELF_HEIGHT - 1; r >= 0; r--) {
+            for (c = 0; c < BOOKSHELF_LENGTH; c++) {
                 if (l.get(r, c) != null) {
                     myItem = l.get(r, c).getMyItem();
 

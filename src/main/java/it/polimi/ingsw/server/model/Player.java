@@ -74,7 +74,7 @@ public class Player {
      * @return true if the bookshelf is full (the game has to run the last turn)
      */
     public boolean checkEnd() {
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < BOOKSHELF_LENGTH; i++) {
             if (myBookshelf.checkSpace(i, 1)) {
                 return false;
             }

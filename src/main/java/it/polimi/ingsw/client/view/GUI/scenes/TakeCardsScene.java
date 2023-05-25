@@ -209,5 +209,15 @@ public class TakeCardsScene extends GUIScene {
             e.printStackTrace();
             printError("ERROR: server error");
         }
+        /*
+
+        try {
+            clientController.selectCard(selectedTiles);
+            selectTiles.setDisable(true);
+        } catch (Exception e) {
+            e.printStackTrace();
+            printError("ERROR: server error");
+        }
+         */
     }
 }

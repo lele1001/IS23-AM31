@@ -112,4 +112,8 @@ public interface View {
     void printWinners(List<String> winners);
 
     void printLobby();
+
+    void changeBoard(Map<Integer, ItemCard> tilesToRemove);
+
+    void changeBookshelf(Map<Integer, ItemCard> tilesToAdd,String player);
 }

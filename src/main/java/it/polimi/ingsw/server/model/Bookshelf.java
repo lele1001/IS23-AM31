@@ -2,9 +2,12 @@ package it.polimi.ingsw.server.model;
 
 import java.util.List;
 
+import static it.polimi.ingsw.utils.Utils.BOOKSHELF_HEIGHT;
+import static it.polimi.ingsw.utils.Utils.BOOKSHELF_LENGTH;
+
 public class Bookshelf {
-    private static final int BOOKSHELF_HEIGHT = 6;
-    private static final int BOOKSHELF_LENGTH = 5;
+
+
     private final ItemCard[][] bookshelf = new ItemCard[BOOKSHELF_HEIGHT][BOOKSHELF_LENGTH];
 
     /**
