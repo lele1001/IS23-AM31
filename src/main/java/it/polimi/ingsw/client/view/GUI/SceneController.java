@@ -227,4 +227,10 @@ public class SceneController {
             gs.printPoints(myPoint);
         }
     }
+
+    public void setPlayers(int playersNumber) {
+        for (GUIScene gs : scenesMap.values()) {
+            gs.setPlayers(playersNumber);
+        }
+    }
 }

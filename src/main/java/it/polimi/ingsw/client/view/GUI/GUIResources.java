@@ -19,8 +19,8 @@ public final class GUIResources {
     public final static String errorFXML = "FXML/error.fxml";
 
     //images
-    public final Image background = new Image(Objects.requireNonNull(GUIResources.class.getResource("/image/misc/basepagine2.png")).toString());
-
+    public final Image background = new Image(Objects.requireNonNull(GUIResources.class.getResource("/images/misc/basePagina2.png")).toString());
+    public static final Image bookshelfImage = new Image(Objects.requireNonNull(GUIResources.class.getResource("/images/boards/bookshelf.png")).toString());
     // Utility images
     public final static Image icon = new Image(Objects.requireNonNull(GUIResources.class.getResource("/images/publisherMaterial/Icon.png")).toString());
     public final static Image publisher = new Image(Objects.requireNonNull(GUIResources.class.getResource("/images/publisherMaterial/Publisher.png")).toString());

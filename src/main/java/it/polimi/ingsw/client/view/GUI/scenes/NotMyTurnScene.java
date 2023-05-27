@@ -3,52 +3,39 @@ package it.polimi.ingsw.client.view.GUI.scenes;
 import it.polimi.ingsw.client.ClientController;
 import it.polimi.ingsw.client.view.GUI.GUIResources;
 import it.polimi.ingsw.server.model.ItemCard;
+import it.polimi.ingsw.utils.Utils;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 public class NotMyTurnScene extends GUIScene {
     private static final int DIM_BOARD = 9;
-    private static final int BOOKSHELF_HEIGHT = 6;
-    private static final int BOOKSHELF_LENGTH = 5;
+    @FXML
+    TabPane bookshelvesPane;
     @FXML
     ScrollPane chatPane;
     @FXML
     AnchorPane notYourPane;
     @FXML
-    Tab player1tab, player2tab, player3tab, player4tab;
-    @FXML
-    GridPane bookshelf1, bookshelf2, bookshelf3, bookshelf4, boardPane, comGoals, persGoal, score_0, score_1;
+    GridPane boardPane, comGoals, persGoal, score_0, score_1;
     @FXML
     Label yourPoints, userTurn;
     private ClientController clientController;
+    private ArrayList<String> players;
+    private GridPane bookshelf1, bookshelf2, bookshelf3, bookshelf4;
 
     @Override
     public void initialize(ClientController clientController) {
         this.clientController = clientController;
         yourPoints.setText("You have 0 points");
-        int i = 0;
-
-        for (String s : clientController.getPlayersBookshelves().keySet()) {
-            if (i == 0) {
-                player1tab.setText(s);
-            } else if (i == 1) {
-                player2tab.setText(s);
-            } else if (i == 2) {
-                player3tab.setText(s);
-                //ricordarsi di rendere o meno visibile in base a num giocatori
-            } else if (i == 3) {
-                player4tab.setText(s);
-            }
-
-            i++;
-        }
     }
 
     @Override
@@ -91,9 +78,12 @@ public class NotMyTurnScene extends GUIScene {
 
     @Override
     public void updateBookshelf(String nickname, ItemCard[][] bookshelf) {
-        if (player1tab.getText().equals(nickname)) {
-            for (int i = 0; i < BOOKSHELF_HEIGHT; i++) {
-                for (int j = 0; j < BOOKSHELF_LENGTH; j++) {
+        int index = players.indexOf(nickname);
+        Tab tabToModify = bookshelvesPane.getTabs().get(index);
+
+        if (tabToModify.getText().equals(nickname)) {
+            for (int i = 0; i < Utils.BOOKSHELF_HEIGHT; i++) {
+                for (int j = 0; j < Utils.BOOKSHELF_LENGTH; j++) {
                     if (bookshelf[i][j] != null) {
                         String itemName = bookshelf[i][j].getMyItem().toString().toLowerCase();
                         String itemNumber = bookshelf[i][j].getMyNum().toString();
@@ -104,62 +94,16 @@ public class NotMyTurnScene extends GUIScene {
                         tileImage.setFitHeight(25);
                         tileImage.setFitWidth(25);
 
-                        bookshelf1.add(tileImage, j, i);
+                        switch (index) {
+                            case 0: bookshelf1.add(tileImage, j, i);
+                            case 1: bookshelf2.add(tileImage, j, i);
+                            case 2: bookshelf3.add(tileImage, j, i);
+                            case 3: bookshelf4.add(tileImage, j, i);
+                        }
                     }
                 }
             }
 
-        } else if (player2tab.getText().equals(nickname)) {
-            for (int i = 0; i < BOOKSHELF_HEIGHT; i++) {
-                for (int j = 0; j < BOOKSHELF_LENGTH; j++) {
-                    if (bookshelf[i][j] != null) {
-                        String itemName = bookshelf[i][j].getMyItem().toString().toLowerCase();
-                        String itemNumber = bookshelf[i][j].getMyNum().toString();
-                        String myItem = itemName + itemNumber;
-
-                        ImageView tileImage = new ImageView(GUIResources.getItem(myItem));
-                        tileImage.setPreserveRatio(true);
-                        tileImage.setFitHeight(25);
-                        tileImage.setFitWidth(25);
-
-                        bookshelf2.add(tileImage, j, i);
-                    }
-                }
-            }
-        } else if (player3tab.getText().equals(nickname)) {
-            for (int i = 0; i < BOOKSHELF_HEIGHT; i++) {
-                for (int j = 0; j < BOOKSHELF_LENGTH; j++) {
-                    if (bookshelf[i][j] != null) {
-                        String itemName = bookshelf[i][j].getMyItem().toString().toLowerCase();
-                        String itemNumber = bookshelf[i][j].getMyNum().toString();
-                        String myItem = itemName + itemNumber;
-
-                        ImageView tileImage = new ImageView(GUIResources.getItem(myItem));
-                        tileImage.setPreserveRatio(true);
-                        tileImage.setFitHeight(25);
-                        tileImage.setFitWidth(25);
-
-                        bookshelf3.add(tileImage, j, i);
-                    }
-                }
-            }
-        } else if (player4tab.getText().equals(nickname)) {
-            for (int i = 0; i < BOOKSHELF_HEIGHT; i++) {
-                for (int j = 0; j < BOOKSHELF_LENGTH; j++) {
-                    if (bookshelf[i][j] != null) {
-                        String itemName = bookshelf[i][j].getMyItem().toString().toLowerCase();
-                        String itemNumber = bookshelf[i][j].getMyNum().toString();
-                        String myItem = itemName + itemNumber;
-
-                        ImageView tileImage = new ImageView(GUIResources.getItem(myItem));
-                        tileImage.setPreserveRatio(true);
-                        tileImage.setFitHeight(25);
-                        tileImage.setFitWidth(25);
-
-                        bookshelf4.add(tileImage, j, i);
-                    }
-                }
-            }
         }
     }
 
@@ -208,5 +152,53 @@ public class NotMyTurnScene extends GUIScene {
     @Override
     public void printPoints(int myPoint) {
         yourPoints.setText("You have " + myPoint + " points");
+    }
+
+    @Override
+    public void setPlayers(int playersNumber) {
+        for (int i = 0; i < playersNumber; i++) {
+            players = new ArrayList<>(clientController.getPlayersBookshelves().keySet());
+            String tabId = "player" + i + "tab";
+
+            GridPane bookshelfGrid = new GridPane();
+            bookshelfGrid.setId("bookshelf" + i);
+            bookshelfGrid.setFocusTraversable(true);
+            bookshelfGrid.setHgap(8.0);
+            bookshelfGrid.setVgap(4.0);
+            bookshelfGrid.setLayoutX(54.0);
+            bookshelfGrid.setLayoutY(41.0);
+            bookshelfGrid.setPrefSize(172.0, 181.0);
+            bookshelfGrid.setVgap(4.0);
+            setBookshelf(bookshelfGrid, i);
+
+            ImageView bookshelfImage = new ImageView(GUIResources.bookshelfImage);
+            bookshelfImage.setFitHeight(232.0);
+            bookshelfImage.setFitWidth(228.0);
+            bookshelfImage.setLayoutX(25.0);
+            bookshelfImage.setLayoutY(25.0);
+            bookshelfImage.setPickOnBounds(true);
+            bookshelfImage.setPreserveRatio(true);
+
+            AnchorPane bookshelfPane = new AnchorPane();
+            bookshelfPane.setId("bookshelf" + i + "Pane");
+            bookshelfPane.getChildren().add(bookshelfImage);
+            bookshelfPane.getChildren().add(bookshelfGrid);
+
+            Tab playerTab = new Tab(players.get(i), bookshelfPane);
+            playerTab.setId(tabId);
+            bookshelvesPane.getTabs().add(playerTab);
+        }
+    }
+
+    private void setBookshelf(GridPane bookshelf, int index) {
+        if (index == 0) {
+            bookshelf1 = bookshelf;
+        } else if (index == 1) {
+            bookshelf2 = bookshelf;
+        } else if (index == 3) {
+            bookshelf3 = bookshelf;
+        } else if (index == 4) {
+            bookshelf4 = bookshelf;
+        }
     }
 }

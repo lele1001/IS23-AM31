@@ -36,4 +36,6 @@ public abstract class GUIScene {
     public abstract void persGoal(String newValue);
 
     public abstract void printPoints(int myPoint);
+
+    public abstract void setPlayers(int playersNumber);
 }

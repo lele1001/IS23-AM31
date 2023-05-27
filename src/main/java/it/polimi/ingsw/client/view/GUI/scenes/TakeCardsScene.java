@@ -127,6 +127,11 @@ public class TakeCardsScene extends GUIScene {
     }
 
     @Override
+    public void setPlayers(int playersNumber) {
+
+    }
+
+    @Override
     public void initialize(ClientController clientController) {
         this.clientController = clientController;
         yourPoints.setText("You have 0 points");

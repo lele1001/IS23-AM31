@@ -62,6 +62,11 @@ public class ErrorScene extends GUIScene {
     }
 
     @Override
+    public void setPlayers(int playersNumber) {
+
+    }
+
+    @Override
     public void updateCurrPlayer(String player) {
     }
 }
