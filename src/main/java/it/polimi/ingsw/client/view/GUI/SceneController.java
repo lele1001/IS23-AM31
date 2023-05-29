@@ -228,9 +228,15 @@ public class SceneController {
         }
     }
 
-    public void setPlayers(int playersNumber) {
+    public void setPlayers() {
         for (GUIScene gs : scenesMap.values()) {
-            gs.setPlayers(playersNumber);
+            gs.setPlayers();
+        }
+    }
+
+    public void receiveMessage(String sender, String message) {
+        for (GUIScene gs : scenesMap.values()) {
+            gs.receiveMessage(sender, message);
         }
     }
 }

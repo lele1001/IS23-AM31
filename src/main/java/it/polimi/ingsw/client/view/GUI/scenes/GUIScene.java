@@ -37,5 +37,7 @@ public abstract class GUIScene {
 
     public abstract void printPoints(int myPoint);
 
-    public abstract void setPlayers(int playersNumber);
+    public abstract void setPlayers();
+
+    public abstract void receiveMessage(String sender, String message);
 }

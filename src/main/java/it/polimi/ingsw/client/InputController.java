@@ -259,7 +259,7 @@ public class InputController {
             return 0;
         } else if (clientController.getPlayersBookshelves().containsKey(input[1])) {
             return 1;
-        } else if (input[1].equalsIgnoreCase("all")) {
+        } else if (input[1].equalsIgnoreCase("all") || input[1].equalsIgnoreCase("everybody")) {
             return 2;
         }
 

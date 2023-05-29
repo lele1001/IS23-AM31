@@ -7,9 +7,13 @@
 }
 
 #yourPoints, #userTurn {
-    -fx-font-size: 22;
+    -fx-font-size: 20;
 }
 
 #yourMessage, #chatPane {
     -fx-font-size: 16;
+}
+
+#errorArea {
+    -fx-text-fill: red;
 }

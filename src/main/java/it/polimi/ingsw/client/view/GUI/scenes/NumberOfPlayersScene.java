@@ -97,7 +97,11 @@ public class NumberOfPlayersScene extends GUIScene {
     }
 
     @Override
-    public void setPlayers(int playersNumber) {
+    public void setPlayers() {
+    }
+
+    @Override
+    public void receiveMessage(String sender, String message) {
 
     }
 

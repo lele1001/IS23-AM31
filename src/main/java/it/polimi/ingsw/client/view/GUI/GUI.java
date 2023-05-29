@@ -141,6 +141,7 @@ public class GUI implements View {
      */
     @Override
     public void chatToMe(String sender, String message) {
+        Platform.runLater(() -> sceneController.receiveMessage(sender, message));
     }
 
     /**
@@ -175,8 +176,7 @@ public class GUI implements View {
     @Override
     public void printStartGame() {
         if (clientController.isGameStarted()) {
-            int playersNumber = clientController.getPlayersBookshelves().size();
-            Platform.runLater(() -> sceneController.setPlayers(playersNumber));
+            Platform.runLater(sceneController::setPlayers);
         }
     }
 
