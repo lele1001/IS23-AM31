@@ -109,6 +109,8 @@ public class PutCardsScene extends GUIScene {
     @Override
     public void updateBookshelf(String nickname, ItemCard[][] bookshelf) {
         if (clientController.getMyNickname().equals(nickname)) {
+            bookshelfPane.getChildren().clear();
+
             for (int i = 0; i < BOOKSHELF_HEIGHT; i++) {
                 for (int j = 0; j < BOOKSHELF_LENGTH; j++) {
                     if (bookshelf[i][j] != null) {
@@ -270,13 +272,11 @@ public class PutCardsScene extends GUIScene {
                 String itemIdentifiers = splitString[splitString.length -1];
                 splitString = itemIdentifiers.split("(?=\\p{Upper})");
                 splitString[1] = splitString[1].split("\\.")[0];
-                System.out.println(Arrays.toString(splitString));
 
                 for (Integer i : clientController.getSelectedTiles().keySet()) {
                     ItemCard itemCard = clientController.getSelectedTiles().get(i);
 
                     if (itemCard.getMyItem().toString().equalsIgnoreCase(splitString[0]) && itemCard.getMyNum().toString().equalsIgnoreCase(splitString[1])) {
-                        System.out.println(i);
                         selectedTiles.add(i);
                     }
                 }

@@ -43,6 +43,7 @@ public class TakeCardsScene extends GUIScene {
     @Override
     public void updateBoard(ItemCard[][] board) {
         boardPane.getChildren().clear();
+        System.out.println("board");
 
         for (int i = 0; i < DIM_BOARD; i++) {
             for (int j = 0; j < DIM_BOARD; j++) {
@@ -65,6 +66,7 @@ public class TakeCardsScene extends GUIScene {
     @Override
     public void updateBookshelf(String nickname, ItemCard[][] bookshelf) {
         if (clientController.getMyNickname().equals(nickname)) {
+            bookshelfPane.getChildren().clear();
             for (int i = 0; i < BOOKSHELF_HEIGHT; i++) {
                 for (int j = 0; j < BOOKSHELF_LENGTH; j++) {
                     if (bookshelf[i][j] != null) {

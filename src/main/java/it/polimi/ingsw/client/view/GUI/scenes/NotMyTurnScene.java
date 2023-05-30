@@ -6,11 +6,14 @@ import it.polimi.ingsw.client.view.GUI.GUIResources;
 import it.polimi.ingsw.server.model.ItemCard;
 import it.polimi.ingsw.utils.Utils;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.RowConstraints;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -35,7 +38,6 @@ public class NotMyTurnScene extends GUIScene {
     MenuButton destinationMenu;
     private ClientController clientController;
     private ArrayList<String> players;
-    private GridPane bookshelf1, bookshelf2, bookshelf3, bookshelf4;
 
     @Override
     public void initialize(ClientController clientController) {
@@ -102,15 +104,9 @@ public class NotMyTurnScene extends GUIScene {
                         tileImage.setFitHeight(25);
                         tileImage.setFitWidth(25);
 
-                        if (nickname.equals(bookshelf1.getId())) {
-                            bookshelf1.add(tileImage, j, i);
-                        } else if (nickname.equals(bookshelf2.getId())) {
-                            bookshelf2.add(tileImage, j, i);
-                        } else if (nickname.equals(bookshelf3.getId())) {
-                            bookshelf3.add(tileImage, j, i);
-                        } else if (nickname.equals(bookshelf4.getId())) {
-                            bookshelf4.add(tileImage, j, i);
-                        }
+                        AnchorPane myAnchor = (AnchorPane) tabToModify.getContent();
+                        GridPane bookshelfToModify = (GridPane) myAnchor.getChildren().get(1);
+                        bookshelfToModify.add(tileImage, j, i);
                     }
                 }
             }
@@ -204,20 +200,17 @@ public class NotMyTurnScene extends GUIScene {
         bookshelfGrid.setLayoutX(54.0);
         bookshelfGrid.setLayoutY(41.0);
         bookshelfGrid.setPrefSize(172.0, 181.0);
-        bookshelfGrid.setVgap(4.0);
 
-        if (i == 0) {
-            bookshelf1 = bookshelfGrid;
-            bookshelf1.setId(bookshelfGrid.getId());
-        } else if (i == 1) {
-            bookshelf2 = bookshelfGrid;
-            bookshelf2.setId(bookshelfGrid.getId());
-        } else if (i == 3) {
-            bookshelf3 = bookshelfGrid;
-            bookshelf3.setId(bookshelfGrid.getId());
-        } else if (i == 4) {
-            bookshelf4 = bookshelfGrid;
-            bookshelf4.setId(bookshelfGrid.getId());
+        for (int c = 0; c < Utils.BOOKSHELF_LENGTH; c++) {
+            ColumnConstraints colConst = new ColumnConstraints();
+            colConst.setPrefWidth(40.0);
+            bookshelfGrid.getColumnConstraints().add(colConst);
+        }
+
+        for (int r = 0; r < Utils.BOOKSHELF_HEIGHT; r++) {
+            RowConstraints rowConst = new RowConstraints();
+            rowConst.setPrefHeight(40.0);
+            bookshelfGrid.getRowConstraints().add(rowConst);
         }
 
         ImageView bookshelfImage = new ImageView(GUIResources.bookshelfImage);
