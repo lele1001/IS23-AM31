@@ -195,6 +195,7 @@ public class TakeCardsScene extends GUIScene {
     private void remove(MouseEvent event) {
         if (errorArea.isVisible()) {
             errorArea.setVisible(false);
+            errorArea.setText("");
         }
 
         Node clickedNode = event.getPickResult().getIntersectedNode();

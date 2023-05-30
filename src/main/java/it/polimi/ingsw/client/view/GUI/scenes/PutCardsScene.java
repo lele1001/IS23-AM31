@@ -60,6 +60,8 @@ public class PutCardsScene extends GUIScene {
     public void printError(String error) {
         errorArea.setVisible(true);
         errorArea.setText(error);
+
+        revert();
     }
 
     @Override
@@ -68,11 +70,11 @@ public class PutCardsScene extends GUIScene {
         sendMessage.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> sendChat());
         undoSelection.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> revert());
         selectTiles.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> putTiles());
-
     }
 
     private void putTiles() {
         int i = 0;
+
         try {
             String column = ((RadioButton)columns.getSelectedToggle()).getId();
             i = Integer.parseInt(String.valueOf(column.charAt(column.length() - 1)));
@@ -82,7 +84,7 @@ public class PutCardsScene extends GUIScene {
 
         InputController inputController = new InputController(clientController);
         ArrayList<ItemCard> tilesToPut = inputController.checkPutGUI(selectedTiles);
-        System.out.println(selectedTiles);
+
         if (tilesToPut != null) {
             try {
                 clientController.insertCard(tilesToPut, i);
@@ -262,6 +264,11 @@ public class PutCardsScene extends GUIScene {
 
     private void remove(MouseEvent event) {
         Node clickedNode = event.getPickResult().getIntersectedNode();
+
+        if (errorArea.isVisible()) {
+            errorArea.setVisible(false);
+            errorArea.setText("");
+        }
 
         if (youSelectedThis.getChildren().contains(clickedNode)) {
             ImageView imageView = (ImageView) clickedNode;
