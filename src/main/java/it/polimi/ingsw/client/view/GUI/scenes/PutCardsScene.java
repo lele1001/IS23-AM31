@@ -4,6 +4,7 @@ import it.polimi.ingsw.client.ClientController;
 import it.polimi.ingsw.client.InputController;
 import it.polimi.ingsw.client.view.GUI.GUIResources;
 import it.polimi.ingsw.server.model.ItemCard;
+import it.polimi.ingsw.utils.Utils;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.*;
@@ -18,9 +19,6 @@ import java.util.List;
 import java.util.Map;
 
 public class PutCardsScene extends GUIScene {
-    private static final int BOOKSHELF_HEIGHT = 6;
-    private static final int BOOKSHELF_LENGTH = 5;
-
     @FXML
     TextField writtenMessage;
     @FXML
@@ -55,7 +53,6 @@ public class PutCardsScene extends GUIScene {
         col4.setToggleGroup(columns);
 
         selectedTiles = new ArrayList<>();
-
         bindEvents();
     }
 
@@ -112,8 +109,8 @@ public class PutCardsScene extends GUIScene {
         if (clientController.getMyNickname().equals(nickname)) {
             bookshelfPane.getChildren().clear();
 
-            for (int i = 0; i < BOOKSHELF_HEIGHT; i++) {
-                for (int j = 0; j < BOOKSHELF_LENGTH; j++) {
+            for (int i = 0; i < Utils.BOOKSHELF_HEIGHT; i++) {
+                for (int j = 0; j < Utils.BOOKSHELF_LENGTH; j++) {
                     if (bookshelf[i][j] != null) {
                         String itemName = bookshelf[i][j].getMyItem().toString().toLowerCase();
                         String itemNumber = bookshelf[i][j].getMyNum().toString();

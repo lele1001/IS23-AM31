@@ -42,6 +42,8 @@ public class LoginScene extends GUIScene {
         connectionRMI.setToggleGroup(connectionGroup);
         connectionSocket.setToggleGroup(connectionGroup);
         connectionRMI.setSelected(true);
+
+        bindEvents();
     }
 
     /**
@@ -165,16 +167,10 @@ public class LoginScene extends GUIScene {
 
     @Override
     public void receiveMessage(String sender, String message) {
-
     }
 
     @Override
     public void updateSavedGames(List<String> savedGames) {
-
-    }
-
-    public void chat(String destination, String message) {
-
     }
 
     @Override

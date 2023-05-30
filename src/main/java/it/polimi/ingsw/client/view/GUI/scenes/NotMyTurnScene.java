@@ -6,7 +6,6 @@ import it.polimi.ingsw.client.view.GUI.GUIResources;
 import it.polimi.ingsw.server.model.ItemCard;
 import it.polimi.ingsw.utils.Utils;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -20,7 +19,6 @@ import java.util.List;
 import java.util.Map;
 
 public class NotMyTurnScene extends GUIScene {
-    private static final int DIM_BOARD = 9;
     @FXML
     TabPane bookshelvesPane;
     @FXML
@@ -51,9 +49,7 @@ public class NotMyTurnScene extends GUIScene {
     public void printError(String error) {
     }
 
-    @Override
     public void bindEvents() {
-
         sendMessage.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> sendChat());
     }
 
@@ -69,8 +65,8 @@ public class NotMyTurnScene extends GUIScene {
     public void updateBoard(ItemCard[][] board) {
         boardPane.getChildren().clear();
 
-        for (int i = 0; i < DIM_BOARD; i++) {
-            for (int j = 0; j < DIM_BOARD; j++) {
+        for (int i = 0; i < Utils.DIM_BOARD; i++) {
+            for (int j = 0; j < Utils.DIM_BOARD; j++) {
                 if (board[i][j] != null) {
                     String itemName = board[i][j].getMyItem().toString().toLowerCase();
                     String itemNumber = board[i][j].getMyNum().toString();
@@ -112,7 +108,6 @@ public class NotMyTurnScene extends GUIScene {
                     }
                 }
             }
-
         }
     }
 

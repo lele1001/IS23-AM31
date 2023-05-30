@@ -28,16 +28,10 @@ public class NumberOfPlayersScene extends GUIScene {
     @FXML
     TextArea errorArea;
     private ClientController clientController;
-    public Parent root;
-
-    public void setRoot(Parent root) {
-        this.root = root;
-    }
 
     @Override
     public void initialize(ClientController clientController) {
         this.clientController = clientController;
-
         bindEvents();
     }
 
@@ -101,17 +95,14 @@ public class NumberOfPlayersScene extends GUIScene {
 
     @Override
     public void setPlayers() {
-
     }
 
     @Override
     public void receiveMessage(String sender, String message) {
-
     }
 
     @Override
     public void updateSavedGames(List<String> savedGames) {
-
     }
 
     @Override
