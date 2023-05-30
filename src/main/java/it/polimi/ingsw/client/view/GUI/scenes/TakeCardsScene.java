@@ -166,6 +166,33 @@ public class TakeCardsScene extends GUIScene {
     public void updateSavedGames(List<String> savedGames) {
     }
 
+    /**
+     * Updates the score of the CommonGoal
+     *
+     * @param comGoalDoneID is the ID of the CommonGoal
+     * @param newValue      is its available score
+     */
+    @Override
+    public void updateCommonGoal(int comGoalDoneID, int newValue) {
+        int n = 0;
+
+        for (Integer cgNum : clientController.getPlayerComGoal().keySet()) {
+            if (cgNum == comGoalDoneID) {
+                ImageView scoreImage = new ImageView(GUIResources.getScore("sc0" + newValue));
+                scoreImage.setFitHeight(60);
+                scoreImage.setFitWidth(60);
+
+                if (n == 0) {
+                    score_0.add(scoreImage, 0, 0);
+                } else {
+                    score_1.add(scoreImage, 0, 0);
+                }
+            }
+
+            n++;
+        }
+    }
+
     @Override
     public void initialize(ClientController clientController) {
         this.clientController = clientController;

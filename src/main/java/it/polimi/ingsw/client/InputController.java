@@ -2,6 +2,7 @@ package it.polimi.ingsw.client;
 
 import it.polimi.ingsw.server.model.ItemCard;
 import it.polimi.ingsw.server.model.Position;
+
 import java.util.ArrayList;
 import java.util.Collections;
 

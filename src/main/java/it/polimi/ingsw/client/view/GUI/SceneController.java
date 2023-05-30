@@ -23,15 +23,21 @@ public class SceneController {
         this.clientController = clientController;
         this.createScene(GUIResources.loginFXML, "loginScene");
         this.createScene(GUIResources.askSavedGamesFXML, "askSavedGamesScene");
-        this.createScene(GUIResources.errorFXML, "errorScene");
+        this.createScene(GUIResources.numberOfPlayerFXML, "numberOfPlayersScene");
         this.createScene(GUIResources.notMyTurnFXML, "notMyTurnScene");
         this.createScene(GUIResources.takeCardsFXML, "takeCardsScene");
+        this.createScene(GUIResources.putCardsFXML, "putCardsScene");
+        this.createScene(GUIResources.errorFXML, "errorScene");
         //this.createScene(GUIResources.endGameWinFXML, "endGameWinScene");
         //this.createScene(GUIResources.endGameLoseFXML, "endGameLoseScene");
-        this.createScene(GUIResources.putCardsFXML, "putCardsScene");
-        this.createScene(GUIResources.numberOfPlayerFXML, "numberOfPlayersScene");
     }
 
+    /**
+     * Creates a scene and saves it in the scenesMap
+     *
+     * @param fxml is the location of the FXML file of the scene
+     * @param name is the name of the scene
+     */
     public void createScene(String fxml, String name) {
         try {
             FXMLLoader loader = new FXMLLoader();
@@ -53,8 +59,7 @@ public class SceneController {
     }
 
     /**
-     * Asks the user to insert login details
-     * (using the current stage)
+     * Shows a login form to connect to the game
      */
     public void loadLogin() {
         this.activeStage = new Stage();
@@ -69,8 +74,37 @@ public class SceneController {
     }
 
     /**
-     * Shows a loading screen waiting for other players connection
+     * Shows the name(s) of the saved game(s)
+     *
+     * @param savedGames contains all the saved games in which the player was in
+     */
+    public void printNameGames(List<String> savedGames) {
+        for (GUIScene gs : scenesMap.values()) {
+            gs.updateSavedGames(savedGames);
+        }
+    }
+
+    /**
+     * Allows the user to join or not a saved game, and eventually to choose which one
+     */
+    public void loadSavedGames() {
+        this.currentController = this.scenesMap.get("askSavedGamesScene");
+        this.activeStage.setScene(currentController.getMyScene());
+        this.activeStage.setResizable(false);
+
+    }
+
+    /**
+     * Ask the user to insert the number of players of the game
      * (using the current stage)
+     */
+    public void loadNumberOfPlayer() {
+        this.currentController = this.scenesMap.get("numberOfPlayersScene");
+        this.activeStage.setScene(currentController.getMyScene());
+    }
+
+    /**
+     * Shows a loading screen while waiting for other players to connect
      */
     public void loadLobby() {
         Parent root;
@@ -93,37 +127,27 @@ public class SceneController {
     }
 
     /**
-     * Ask the user to insert the number of players of the game
-     * (using the current stage)
+     * Sets the scenes based on the number of players in the game
      */
-    public void loadNumberOfPlayer() {
-        this.currentController = this.scenesMap.get("numberOfPlayersScene");
-        this.activeStage.setScene(currentController.getMyScene());
+    public void setPlayers() {
+        for (GUIScene gs : scenesMap.values()) {
+            gs.setPlayers();
+        }
     }
 
     /**
-     * Loads the game board and allows the player to select cards
-     * (closing the current stage and showing a new stage)
+     * Updates the name of the current player in each scene that shows it
+     *
+     * @param player is the current player
      */
-    public void loadTake() {
-        this.currentController = this.scenesMap.get("takeCardsScene");
-        this.activeStage.setScene(currentController.getMyScene());
-        this.activeStage.setResizable(false);
+    public void updateCurrPlayer(String player) {
+        for (GUIScene gs : scenesMap.values()) {
+            gs.updateCurrPlayer(player);
+        }
     }
 
     /**
-     * Loads the player's bookshelf and allows him to put cards
-     * (closing the current stage and showing a new stage)
-     */
-    public void loadPut() {
-        this.currentController = this.scenesMap.get("putCardsScene");
-        this.activeStage.setScene(currentController.getMyScene());
-        this.activeStage.setResizable(false);
-    }
-
-    /**
-     * Loads the game board
-     * (closing the current stage and showing a new stage)
+     * Shows the Board and all the Bookshelves
      */
     public void notMyTurn() {
         this.currentController = this.scenesMap.get("notMyTurnScene");
@@ -132,8 +156,153 @@ public class SceneController {
     }
 
     /**
+     * Allows the player to select some ItemCards from the Board
+     */
+    public void loadTake() {
+        this.currentController = this.scenesMap.get("takeCardsScene");
+        this.activeStage.setScene(currentController.getMyScene());
+        this.activeStage.setResizable(false);
+    }
+
+    /**
+     * Shows the Tiles selected from the player in the TakeCard scene
+     *
+     * @param selectedTiles contains the Tiles selected by the player and their position on the Board
+     */
+    public void printSelectedTiles(Map<Integer, ItemCard> selectedTiles) {
+        for (GUIScene gs : scenesMap.values()) {
+            gs.updateSelectedTiles(selectedTiles);
+        }
+    }
+
+    /**
+     * Allows the player to put the ItemCards in its Bookshelf
+     */
+    public void loadPut() {
+        this.currentController = this.scenesMap.get("putCardsScene");
+        this.activeStage.setScene(currentController.getMyScene());
+        this.activeStage.setResizable(false);
+    }
+
+    /**
+     * Prints the Board in each scene that contains it
+     *
+     * @param board is the updated Board
+     */
+    public void updateBoard(ItemCard[][] board) {
+        for (GUIScene gs : scenesMap.values()) {
+            gs.updateBoard(board);
+        }
+    }
+
+    /**
+     * Updates the Board removing the given Tiles
+     *
+     * @param tilesToRemove contains the ItemCard to remove and its position on the Board
+     */
+    public void changeBoard(Map<Integer, ItemCard> tilesToRemove) {
+    }
+
+    /**
+     * Prints the player's Bookshelf in each scene that contains it
+     *
+     * @param bookshelf is the player's updated Bookshelf
+     * @param nickname  is the owner of the Bookshelf
+     */
+    public void updateBookshelf(String nickname, ItemCard[][] bookshelf) {
+        for (GUIScene gs : scenesMap.values()) {
+            gs.updateBookshelf(nickname, bookshelf);
+        }
+    }
+
+    /**
+     * Updates the player's Bookshelf adding the given Tiles
+     *
+     * @param tilesToAdd contains the ItemCard to add and its position on the Bookshelf
+     * @param player     is the owner of the Bookshelf to modify
+     */
+    public void changeBookshelf(Map<Integer, ItemCard> tilesToAdd, String player) {
+
+    }
+
+    /**
+     * Prints the CommonGoals and its available score in each scene that contains it
+     *
+     * @param playerCommonGoal contains the CommonGoalID and its available score
+     */
+    public void comGoal(Map<Integer, Integer> playerCommonGoal) {
+        for (GUIScene gs : scenesMap.values()) {
+            gs.comGoal(playerCommonGoal);
+        }
+    }
+
+    /**
+     * Updates the available score of a CommonGoal each time it is reached and in each scene that contains it
+     *
+     * @param comGoalDoneID identifies the CommonGoal reached
+     * @param newValue      is the available score
+     */
+    public void updateCommonGoal(int comGoalDoneID, int newValue) {
+        for (GUIScene gs : scenesMap.values()) {
+            gs.updateCommonGoal(comGoalDoneID, newValue);
+        }
+    }
+
+    /**
+     * Prints the player's PersonalGoal in each scene that contains it
+     *
+     * @param newValue is the string that defines the PersonalGoal
+     */
+    public void persGoal(String newValue) {
+        for (GUIScene gs : scenesMap.values()) {
+            gs.persGoal(newValue);
+        }
+    }
+
+    /**
+     * Prints the player's points in each scene that shows them
+     *
+     * @param myPoint are the points of the player
+     */
+    public void printPoints(int myPoint) {
+        for (GUIScene gs : scenesMap.values()) {
+            gs.printPoints(myPoint);
+        }
+    }
+
+    /**
+     * Prints the message on each scene that contains the chat
+     *
+     * @param sender  is the player that sent the message
+     * @param message is the message to print
+     */
+    public void receiveMessage(String sender, String message) {
+        for (GUIScene gs : scenesMap.values()) {
+            gs.receiveMessage(sender, message);
+        }
+    }
+
+    /**
+     * Prints an error message in each scene that shows it
+     *
+     * @param error is the error message to display
+     */
+    public void printError(String error) {
+        this.currentController.printError(error);
+    }
+
+    /**
+     * Shows the error scene
+     *
+     * @param error is the error that will be printed
+     */
+    public void fatalError(String error) {
+        activeStage.setScene(this.scenesMap.get("errorScene").getMyScene());
+        this.currentController.printError(error);
+    }
+
+    /**
      * Displays a victory message
-     * (using the current stage)
      */
     public void endGameWin() {
         Parent root;
@@ -157,7 +326,6 @@ public class SceneController {
 
     /**
      * Displays a lost message
-     * (using the current stage)
      */
     public void endGameLose() {
         Parent root;
@@ -179,78 +347,4 @@ public class SceneController {
         this.activeStage.setScene(new Scene(root));
     }
 
-    public void loadSavedGames(){
-        this.currentController = this.scenesMap.get("askSavedGamesScene");
-        this.activeStage.setScene(currentController.getMyScene());
-        this.activeStage.setResizable(false);
-
-    }
-    public void printNameGames(List<String> savedGames){
-        for (GUIScene gs : scenesMap.values()) {
-            gs.updateSavedGames(savedGames);
-        }
-    }
-
-    public void fatalError(String error) {
-        activeStage.setScene(this.scenesMap.get("errorScene").getMyScene());
-        this.currentController.printError(error);
-    }
-
-    public void updateCurrPlayer(String player) {
-        for (GUIScene gs : scenesMap.values()) {
-            gs.updateCurrPlayer(player);
-        }
-    }
-
-    public void updateBoard(ItemCard[][] board) {
-        for (GUIScene gs : scenesMap.values()) {
-            gs.updateBoard(board);
-        }
-    }
-
-    public void updateBookshelf(String nickname, ItemCard[][] bookshelf) {
-        for (GUIScene gs : scenesMap.values()) {
-            gs.updateBookshelf(nickname, bookshelf);
-        }
-    }
-
-    public void printError(String error) {
-        this.currentController.printError(error);
-    }
-
-    public void printSelectedTiles(Map<Integer, ItemCard> selectedTiles) {
-        for (GUIScene gs : scenesMap.values()) {
-            gs.updateSelectedTiles(selectedTiles);
-        }
-    }
-
-    public void comGoal(Map<Integer, Integer> playerCommonGoal) {
-        for (GUIScene gs : scenesMap.values()) {
-            gs.comGoal(playerCommonGoal);
-        }
-    }
-
-    public void persGoal(String newValue) {
-        for (GUIScene gs : scenesMap.values()) {
-            gs.persGoal(newValue);
-        }
-    }
-
-    public void printPoints(int myPoint) {
-        for (GUIScene gs : scenesMap.values()) {
-            gs.printPoints(myPoint);
-        }
-    }
-
-    public void setPlayers() {
-        for (GUIScene gs : scenesMap.values()) {
-            gs.setPlayers();
-        }
-    }
-
-    public void receiveMessage(String sender, String message) {
-        for (GUIScene gs : scenesMap.values()) {
-            gs.receiveMessage(sender, message);
-        }
-    }
 }

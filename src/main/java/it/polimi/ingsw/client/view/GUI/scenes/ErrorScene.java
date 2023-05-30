@@ -68,16 +68,22 @@ public class ErrorScene extends GUIScene {
 
     @Override
     public void receiveMessage(String sender, String message) {
-
     }
 
     @Override
     public void updateSavedGames(List<String> savedGames) {
-
     }
 
-    public void chat(String destination, String message) {
+    /**
+     * Updates the score of the CommonGoal
+     *
+     * @param comGoalDoneID is the ID of the CommonGoal
+     * @param newValue      is its available score
+     */
+    @Override
+    public void updateCommonGoal(int comGoalDoneID, int newValue) {
     }
+
     @Override
     public void updateCurrPlayer(String player) {
     }

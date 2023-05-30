@@ -7,113 +7,150 @@ import java.util.List;
 import java.util.Map;
 
 public interface View {
-    void onSelect();
-
-    void onInsert();
-
-    void onCommonGoalDone(int comGoalDoneID, int newValue);
-
-    void onChangeTurn(String currPlayer);
-
     /**
-     * Implementation for Cli and Gui of the printing/update of the board
+     * Implementation for CLI and GUI: prints the request to join or not a saved game
      *
-     * @param board updated by the server
+     * @param savedGames contains all the saved games in which the player was in
      */
-    void printBoard(ItemCard[][] board);
-
-
     void askForSavedGame(List<String> savedGames);
 
-
     /**
-     * Implementation for Cli and Gui of the printing of an error message
-     *
-     * @param error message to display to the client caused by an error
-     */
-    void printError(String error);
-
-    /**
-     * Implementation for Cli and Gui of the printing of the ComGoal for the game
-     *
-     * @param playerComGoal Map in which are present the typology of ComGoal for the game
-     */
-    void printCommonGoal(Map<Integer, Integer> playerComGoal);
-
-    /**
-     * Implementation for Cli and Gui of the printing of the player's points
-     *
-     * @param myPoint points of the player
-     */
-    void printPoints(int myPoint);
-
-    /**
-     * Implementation for Cli and Gui of the printing of the player's personal goal
-     *
-     * @param myPersGoal Personal goal of the player
-     * @param newValue   String that defines the PersonalGoal
-     */
-    void printPersGoal(Map<Integer, HouseItem> myPersGoal, String newValue);
-
-    /**
-     * Implementation for Cli and Gui of the printing of the Tiles chosen by the player in the last Phase of the turn
-     *
-     * @param selectedTiles Tiles selected by the player
-     */
-    void printSelectedTiles(Map<Integer, ItemCard> selectedTiles);
-
-    /**
-     * Implementation for Cli and Gui of the printing if it is the player's turn
-     *
-     * @param yourTurn String to print
-     */
-    void print(String yourTurn);
-
-    /**
-     * Implementation for Cli and Gui of the printing/update of the player's bookshelf
-     *
-     * @param book player's bookshelf
-     */
-    void printBookshelf(ItemCard[][] book, String nickname);
-
-    /**
-     * Implementation for Cli and Gui of the printing of the message sent by the sender
-     *
-     * @param sender  the player that has sent the message
-     * @param message The message sent
-     */
-    void chatToMe(String sender, String message);
-
-    /**
-     * Implementation for Cli and Gui of the printing of the request for the number of players he wants in the game
+     * Implementation for CLI and GUI: prints the request for the number of players
      */
     void printAskPlayerNumber();
 
     /**
-     * Implementation for Cli and Gui of an error occurred, and the consequent closure of the view
+     * Implementation for CLI and GUI: prints a waiting message while other players connect
      */
-    void disconnectionError();
+    void printLobby();
 
     /**
-     * Implementation for Cli and Gui of a request done by the server to disconnect the client
-     */
-    void disconnectMe();
-
-    /**
-     * Implementation for Cli and Gui of the printing of the message that signals the start of the game
+     * Implementation for CLI and GUI: prints the message that signals the start of the game
      */
     void printStartGame();
 
     /**
-     * Implementation for Cli and Gui of the printing the name(s) of the winning player(s)
+     * Implementation for CLI and GUI: prints the current player each time somebody ends its turn
      *
-     * @param winners the winner(s) of the game
+     * @param currPlayer is the nickname of the current player
+     */
+    void onChangeTurn(String currPlayer);
+
+    /**
+     * Implementation for CLI and GUI: prints a selection message or scene,
+     * then calls the methods to check and communicate the selection to the server
+     */
+    void onSelect();
+
+    /**
+     * Implementation for CLI and GUI: prints the Tiles chosen by the player in the last Phase of the turn
+     *
+     * @param selectedTiles contains the Tiles selected by the player and their position on the Board
+     */
+    void printSelectedTiles(Map<Integer, ItemCard> selectedTiles);
+
+    /**
+     * Implementation for CLI and GUI: prints an insertion message or scene,
+     * then calls the methods to check and communicate the insertion to the server
+     */
+    void onInsert();
+
+    /**
+     * Implementation for CLI and GUI: prints the Board
+     *
+     * @param board is the updated Board
+     */
+    void printBoard(ItemCard[][] board);
+
+    /**
+     * Implementation for CLI and GUI: updates the Board removing the given Tiles
+     *
+     * @param tilesToRemove contains the ItemCard to remove and its position on the Board
+     */
+    void changeBoard(Map<Integer, ItemCard> tilesToRemove);
+
+    /**
+     * Implementation for CLI and GUI: prints the player's Bookshelf
+     *
+     * @param bookshelf is the player's updated Bookshelf
+     * @param nickname  is the owner of the Bookshelf
+     */
+    void printBookshelf(ItemCard[][] bookshelf, String nickname);
+
+    /**
+     * Implementation for CLI and GUI: updates the player's Bookshelf removing the given Tiles
+     *
+     * @param tilesToAdd contains the ItemCard to add and its position on the Bookshelf
+     * @param player     is the owner of the Bookshelf to modify
+     */
+    void changeBookshelf(Map<Integer, ItemCard> tilesToAdd, String player);
+
+    /**
+     * Implementation for CLI and GUI: prints the CommonGoal for the game
+     *
+     * @param playerComGoal contains the CommonGoalID and its available score
+     */
+    void printCommonGoal(Map<Integer, Integer> playerComGoal);
+
+    /**
+     * Implementation for CLI and GUI: updates the available score of a CommonGoal each time it is reached
+     *
+     * @param comGoalDoneID identifies the CommonGoal reached
+     * @param newValue      is the available score
+     */
+    void onCommonGoalDone(int comGoalDoneID, int newValue);
+
+    /**
+     * Implementation for CLI and GUI: prints the player's PersonalGoal
+     *
+     * @param myPersGoal represents the PersonalGoal of the player
+     * @param newValue   is the string that defines the PersonalGoal
+     */
+    void printPersGoal(Map<Integer, HouseItem> myPersGoal, String newValue);
+
+    /**
+     * Implementation for CLI and GUI: prints the player's points
+     *
+     * @param myPoint are the points of the player
+     */
+    void printPoints(int myPoint);
+
+    /**
+     * Implementation for CLI and GUI: prints a generic message from the server
+     *
+     * @param message is the string to print
+     */
+    void print(String message);
+
+    /**
+     * Implementation for CLI and GUI: prints the message on the chat
+     *
+     * @param sender  is the player that sent the message
+     * @param message is the message to print
+     */
+    void chatToMe(String sender, String message);
+
+    /**
+     * Implementation for CLI and GUI: prints an error message
+     *
+     * @param error is the error message to display
+     */
+    void printError(String error);
+
+    /**
+     * Implementation for CLI and GUI: closes the view after an error occurs
+     */
+    void disconnectionError();
+
+    /**
+     * Implementation for CLI and GUI: prints the name(s) of the winning player(s)
+     *
+     * @param winners is(are) the winner(s) of the game
      */
     void printWinners(List<String> winners);
 
-    void printLobby();
-
-    void changeBoard(Map<Integer, ItemCard> tilesToRemove);
-
-    void changeBookshelf(Map<Integer, ItemCard> tilesToAdd,String player);
+    /**
+     * Implementation for CLI and GUI: disconnects the client after a request done by the server
+     */
+    void disconnectMe();
 }

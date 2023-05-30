@@ -14,7 +14,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -60,7 +59,6 @@ public class PutCardsScene extends GUIScene {
     public void printError(String error) {
         errorArea.setVisible(true);
         errorArea.setText(error);
-
         revert();
     }
 
@@ -76,7 +74,7 @@ public class PutCardsScene extends GUIScene {
         int i = 0;
 
         try {
-            String column = ((RadioButton)columns.getSelectedToggle()).getId();
+            String column = ((RadioButton) columns.getSelectedToggle()).getId();
             i = Integer.parseInt(String.valueOf(column.charAt(column.length() - 1)));
         } catch (NumberFormatException e) {
             printError("ERROR: parse exception");
@@ -212,10 +210,38 @@ public class PutCardsScene extends GUIScene {
 
     }
 
+    /**
+     * Updates the score of the CommonGoal
+     *
+     * @param comGoalDoneID is the ID of the CommonGoal
+     * @param newValue      is its available score
+     */
     @Override
-    public void updateSelectedTiles(Map<Integer, ItemCard> selectedTiles){
+    public void updateCommonGoal(int comGoalDoneID, int newValue) {
+        int n = 0;
+
+        for (Integer cgNum : clientController.getPlayerComGoal().keySet()) {
+            if (cgNum == comGoalDoneID) {
+                ImageView scoreImage = new ImageView(GUIResources.getScore("sc0" + newValue));
+                scoreImage.setFitHeight(60);
+                scoreImage.setFitWidth(60);
+
+                if (n == 0) {
+                    score_0.add(scoreImage, 0, 0);
+                } else {
+                    score_1.add(scoreImage, 0, 0);
+                }
+            }
+
+            n++;
+        }
+    }
+
+
+    @Override
+    public void updateSelectedTiles(Map<Integer, ItemCard> selectedTiles) {
         int i = 0;
-        for(ItemCard itemCard : clientController.getSelectedTiles().values()){
+        for (ItemCard itemCard : clientController.getSelectedTiles().values()) {
             String itemName = itemCard.getMyItem().toString().toLowerCase();
             String itemNumber = itemCard.getMyNum().toString();
             String myItem = itemName + itemNumber;
@@ -288,7 +314,7 @@ public class PutCardsScene extends GUIScene {
                     ItemCard itemCard = clientController.getSelectedTiles().get(i);
 
                     if (itemCard.getMyItem().toString().equalsIgnoreCase(splitString[0]) && itemCard.getMyNum().toString().equalsIgnoreCase(splitString[1])) {
-                        if(!selectedTiles.contains(i)){
+                        if (!selectedTiles.contains(i)) {
                             selectedTiles.add(i);
                             break;
                         }

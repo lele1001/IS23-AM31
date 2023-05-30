@@ -320,8 +320,8 @@ public class ConnectionRMI extends ConnectionClient implements RMIClientConnecti
     }
 
     @Override
-    public void onBookshelfRenewed(Map<Integer, ItemCard> tilesToAdd,String player) {
-        getController().onBookshelfRenewed(tilesToAdd,player);
+    public void onBookshelfRenewed(Map<Integer, ItemCard> tilesToAdd, String player) {
+        getController().onBookshelfRenewed(tilesToAdd, player);
     }
 
     @Override

@@ -36,6 +36,17 @@ public class SavedGamesScene extends GUIScene {
         }
     }
 
+    /**
+     * Updates the score of the CommonGoal
+     *
+     * @param comGoalDoneID is the ID of the CommonGoal
+     * @param newValue      is its available score
+     */
+    @Override
+    public void updateCommonGoal(int comGoalDoneID, int newValue) {
+
+    }
+
     @Override
     public void initialize(ClientController clientController) {
         this.clientController = clientController;

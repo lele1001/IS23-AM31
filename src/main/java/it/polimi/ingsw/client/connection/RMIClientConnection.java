@@ -144,6 +144,8 @@ public interface RMIClientConnection extends Remote {
     void onBookshelfCompleted() throws RemoteException;
 
     void onSavedGame(List<String> savedGames) throws RemoteException;
-    void onBookshelfRenewed(Map<Integer,ItemCard> tilesToAdd, String player)throws RemoteException;
-    void onBoardRenewed(Map<Integer,ItemCard> tilesToRemove)throws RemoteException;
+
+    void onBookshelfRenewed(Map<Integer, ItemCard> tilesToAdd, String player) throws RemoteException;
+
+    void onBoardRenewed(Map<Integer, ItemCard> tilesToRemove) throws RemoteException;
 }

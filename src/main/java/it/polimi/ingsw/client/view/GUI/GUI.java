@@ -13,66 +13,71 @@ public class GUI implements View {
     ClientController clientController;
     private final SceneController sceneController;
 
+    /**
+     * Initialization of the client profile
+     *
+     * @param clientController defines the direct contact with all the object containers sen from the server
+     */
     public GUI(ClientController clientController) {
         this.clientController = clientController;
         this.clientController.setView(this);
         this.sceneController = new SceneController(this.clientController);
     }
 
-    public SceneController getSceneController() {
-        return this.sceneController;
-    }
-
+    /**
+     * Shows the Login scene
+     */
     public void gameLogin() {
         Platform.runLater(this.sceneController::loadLogin);
     }
 
+    /**
+     * Implementation for GUI: prints the request to join or not a saved game
+     *
+     * @param savedGames contains all the saved games in which the player was in
+     */
     @Override
-    public void onSelect() {
-        Platform.runLater(this.sceneController::loadTake);
-    }
-
-    @Override
-    public void onInsert() {
-        printSelectedTiles(clientController.getSelectedTiles());
-        Platform.runLater(this.sceneController::loadPut);
+    public void askForSavedGame(List<String> savedGames) {
+        Platform.runLater(() -> this.sceneController.printNameGames(savedGames));
+        Platform.runLater(this.sceneController::loadSavedGames);
     }
 
     /**
-     * Implementation for Cli and Gui of the printing/update of the board
-     *
-     * @param board updated by the server
+     * Implementation for GUI: prints the request for the number of players
      */
     @Override
-    public void printBoard(ItemCard[][] board) {
-        Platform.runLater(() -> sceneController.updateBoard(board));
+    public void printAskPlayerNumber() {
+        if (clientController.isSelectNumberOfPlayers()) {
+            Platform.runLater(this.sceneController::loadNumberOfPlayer);
+        }
     }
 
     /**
-     * Implementation for Cli and Gui of the printing of an error message
-     *
-     * @param error message to display to the client caused by an error
+     * Implementation for GUI: prints a waiting message while other players connect
      */
     @Override
-    public void printError(String error) {
-        Platform.runLater(() -> sceneController.printError(error));
+    public void printLobby() {
+        if (!clientController.isGameStarted()) {
+            Platform.runLater(this.sceneController::loadLobby);
+        }
     }
 
     /**
-     * Implementation for Cli and Gui of the printing of the ComGoal for the game
-     *
-     * @param playerComGoal Map in which are present the typology of ComGoal for the game
+     * Implementation for GUI: sets the scenes based on the number of players in the game
      */
     @Override
-    public void printCommonGoal(Map<Integer, Integer> playerComGoal) {
-        Platform.runLater(() -> sceneController.comGoal(playerComGoal));
+    public void printStartGame() {
+        if (clientController.isGameStarted()) {
+            Platform.runLater(sceneController::setPlayers);
+        }
     }
 
-    @Override
-    public void onCommonGoalDone(int comGoalDoneID, int newValue) {
-        // Aggiorna il punteggio del comGoal fatto su tutti gli scenari
-    }
-
+    /**
+     * Implementation for GUI: prints the current player each time somebody ends its turn,
+     * and, if it is somebody else's turn, shows the NotMyTurn scene
+     *
+     * @param currPlayer is the nickname of the current player
+     */
     @Override
     public void onChangeTurn(String currPlayer) {
         Platform.runLater(() -> sceneController.updateCurrPlayer(currPlayer));
@@ -83,30 +88,17 @@ public class GUI implements View {
     }
 
     /**
-     * Implementation for Cli and Gui of the printing of the player's points
-     *
-     * @param myPoint points of the player
+     * Implementation for GUI: shows the TakeCard scene
      */
     @Override
-    public void printPoints(int myPoint) {
-        Platform.runLater(() -> sceneController.printPoints(myPoint));
+    public void onSelect() {
+        Platform.runLater(this.sceneController::loadTake);
     }
 
     /**
-     * Implementation for Cli and Gui of the printing of the player's personal goal
+     * Implementation for GUI: prints the Tiles chosen by the player in the last Phase of the turn
      *
-     * @param myPersGoal Personal goal of the player
-     * @param newValue   String that defines the PersonalGoal
-     */
-    @Override
-    public void printPersGoal(Map<Integer, HouseItem> myPersGoal, String newValue) {
-        sceneController.persGoal(newValue);
-    }
-
-    /**
-     * Implementation for Cli and Gui of the printing of the Tiles chosen by the player in the last Phase of the turn
-     *
-     * @param selectedTiles Tiles selected by the player
+     * @param selectedTiles contains the Tiles selected by the player and their position on the Board
      */
     @Override
     public void printSelectedTiles(Map<Integer, ItemCard> selectedTiles) {
@@ -114,30 +106,112 @@ public class GUI implements View {
     }
 
     /**
-     * Implementation for Cli and Gui of the printing if it is the player's turn
-     *
-     * @param yourTurn String to print
+     * Implementation for GUI: shows the PutCards scene
      */
     @Override
-    public void print(String yourTurn) {
+    public void onInsert() {
+        printSelectedTiles(clientController.getSelectedTiles());
+        Platform.runLater(this.sceneController::loadPut);
     }
 
     /**
-     * Implementation for Cli and Gui of the printing/update of the player's bookshelf
+     * Implementation for GUI: prints the Board
      *
-     * @param book     player's bookshelf
-     * @param nickname of the player
+     * @param board is the updated Board
      */
     @Override
-    public void printBookshelf(ItemCard[][] book, String nickname) {
-        Platform.runLater(() -> sceneController.updateBookshelf(nickname, book));
+    public void printBoard(ItemCard[][] board) {
+        Platform.runLater(() -> sceneController.updateBoard(board));
     }
 
     /**
-     * Implementation for Cli and Gui of the printing of the message sent by the sender
+     * Implementation for GUI: updates the Board removing the given Tiles
      *
-     * @param sender  the player that has sent the message
-     * @param message The message sent
+     * @param tilesToRemove contains the ItemCard to remove and its position on the Board
+     */
+    @Override
+    public void changeBoard(Map<Integer, ItemCard> tilesToRemove) {
+    }
+
+    /**
+     * Implementation for GUI: prints the player's Bookshelf
+     *
+     * @param bookshelf is the player's updated Bookshelf
+     * @param nickname  is the owner of the Bookshelf
+     */
+    @Override
+    public void printBookshelf(ItemCard[][] bookshelf, String nickname) {
+        Platform.runLater(() -> sceneController.updateBookshelf(nickname, bookshelf));
+    }
+
+    /**
+     * Implementation for GUI: updates the player's Bookshelf removing the given Tiles
+     *
+     * @param tilesToAdd contains the ItemCard to add and its position on the Bookshelf
+     * @param player     is the owner of the Bookshelf to modify
+     */
+    @Override
+    public void changeBookshelf(Map<Integer, ItemCard> tilesToAdd, String player) {
+
+    }
+
+    /**
+     * Implementation for GUI: prints the CommonGoal for the game
+     *
+     * @param playerComGoal contains the CommonGoalID and its available score
+     */
+    @Override
+    public void printCommonGoal(Map<Integer, Integer> playerComGoal) {
+        Platform.runLater(() -> sceneController.comGoal(playerComGoal));
+    }
+
+    /**
+     * Updates the score made on the CommonGoal on all scenarios
+     *
+     * @param comGoalDoneID is the CommonGoal reached
+     * @param newValue      is the available score of the CommonGoal
+     */
+    @Override
+    public void onCommonGoalDone(int comGoalDoneID, int newValue) {
+        Platform.runLater(() -> sceneController.updateCommonGoal(comGoalDoneID, newValue));
+    }
+
+    /**
+     * Implementation for GUI: prints the player's PersonalGoal
+     *
+     * @param myPersGoal represents the PersonalGoal of the player
+     * @param newValue   is the string that defines the PersonalGoal
+     */
+    @Override
+    public void printPersGoal(Map<Integer, HouseItem> myPersGoal, String newValue) {
+        sceneController.persGoal(newValue);
+    }
+
+    /**
+     * Implementation for GUI: prints the player's points
+     *
+     * @param myPoint are the points of the player
+     */
+    @Override
+    public void printPoints(int myPoint) {
+        Platform.runLater(() -> sceneController.printPoints(myPoint));
+    }
+
+    /**
+     * Implementation for GUI: prints a generic message from the server using the printError method
+     *
+     * @param message is the string to print
+     */
+    @Override
+    public void print(String message) {
+        Platform.runLater(() -> sceneController.printError(message));
+    }
+
+    /**
+     * Implementation for GUI: prints the message on the chat
+     *
+     * @param sender  is the player that sent the message
+     * @param message is the message to print
      */
     @Override
     public void chatToMe(String sender, String message) {
@@ -145,17 +219,17 @@ public class GUI implements View {
     }
 
     /**
-     * Implementation for Cli and Gui of the printing of the request for the number of players he wants in the game
+     * Implementation for GUI: prints an error message
+     *
+     * @param error is the error message to display
      */
     @Override
-    public void printAskPlayerNumber() {
-        if (clientController.isSelectNumberOfPlayers()) {
-            Platform.runLater(this.sceneController::loadNumberOfPlayer);
-        }
+    public void printError(String error) {
+        Platform.runLater(() -> sceneController.printError(error));
     }
 
     /**
-     * Implementation for Cli and Gui of an error occurred, and the consequent closure of the view
+     * Implementation for GUI: closes the view after an error occurs
      */
     @Override
     public void disconnectionError() {
@@ -163,27 +237,9 @@ public class GUI implements View {
     }
 
     /**
-     * Implementation for Cli and Gui of a request done by the server to disconnect the client
-     */
-    @Override
-    public void disconnectMe() {
-        Platform.runLater(() -> this.sceneController.fatalError("You've been disconnected from server."));
-    }
-
-    /**
-     * Implementation for Cli and Gui of the printing of the message that signals the start of the game
-     */
-    @Override
-    public void printStartGame() {
-        if (clientController.isGameStarted()) {
-            Platform.runLater(sceneController::setPlayers);
-        }
-    }
-
-    /**
-     * Implementation for Cli and Gui of the printing the name(s) of the winning player(s)
+     * Implementation for GUI: prints the name(s) of the winning player(s)
      *
-     * @param winners the winner(s) of the game
+     * @param winners is(are) the winner(s) of the game
      */
     @Override
     public void printWinners(List<String> winners) {
@@ -194,26 +250,11 @@ public class GUI implements View {
         }
     }
 
+    /**
+     * Implementation for GUI: disconnects the client after a request done by the server
+     */
     @Override
-    public void printLobby() {
-        if (!clientController.isGameStarted()) {
-            Platform.runLater(this.sceneController::loadLobby);
-        }
-    }
-
-    @Override
-    public void changeBoard(Map<Integer, ItemCard> tilesToRemove) {
-
-    }
-
-    @Override
-    public void changeBookshelf(Map<Integer, ItemCard> tilesToAdd, String player) {
-
-    }
-
-    @Override
-    public void askForSavedGame(List<String> savedGames) {
-        Platform.runLater(()->this.sceneController.printNameGames(savedGames));
-        Platform.runLater(this.sceneController::loadSavedGames);
+    public void disconnectMe() {
+        Platform.runLater(() -> this.sceneController.fatalError("You've been disconnected from server."));
     }
 }

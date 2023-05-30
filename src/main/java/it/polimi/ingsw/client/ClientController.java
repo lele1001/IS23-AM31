@@ -479,19 +479,21 @@ public class ClientController {
     public String getPersGoalValue() {
         return myPersGoalNumber;
     }
-    public void onBookshelfRenewed(Map<Integer, ItemCard> tilesToAdd,String player) {
 
-        for(Integer position:tilesToAdd.keySet()){
-            playersBookshelf.get(player)[getRow(position)][getColumn(position)]=tilesToAdd.get(position);
+    public void onBookshelfRenewed(Map<Integer, ItemCard> tilesToAdd, String player) {
+
+        for (Integer position : tilesToAdd.keySet()) {
+            playersBookshelf.get(player)[getRow(position)][getColumn(position)] = tilesToAdd.get(position);
         }
-            view.changeBookshelf(tilesToAdd, player);
+        view.changeBookshelf(tilesToAdd, player);
     }
+
     public void onBoardRenewed(Map<Integer, ItemCard> tilesToRemove) {
-        if(isMyTurn()){
+        if (isMyTurn()) {
             selectedTiles.putAll(tilesToRemove);
         }
-        for(Integer position:tilesToRemove.keySet()){
-            board[getRow(position)][getColumn(position)]=null;
+        for (Integer position : tilesToRemove.keySet()) {
+            board[getRow(position)][getColumn(position)] = null;
         }
         view.changeBoard(tilesToRemove);
     }

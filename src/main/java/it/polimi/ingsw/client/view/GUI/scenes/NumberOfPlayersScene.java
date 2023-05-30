@@ -4,7 +4,6 @@ package it.polimi.ingsw.client.view.GUI.scenes;
 import it.polimi.ingsw.client.ClientController;
 import it.polimi.ingsw.server.model.ItemCard;
 import javafx.fxml.FXML;
-import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -16,7 +15,6 @@ import java.util.List;
 import java.util.Map;
 
 public class NumberOfPlayersScene extends GUIScene {
-
     @FXML
     GridPane firstPlayerPane;
     @FXML
@@ -103,6 +101,17 @@ public class NumberOfPlayersScene extends GUIScene {
 
     @Override
     public void updateSavedGames(List<String> savedGames) {
+    }
+
+    /**
+     * Updates the score of the CommonGoal
+     *
+     * @param comGoalDoneID is the ID of the CommonGoal
+     * @param newValue      is its available score
+     */
+    @Override
+    public void updateCommonGoal(int comGoalDoneID, int newValue) {
+
     }
 
     @Override
