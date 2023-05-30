@@ -74,7 +74,7 @@ public class SceneController {
     }
 
     /**
-     * Shows the name(s) of the saved game(s)
+     * Prints the name(s) of the saved game(s) in each scene that shows them
      *
      * @param savedGames contains all the saved games in which the player was in
      */
@@ -271,7 +271,7 @@ public class SceneController {
     }
 
     /**
-     * Prints the message on each scene that contains the chat
+     * Prints the message in each scene that contains the chat
      *
      * @param sender  is the player that sent the message
      * @param message is the message to print

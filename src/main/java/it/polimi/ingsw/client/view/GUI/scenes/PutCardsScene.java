@@ -55,13 +55,9 @@ public class PutCardsScene extends GUIScene {
         bindEvents();
     }
 
-    @Override
-    public void printError(String error) {
-        errorArea.setVisible(true);
-        errorArea.setText(error);
-        revert();
-    }
-
+    /**
+     * Connects FXML items to the methods in the scene
+     */
     @Override
     public void bindEvents() {
         youSelectedThis.addEventHandler(MouseEvent.MOUSE_CLICKED, this::remove);
@@ -70,40 +66,104 @@ public class PutCardsScene extends GUIScene {
         selectTiles.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> putTiles());
     }
 
-    private void putTiles() {
-        int i = 0;
+    /**
+     * Shows the name(s) of the saved game(s)
+     *
+     * @param savedGames contains all the saved games in which the player was in
+     */
+    @Override
+    public void updateSavedGames(List<String> savedGames) {
+    }
 
-        try {
-            String column = ((RadioButton) columns.getSelectedToggle()).getId();
-            i = Integer.parseInt(String.valueOf(column.charAt(column.length() - 1)));
-        } catch (NumberFormatException e) {
-            printError("ERROR: parse exception");
-        }
+    /**
+     * Sets the scene based on the number of players in the game
+     */
+    @Override
+    public void setPlayers() {
+        ArrayList<String> players = new ArrayList<>(clientController.getPlayersBookshelves().keySet());
 
-        InputController inputController = new InputController(clientController);
-        ArrayList<ItemCard> tilesToPut = inputController.checkPutGUI(selectedTiles);
+        MenuItem msgEverybody = new MenuItem("everybody");
+        msgEverybody.setId("msgEverybody");
+        destinationMenu.getItems().add(msgEverybody);
+        msgEverybody.setOnAction(event -> {
+            destinationMenu.setDisable(false);
+            sendMessage.setDisable(false);
+            destinationMenu.setText(msgEverybody.getText());
+        });
 
-        if (tilesToPut != null) {
-            try {
-                clientController.insertCard(tilesToPut, i);
-            } catch (Exception e) {
-                printError("ERROR: serverError");
+        for (String player : players) {
+            if (!player.equals(clientController.getMyNickname())) {
+                MenuItem msgPlayer = new MenuItem(player);
+                msgPlayer.setId("msgTo" + player);
+                destinationMenu.getItems().add(msgPlayer);
+
+                msgPlayer.setOnAction(event -> {
+                    destinationMenu.setDisable(false);
+                    sendMessage.setDisable(false);
+                    destinationMenu.setText(msgPlayer.getText());
+                });
             }
-        } else {
-            printError("ERROR: wrong selection");
+        }
+    }
+
+    /**
+     * Updates the current player
+     *
+     * @param player is the curren player
+     */
+    @Override
+    public void updateCurrPlayer(String player) {
+
+    }
+
+    /**
+     * Shows the Tiles selected from the player in the TakeCard scene
+     *
+     * @param selectedTiles contains the Tiles selected by the player and their position on the Board
+     */
+    @Override
+    public void updateSelectedTiles(Map<Integer, ItemCard> selectedTiles) {
+        int i = 0;
+        for (ItemCard itemCard : clientController.getSelectedTiles().values()) {
+            String itemName = itemCard.getMyItem().toString().toLowerCase();
+            String itemNumber = itemCard.getMyNum().toString();
+            String myItem = itemName + itemNumber;
+
+            ImageView tileImage = new ImageView(GUIResources.getItem(myItem));
+            tileImage.setPreserveRatio(true);
+            tileImage.setFitWidth(50);
+            tileImage.setFitHeight(50);
+
+            youSelectedThis.add(tileImage, i, 0);
+            i++;
         }
 
-        selectedTiles.clear();
-        youPutThis.getChildren().clear();
     }
 
-    public void updateCurrPlayer(String player) {
-    }
-
+    /**
+     * Prints the Board in the scene
+     *
+     * @param board is the updated Board
+     */
     @Override
     public void updateBoard(ItemCard[][] board) {
     }
 
+    /**
+     * Updates the Board removing the given Tiles
+     *
+     * @param tilesToRemove contains the ItemCard to remove and its position on the Board
+     */
+    @Override
+    public void changeBoard(Map<Integer, ItemCard> tilesToRemove) {
+    }
+
+    /**
+     * Prints the player's Bookshelf in the scene
+     *
+     * @param bookshelf is the player's updated Bookshelf
+     * @param nickname  is the owner of the Bookshelf
+     */
     @Override
     public void updateBookshelf(String nickname, ItemCard[][] bookshelf) {
         if (clientController.getMyNickname().equals(nickname)) {
@@ -128,6 +188,21 @@ public class PutCardsScene extends GUIScene {
         }
     }
 
+    /**
+     * Updates the player's Bookshelf adding the given Tiles
+     *
+     * @param tilesToAdd contains the ItemCard to add and its position on the Bookshelf
+     * @param player     is the owner of the Bookshelf to modify
+     */
+    @Override
+    public void changeBookshelf(Map<Integer, ItemCard> tilesToAdd, String player) {
+    }
+
+    /**
+     * Prints the CommonGoals and its available score in the scene
+     *
+     * @param playerCommonGoal contains the CommonGoalID and its available score
+     */
     @Override
     public void comGoal(Map<Integer, Integer> playerCommonGoal) {
         int n = 0;
@@ -157,64 +232,11 @@ public class PutCardsScene extends GUIScene {
         }
     }
 
-    @Override
-    public void persGoal(String newValue) {
-        ImageView persGoalImage = new ImageView(GUIResources.getPersGoal(newValue));
-        persGoalImage.setFitHeight(200);
-        persGoalImage.setFitWidth(150);
-
-        persGoal.add(persGoalImage, 0, 0);
-    }
-
-    @Override
-    public void printPoints(int myPoint) {
-        yourPoints.setText("You have " + myPoint + " points");
-    }
-
-    @Override
-    public void setPlayers() {
-        ArrayList<String> players = new ArrayList<>(clientController.getPlayersBookshelves().keySet());
-
-        MenuItem msgEverybody = new MenuItem("everybody");
-        msgEverybody.setId("msgEverybody");
-        destinationMenu.getItems().add(msgEverybody);
-        msgEverybody.setOnAction(event -> {
-            destinationMenu.setDisable(false);
-            sendMessage.setDisable(false);
-            destinationMenu.setText(msgEverybody.getText());
-        });
-
-        for (String player : players) {
-            if (!player.equals(clientController.getMyNickname())) {
-                MenuItem msgPlayer = new MenuItem(player);
-                msgPlayer.setId("msgTo" + player);
-                destinationMenu.getItems().add(msgPlayer);
-
-                msgPlayer.setOnAction(event -> {
-                    destinationMenu.setDisable(false);
-                    sendMessage.setDisable(false);
-                    destinationMenu.setText(msgPlayer.getText());
-                });
-            }
-        }
-    }
-
-    @Override
-    public void receiveMessage(String sender, String message) {
-        chatHistory.appendText("> " + sender + ": " + message + "\n");
-        writtenMessage.setText("");
-    }
-
-    @Override
-    public void updateSavedGames(List<String> savedGames) {
-
-    }
-
     /**
-     * Updates the score of the CommonGoal
+     * Updates the available score of a CommonGoal each time it is reached and in the scene
      *
-     * @param comGoalDoneID is the ID of the CommonGoal
-     * @param newValue      is its available score
+     * @param comGoalDoneID identifies the CommonGoal reached
+     * @param newValue      is the available score
      */
     @Override
     public void updateCommonGoal(int comGoalDoneID, int newValue) {
@@ -237,27 +259,58 @@ public class PutCardsScene extends GUIScene {
         }
     }
 
-
+    /**
+     * Prints the PersonalGoal assigned to the player
+     *
+     * @param newValue is the PersonalGoal name
+     */
     @Override
-    public void updateSelectedTiles(Map<Integer, ItemCard> selectedTiles) {
-        int i = 0;
-        for (ItemCard itemCard : clientController.getSelectedTiles().values()) {
-            String itemName = itemCard.getMyItem().toString().toLowerCase();
-            String itemNumber = itemCard.getMyNum().toString();
-            String myItem = itemName + itemNumber;
+    public void persGoal(String newValue) {
+        ImageView persGoalImage = new ImageView(GUIResources.getPersGoal(newValue));
+        persGoalImage.setFitHeight(200);
+        persGoalImage.setFitWidth(150);
 
-            ImageView tileImage = new ImageView(GUIResources.getItem(myItem));
-            tileImage.setPreserveRatio(true);
-            tileImage.setFitWidth(50);
-            tileImage.setFitHeight(50);
-
-            youSelectedThis.add(tileImage, i, 0);
-            i++;
-        }
-
+        persGoal.add(persGoalImage, 0, 0);
     }
 
-    public void sendChat() {
+    /**
+     * Prints the player's points in the scene
+     *
+     * @param myPoint are the points of the player
+     */
+    @Override
+    public void printPoints(int myPoint) {
+        yourPoints.setText("You have " + myPoint + " points");
+    }
+
+    /**
+     * Prints the message in the chat field of the scene
+     *
+     * @param sender  is the player that sent the message
+     * @param message is the message to print
+     */
+    @Override
+    public void receiveMessage(String sender, String message) {
+        chatHistory.appendText("> " + sender + ": " + message + "\n");
+        writtenMessage.setText("");
+    }
+
+    /**
+     * Prints an error message in the scene
+     *
+     * @param error is the error message to display
+     */
+    @Override
+    public void printError(String error) {
+        errorArea.setVisible(true);
+        errorArea.setText(error);
+        revert();
+    }
+
+    /**
+     * Checks the message destination and eventually sends the message
+     */
+    private void sendChat() {
         destinationMenu.setDisable(false);
 
         String[] checkChatMessage = {"@chat", destinationMenu.getText(), writtenMessage.getText()};
@@ -288,6 +341,41 @@ public class PutCardsScene extends GUIScene {
         }
     }
 
+    /**
+     * Checks the Tiles to put in the Bookshelf and eventually communicates the change to the server
+     */
+    private void putTiles() {
+        int i = 0;
+
+        try {
+            String column = ((RadioButton) columns.getSelectedToggle()).getId();
+            i = Integer.parseInt(String.valueOf(column.charAt(column.length() - 1)));
+        } catch (NumberFormatException e) {
+            printError("ERROR: parse exception");
+        }
+
+        InputController inputController = new InputController(clientController);
+        ArrayList<ItemCard> tilesToPut = inputController.checkPutGUI(selectedTiles);
+
+        if (tilesToPut != null) {
+            try {
+                clientController.insertCard(tilesToPut, i);
+            } catch (Exception e) {
+                printError("ERROR: serverError");
+            }
+        } else {
+            printError("ERROR: wrong selection");
+        }
+
+        selectedTiles.clear();
+        youPutThis.getChildren().clear();
+    }
+
+    /**
+     * Removes the clicked image from the SelectedTiles pane and puts it in the PutTiles pane
+     *
+     * @param event is the click on the image
+     */
     private void remove(MouseEvent event) {
         Node clickedNode = event.getPickResult().getIntersectedNode();
 
@@ -324,6 +412,9 @@ public class PutCardsScene extends GUIScene {
         }
     }
 
+    /**
+     * Removes all the images from the PutTiles pane and puts them back in the SelectedTiles pane
+     */
     private void revert() {
         for (int i = youPutThis.getChildren().size() - 1; i >= 0; i--) {
             ImageView imageView = (ImageView) youPutThis.getChildren().get(i);

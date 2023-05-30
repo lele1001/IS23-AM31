@@ -38,96 +38,38 @@ public class TakeCardsScene extends GUIScene {
     private ArrayList<Integer> selectedTiles;
 
     @Override
-    public void updateBoard(ItemCard[][] board) {
-        boardPane.getChildren().clear();
-
-        for (int i = 0; i < Utils.DIM_BOARD; i++) {
-            for (int j = 0; j < Utils.DIM_BOARD; j++) {
-                if (board[i][j] != null) {
-                    String itemName = board[i][j].getMyItem().toString().toLowerCase();
-                    String itemNumber = board[i][j].getMyNum().toString();
-                    String myItem = itemName + itemNumber;
-
-                    ImageView tileImage = new ImageView(GUIResources.getItem(myItem));
-                    tileImage.setPreserveRatio(true);
-                    tileImage.setFitHeight(50);
-                    tileImage.setFitWidth(50);
-
-                    boardPane.add(tileImage, j, i);
-                }
-            }
-        }
+    public void initialize(ClientController clientController) {
+        this.clientController = clientController;
+        yourPoints.setText("You have 0 points");
+        errorArea.setVisible(false);
+        selectedTiles = new ArrayList<>();
+        bindEvents();
     }
 
+    /**
+     * Connects FXML items to the methods in the scene
+     */
     @Override
-    public void updateBookshelf(String nickname, ItemCard[][] bookshelf) {
-        if (clientController.getMyNickname().equals(nickname)) {
-            bookshelfPane.getChildren().clear();
-            for (int i = 0; i < Utils.BOOKSHELF_HEIGHT; i++) {
-                for (int j = 0; j < Utils.BOOKSHELF_LENGTH; j++) {
-                    if (bookshelf[i][j] != null) {
-                        String itemName = bookshelf[i][j].getMyItem().toString().toLowerCase();
-                        String itemNumber = bookshelf[i][j].getMyNum().toString();
-                        String myItem = itemName + itemNumber;
-
-                        ImageView tileImage = new ImageView(GUIResources.getItem(myItem));
-                        tileImage.setPreserveRatio(true);
-                        tileImage.setFitHeight(24);
-                        tileImage.setFitWidth(24);
-
-                        bookshelfPane.add(tileImage, j, i);
-                    }
-                }
-            }
-        }
+    public void bindEvents() {
+        boardPane.addEventHandler(MouseEvent.MOUSE_CLICKED, this::remove);
+        selectTiles.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> selectTiles());
+        undoSelection.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> revert());
+        sendMessage.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> sendChat());
     }
 
+    /**
+     * Shows the name(s) of the saved game(s)
+     *
+     * @param savedGames contains all the saved games in which the player was in
+     */
     @Override
-    public void updateSelectedTiles(Map<Integer, ItemCard> selectedTiles) {
+    public void updateSavedGames(List<String> savedGames) {
+
     }
 
-    @Override
-    public void comGoal(Map<Integer, Integer> playerCommonGoal) {
-        int n = 0;
-        for (Integer i : playerCommonGoal.keySet()) {
-            ImageView scoreImage = new ImageView(GUIResources.getScore("sc0" + playerCommonGoal.get(i).toString()));
-            scoreImage.setFitHeight(60);
-            scoreImage.setFitWidth(60);
-
-            if (n == 0) {
-                score_0.add(scoreImage, 0, 0);
-            } else {
-                score_1.add(scoreImage, 0, 0);
-            }
-
-            String cgNum = i.toString();
-            if (i < 10) {
-                cgNum = "0" + cgNum;
-            }
-
-            ImageView comGoalImage = new ImageView(GUIResources.getComGoal("cg" + cgNum));
-            comGoalImage.setFitHeight(150);
-            comGoalImage.setFitWidth(200);
-
-            comGoals.add(comGoalImage, n, 0);
-            n++;
-        }
-    }
-
-    @Override
-    public void persGoal(String newValue) {
-        ImageView persGoalImage = new ImageView(GUIResources.getPersGoal(newValue));
-        persGoalImage.setFitHeight(200);
-        persGoalImage.setFitWidth(150);
-
-        persGoal.add(persGoalImage, 0, 0);
-    }
-
-    @Override
-    public void printPoints(int myPoint) {
-        yourPoints.setText("You have " + myPoint + " points");
-    }
-
+    /**
+     * Sets the scene based on the number of players in the game
+     */
     @Override
     public void setPlayers() {
         ArrayList<String> players = new ArrayList<>(clientController.getPlayersBookshelves().keySet());
@@ -156,21 +98,142 @@ public class TakeCardsScene extends GUIScene {
         }
     }
 
+    /**
+     * Updates the current player
+     *
+     * @param player is the curren player
+     */
     @Override
-    public void receiveMessage(String sender, String message) {
-        chatHistory.appendText("> " + sender + ": " + message + "\n");
-        writtenMessage.setText("");
-    }
-
-    @Override
-    public void updateSavedGames(List<String> savedGames) {
+    public void updateCurrPlayer(String player) {
+        selectedTiles.clear();
+        selectTiles.setDisable(false);
     }
 
     /**
-     * Updates the score of the CommonGoal
+     * Shows the Tiles selected from the player in the TakeCard scene
      *
-     * @param comGoalDoneID is the ID of the CommonGoal
-     * @param newValue      is its available score
+     * @param selectedTiles contains the Tiles selected by the player and their position on the Board
+     */
+    @Override
+    public void updateSelectedTiles(Map<Integer, ItemCard> selectedTiles) {
+
+    }
+
+    /**
+     * Prints the Board in the scene
+     *
+     * @param board is the updated Board
+     */
+    @Override
+    public void updateBoard(ItemCard[][] board) {
+        boardPane.getChildren().clear();
+
+        for (int i = 0; i < Utils.DIM_BOARD; i++) {
+            for (int j = 0; j < Utils.DIM_BOARD; j++) {
+                if (board[i][j] != null) {
+                    String itemName = board[i][j].getMyItem().toString().toLowerCase();
+                    String itemNumber = board[i][j].getMyNum().toString();
+                    String myItem = itemName + itemNumber;
+
+                    ImageView tileImage = new ImageView(GUIResources.getItem(myItem));
+                    tileImage.setPreserveRatio(true);
+                    tileImage.setFitHeight(50);
+                    tileImage.setFitWidth(50);
+
+                    boardPane.add(tileImage, j, i);
+                }
+            }
+        }
+    }
+
+    /**
+     * Updates the Board removing the given Tiles
+     *
+     * @param tilesToRemove contains the ItemCard to remove and its position on the Board
+     */
+    @Override
+    public void changeBoard(Map<Integer, ItemCard> tilesToRemove) {
+
+    }
+
+    /**
+     * Prints the player's Bookshelf in the scene
+     *
+     * @param bookshelf is the player's updated Bookshelf
+     * @param nickname  is the owner of the Bookshelf
+     */
+    @Override
+    public void updateBookshelf(String nickname, ItemCard[][] bookshelf) {
+        if (clientController.getMyNickname().equals(nickname)) {
+            bookshelfPane.getChildren().clear();
+            for (int i = 0; i < Utils.BOOKSHELF_HEIGHT; i++) {
+                for (int j = 0; j < Utils.BOOKSHELF_LENGTH; j++) {
+                    if (bookshelf[i][j] != null) {
+                        String itemName = bookshelf[i][j].getMyItem().toString().toLowerCase();
+                        String itemNumber = bookshelf[i][j].getMyNum().toString();
+                        String myItem = itemName + itemNumber;
+
+                        ImageView tileImage = new ImageView(GUIResources.getItem(myItem));
+                        tileImage.setPreserveRatio(true);
+                        tileImage.setFitHeight(24);
+                        tileImage.setFitWidth(24);
+
+                        bookshelfPane.add(tileImage, j, i);
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * Updates the player's Bookshelf adding the given Tiles
+     *
+     * @param tilesToAdd contains the ItemCard to add and its position on the Bookshelf
+     * @param player     is the owner of the Bookshelf to modify
+     */
+    @Override
+    public void changeBookshelf(Map<Integer, ItemCard> tilesToAdd, String player) {
+
+    }
+
+    /**
+     * Prints the CommonGoals and its available score in the scene
+     *
+     * @param playerCommonGoal contains the CommonGoalID and its available score
+     */
+    @Override
+    public void comGoal(Map<Integer, Integer> playerCommonGoal) {
+        int n = 0;
+        for (Integer i : playerCommonGoal.keySet()) {
+            ImageView scoreImage = new ImageView(GUIResources.getScore("sc0" + playerCommonGoal.get(i).toString()));
+            scoreImage.setFitHeight(60);
+            scoreImage.setFitWidth(60);
+
+            if (n == 0) {
+                score_0.add(scoreImage, 0, 0);
+            } else {
+                score_1.add(scoreImage, 0, 0);
+            }
+
+            String cgNum = i.toString();
+            if (i < 10) {
+                cgNum = "0" + cgNum;
+            }
+
+            ImageView comGoalImage = new ImageView(GUIResources.getComGoal("cg" + cgNum));
+            comGoalImage.setFitHeight(150);
+            comGoalImage.setFitWidth(200);
+
+            comGoals.add(comGoalImage, n, 0);
+            n++;
+        }
+    }
+
+    /**
+     * Updates the available score of a CommonGoal each time it is reached and in the scene
+     *
+     * @param comGoalDoneID identifies the CommonGoal reached
+     * @param newValue      is the available score
      */
     @Override
     public void updateCommonGoal(int comGoalDoneID, int newValue) {
@@ -193,13 +256,40 @@ public class TakeCardsScene extends GUIScene {
         }
     }
 
+    /**
+     * Prints the PersonalGoal assigned to the player
+     *
+     * @param newValue is the PersonalGoal name
+     */
     @Override
-    public void initialize(ClientController clientController) {
-        this.clientController = clientController;
-        yourPoints.setText("You have 0 points");
-        errorArea.setVisible(false);
-        selectedTiles = new ArrayList<>();
-        bindEvents();
+    public void persGoal(String newValue) {
+        ImageView persGoalImage = new ImageView(GUIResources.getPersGoal(newValue));
+        persGoalImage.setFitHeight(200);
+        persGoalImage.setFitWidth(150);
+
+        persGoal.add(persGoalImage, 0, 0);
+    }
+
+    /**
+     * Prints the player's points in the scene
+     *
+     * @param myPoint are the points of the player
+     */
+    @Override
+    public void printPoints(int myPoint) {
+        yourPoints.setText("You have " + myPoint + " points");
+    }
+
+    /**
+     * Prints the message in the chat field of the scene
+     *
+     * @param sender  is the player that sent the message
+     * @param message is the message to print
+     */
+    @Override
+    public void receiveMessage(String sender, String message) {
+        chatHistory.appendText("> " + sender + ": " + message + "\n");
+        writtenMessage.setText("");
     }
 
     @Override
@@ -211,81 +301,9 @@ public class TakeCardsScene extends GUIScene {
         selectTiles.setDisable(false);
     }
 
-    @Override
-    public void bindEvents() {
-        boardPane.addEventHandler(MouseEvent.MOUSE_CLICKED, this::remove);
-        selectTiles.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> selectTiles());
-        undoSelection.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> revert());
-        sendMessage.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> sendChat());
-    }
-
-    private void remove(MouseEvent event) {
-        if (errorArea.isVisible()) {
-            errorArea.setVisible(false);
-            errorArea.setText("");
-        }
-
-        Node clickedNode = event.getPickResult().getIntersectedNode();
-        int clickedColumn = GridPane.getColumnIndex(clickedNode);
-        int clickedRow = GridPane.getRowIndex(clickedNode);
-
-        if (boardPane.getChildren().contains(clickedNode)) {
-            ImageView imageView = (ImageView) clickedNode;
-
-            if (imageView != null && selectedTiles.size() < 3) {
-                int coord = Position.getNumber(clickedColumn, clickedRow);
-                selectedTiles.add(coord);
-
-                imageView.setPreserveRatio(true);
-                imageView.setFitWidth(50);
-                imageView.setFitWidth(50);
-
-                youSelectedThis.add(imageView, selectedTiles.size() - 1, 0);
-            }
-        }
-    }
-
-    private void revert() {
-        for (int i = youSelectedThis.getChildren().size() - 1; i >= 0; i--) {
-            ImageView imageView = (ImageView) youSelectedThis.getChildren().get(i);
-
-            if (imageView != null && !selectedTiles.isEmpty()) {
-                imageView.setPreserveRatio(true);
-                imageView.setFitWidth(50);
-                imageView.setFitHeight(50);
-
-                boardPane.add(imageView, Position.getColumn(selectedTiles.get(i)), Position.getRow(selectedTiles.get(i)));
-                selectedTiles.remove(i);
-            }
-        }
-    }
-
-    public void updateCurrPlayer(String player) {
-        selectedTiles.clear();
-        selectTiles.setDisable(false);
-    }
-
-    private void selectTiles() {
-        InputController inputController = new InputController(clientController);
-
-        if (!inputController.checkSelection(selectedTiles)) {
-            printError("ERROR: wrong selection");
-        }
-
-        clientController.setSelectedTiles(selectedTiles);
-
-        try {
-            clientController.selectCard();
-            selectTiles.setDisable(true);
-        } catch (Exception e) {
-            e.printStackTrace();
-            printError("ERROR: server error");
-        }
-
-        selectedTiles.clear();
-        youSelectedThis.getChildren().clear();
-    }
-
+    /**
+     * Checks the message destination and eventually sends the message
+     */
     private void sendChat() {
         String[] checkChatMessage = {"@chat", destinationMenu.getText(), writtenMessage.getText()};
         InputController inputController = new InputController(clientController);
@@ -312,6 +330,79 @@ public class TakeCardsScene extends GUIScene {
                 clientController.chatToMe("you", message);
             } catch (Exception e) {
                 printError("ERROR: server error");
+            }
+        }
+    }
+
+    /**
+     * Checks the selected Tiles from the Board and eventually communicates the change to the server
+     */
+    private void selectTiles() {
+        InputController inputController = new InputController(clientController);
+
+        if (!inputController.checkSelection(selectedTiles)) {
+            printError("ERROR: wrong selection");
+        }
+
+        clientController.setSelectedTiles(selectedTiles);
+
+        try {
+            clientController.selectCard();
+            selectTiles.setDisable(true);
+        } catch (Exception e) {
+            e.printStackTrace();
+            printError("ERROR: server error");
+        }
+
+        selectedTiles.clear();
+        youSelectedThis.getChildren().clear();
+    }
+
+    /**
+     * Removes the clicked image from the Board pane and puts it in the SelectedTiles pane
+     *
+     * @param event is the click on the image
+     */
+    private void remove(MouseEvent event) {
+        if (errorArea.isVisible()) {
+            errorArea.setVisible(false);
+            errorArea.setText("");
+        }
+
+        Node clickedNode = event.getPickResult().getIntersectedNode();
+        int clickedColumn = GridPane.getColumnIndex(clickedNode);
+        int clickedRow = GridPane.getRowIndex(clickedNode);
+
+        if (boardPane.getChildren().contains(clickedNode)) {
+            ImageView imageView = (ImageView) clickedNode;
+
+            if (imageView != null && selectedTiles.size() < 3) {
+                int coord = Position.getNumber(clickedColumn, clickedRow);
+                selectedTiles.add(coord);
+
+                imageView.setPreserveRatio(true);
+                imageView.setFitWidth(50);
+                imageView.setFitWidth(50);
+
+                youSelectedThis.add(imageView, selectedTiles.size() - 1, 0);
+            }
+        }
+    }
+
+    /**
+     * Removes all the images from the SelectedTiles pane and puts them back in the Bord pane
+     */
+    private void revert() {
+        for (int i = youSelectedThis.getChildren().size() - 1; i >= 0; i--) {
+            ImageView imageView = (ImageView) youSelectedThis.getChildren().get(i);
+
+            if (imageView != null && !selectedTiles.isEmpty()) {
+                imageView.setPreserveRatio(true);
+                imageView.setFitWidth(50);
+                imageView.setFitHeight(50);
+
+                boardPane.add(imageView, Position.getColumn(selectedTiles.get(i)), Position.getRow(selectedTiles.get(i)));
+                selectedTiles.remove(i);
             }
         }
     }

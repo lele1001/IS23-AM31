@@ -12,15 +12,6 @@ public abstract class GUIScene {
 
     public abstract void initialize(ClientController clientController);
 
-    /**
-     * Prints the error on the scene
-     *
-     * @param error is the error to print
-     */
-    public abstract void printError(String error);
-
-    public abstract void bindEvents();
-
     public Scene getMyScene() {
         return myScene;
     }
@@ -30,6 +21,23 @@ public abstract class GUIScene {
     }
 
     /**
+     * Connects FXML items to the methods in the scene
+     */
+    public abstract void bindEvents();
+
+    /**
+     * Shows the name(s) of the saved game(s)
+     *
+     * @param savedGames contains all the saved games in which the player was in
+     */
+    public abstract void updateSavedGames(List<String> savedGames);
+
+    /**
+     * Sets the scene based on the number of players in the game
+     */
+    public abstract void setPlayers();
+
+    /**
      * Updates the current player
      *
      * @param player is the curren player
@@ -37,33 +45,56 @@ public abstract class GUIScene {
     public abstract void updateCurrPlayer(String player);
 
     /**
-     * Prints the board when it changes
+     * Shows the Tiles selected from the player in the TakeCard scene
      *
-     * @param board is a matrix of itemCards
-     */
-    public abstract void updateBoard(ItemCard[][] board);
-
-    /**
-     * Prints the bookshelf that changed
-     *
-     * @param nickname  is the owner of the bookshelf
-     * @param bookshelf is a matrix of itemCards
-     */
-    public abstract void updateBookshelf(String nickname, ItemCard[][] bookshelf);
-
-    /**
-     * Memorizes the Tiles selected from the board
-     *
-     * @param selectedTiles contains the ItemCard and its position on the board
+     * @param selectedTiles contains the Tiles selected by the player and their position on the Board
      */
     public abstract void updateSelectedTiles(Map<Integer, ItemCard> selectedTiles);
 
     /**
-     * Prints the CommonGoal of the game
+     * Prints the Board in the scene
      *
-     * @param playerCommonGoal contains the number of the CommonGoal and its available score
+     * @param board is the updated Board
+     */
+    public abstract void updateBoard(ItemCard[][] board);
+
+    /**
+     * Updates the Board removing the given Tiles
+     *
+     * @param tilesToRemove contains the ItemCard to remove and its position on the Board
+     */
+    public abstract void changeBoard(Map<Integer, ItemCard> tilesToRemove);
+
+    /**
+     * Prints the player's Bookshelf in the scene
+     *
+     * @param bookshelf is the player's updated Bookshelf
+     * @param nickname  is the owner of the Bookshelf
+     */
+    public abstract void updateBookshelf(String nickname, ItemCard[][] bookshelf);
+
+    /**
+     * Updates the player's Bookshelf adding the given Tiles
+     *
+     * @param tilesToAdd contains the ItemCard to add and its position on the Bookshelf
+     * @param player     is the owner of the Bookshelf to modify
+     */
+    public abstract void changeBookshelf(Map<Integer, ItemCard> tilesToAdd, String player);
+
+    /**
+     * Prints the CommonGoals and its available score in the scene
+     *
+     * @param playerCommonGoal contains the CommonGoalID and its available score
      */
     public abstract void comGoal(Map<Integer, Integer> playerCommonGoal);
+
+    /**
+     * Updates the available score of a CommonGoal each time it is reached and in the scene
+     *
+     * @param comGoalDoneID identifies the CommonGoal reached
+     * @param newValue      is the available score
+     */
+    public abstract void updateCommonGoal(int comGoalDoneID, int newValue);
 
     /**
      * Prints the PersonalGoal assigned to the player
@@ -73,32 +104,24 @@ public abstract class GUIScene {
     public abstract void persGoal(String newValue);
 
     /**
-     * Prints the points of the player
+     * Prints the player's points in the scene
      *
-     * @param myPoint are the points
+     * @param myPoint are the points of the player
      */
     public abstract void printPoints(int myPoint);
 
     /**
-     * Creates the chat destination Pane and the TabPane for the bookshelves
-     */
-    public abstract void setPlayers();
-
-    /**
-     * Prints the received chat message
+     * Prints the message in the chat field of the scene
      *
      * @param sender  is the player that sent the message
      * @param message is the message to print
      */
     public abstract void receiveMessage(String sender, String message);
 
-    public abstract void updateSavedGames(List<String> savedGames);
-
     /**
-     * Updates the score of the CommonGoal
+     * Prints an error message in the scene
      *
-     * @param comGoalDoneID is the ID of the CommonGoal
-     * @param newValue      is its available score
+     * @param error is the error message to display
      */
-    public abstract void updateCommonGoal(int comGoalDoneID, int newValue);
+    public abstract void printError(String error);
 }
