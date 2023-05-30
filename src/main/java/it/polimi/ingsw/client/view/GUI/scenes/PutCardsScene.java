@@ -259,7 +259,8 @@ public class PutCardsScene extends GUIScene {
                 clientController.chatToMe("you", message);
             } catch (Exception e) {
                 printError("ERROR: server error");
-            }        }
+            }
+        }
     }
 
     private void remove(MouseEvent event) {
@@ -275,7 +276,7 @@ public class PutCardsScene extends GUIScene {
                 youPutThis.add(imageView, 0, 2 - youPutThis.getChildren().size());
 
                 String[] splitString = imageView.getImage().getUrl().split("/");
-                String itemIdentifiers = splitString[splitString.length -1];
+                String itemIdentifiers = splitString[splitString.length - 1];
                 splitString = itemIdentifiers.split("(?=\\p{Upper})");
                 splitString[1] = splitString[1].split("\\.")[0];
 
@@ -305,6 +306,7 @@ public class PutCardsScene extends GUIScene {
                 youSelectedThis.add(imageView, i, 0);
             }
         }
+
         selectedTiles.clear();
     }
 }

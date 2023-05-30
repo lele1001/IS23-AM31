@@ -23,8 +23,6 @@ public class TakeCardsScene extends GUIScene {
     private static final int BOOKSHELF_HEIGHT = 6;
     private static final int BOOKSHELF_LENGTH = 5;
     @FXML
-    ScrollPane chatPane;
-    @FXML
     TextField writtenMessage;
     @FXML
     MenuButton destinationMenu;
@@ -44,7 +42,6 @@ public class TakeCardsScene extends GUIScene {
     @Override
     public void updateBoard(ItemCard[][] board) {
         boardPane.getChildren().clear();
-        System.out.println("board");
 
         for (int i = 0; i < DIM_BOARD; i++) {
             for (int j = 0; j < DIM_BOARD; j++) {
