@@ -263,12 +263,16 @@ public class PutCardsScene extends GUIScene {
                 imageView.setFitWidth(50);
                 youPutThis.add(imageView, 0, 2 - youPutThis.getChildren().size());
 
-                String[] itemIdentifiers = imageView.getImage().toString().split("(?=\\p{Upper})");
-                System.out.println(Arrays.toString(itemIdentifiers));
+                String[] splitString = imageView.getImage().getUrl().split("/");
+                String itemIdentifiers = splitString[splitString.length -1];
+                splitString = itemIdentifiers.split("(?=\\p{Upper})");
+                splitString[1] = splitString[1].split("\\.")[0];
+                System.out.println(Arrays.toString(splitString));
+
                 for (Integer i : clientController.getSelectedTiles().keySet()) {
                     ItemCard itemCard = clientController.getSelectedTiles().get(i);
 
-                    if (itemCard.getMyItem().toString().equalsIgnoreCase(itemIdentifiers[0]) && itemCard.getMyNum().toString().equalsIgnoreCase(itemIdentifiers[1])) {
+                    if (itemCard.getMyItem().toString().equalsIgnoreCase(splitString[0]) && itemCard.getMyNum().toString().equalsIgnoreCase(splitString[1])) {
                         System.out.println(i);
                         selectedTiles.add(i);
                     }

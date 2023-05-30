@@ -86,7 +86,7 @@ public class NotMyTurnScene extends GUIScene {
 
     @Override
     public void updateBookshelf(String nickname, ItemCard[][] bookshelf) {
-        int index = players.indexOf(nickname);
+        int index = players.indexOf(nickname) - 1;
         Tab tabToModify = bookshelvesPane.getTabs().get(index);
 
         if (tabToModify.getText().equals(nickname)) {
