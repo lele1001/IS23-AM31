@@ -92,6 +92,9 @@ public class NotMyTurnScene extends GUIScene {
         Tab tabToModify = bookshelvesPane.getTabs().get(index);
 
         if (tabToModify.getText().equals(nickname)) {
+            AnchorPane myAnchor = (AnchorPane) tabToModify.getContent();
+            GridPane bookshelfToModify = (GridPane) myAnchor.getChildren().get(1);
+
             for (int i = 0; i < Utils.BOOKSHELF_HEIGHT; i++) {
                 for (int j = 0; j < Utils.BOOKSHELF_LENGTH; j++) {
                     if (bookshelf[i][j] != null) {
@@ -104,8 +107,6 @@ public class NotMyTurnScene extends GUIScene {
                         tileImage.setFitHeight(25);
                         tileImage.setFitWidth(25);
 
-                        AnchorPane myAnchor = (AnchorPane) tabToModify.getContent();
-                        GridPane bookshelfToModify = (GridPane) myAnchor.getChildren().get(1);
                         bookshelfToModify.add(tileImage, j, i);
                     }
                 }

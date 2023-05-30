@@ -13,7 +13,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Map;
 
 public class PutCardsScene extends GUIScene {
@@ -76,7 +75,7 @@ public class PutCardsScene extends GUIScene {
     private void putTiles() {
         int i = 0;
         try {
-            String column = ((RadioButton)columns.getSelectedToggle()).getId();
+            String column = ((RadioButton) columns.getSelectedToggle()).getId();
             i = Integer.parseInt(String.valueOf(column.charAt(column.length() - 1)));
         } catch (NumberFormatException e) {
             printError("ERROR: parse exception");
@@ -97,6 +96,7 @@ public class PutCardsScene extends GUIScene {
 
         selectedTiles.clear();
         youPutThis.getChildren().clear();
+        youSelectedThis.getChildren().clear();
     }
 
     public void updateCurrPlayer(String player) {
@@ -208,9 +208,9 @@ public class PutCardsScene extends GUIScene {
     }
 
     @Override
-    public void updateSelectedTiles(Map<Integer, ItemCard> selectedTiles){
+    public void updateSelectedTiles(Map<Integer, ItemCard> selectedTiles) {
         int i = 0;
-        for(ItemCard itemCard : clientController.getSelectedTiles().values()){
+        for (ItemCard itemCard : clientController.getSelectedTiles().values()) {
             String itemName = itemCard.getMyItem().toString().toLowerCase();
             String itemNumber = itemCard.getMyNum().toString();
             String myItem = itemName + itemNumber;
@@ -253,7 +253,8 @@ public class PutCardsScene extends GUIScene {
                 clientController.chatToMe("you", message);
             } catch (Exception e) {
                 printError("ERROR: server error");
-            }        }
+            }
+        }
     }
 
     private void remove(MouseEvent event) {
@@ -269,7 +270,7 @@ public class PutCardsScene extends GUIScene {
                 youPutThis.add(imageView, 0, 2 - youPutThis.getChildren().size());
 
                 String[] splitString = imageView.getImage().getUrl().split("/");
-                String itemIdentifiers = splitString[splitString.length -1];
+                String itemIdentifiers = splitString[splitString.length - 1];
                 splitString = itemIdentifiers.split("(?=\\p{Upper})");
                 splitString[1] = splitString[1].split("\\.")[0];
 
@@ -296,6 +297,7 @@ public class PutCardsScene extends GUIScene {
                 youSelectedThis.add(imageView, i, 0);
             }
         }
+
         selectedTiles.clear();
     }
 }
