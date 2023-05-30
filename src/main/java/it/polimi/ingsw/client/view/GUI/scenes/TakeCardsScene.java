@@ -7,9 +7,7 @@ import it.polimi.ingsw.server.model.ItemCard;
 import it.polimi.ingsw.server.model.Position;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
+import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -26,13 +24,17 @@ public class TakeCardsScene extends GUIScene {
     @FXML
     ScrollPane chatPane;
     @FXML
-    AnchorPane takeCardsPane;
+    AnchorPane takeCardsPane, chatHistory;
     @FXML
     GridPane boardPane, comGoals, bookshelfPane, persGoal, youSelectedThis, score_0, score_1;
     @FXML
     Label errorArea, yourPoints;
     @FXML
-    Button selectTiles, undoSelection;
+    Button selectTiles, undoSelection, sendMessage;
+    @FXML
+    TextField writtenMessage;
+    @FXML
+    MenuButton destinationMenu;
     private ClientController clientController;
     private ArrayList<Integer> selectedTiles;
 
@@ -127,8 +129,38 @@ public class TakeCardsScene extends GUIScene {
     }
 
     @Override
-    public void setPlayers(int playersNumber) {
+    public void setPlayers() {
+        ArrayList<String> players = new ArrayList<>(clientController.getPlayersBookshelves().keySet());
 
+        MenuItem msgEverybody = new MenuItem("everybody");
+        msgEverybody.setId("msgEverybody");
+        destinationMenu.getItems().add(msgEverybody);
+        msgEverybody.setOnAction(event -> {
+            destinationMenu.setDisable(false);
+            sendMessage.setDisable(false);
+            destinationMenu.setText(msgEverybody.getText());
+        });
+
+        for (String player : players) {
+            if (!player.equals(clientController.getMyNickname())) {
+                MenuItem msgPlayer = new MenuItem(player);
+                msgPlayer.setId("msgTo" + player);
+                destinationMenu.getItems().add(msgPlayer);
+
+                msgPlayer.setOnAction(event -> {
+                    destinationMenu.setDisable(false);
+                    sendMessage.setDisable(false);
+                    destinationMenu.setText(msgPlayer.getText());
+                });
+            }
+        }
+
+    }
+
+    @Override
+    public void receiveMessage(String sender, String message) {
+        chatHistory.getChildren().add(chatHistory.getChildren().size(), new Label("> " + sender + ": " + message + "\n"));
+        writtenMessage.setText("");
     }
 
     @Override
@@ -137,13 +169,39 @@ public class TakeCardsScene extends GUIScene {
         yourPoints.setText("You have 0 points");
         errorArea.setVisible(false);
         selectedTiles = new ArrayList<>();
+
+
+    /*    destinationMenu.getItems().add(sendMesEverybody);
+        sendMesThird.setVisible(false);
+        sendMesFourth.setVisible(false);
+        int i = 0;
+
+        for (String s : clientController.getPlayersBookshelves().keySet()) {
+            if (i == 0) {
+                sendMesFirst.setText(s);
+                destinationMenu.getItems().add(sendMesFirst);
+            } else if (i == 1) {
+                sendMesSecond.setText(s);
+                destinationMenu.getItems().add(sendMesSecond);
+            } else if (i == 2) {
+                sendMesThird.setText(s);
+                sendMesThird.setVisible(true);
+                destinationMenu.getItems().add(sendMesThird);
+            } else if (i == 3) {
+                sendMesFourth.setText(s);
+                sendMesFourth.setVisible(true);
+                destinationMenu.getItems().add(sendMesFourth);
+            }
+
+            i++;
+        }*/
         bindEvents();
     }
 
     @Override
     public void printError(String error) {
-        errorArea.setVisible(true);
-        errorArea.setText(error);
+        revert();
+        selectTiles.setDisable(false);
     }
 
     @Override
@@ -151,9 +209,14 @@ public class TakeCardsScene extends GUIScene {
         boardPane.addEventHandler(MouseEvent.MOUSE_CLICKED, this::remove);
         selectTiles.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> selectTiles());
         undoSelection.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> revert());
+        sendMessage.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> sendChat());
     }
 
     private void remove(MouseEvent event) {
+        if (errorArea.isVisible()) {
+            errorArea.setVisible(false);
+        }
+
         Node clickedNode = event.getPickResult().getIntersectedNode();
         int clickedColumn = GridPane.getColumnIndex(clickedNode);
         int clickedRow = GridPane.getRowIndex(clickedNode);
@@ -162,20 +225,16 @@ public class TakeCardsScene extends GUIScene {
             ImageView imageView = (ImageView) clickedNode;
 
             if (imageView != null && selectedTiles.size() < 3) {
-                removeTile(imageView, clickedColumn, clickedRow);
+                int coord = Position.getNumber(clickedColumn, clickedRow);
+                selectedTiles.add(coord);
+
+                imageView.setPreserveRatio(true);
+                imageView.setFitWidth(50);
+                imageView.setFitWidth(50);
+
+                youSelectedThis.add(imageView, selectedTiles.size() - 1, 0);
             }
         }
-    }
-
-    private void removeTile(ImageView imageView, int clickedColumn, int clickedRow) {
-        int coord = Position.getNumber(clickedColumn, clickedRow);
-        selectedTiles.add(coord);
-
-        imageView.setPreserveRatio(true);
-        imageView.setFitWidth(50);
-        imageView.setFitWidth(50);
-
-        youSelectedThis.add(imageView, selectedTiles.size() - 1, 0);
     }
 
     private void revert() {
@@ -185,7 +244,7 @@ public class TakeCardsScene extends GUIScene {
             if (imageView != null && !selectedTiles.isEmpty()) {
                 imageView.setPreserveRatio(true);
                 imageView.setFitWidth(50);
-                imageView.setFitWidth(50);
+                imageView.setFitHeight(50);
 
                 boardPane.add(imageView, Position.getColumn(selectedTiles.get(i)), Position.getRow(selectedTiles.get(i)));
                 selectedTiles.remove(i);
@@ -214,15 +273,31 @@ public class TakeCardsScene extends GUIScene {
             e.printStackTrace();
             printError("ERROR: server error");
         }
-        /*
+    }
 
-        try {
-            clientController.selectCard(selectedTiles);
-            selectTiles.setDisable(true);
-        } catch (Exception e) {
-            e.printStackTrace();
-            printError("ERROR: server error");
+    public void sendChat() {
+        String[] checkChatMessage = {"@chat", destinationMenu.getText(), writtenMessage.getText()};
+        InputController inputController = new InputController(clientController);
+
+        if (inputController.checkChat(checkChatMessage) != 0) {
+            String destination = checkChatMessage[1];
+            String message = writtenMessage.getText();
+
+            if (destination.equalsIgnoreCase("Everybody")) {
+                try {
+                    clientController.chatToAll(message);
+                } catch (Exception e) {
+                    printError("ERRROR: server error");
+                }
+            } else {
+                try {
+                    clientController.chatToPlayer(destination, message);
+                } catch (Exception e) {
+                    printError("ERROR: server error");
+                }
+            }
+
+            receiveMessage("you", message);
         }
-         */
     }
 }

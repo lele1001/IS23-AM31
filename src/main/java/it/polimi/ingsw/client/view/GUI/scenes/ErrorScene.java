@@ -69,8 +69,10 @@ public class ErrorScene extends GUIScene {
     public void receiveMessage(String sender, String message) {
 
     }
-
+    public void chat(String destination, String message) {
+    }
     @Override
     public void updateCurrPlayer(String player) {
     }
+
 }

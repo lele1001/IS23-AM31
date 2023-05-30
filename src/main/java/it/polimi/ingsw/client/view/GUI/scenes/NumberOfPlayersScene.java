@@ -1,5 +1,6 @@
 package it.polimi.ingsw.client.view.GUI.scenes;
 
+
 import it.polimi.ingsw.client.ClientController;
 import it.polimi.ingsw.server.model.ItemCard;
 import javafx.fxml.FXML;
@@ -14,6 +15,7 @@ import javafx.scene.layout.GridPane;
 import java.util.Map;
 
 public class NumberOfPlayersScene extends GUIScene {
+
     @FXML
     GridPane firstPlayerPane;
     @FXML
@@ -98,13 +100,13 @@ public class NumberOfPlayersScene extends GUIScene {
 
     @Override
     public void setPlayers() {
+
     }
 
     @Override
     public void receiveMessage(String sender, String message) {
 
     }
-
     @Override
     public void updateBoard(ItemCard[][] board) {
     }

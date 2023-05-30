@@ -1,64 +1,99 @@
 package it.polimi.ingsw.client.view.GUI.scenes;
 
 import it.polimi.ingsw.client.ClientController;
+import it.polimi.ingsw.client.InputController;
 import it.polimi.ingsw.client.view.GUI.GUIResources;
 import it.polimi.ingsw.server.model.ItemCard;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Map;
 
 public class PutCardsScene extends GUIScene {
     private static final int BOOKSHELF_HEIGHT = 6;
     private static final int BOOKSHELF_LENGTH = 5;
+
     @FXML
-    SplitMenuButton destination;
+    TextField writtenMessage;
     @FXML
-    AnchorPane putCardsPane;
+    MenuButton destinationMenu;
     @FXML
-    GridPane bookshelfPane, comGoals, persGoal, score_0, score_1, youSelectedThis;
+    AnchorPane putCardsPane, chatHistory;
+    @FXML
+    GridPane bookshelfPane, comGoals, persGoal, score_0, score_1, youSelectedThis, youPutThis;
     @FXML
     ScrollPane chatPane;
     @FXML
     Button undoSelection, selectTiles, sendMessage;
     @FXML
-    Label yourPoints;
+    Label yourPoints, errorArea;
     @FXML
-    RadioButton col1, col2, col3, col4, col5;
+    RadioButton col0, col1, col2, col3, col4;
     @FXML
     ToggleGroup columns;
     private ClientController clientController;
 
+    private ArrayList<Integer> selectedTiles;
     @Override
     public void initialize(ClientController clientController) {
         this.clientController = clientController;
         yourPoints.setText("You have 0 points");
 
         columns = new ToggleGroup();
+        col0.setToggleGroup(columns);
         col1.setToggleGroup(columns);
         col2.setToggleGroup(columns);
         col3.setToggleGroup(columns);
         col4.setToggleGroup(columns);
-        col5.setToggleGroup(columns);
+
+        selectedTiles = new ArrayList<>();
 
         bindEvents();
     }
 
     @Override
     public void printError(String error) {
-
+        errorArea.setVisible(true);
+        errorArea.setText(error);
     }
 
     @Override
     public void bindEvents() {
-        youSelectedThis.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> orderTiles());
+        youSelectedThis.addEventHandler(MouseEvent.MOUSE_CLICKED, this::remove);
+        sendMessage.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> sendChat());
+        undoSelection.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> revert());
+        selectTiles.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> putTiles());
+
     }
 
-    public void orderTiles() {
+    private void putTiles() {
+        int i = 0;
+        try {
+            String column = ((RadioButton)columns.getSelectedToggle()).getId();
+            i = Integer.parseInt(String.valueOf(column.charAt(column.length() - 1)));
+        } catch (NumberFormatException e) {
+            printError("ERROR: parse exception");
+        }
 
+        InputController inputController = new InputController(clientController);
+        ArrayList<ItemCard> tilesToPut = inputController.checkPutGUI(selectedTiles);
+
+        if (tilesToPut != null) {
+            try {
+                clientController.insertCard(tilesToPut, i);
+            } catch (Exception e) {
+                printError("ERROR: serverError");
+            }
+        } else {
+            printError("ERROR: wrong selection");
+        }
     }
 
     public void updateCurrPlayer(String player) {
@@ -134,9 +169,43 @@ public class PutCardsScene extends GUIScene {
     }
 
     @Override
-    public void updateSelectedTiles(Map<Integer, ItemCard> selectedTiles){
+    public void setPlayers() {
+        ArrayList<String> players = new ArrayList<>(clientController.getPlayersBookshelves().keySet());
+
+        MenuItem msgEverybody = new MenuItem("everybody");
+        msgEverybody.setId("msgEverybody");
+        destinationMenu.getItems().add(msgEverybody);
+        msgEverybody.setOnAction(event -> {
+            destinationMenu.setDisable(false);
+            sendMessage.setDisable(false);
+            destinationMenu.setText(msgEverybody.getText());
+        });
+
+        for (String player : players) {
+            if (!player.equals(clientController.getMyNickname())) {
+                MenuItem msgPlayer = new MenuItem(player);
+                msgPlayer.setId("msgTo" + player);
+                destinationMenu.getItems().add(msgPlayer);
+
+                msgPlayer.setOnAction(event -> {
+                    destinationMenu.setDisable(false);
+                    sendMessage.setDisable(false);
+                    destinationMenu.setText(msgPlayer.getText());
+                });
+            }
+        }
+    }
+
+    @Override
+    public void receiveMessage(String sender, String message) {
+        chatHistory.getChildren().add(chatHistory.getChildren().size(), new Label("> " + sender + ": " + message + "\n"));
+        writtenMessage.setText("");
+    }
+
+    @Override
+    public void updateSelectedTiles(Map<Integer, ItemCard> selectedTiles) {
         int i = 0;
-        for(ItemCard itemCard : clientController.getSelectedTiles().values()){
+        for (ItemCard itemCard : clientController.getSelectedTiles().values()) {
             String itemName = itemCard.getMyItem().toString().toLowerCase();
             String itemNumber = itemCard.getMyNum().toString();
             String myItem = itemName + itemNumber;
@@ -150,5 +219,73 @@ public class PutCardsScene extends GUIScene {
             i++;
         }
 
+    }
+
+    public void sendChat() {
+        destinationMenu.setDisable(false);
+
+        String[] checkChatMessage = {"@chat", destinationMenu.getText(), writtenMessage.getText()};
+        InputController inputController = new InputController(clientController);
+        if (inputController.checkChat(checkChatMessage) != 0) {
+            String destination = checkChatMessage[1];
+            String message = writtenMessage.getText();
+
+            if (destination.equalsIgnoreCase("Everybody")) {
+                try {
+                    clientController.chatToAll(message);
+                } catch (Exception e) {
+                    printError("ERRROR: server error");
+                }
+            } else {
+                try {
+                    clientController.chatToPlayer(destination, message);
+                } catch (Exception e) {
+                    printError("ERROR: server error");
+                }
+            }
+
+            receiveMessage("you", message);
+        }
+    }
+
+    private void remove(MouseEvent event) {
+        Node clickedNode = event.getPickResult().getIntersectedNode();
+
+        if (youSelectedThis.getChildren().contains(clickedNode)) {
+            ImageView imageView = (ImageView) clickedNode;
+
+            if (imageView != null && youPutThis.getChildren().size() < 3) {
+                imageView.setPreserveRatio(true);
+                imageView.setFitWidth(50);
+                imageView.setFitWidth(50);
+                youPutThis.add(imageView, 0, 2 - youPutThis.getChildren().size());
+
+                String[] itemIdentifiers = imageView.getImage().toString().split("(?=\\p{Upper})");
+                System.out.println(Arrays.toString(itemIdentifiers));
+                for (Integer i : clientController.getSelectedTiles().keySet()) {
+                    ItemCard itemCard = clientController.getSelectedTiles().get(i);
+
+                    if (itemCard.getMyItem().toString().equalsIgnoreCase(itemIdentifiers[0]) && itemCard.getMyNum().toString().equalsIgnoreCase(itemIdentifiers[1])) {
+                        System.out.println(i);
+                        selectedTiles.add(i);
+                    }
+                }
+            }
+        }
+    }
+
+    private void revert() {
+        for (int i = youPutThis.getChildren().size() - 1; i >= 0; i--) {
+            ImageView imageView = (ImageView) youPutThis.getChildren().get(i);
+
+            if (imageView != null && !youPutThis.getChildren().isEmpty()) {
+                imageView.setPreserveRatio(true);
+                imageView.setFitWidth(50);
+                imageView.setFitHeight(50);
+
+                youSelectedThis.add(imageView, i, 0);
+            }
+        }
+        selectedTiles.clear();
     }
 }

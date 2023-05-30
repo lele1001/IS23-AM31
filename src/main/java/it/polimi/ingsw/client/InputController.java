@@ -295,4 +295,34 @@ public class InputController {
 
         return playersNum;
     }
+
+    public ArrayList<ItemCard> checkPutGUI(ArrayList<Integer> selectedTiles) {
+        ArrayList<ItemCard> tilesToPut = new ArrayList<>();
+
+        if (!clientController.isMyTurn()) {
+            System.out.println("It is not your turn");
+            return null;
+        }
+
+        if (selectedTiles.size() > 3) {
+            System.out.println("Invalid number of cards");
+            return null;
+        }
+
+        if (!clientController.getSelectedTiles().keySet().containsAll(selectedTiles)) {
+            System.out.print("Wrong tiles selected");
+            return null;
+        }
+
+        for (Integer i : selectedTiles) {
+            if (!checkPosition(i)) {
+                System.out.println("Wrong tiles selected");
+                return null;
+            } else {
+                tilesToPut.add(clientController.getSelectedTiles().get(i));
+            }
+        }
+
+        return tilesToPut;
+    }
 }

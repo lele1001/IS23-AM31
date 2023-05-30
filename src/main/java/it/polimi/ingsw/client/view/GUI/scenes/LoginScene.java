@@ -167,6 +167,10 @@ public class LoginScene extends GUIScene {
 
     }
 
+    public void chat(String destination, String message) {
+
+    }
+
     @Override
     public void updateCurrPlayer(String player) {
     }

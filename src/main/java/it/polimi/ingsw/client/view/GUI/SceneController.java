@@ -18,15 +18,15 @@ public class SceneController {
     GUIScene currentController;
     private final Map<String, GUIScene> scenesMap = new HashMap<>();
 
-    public SceneController(ClientController clientController) {  //chiedere se devo rinominare queste righe per nome sbagliato ??
+    public SceneController(ClientController clientController) {
         this.clientController = clientController;
         this.createScene(GUIResources.loginFXML, "loginScene");
         this.createScene(GUIResources.errorFXML, "errorScene");
-        this.createScene(GUIResources.putCardsFXML, "putCardsScene");
+        this.createScene(GUIResources.notMyTurnFXML, "notMyTurnScene");
         this.createScene(GUIResources.takeCardsFXML, "takeCardsScene");
         //this.createScene(GUIResources.endGameWinFXML, "endGameWinScene");
         //this.createScene(GUIResources.endGameLoseFXML, "endGameLoseScene");
-        this.createScene(GUIResources.notMyTurnFXML, "notMyTurnScene");
+        this.createScene(GUIResources.putCardsFXML, "putCardsScene");
         this.createScene(GUIResources.numberOfPlayerFXML, "numberOfPlayersScene");
     }
 

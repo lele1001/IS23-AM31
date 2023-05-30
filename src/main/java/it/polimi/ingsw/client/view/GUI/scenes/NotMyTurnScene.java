@@ -1,15 +1,14 @@
 package it.polimi.ingsw.client.view.GUI.scenes;
 
 import it.polimi.ingsw.client.ClientController;
+import it.polimi.ingsw.client.InputController;
 import it.polimi.ingsw.client.view.GUI.GUIResources;
 import it.polimi.ingsw.server.model.ItemCard;
 import it.polimi.ingsw.utils.Utils;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.Tab;
-import javafx.scene.control.TabPane;
+import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 
@@ -23,11 +22,17 @@ public class NotMyTurnScene extends GUIScene {
     @FXML
     ScrollPane chatPane;
     @FXML
-    AnchorPane notYourPane;
+    AnchorPane notYourPane, chatHistory;
     @FXML
     GridPane boardPane, comGoals, persGoal, score_0, score_1;
     @FXML
     Label yourPoints, userTurn;
+    @FXML
+    TextField writtenMessage;
+    @FXML
+    Button sendMessage;
+    @FXML
+    MenuButton destinationMenu;
     private ClientController clientController;
     private ArrayList<String> players;
     private GridPane bookshelf1, bookshelf2, bookshelf3, bookshelf4;
@@ -44,6 +49,7 @@ public class NotMyTurnScene extends GUIScene {
 
     @Override
     public void bindEvents() {
+        sendMessage.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> sendChat());
     }
 
     public void updateCurrPlayer(String currPlayer) {
@@ -95,10 +101,14 @@ public class NotMyTurnScene extends GUIScene {
                         tileImage.setFitWidth(25);
 
                         switch (index) {
-                            case 0: bookshelf1.add(tileImage, j, i);
-                            case 1: bookshelf2.add(tileImage, j, i);
-                            case 2: bookshelf3.add(tileImage, j, i);
-                            case 3: bookshelf4.add(tileImage, j, i);
+                            case 0:
+                                bookshelf1.add(tileImage, j, i);
+                            case 1:
+                                bookshelf2.add(tileImage, j, i);
+                            case 2:
+                                bookshelf3.add(tileImage, j, i);
+                            case 3:
+                                bookshelf4.add(tileImage, j, i);
                         }
                     }
                 }
@@ -155,50 +165,109 @@ public class NotMyTurnScene extends GUIScene {
     }
 
     @Override
-    public void setPlayers(int playersNumber) {
-        for (int i = 0; i < playersNumber; i++) {
-            players = new ArrayList<>(clientController.getPlayersBookshelves().keySet());
-            String tabId = "player" + i + "tab";
+    public void receiveMessage(String sender, String message) {
+        Label chatMessage = new Label("> " + sender + ": " + message + "\n");
+        chatMessage.setPrefWidth(200);
+        chatMessage.setWrapText(true);
 
-            GridPane bookshelfGrid = new GridPane();
-            bookshelfGrid.setId("bookshelf" + i);
-            bookshelfGrid.setFocusTraversable(true);
-            bookshelfGrid.setHgap(8.0);
-            bookshelfGrid.setVgap(4.0);
-            bookshelfGrid.setLayoutX(54.0);
-            bookshelfGrid.setLayoutY(41.0);
-            bookshelfGrid.setPrefSize(172.0, 181.0);
-            bookshelfGrid.setVgap(4.0);
-            setBookshelf(bookshelfGrid, i);
+        chatHistory.getChildren().add(chatHistory.getChildren().size(), chatMessage);
+        writtenMessage.setText("");
+    }
 
-            ImageView bookshelfImage = new ImageView(GUIResources.bookshelfImage);
-            bookshelfImage.setFitHeight(232.0);
-            bookshelfImage.setFitWidth(228.0);
-            bookshelfImage.setLayoutX(25.0);
-            bookshelfImage.setLayoutY(25.0);
-            bookshelfImage.setPickOnBounds(true);
-            bookshelfImage.setPreserveRatio(true);
+    @Override
+    public void setPlayers() {
+        MenuItem msgEverybody = new MenuItem("everybody");
+        msgEverybody.setId("msgEverybody");
+        destinationMenu.getItems().add(msgEverybody);
+        msgEverybody.setOnAction(event -> {
+            destinationMenu.setDisable(false);
+            sendMessage.setDisable(false);
+            destinationMenu.setText(msgEverybody.getText());
+        });
 
-            AnchorPane bookshelfPane = new AnchorPane();
-            bookshelfPane.setId("bookshelf" + i + "Pane");
-            bookshelfPane.getChildren().add(bookshelfImage);
-            bookshelfPane.getChildren().add(bookshelfGrid);
-
-            Tab playerTab = new Tab(players.get(i), bookshelfPane);
-            playerTab.setId(tabId);
-            bookshelvesPane.getTabs().add(playerTab);
+        players = new ArrayList<>(clientController.getPlayersBookshelves().keySet());
+        for (int i = 0; i < players.size(); i++) {
+            setBookshelf(i);
+            setChat(players.get(i));
         }
     }
 
-    private void setBookshelf(GridPane bookshelf, int index) {
-        if (index == 0) {
-            bookshelf1 = bookshelf;
-        } else if (index == 1) {
-            bookshelf2 = bookshelf;
-        } else if (index == 3) {
-            bookshelf3 = bookshelf;
-        } else if (index == 4) {
-            bookshelf4 = bookshelf;
+    private void setBookshelf(int i) {
+        String tabId = "player" + i + "tab";
+
+        GridPane bookshelfGrid = new GridPane();
+        bookshelfGrid.setId("bookshelf" + i);
+        bookshelfGrid.setFocusTraversable(true);
+        bookshelfGrid.setHgap(0.0);
+        bookshelfGrid.setVgap(4.0);
+        bookshelfGrid.setLayoutX(54.0);
+        bookshelfGrid.setLayoutY(41.0);
+        bookshelfGrid.setPrefSize(172.0, 181.0);
+        bookshelfGrid.setVgap(4.0);
+
+        if (i == 0) {
+            bookshelf1 = bookshelfGrid;
+        } else if (i == 1) {
+            bookshelf2 = bookshelfGrid;
+        } else if (i == 3) {
+            bookshelf3 = bookshelfGrid;
+        } else if (i == 4) {
+            bookshelf4 = bookshelfGrid;
+        }
+
+        ImageView bookshelfImage = new ImageView(GUIResources.bookshelfImage);
+        bookshelfImage.setFitHeight(232.0);
+        bookshelfImage.setFitWidth(228.0);
+        bookshelfImage.setLayoutX(25.0);
+        bookshelfImage.setLayoutY(25.0);
+        bookshelfImage.setPickOnBounds(true);
+        bookshelfImage.setPreserveRatio(true);
+
+        AnchorPane bookshelfPane = new AnchorPane();
+        bookshelfPane.setId("bookshelf" + i + "Pane");
+        bookshelfPane.getChildren().add(bookshelfImage);
+        bookshelfPane.getChildren().add(bookshelfGrid);
+
+        Tab playerTab = new Tab(players.get(i), bookshelfPane);
+        playerTab.setId(tabId);
+        bookshelvesPane.getTabs().add(playerTab);
+    }
+
+    public void setChat(String nickname) {
+        if (!nickname.equals((clientController.getMyNickname()))) {
+            MenuItem msgPlayer = new MenuItem(nickname);
+            msgPlayer.setId("msgTo" + nickname);
+            destinationMenu.getItems().add(msgPlayer);
+
+            msgPlayer.setOnAction(event -> {
+                destinationMenu.setDisable(false);
+                sendMessage.setDisable(false);
+                destinationMenu.setText(msgPlayer.getText());
+            });
+        }
+    }
+
+    private void sendChat() {
+        String[] checkChatMessage = {"@chat", destinationMenu.getText(), writtenMessage.getText()};
+        InputController inputController = new InputController(clientController);
+        if (inputController.checkChat(checkChatMessage) != 0) {
+            String destination = checkChatMessage[1];
+            String message = writtenMessage.getText();
+            if (destination.equalsIgnoreCase("Everybody")) {
+                try {
+                    clientController.chatToAll(message);
+                } catch (Exception e) {
+                    printError("ERRROR: server error");
+                }
+            } else {
+                try {
+                    clientController.chatToPlayer(destination, message);
+                } catch (Exception e) {
+                    printError("ERROR: server error");
+                }
+            }
+
+            receiveMessage("you", message);
         }
     }
 }
