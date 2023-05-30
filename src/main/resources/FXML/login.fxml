@@ -32,7 +32,7 @@
         </Label>
         <TextField fx:id="ipPort" GridPane.columnIndex="1" GridPane.columnSpan="2147483647" GridPane.rowIndex="4" />
 
-        <Button fx:id="loginButton" alignment="CENTER" contentDisplay="CENTER" onAction="#loginAction" prefWidth="100.0" text="Login" textOverrun="CLIP" GridPane.columnIndex="2" GridPane.rowIndex="5">
+        <Button fx:id="loginButton" alignment="CENTER" contentDisplay="CENTER" prefWidth="100.0" text="Login" textOverrun="CLIP" GridPane.columnIndex="2" GridPane.rowIndex="5">
         </Button>
 
         <Label fx:id="errorArea" prefHeight="50.0" prefWidth="370.0" visible="false" wrapText="true" GridPane.columnSpan="2147483647" GridPane.rowIndex="6">
