@@ -86,7 +86,7 @@ public class NotMyTurnScene extends GUIScene {
 
     @Override
     public void updateBookshelf(String nickname, ItemCard[][] bookshelf) {
-        int index = players.indexOf(nickname) - 1;
+        int index = players.indexOf(nickname);
         Tab tabToModify = bookshelvesPane.getTabs().get(index);
 
         if (tabToModify.getText().equals(nickname)) {
@@ -102,15 +102,14 @@ public class NotMyTurnScene extends GUIScene {
                         tileImage.setFitHeight(25);
                         tileImage.setFitWidth(25);
 
-                        switch (index) {
-                            case 0:
-                                bookshelf1.add(tileImage, j, i);
-                            case 1:
-                                bookshelf2.add(tileImage, j, i);
-                            case 2:
-                                bookshelf3.add(tileImage, j, i);
-                            case 3:
-                                bookshelf4.add(tileImage, j, i);
+                        if (nickname.equals(bookshelf1.getId())) {
+                            bookshelf1.add(tileImage, j, i);
+                        } else if (nickname.equals(bookshelf2.getId())) {
+                            bookshelf2.add(tileImage, j, i);
+                        } else if (nickname.equals(bookshelf3.getId())) {
+                            bookshelf3.add(tileImage, j, i);
+                        } else if (nickname.equals(bookshelf4.getId())) {
+                            bookshelf4.add(tileImage, j, i);
                         }
                     }
                 }
@@ -209,12 +208,16 @@ public class NotMyTurnScene extends GUIScene {
 
         if (i == 0) {
             bookshelf1 = bookshelfGrid;
+            bookshelf1.setId(bookshelfGrid.getId());
         } else if (i == 1) {
             bookshelf2 = bookshelfGrid;
+            bookshelf2.setId(bookshelfGrid.getId());
         } else if (i == 3) {
             bookshelf3 = bookshelfGrid;
+            bookshelf3.setId(bookshelfGrid.getId());
         } else if (i == 4) {
             bookshelf4 = bookshelfGrid;
+            bookshelf4.setId(bookshelfGrid.getId());
         }
 
         ImageView bookshelfImage = new ImageView(GUIResources.bookshelfImage);

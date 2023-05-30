@@ -252,6 +252,9 @@ public class TakeCardsScene extends GUIScene {
             e.printStackTrace();
             printError("ERROR: server error");
         }
+
+        selectedTiles.clear();
+        youSelectedThis.getChildren().clear();
     }
 
     private void sendChat() {
