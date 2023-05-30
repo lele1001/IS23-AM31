@@ -7,6 +7,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 
+import java.util.List;
 import java.util.Map;
 
 public class ErrorScene extends GUIScene {
@@ -69,6 +70,12 @@ public class ErrorScene extends GUIScene {
     public void receiveMessage(String sender, String message) {
 
     }
+
+    @Override
+    public void updateSavedGames(List<String> savedGames) {
+
+    }
+
     public void chat(String destination, String message) {
     }
     @Override

@@ -16,6 +16,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 public class NotMyTurnScene extends GUIScene {
@@ -165,6 +166,11 @@ public class NotMyTurnScene extends GUIScene {
     public void receiveMessage(String sender, String message) {
         chatHistory.appendText("> " + sender + ": " + message + "\n");
         writtenMessage.setText("");
+    }
+
+    @Override
+    public void updateSavedGames(List<String> savedGames) {
+
     }
 
     @Override

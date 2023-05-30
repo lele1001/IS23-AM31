@@ -18,6 +18,8 @@ public final class GUIResources {
     public final static String takeCardsFXML = "FXML/TakingCards.fxml";
     public final static String errorFXML = "FXML/error.fxml";
 
+    public final static String askSavedGamesFXML = "FXML/savedGamesScene.fxml";
+
     //images
     public final Image background = new Image(Objects.requireNonNull(GUIResources.class.getResource("/images/misc/basePagina2.png")).toString());
     public static final Image bookshelfImage = new Image(Objects.requireNonNull(GUIResources.class.getResource("/images/boards/bookshelf.png")).toString());

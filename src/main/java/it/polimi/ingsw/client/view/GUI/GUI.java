@@ -213,6 +213,7 @@ public class GUI implements View {
 
     @Override
     public void askForSavedGame(List<String> savedGames) {
-
+        Platform.runLater(()->this.sceneController.printNameGames(savedGames));
+        Platform.runLater(this.sceneController::loadSavedGames);
     }
 }

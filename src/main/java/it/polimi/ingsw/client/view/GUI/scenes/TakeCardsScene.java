@@ -14,6 +14,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 
@@ -164,6 +165,11 @@ public class TakeCardsScene extends GUIScene {
     public void receiveMessage(String sender, String message) {
         chatHistory.appendText("> " + sender + ": " + message + "\n");
         writtenMessage.setText("");
+    }
+
+    @Override
+    public void updateSavedGames(List<String> savedGames) {
+
     }
 
     @Override

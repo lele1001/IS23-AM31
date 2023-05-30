@@ -4,6 +4,7 @@ import it.polimi.ingsw.client.ClientController;
 import it.polimi.ingsw.server.model.ItemCard;
 import javafx.scene.Scene;
 
+import java.util.List;
 import java.util.Map;
 
 public abstract class GUIScene {
@@ -40,4 +41,6 @@ public abstract class GUIScene {
     public abstract void setPlayers();
 
     public abstract void receiveMessage(String sender, String message);
+
+    public abstract void updateSavedGames(List<String> savedGames);
 }

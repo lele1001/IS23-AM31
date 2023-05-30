@@ -12,6 +12,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 
+import java.util.List;
 import java.util.Map;
 
 public class NumberOfPlayersScene extends GUIScene {
@@ -107,6 +108,12 @@ public class NumberOfPlayersScene extends GUIScene {
     public void receiveMessage(String sender, String message) {
 
     }
+
+    @Override
+    public void updateSavedGames(List<String> savedGames) {
+
+    }
+
     @Override
     public void updateBoard(ItemCard[][] board) {
     }

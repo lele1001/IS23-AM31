@@ -14,6 +14,7 @@ import javafx.scene.layout.GridPane;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 public class PutCardsScene extends GUIScene {
@@ -84,7 +85,7 @@ public class PutCardsScene extends GUIScene {
 
         InputController inputController = new InputController(clientController);
         ArrayList<ItemCard> tilesToPut = inputController.checkPutGUI(selectedTiles);
-
+        System.out.println(selectedTiles);
         if (tilesToPut != null) {
             try {
                 clientController.insertCard(tilesToPut, i);
@@ -208,6 +209,11 @@ public class PutCardsScene extends GUIScene {
     }
 
     @Override
+    public void updateSavedGames(List<String> savedGames) {
+
+    }
+
+    @Override
     public void updateSelectedTiles(Map<Integer, ItemCard> selectedTiles){
         int i = 0;
         for(ItemCard itemCard : clientController.getSelectedTiles().values()){
@@ -277,7 +283,10 @@ public class PutCardsScene extends GUIScene {
                     ItemCard itemCard = clientController.getSelectedTiles().get(i);
 
                     if (itemCard.getMyItem().toString().equalsIgnoreCase(splitString[0]) && itemCard.getMyNum().toString().equalsIgnoreCase(splitString[1])) {
-                        selectedTiles.add(i);
+                        if(!selectedTiles.contains(i)){
+                            selectedTiles.add(i);
+                            break;
+                        }
                     }
                 }
             }

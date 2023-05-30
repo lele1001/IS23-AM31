@@ -9,7 +9,9 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class SceneController {
@@ -21,6 +23,7 @@ public class SceneController {
     public SceneController(ClientController clientController) {
         this.clientController = clientController;
         this.createScene(GUIResources.loginFXML, "loginScene");
+        this.createScene(GUIResources.askSavedGamesFXML, "askSavedGamesScene");
         this.createScene(GUIResources.errorFXML, "errorScene");
         this.createScene(GUIResources.notMyTurnFXML, "notMyTurnScene");
         this.createScene(GUIResources.takeCardsFXML, "takeCardsScene");
@@ -175,6 +178,18 @@ public class SceneController {
         }
 
         this.activeStage.setScene(new Scene(root));
+    }
+
+    public void loadSavedGames(){
+        this.currentController = this.scenesMap.get("askSavedGamesScene");
+        this.activeStage.setScene(currentController.getMyScene());
+        this.activeStage.setResizable(false);
+
+    }
+    public void printNameGames(List<String> savedGames){
+        for (GUIScene gs : scenesMap.values()) {
+            gs.updateSavedGames(savedGames);
+        }
     }
 
     public void fatalError(String error) {

@@ -400,6 +400,7 @@ public class ClientController {
 
         selectSavedGame = false;
         connectionClient.setSavedGame(wantToSave, gameName);
+        printWaitingForGame();
     }
 
     /**
