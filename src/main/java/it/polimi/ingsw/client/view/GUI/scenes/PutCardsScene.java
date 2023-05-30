@@ -94,6 +94,9 @@ public class PutCardsScene extends GUIScene {
         } else {
             printError("ERROR: wrong selection");
         }
+
+        selectedTiles.clear();
+        youPutThis.getChildren().clear();
     }
 
     public void updateCurrPlayer(String player) {
