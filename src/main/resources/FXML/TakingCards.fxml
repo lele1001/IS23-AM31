@@ -132,17 +132,19 @@
             <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="52.0" vgrow="SOMETIMES"/>
         </rowConstraints>
     </GridPane>
+
     <Label alignment="CENTER" contentDisplay="CENTER" layoutX="630.0" layoutY="70.0" maxHeight="-Infinity"
            maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="400.0"
            text="Select up to 3 Tiles from the board" textFill="WHITE" wrapText="true"/>
-    <ScrollPane fx:id="chatPane" hbarPolicy="NEVER" layoutX="1060.0" layoutY="20.0" maxHeight="-Infinity"
-                maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="510.0" prefWidth="200.0">
-        <AnchorPane fx:id="chatHistory" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
-                    minWidth="-Infinity" prefHeight="510.0" prefWidth="200.0"/>
-    </ScrollPane>
+
+    <TextArea fx:id="chatHistory" layoutX="1060.0" layoutY="20.0" editable="false" maxHeight="-Infinity"
+              maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="510.0" prefWidth="200.0"
+              wrapText="true"/>
+
     <TextField fx:id="writtenMessage" layoutX="1060.0" layoutY="535.0" maxHeight="-Infinity" maxWidth="-Infinity"
                minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="200.0"
                promptText="Insert your message"/>
+
     <MenuButton fx:id="destinationMenu" layoutX="1060.0" layoutY="590.0" maxHeight="-Infinity" maxWidth="-Infinity"
                 minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" popupSide="TOP" prefHeight="30.0"
                 prefWidth="150.0" text="destination"/>

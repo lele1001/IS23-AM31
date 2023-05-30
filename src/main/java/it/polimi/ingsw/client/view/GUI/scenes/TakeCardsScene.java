@@ -24,7 +24,11 @@ public class TakeCardsScene extends GUIScene {
     @FXML
     ScrollPane chatPane;
     @FXML
-    AnchorPane takeCardsPane, chatHistory;
+    TextField writtenMessage;
+    @FXML
+    MenuButton destinationMenu;
+    @FXML
+    AnchorPane takeCardsPane;
     @FXML
     GridPane boardPane, comGoals, bookshelfPane, persGoal, youSelectedThis, score_0, score_1;
     @FXML
@@ -32,9 +36,7 @@ public class TakeCardsScene extends GUIScene {
     @FXML
     Button selectTiles, undoSelection, sendMessage;
     @FXML
-    TextField writtenMessage;
-    @FXML
-    MenuButton destinationMenu;
+    TextArea chatHistory;
     private ClientController clientController;
     private ArrayList<Integer> selectedTiles;
 
@@ -154,12 +156,11 @@ public class TakeCardsScene extends GUIScene {
                 });
             }
         }
-
     }
 
     @Override
     public void receiveMessage(String sender, String message) {
-        chatHistory.getChildren().add(chatHistory.getChildren().size(), new Label("> " + sender + ": " + message + "\n"));
+        chatHistory.appendText("> " + sender + ": " + message + "\n");
         writtenMessage.setText("");
     }
 
@@ -170,36 +171,14 @@ public class TakeCardsScene extends GUIScene {
         errorArea.setVisible(false);
         selectedTiles = new ArrayList<>();
 
-
-    /*    destinationMenu.getItems().add(sendMesEverybody);
-        sendMesThird.setVisible(false);
-        sendMesFourth.setVisible(false);
-        int i = 0;
-
-        for (String s : clientController.getPlayersBookshelves().keySet()) {
-            if (i == 0) {
-                sendMesFirst.setText(s);
-                destinationMenu.getItems().add(sendMesFirst);
-            } else if (i == 1) {
-                sendMesSecond.setText(s);
-                destinationMenu.getItems().add(sendMesSecond);
-            } else if (i == 2) {
-                sendMesThird.setText(s);
-                sendMesThird.setVisible(true);
-                destinationMenu.getItems().add(sendMesThird);
-            } else if (i == 3) {
-                sendMesFourth.setText(s);
-                sendMesFourth.setVisible(true);
-                destinationMenu.getItems().add(sendMesFourth);
-            }
-
-            i++;
-        }*/
         bindEvents();
     }
 
     @Override
     public void printError(String error) {
+        errorArea.setVisible(true);
+        errorArea.setText(error);
+
         revert();
         selectTiles.setDisable(false);
     }
@@ -257,7 +236,7 @@ public class TakeCardsScene extends GUIScene {
         selectTiles.setDisable(false);
     }
 
-    public void selectTiles() {
+    private void selectTiles() {
         InputController inputController = new InputController(clientController);
 
         if (!inputController.checkSelection(selectedTiles)) {
@@ -275,7 +254,7 @@ public class TakeCardsScene extends GUIScene {
         }
     }
 
-    public void sendChat() {
+    private void sendChat() {
         String[] checkChatMessage = {"@chat", destinationMenu.getText(), writtenMessage.getText()};
         InputController inputController = new InputController(clientController);
 
@@ -283,7 +262,7 @@ public class TakeCardsScene extends GUIScene {
             String destination = checkChatMessage[1];
             String message = writtenMessage.getText();
 
-            if (destination.equalsIgnoreCase("Everybody")) {
+            if (destination.equalsIgnoreCase("everybody")) {
                 try {
                     clientController.chatToAll(message);
                 } catch (Exception e) {
@@ -297,7 +276,11 @@ public class TakeCardsScene extends GUIScene {
                 }
             }
 
-            receiveMessage("you", message);
+            try {
+                clientController.chatToMe("you", message);
+            } catch (Exception e) {
+                printError("ERROR: server error");
+            }
         }
     }
 }

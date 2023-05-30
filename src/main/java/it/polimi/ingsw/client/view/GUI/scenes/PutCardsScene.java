@@ -25,11 +25,11 @@ public class PutCardsScene extends GUIScene {
     @FXML
     MenuButton destinationMenu;
     @FXML
-    AnchorPane putCardsPane, chatHistory;
+    AnchorPane putCardsPane;
     @FXML
     GridPane bookshelfPane, comGoals, persGoal, score_0, score_1, youSelectedThis, youPutThis;
     @FXML
-    ScrollPane chatPane;
+    TextArea chatHistory;
     @FXML
     Button undoSelection, selectTiles, sendMessage;
     @FXML
@@ -39,8 +39,8 @@ public class PutCardsScene extends GUIScene {
     @FXML
     ToggleGroup columns;
     private ClientController clientController;
-
     private ArrayList<Integer> selectedTiles;
+
     @Override
     public void initialize(ClientController clientController) {
         this.clientController = clientController;
@@ -198,14 +198,14 @@ public class PutCardsScene extends GUIScene {
 
     @Override
     public void receiveMessage(String sender, String message) {
-        chatHistory.getChildren().add(chatHistory.getChildren().size(), new Label("> " + sender + ": " + message + "\n"));
+        chatHistory.appendText("> " + sender + ": " + message + "\n");
         writtenMessage.setText("");
     }
 
     @Override
-    public void updateSelectedTiles(Map<Integer, ItemCard> selectedTiles) {
+    public void updateSelectedTiles(Map<Integer, ItemCard> selectedTiles){
         int i = 0;
-        for (ItemCard itemCard : clientController.getSelectedTiles().values()) {
+        for(ItemCard itemCard : clientController.getSelectedTiles().values()){
             String itemName = itemCard.getMyItem().toString().toLowerCase();
             String itemNumber = itemCard.getMyNum().toString();
             String myItem = itemName + itemNumber;
@@ -244,8 +244,11 @@ public class PutCardsScene extends GUIScene {
                 }
             }
 
-            receiveMessage("you", message);
-        }
+            try {
+                clientController.chatToMe("you", message);
+            } catch (Exception e) {
+                printError("ERROR: server error");
+            }        }
     }
 
     private void remove(MouseEvent event) {

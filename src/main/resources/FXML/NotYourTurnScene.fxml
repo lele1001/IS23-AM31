@@ -42,11 +42,9 @@
             <Font name="Bauhaus 93" size="24.0"/>
         </font>
     </Label>
-    <ScrollPane fx:id="chatPane" hbarPolicy="NEVER" layoutX="1060.0" layoutY="20.0" maxHeight="-Infinity"
-                maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="510.0" prefWidth="200.0">
-        <AnchorPane fx:id="chatHistory" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
-                    minWidth="-Infinity" prefHeight="510.0" prefWidth="200.0"/>
-    </ScrollPane>
+    <TextArea fx:id="chatHistory" layoutX="1060.0" layoutY="20.0" editable="false" maxHeight="-Infinity"
+              maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="510.0" prefWidth="200.0"
+              wrapText="true"/>
     <TextField fx:id="writtenMessage" layoutX="1060.0" layoutY="535.0" maxHeight="-Infinity" maxWidth="-Infinity"
                minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="200.0"
                promptText="Insert your message"/>

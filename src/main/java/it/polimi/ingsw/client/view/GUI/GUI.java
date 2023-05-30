@@ -207,7 +207,7 @@ public class GUI implements View {
     }
 
     @Override
-    public void changeBookshelf(Map<Integer, ItemCard> tilesToAdd,String player) {
+    public void changeBookshelf(Map<Integer, ItemCard> tilesToAdd, String player) {
 
     }
 

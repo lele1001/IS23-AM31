@@ -20,9 +20,9 @@ public class NotMyTurnScene extends GUIScene {
     @FXML
     TabPane bookshelvesPane;
     @FXML
-    ScrollPane chatPane;
+    TextArea chatHistory;
     @FXML
-    AnchorPane notYourPane, chatHistory;
+    AnchorPane notYourPane;
     @FXML
     GridPane boardPane, comGoals, persGoal, score_0, score_1;
     @FXML
@@ -41,6 +41,7 @@ public class NotMyTurnScene extends GUIScene {
     public void initialize(ClientController clientController) {
         this.clientController = clientController;
         yourPoints.setText("You have 0 points");
+        bindEvents();
     }
 
     @Override
@@ -49,6 +50,7 @@ public class NotMyTurnScene extends GUIScene {
 
     @Override
     public void bindEvents() {
+
         sendMessage.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> sendChat());
     }
 
@@ -166,11 +168,7 @@ public class NotMyTurnScene extends GUIScene {
 
     @Override
     public void receiveMessage(String sender, String message) {
-        Label chatMessage = new Label("> " + sender + ": " + message + "\n");
-        chatMessage.setPrefWidth(200);
-        chatMessage.setWrapText(true);
-
-        chatHistory.getChildren().add(chatHistory.getChildren().size(), chatMessage);
+        chatHistory.appendText("> " + sender + ": " + message + "\n");
         writtenMessage.setText("");
     }
 
@@ -186,19 +184,23 @@ public class NotMyTurnScene extends GUIScene {
         });
 
         players = new ArrayList<>(clientController.getPlayersBookshelves().keySet());
+
         for (int i = 0; i < players.size(); i++) {
             setBookshelf(i);
             setChat(players.get(i));
         }
     }
 
+    /**
+     * Initializes the tabPane layout, setting the players' names, and the bookshelf image
+     */
     private void setBookshelf(int i) {
         String tabId = "player" + i + "tab";
 
         GridPane bookshelfGrid = new GridPane();
         bookshelfGrid.setId("bookshelf" + i);
         bookshelfGrid.setFocusTraversable(true);
-        bookshelfGrid.setHgap(0.0);
+        bookshelfGrid.setHgap(8.0);
         bookshelfGrid.setVgap(4.0);
         bookshelfGrid.setLayoutX(54.0);
         bookshelfGrid.setLayoutY(41.0);
@@ -233,8 +235,11 @@ public class NotMyTurnScene extends GUIScene {
         bookshelvesPane.getTabs().add(playerTab);
     }
 
-    public void setChat(String nickname) {
-        if (!nickname.equals((clientController.getMyNickname()))) {
+    /**
+     * Initializes the chat destination options, setting the players' names
+     */
+    private void setChat(String nickname) {
+        if (!nickname.equals(clientController.getMyNickname())) {
             MenuItem msgPlayer = new MenuItem(nickname);
             msgPlayer.setId("msgTo" + nickname);
             destinationMenu.getItems().add(msgPlayer);
@@ -250,9 +255,11 @@ public class NotMyTurnScene extends GUIScene {
     private void sendChat() {
         String[] checkChatMessage = {"@chat", destinationMenu.getText(), writtenMessage.getText()};
         InputController inputController = new InputController(clientController);
+
         if (inputController.checkChat(checkChatMessage) != 0) {
             String destination = checkChatMessage[1];
             String message = writtenMessage.getText();
+
             if (destination.equalsIgnoreCase("Everybody")) {
                 try {
                     clientController.chatToAll(message);
@@ -267,7 +274,11 @@ public class NotMyTurnScene extends GUIScene {
                 }
             }
 
-            receiveMessage("you", message);
+            try {
+                clientController.chatToMe("you", message);
+            } catch (Exception e) {
+                printError("ERROR: server error");
+            }
         }
     }
 }
