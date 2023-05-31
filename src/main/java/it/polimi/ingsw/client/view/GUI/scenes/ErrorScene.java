@@ -37,7 +37,6 @@ public class ErrorScene extends GUIScene {
      */
     @Override
     public void updateSavedGames(List<String> savedGames) {
-
     }
 
     /**
@@ -45,7 +44,6 @@ public class ErrorScene extends GUIScene {
      */
     @Override
     public void setPlayers() {
-
     }
 
     /**
@@ -55,7 +53,6 @@ public class ErrorScene extends GUIScene {
      */
     @Override
     public void updateCurrPlayer(String player) {
-
     }
 
     /**
@@ -65,7 +62,6 @@ public class ErrorScene extends GUIScene {
      */
     @Override
     public void updateSelectedTiles(Map<Integer, ItemCard> selectedTiles) {
-
     }
 
     /**
@@ -75,7 +71,6 @@ public class ErrorScene extends GUIScene {
      */
     @Override
     public void updateBoard(ItemCard[][] board) {
-
     }
 
     /**
@@ -85,7 +80,6 @@ public class ErrorScene extends GUIScene {
      */
     @Override
     public void changeBoard(Map<Integer, ItemCard> tilesToRemove) {
-
     }
 
     /**
@@ -96,7 +90,6 @@ public class ErrorScene extends GUIScene {
      */
     @Override
     public void updateBookshelf(String nickname, ItemCard[][] bookshelf) {
-
     }
 
     /**
@@ -107,7 +100,6 @@ public class ErrorScene extends GUIScene {
      */
     @Override
     public void changeBookshelf(Map<Integer, ItemCard> tilesToAdd, String player) {
-
     }
 
     /**
@@ -117,7 +109,6 @@ public class ErrorScene extends GUIScene {
      */
     @Override
     public void comGoal(Map<Integer, Integer> playerCommonGoal) {
-
     }
 
     /**
@@ -128,7 +119,6 @@ public class ErrorScene extends GUIScene {
      */
     @Override
     public void updateCommonGoal(int comGoalDoneID, int newValue) {
-
     }
 
     /**
@@ -138,7 +128,6 @@ public class ErrorScene extends GUIScene {
      */
     @Override
     public void persGoal(String newValue) {
-
     }
 
     /**
@@ -148,7 +137,6 @@ public class ErrorScene extends GUIScene {
      */
     @Override
     public void printPoints(int myPoint) {
-
     }
 
     /**
@@ -159,7 +147,6 @@ public class ErrorScene extends GUIScene {
      */
     @Override
     public void receiveMessage(String sender, String message) {
-
     }
 
     /**

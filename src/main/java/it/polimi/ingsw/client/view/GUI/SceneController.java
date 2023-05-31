@@ -201,6 +201,9 @@ public class SceneController {
      * @param tilesToRemove contains the ItemCard to remove and its position on the Board
      */
     public void changeBoard(Map<Integer, ItemCard> tilesToRemove) {
+        for (GUIScene gs : scenesMap.values()) {
+            gs.changeBoard(tilesToRemove);
+        }
     }
 
     /**
@@ -222,7 +225,9 @@ public class SceneController {
      * @param player     is the owner of the Bookshelf to modify
      */
     public void changeBookshelf(Map<Integer, ItemCard> tilesToAdd, String player) {
-
+        for (GUIScene gs : scenesMap.values()) {
+            gs.changeBookshelf(tilesToAdd, player);
+        }
     }
 
     /**

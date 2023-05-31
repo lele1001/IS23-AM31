@@ -4,6 +4,7 @@ import it.polimi.ingsw.client.ClientController;
 import it.polimi.ingsw.client.InputController;
 import it.polimi.ingsw.client.view.GUI.GUIResources;
 import it.polimi.ingsw.server.model.ItemCard;
+import it.polimi.ingsw.server.model.Position;
 import it.polimi.ingsw.utils.Utils;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -60,7 +61,6 @@ public class NotMyTurnScene extends GUIScene {
      */
     @Override
     public void updateSavedGames(List<String> savedGames) {
-
     }
 
     /**
@@ -105,7 +105,6 @@ public class NotMyTurnScene extends GUIScene {
      */
     @Override
     public void updateSelectedTiles(Map<Integer, ItemCard> selectedTiles) {
-
     }
 
     /**
@@ -142,7 +141,18 @@ public class NotMyTurnScene extends GUIScene {
      */
     @Override
     public void changeBoard(Map<Integer, ItemCard> tilesToRemove) {
+        for (ItemCard itemCard : tilesToRemove.values()) {
+            String itemName = itemCard.getMyItem().toString();
+            String itemNumber = itemCard.getMyNum().toString();
+            String myItem = itemName + itemNumber;
 
+            ImageView tileImage = new ImageView(GUIResources.getItem(myItem));
+            tileImage.setPreserveRatio(true);
+            tileImage.setFitHeight(46);
+            tileImage.setFitWidth(46);
+
+            boardPane.getChildren().remove(tileImage);
+        }
     }
 
     /**
@@ -159,6 +169,7 @@ public class NotMyTurnScene extends GUIScene {
         if (tabToModify.getText().equals(nickname)) {
             AnchorPane myAnchor = (AnchorPane) tabToModify.getContent();
             GridPane bookshelfToModify = (GridPane) myAnchor.getChildren().get(1);
+            bookshelfToModify.getChildren().clear();
 
             for (int i = 0; i < Utils.BOOKSHELF_HEIGHT; i++) {
                 for (int j = 0; j < Utils.BOOKSHELF_LENGTH; j++) {
@@ -187,7 +198,26 @@ public class NotMyTurnScene extends GUIScene {
      */
     @Override
     public void changeBookshelf(Map<Integer, ItemCard> tilesToAdd, String player) {
+        int index = players.indexOf(player);
+        Tab tabToModify = bookshelvesPane.getTabs().get(index);
 
+        if (tabToModify.getText().equals(player)) {
+            AnchorPane myAnchor = (AnchorPane) tabToModify.getContent();
+            GridPane bookshelfToModify = (GridPane) myAnchor.getChildren().get(1);
+
+            for (Integer i : tilesToAdd.keySet()) {
+                String itemName = tilesToAdd.get(i).getMyItem().toString();
+                String itemNumber = tilesToAdd.get(i).getMyNum().toString();
+                String myItem = itemName + itemNumber;
+
+                ImageView tileImage = new ImageView(GUIResources.getItem(myItem));
+                tileImage.setPreserveRatio(true);
+                tileImage.setFitHeight(46);
+                tileImage.setFitWidth(46);
+
+                bookshelfToModify.add(tileImage, Position.getColumn(i), Position.getRow(i));
+            }
+        }
     }
 
     /**
@@ -294,7 +324,6 @@ public class NotMyTurnScene extends GUIScene {
      */
     @Override
     public void printError(String error) {
-
     }
 
     /**

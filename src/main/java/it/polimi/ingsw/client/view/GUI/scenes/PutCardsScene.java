@@ -4,6 +4,7 @@ import it.polimi.ingsw.client.ClientController;
 import it.polimi.ingsw.client.InputController;
 import it.polimi.ingsw.client.view.GUI.GUIResources;
 import it.polimi.ingsw.server.model.ItemCard;
+import it.polimi.ingsw.server.model.Position;
 import it.polimi.ingsw.utils.Utils;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -113,7 +114,6 @@ public class PutCardsScene extends GUIScene {
      */
     @Override
     public void updateCurrPlayer(String player) {
-
     }
 
     /**
@@ -196,6 +196,20 @@ public class PutCardsScene extends GUIScene {
      */
     @Override
     public void changeBookshelf(Map<Integer, ItemCard> tilesToAdd, String player) {
+        if (clientController.getMyNickname().equals(player)) {
+            for (Integer i : tilesToAdd.keySet()) {
+                String itemName = tilesToAdd.get(i).getMyItem().toString();
+                String itemNumber = tilesToAdd.get(i).getMyNum().toString();
+                String myItem = itemName + itemNumber;
+
+                ImageView tileImage = new ImageView(GUIResources.getItem(myItem));
+                tileImage.setPreserveRatio(true);
+                tileImage.setFitHeight(46);
+                tileImage.setFitWidth(46);
+
+                bookshelfPane.add(tileImage, Position.getColumn(i), Position.getRow(i));
+            }
+        }
     }
 
     /**

@@ -64,7 +64,6 @@ public class TakeCardsScene extends GUIScene {
      */
     @Override
     public void updateSavedGames(List<String> savedGames) {
-
     }
 
     /**
@@ -116,7 +115,6 @@ public class TakeCardsScene extends GUIScene {
      */
     @Override
     public void updateSelectedTiles(Map<Integer, ItemCard> selectedTiles) {
-
     }
 
     /**
@@ -153,7 +151,18 @@ public class TakeCardsScene extends GUIScene {
      */
     @Override
     public void changeBoard(Map<Integer, ItemCard> tilesToRemove) {
+        for (ItemCard itemCard : tilesToRemove.values()) {
+            String itemName = itemCard.getMyItem().toString();
+            String itemNumber = itemCard.getMyNum().toString();
+            String myItem = itemName + itemNumber;
 
+            ImageView tileImage = new ImageView(GUIResources.getItem(myItem));
+            tileImage.setPreserveRatio(true);
+            tileImage.setFitHeight(46);
+            tileImage.setFitWidth(46);
+
+            boardPane.getChildren().remove(tileImage);
+        }
     }
 
     /**
@@ -193,7 +202,20 @@ public class TakeCardsScene extends GUIScene {
      */
     @Override
     public void changeBookshelf(Map<Integer, ItemCard> tilesToAdd, String player) {
+        if (clientController.getMyNickname().equals(player)) {
+            for (Integer i : tilesToAdd.keySet()) {
+                String itemName = tilesToAdd.get(i).getMyItem().toString();
+                String itemNumber = tilesToAdd.get(i).getMyNum().toString();
+                String myItem = itemName + itemNumber;
 
+                ImageView tileImage = new ImageView(GUIResources.getItem(myItem));
+                tileImage.setPreserveRatio(true);
+                tileImage.setFitHeight(46);
+                tileImage.setFitWidth(46);
+
+                bookshelfPane.add(tileImage, Position.getColumn(i), Position.getRow(i));
+            }
+        }
     }
 
     /**
