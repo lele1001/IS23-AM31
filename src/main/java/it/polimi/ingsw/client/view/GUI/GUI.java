@@ -246,6 +246,7 @@ public class GUI implements View {
     @Override
     public void printWinners(List<String> winners) {
         Platform.runLater(this.sceneController::endGame);
+
     }
 
     /**
@@ -256,8 +257,13 @@ public class GUI implements View {
         Platform.runLater(() -> this.sceneController.fatalError("You've been disconnected from server."));
     }
 
+    /**
+     * Implementation for GUI: prints the name of each player and its score
+     *
+     * @param finalScores contains the players' nicknames and their score
+     */
     @Override
     public void finalScores(LinkedHashMap<String, Integer> finalScores) {
-
+        Platform.runLater(() -> this.sceneController.finalScores(finalScores));
     }
 }

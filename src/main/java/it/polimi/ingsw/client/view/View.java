@@ -155,5 +155,10 @@ public interface View {
      */
     void disconnectMe();
 
+    /**
+     * Implementation for CLI and GUI: prints the name of each player and its score
+     *
+     * @param finalScores contains the players' nicknames and their score
+     */
     void finalScores (LinkedHashMap<String, Integer> finalScores);
 }

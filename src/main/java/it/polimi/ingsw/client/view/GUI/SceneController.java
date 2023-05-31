@@ -10,6 +10,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -311,5 +312,14 @@ public class SceneController {
         this.currentController = this.scenesMap.get("endGameScene");
         this.activeStage.setScene(currentController.getMyScene());
         this.activeStage.setResizable(false);
+    }
+
+    /**
+     * Displays the final ranking of the game, showing the score of each player
+     *
+     * @param finalScores contains the players' nicknames and their score
+     */
+    public void finalScores(LinkedHashMap<String, Integer> finalScores) {
+        this.currentController.finalScores(finalScores);
     }
 }

@@ -4,6 +4,7 @@ import it.polimi.ingsw.client.ClientController;
 import it.polimi.ingsw.server.model.ItemCard;
 import javafx.scene.Scene;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -124,4 +125,12 @@ public abstract class GUIScene {
      * @param error is the error message to display
      */
     public abstract void printError(String error);
+
+    /**
+     * Displays the final ranking of the game, showing the score of each player
+     *
+     * @param finalScores contains the players' nicknames and their score
+     */
+    public void finalScores(LinkedHashMap<String, Integer> finalScores) {
+    }
 }

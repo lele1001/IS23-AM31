@@ -1,29 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.image.*?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
-<AnchorPane prefHeight="300.0" prefWidth="500.0" stylesheets="@../CSS/dialogPages.css"
-            xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="it.polimi.ingsw.client.view.GUI.scenes.EndGameScene">
-    <ImageView fitHeight="200.0" fitWidth="250.0" layoutX="150.0" layoutY="20.0" pickOnBounds="true"
-               preserveRatio="true">
-        <Image url="@../images/publisherMaterial/TitleSmall.png"/>
+
+<AnchorPane prefHeight="300.0" prefWidth="500.0" stylesheets="@../CSS/dialogPages.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.view.GUI.scenes.EndGameScene">
+    <ImageView fitWidth="250.0" layoutX="150.0" layoutY="20.0" pickOnBounds="true" preserveRatio="true">
+        <Image url="@../images/publisherMaterial/TitleSmall.png" />
     </ImageView>
 
-    <ImageView fx:id="winnerToken" fitHeight="100.0" fitWidth="70.0" layoutX="45.0" layoutY="158.0" pickOnBounds="true"
-               preserveRatio="true">
-        <Image url="@../images/misc/firstPlayerToken.png"/>
+    <ImageView fx:id="winnerToken" fitHeight="100.0" fitWidth="70.0" layoutX="45.0" layoutY="158.0" pickOnBounds="true" preserveRatio="true">
+        <Image url="@../images/misc/firstPlayerToken.png" />
     </ImageView>
 
-    <ImageView fitHeight="70.0" fitWidth="100.0" layoutX="410.0" layoutY="160.0" pickOnBounds="true"
-               preserveRatio="true">
-        <Image url="@../images/publisherMaterial/Publisher.png"/>
+    <ImageView fitHeight="70.0" fitWidth="100.0" layoutX="410.0" layoutY="160.0" pickOnBounds="true" preserveRatio="true">
+        <Image url="@../images/publisherMaterial/Publisher.png" />
     </ImageView>
 
-    <Button fx:id="closeButton" layoutX="465.0" layoutY="15.0" maxHeight="-Infinity" maxWidth="-Infinity"
-            minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="25.0" prefWidth="25.0"
-            text="X"/>
+    <Button fx:id="closeButton" layoutX="465.0" layoutY="15.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="25.0" prefWidth="25.0" text="X" />
 
-    <AnchorPane fx:id="rankingPane" layoutX="150.0" layoutY="120.0" prefHeight="150.0" prefWidth="250.0"/>
+    <AnchorPane fx:id="rankingPane" layoutX="150.0" layoutY="120.0" prefHeight="150.0" prefWidth="250.0" />
+   <Label fx:id="endMessage" alignment="CENTER" layoutX="150.0" layoutY="89.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="250.0" text="final ranking:" textAlignment="CENTER" />
 </AnchorPane>

@@ -733,11 +733,18 @@ public class CLI implements View {
         System.out.println((char) 27 + "[0;39m" + "You are being disconnected from the server, please press ENTER to exit");
     }
 
+    /**
+     * Implementation for CLI: prints the name of each player and its score
+     *
+     * @param finalScores contains the players' nicknames and their score
+     */
+
     @Override
     public void finalScores(LinkedHashMap<String, Integer> finalScores) {
         System.out.println("Game is ended!");
-        System.out.println("Final classify: ");
+        System.out.println("Final rank: ");
         int i = 1, max = -1;
+
         for (String s : finalScores.keySet()) {
             if (finalScores.get(s) == max)
                 System.out.print(" parity with " + s);
@@ -748,6 +755,7 @@ public class CLI implements View {
                 i++;
             }
         }
+
         System.out.println();
     }
 }
