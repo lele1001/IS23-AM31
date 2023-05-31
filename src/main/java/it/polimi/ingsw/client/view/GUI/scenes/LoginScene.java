@@ -187,7 +187,7 @@ public class LoginScene extends GUIScene {
     /**
      * Checks the parameters inserted by the user and tries to start a connection with the server
      */
-    private void loginAction() {
+    public void loginAction() {
         int select = checkConnection();
         int port = checkPort();
 

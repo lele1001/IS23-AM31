@@ -244,11 +244,7 @@ public class GUI implements View {
      */
     @Override
     public void printWinners(List<String> winners) {
-        if (winners.contains(clientController.getMyNickname())) {
-            Platform.runLater(this.sceneController::endGameWin);
-        } else {
-            Platform.runLater(this.sceneController::endGameLose);
-        }
+        Platform.runLater(this.sceneController::endGame);
     }
 
     /**

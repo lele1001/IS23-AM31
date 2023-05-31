@@ -28,8 +28,7 @@ public class SceneController {
         this.createScene(GUIResources.takeCardsFXML, "takeCardsScene");
         this.createScene(GUIResources.putCardsFXML, "putCardsScene");
         this.createScene(GUIResources.errorFXML, "errorScene");
-        //this.createScene(GUIResources.endGameWinFXML, "endGameWinScene");
-        //this.createScene(GUIResources.endGameLoseFXML, "endGameLoseScene");
+        this.createScene(GUIResources.endGameFXML, "endGameScene");
     }
 
     /**
@@ -91,7 +90,6 @@ public class SceneController {
         this.currentController = this.scenesMap.get("askSavedGamesScene");
         this.activeStage.setScene(currentController.getMyScene());
         this.activeStage.setResizable(false);
-
     }
 
     /**
@@ -307,49 +305,11 @@ public class SceneController {
     }
 
     /**
-     * Displays a victory message
+     * Displays the game ranking
      */
-    public void endGameWin() {
-        Parent root;
-
-        try {
-            FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(SceneController.class.getClassLoader().getResource(GUIResources.endGameWinFXML));
-
-            if (loader.getLocation() == null) {
-                System.out.println("Not possible to set winner scene.");
-            }
-
-            root = loader.load();
-        } catch (IOException e) {
-            System.out.println("Winner scene's error.");
-            return;
-        }
-
-        this.activeStage.setScene(new Scene(root));
+    public void endGame() {
+        this.currentController = this.scenesMap.get("endGameScene");
+        this.activeStage.setScene(currentController.getMyScene());
+        this.activeStage.setResizable(false);
     }
-
-    /**
-     * Displays a lost message
-     */
-    public void endGameLose() {
-        Parent root;
-
-        try {
-            FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(SceneController.class.getClassLoader().getResource(GUIResources.endGameLoseFXML));
-
-            if (loader.getLocation() == null) {
-                System.out.println("Not possible to set loser scene.");
-            }
-
-            root = loader.load();
-        } catch (IOException e) {
-            System.out.println("Loser scene's error.");
-            return;
-        }
-
-        this.activeStage.setScene(new Scene(root));
-    }
-
 }

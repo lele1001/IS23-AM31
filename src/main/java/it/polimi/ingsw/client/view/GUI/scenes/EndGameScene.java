@@ -4,18 +4,21 @@ import it.polimi.ingsw.client.ClientController;
 import it.polimi.ingsw.server.model.ItemCard;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 
 import java.util.List;
 import java.util.Map;
 
-public class ErrorScene extends GUIScene {
+public class EndGameScene extends GUIScene {
     private ClientController clientController;
     @FXML
-    Label errorDescription, errorArea;
+    ImageView winnerToken;
     @FXML
     Button closeButton;
+    @FXML
+    AnchorPane rankingPane;
 
     @Override
     public void initialize(ClientController clientController) {
@@ -156,8 +159,6 @@ public class ErrorScene extends GUIScene {
      */
     @Override
     public void printError(String error) {
-        errorDescription.setText(error);
-        errorDescription.setVisible(true);
     }
 
     public void closeGame() {

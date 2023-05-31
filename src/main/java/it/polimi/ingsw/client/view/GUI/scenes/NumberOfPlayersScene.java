@@ -173,7 +173,7 @@ public class NumberOfPlayersScene extends GUIScene {
     /**
      * Form to select the number of players
      */
-    private void submitAction() {
+    public void submitAction() {
         int players = Integer.parseInt(playersNum.getText());
 
         if (players <= 0 || players >= 5) {
