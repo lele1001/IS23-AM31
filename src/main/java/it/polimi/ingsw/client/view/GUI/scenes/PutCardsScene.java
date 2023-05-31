@@ -155,7 +155,7 @@ public class PutCardsScene extends GUIScene {
      * @param tilesToRemove contains the ItemCard to remove and its position on the Board
      */
     @Override
-    public void changeBoard(Map<Integer, ItemCard> tilesToRemove) {
+    public void changeBoard(Integer[] tilesToRemove) {
     }
 
     /**
@@ -198,7 +198,7 @@ public class PutCardsScene extends GUIScene {
     public void changeBookshelf(Map<Integer, ItemCard> tilesToAdd, String player) {
         if (clientController.getMyNickname().equals(player)) {
             for (Integer i : tilesToAdd.keySet()) {
-                String itemName = tilesToAdd.get(i).getMyItem().toString();
+                String itemName = tilesToAdd.get(i).getMyItem().toString().toLowerCase();
                 String itemNumber = tilesToAdd.get(i).getMyNum().toString();
                 String myItem = itemName + itemNumber;
 

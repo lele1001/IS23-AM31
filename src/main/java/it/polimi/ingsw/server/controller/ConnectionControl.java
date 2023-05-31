@@ -7,10 +7,7 @@ import it.polimi.ingsw.server.Server;
 import it.polimi.ingsw.server.model.ItemCard;
 
 import java.io.PrintStream;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class ConnectionControl {
     private final Map<String, ClientHandler> clientHandlerMap = new HashMap<>();
@@ -90,6 +87,11 @@ public class ConnectionControl {
         }
     }
 
+    /**
+     * Asks the client if he wants to resume one of the game he's into.
+     * @param nickname: the nickname of the client to be asked.
+     * @param savedGames: the list of the saved games the client is into.
+     */
     public void askSavedGame(String nickname, List<String> savedGames) {
         this.getClientHandlerMap().get(nickname).askSavedGame(savedGames);
     }
@@ -254,8 +256,8 @@ public class ConnectionControl {
     public void SendBoardChanged(ItemCard[][] newBoard, String receiver) {
         if (receiver == null) {
             // Send it to all the players
-            System.out.println("Board has changed");
-            c.printBoard(newBoard);
+            System.out.println("Sending board changes to all...");
+/*            c.printBoard(newBoard);
 
             // Just for tests: saving the board in a temporary file to check the insert.
             PrintStream printStream;
@@ -267,7 +269,7 @@ public class ConnectionControl {
                 printStream.close();
             } catch (Exception e) {
                 System.out.println("File BoardTest not found.");
-            }
+            }*/
 
             for (ClientHandler c : getClientHandlerMap().values()) {
                 c.SendBoardChanged(newBoard);
@@ -281,6 +283,28 @@ public class ConnectionControl {
                 c_receiver.SendBoardChanged(newBoard);
             }
         }
+    }
+
+    /**
+     * Sends board's update to clients.
+     * @param tilesToRemove: an array of the positions of the just removed tiles.
+     */
+    public void sendBoardRenewed(Integer[] tilesToRemove) {
+        System.out.println("Sending board's update to all...");
+        for (ClientHandler c : getClientHandlerMap().values())
+            c.sendBoardRenewed(tilesToRemove);
+    }
+
+    /**
+     * Sends bookshelf's update to clients.
+     * @param tilesToAdd: an ordered array of tiles to add into the bookshelf.
+     * @param column: the column to put tiles into.
+     * @param player: the player whose bookshelf has just changed.
+     */
+    public void sendBookshelfRenewed(ItemCard[] tilesToAdd, int column, String player) {
+        System.out.println("Sending " + player + " bookshelf's update to all...");
+        for (ClientHandler c : getClientHandlerMap().values())
+            c.sendBookshelfRenewed(player, tilesToAdd, column);
     }
 
     /**
@@ -426,13 +450,13 @@ public class ConnectionControl {
     /**
      * Sends to all clients the nickname of the winners of the game.
      *
-     * @param winners winners' list.
+     * @param finalScores: ordered hash map with all final scores.
      */
-    public void sendWinner(List<String> winners) {
+    public void sendFinalScores(LinkedHashMap<String, Integer> finalScores) {
         System.out.println("Sending winners' nickname...");
 
         for (ClientHandler c : getClientHandlerMap().values()) {
-            c.sendWinner(winners);
+            c.sendFinalScores(finalScores);
         }
     }
 

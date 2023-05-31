@@ -194,11 +194,11 @@ public class SceneController {
     }
 
     /**
-     * Updates the Board removing the given Tiles
+     * Updates the Board removing the tiles from the given positions.
      *
-     * @param tilesToRemove contains the ItemCard to remove and its position on the Board
+     * @param tilesToRemove contains board's positions to remove tiles from.
      */
-    public void changeBoard(Map<Integer, ItemCard> tilesToRemove) {
+    public void changeBoard(Integer[] tilesToRemove) {
         for (GUIScene gs : scenesMap.values()) {
             gs.changeBoard(tilesToRemove);
         }

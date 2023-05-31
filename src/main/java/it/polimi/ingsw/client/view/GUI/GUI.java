@@ -6,6 +6,7 @@ import it.polimi.ingsw.server.model.HouseItem;
 import it.polimi.ingsw.server.model.ItemCard;
 import javafx.application.Platform;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -125,12 +126,12 @@ public class GUI implements View {
     }
 
     /**
-     * Implementation for GUI: updates the Board removing the given Tiles
+     * Implementation for GUI: updates the Board removing the tiles from the given positions.
      *
-     * @param tilesToRemove contains the ItemCard to remove and its position on the Board
+     * @param tilesToRemove contains board's positions to remove tiles from.
      */
     @Override
-    public void changeBoard(Map<Integer, ItemCard> tilesToRemove) {
+    public void changeBoard(Integer[] tilesToRemove) {
         Platform.runLater(() -> sceneController.changeBoard(tilesToRemove));
     }
 
@@ -253,5 +254,10 @@ public class GUI implements View {
     @Override
     public void disconnectMe() {
         Platform.runLater(() -> this.sceneController.fatalError("You've been disconnected from server."));
+    }
+
+    @Override
+    public void finalScores(LinkedHashMap<String, Integer> finalScores) {
+
     }
 }

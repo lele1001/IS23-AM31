@@ -7,11 +7,14 @@ import it.polimi.ingsw.server.gameExceptions.NotSameSelectedException;
 import it.polimi.ingsw.server.model.GameModel;
 import it.polimi.ingsw.server.model.ItemCard;
 import it.polimi.ingsw.server.model.ModelInterface;
+import it.polimi.ingsw.utils.ModelPropertyChange;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.*;
 
+import static it.polimi.ingsw.utils.ModelPropertyChange.*;
+import static it.polimi.ingsw.utils.ModelPropertyChange.BOARD_CHANGED;
 import static it.polimi.ingsw.utils.Utils.*;
 
 public class GameController implements PropertyChangeListener {
@@ -38,6 +41,8 @@ public class GameController implements PropertyChangeListener {
 
     /**
      * Creates the game with all the necessary (board, bookshelves, ...) and starts it
+     * @param gameFilePath: the file's path to save game into.
+     * @param playersList the list of this game's players.
      */
     public void createGame(ArrayList<String> playersList, String gameFilePath) {
         this.gameFilePath = gameFilePath;
@@ -89,6 +94,7 @@ public class GameController implements PropertyChangeListener {
     /**
      * Calls each player's turn until somebody completes his/her Bookshelf.
      * If available players are less than two, stops the game and waits for their coming back for 60 seconds: if the timeout exceeds, ends the game.
+     * @param startFrom: the position, in playersList array list, that indicates the first player that has to play.
      */
     public void run(int startFrom) {
         gameIsActive = true;
@@ -130,7 +136,9 @@ public class GameController implements PropertyChangeListener {
 
                     if (remained.size() == 1) {
                         System.out.println(oneWinnerEndPhrase + remained.get(0));
-                        connectionControl.sendWinner(remained);
+                        LinkedHashMap<String, Integer> toBeSent = new LinkedHashMap<>();
+                        toBeSent.put(remained.get(0), gameModel.calcFinalScore().get(remained.get(0)));
+                        connectionControl.sendFinalScores(toBeSent);
                     }
 
                     connectionControl.onEndGame(gameFilePath);
@@ -138,6 +146,10 @@ public class GameController implements PropertyChangeListener {
                 } else {
                     connectionControl.sendErrorToEveryone("Game is resuming...");
                 }
+            }
+            if (playersList.get(i).equals(currPlayer)) {
+                System.out.println("Going to the next player...");
+                i++;
             }
             playerTurn(i);
 
@@ -154,6 +166,7 @@ public class GameController implements PropertyChangeListener {
     /**
      * If the current player is not the first one, makes all the remaining one play their turn
      * Calls the method to calculate the final score and end the game.
+     * @param nickname: the nickname of the player that has just finished his turn.
      */
     public void runLastTurn(String nickname) {
         int i = playersList.indexOf(nickname) + 1;
@@ -163,15 +176,13 @@ public class GameController implements PropertyChangeListener {
             i++;
         }
 
-        ArrayList<String> gameWinners = gameModel.calcFinalScore();
-
-        if (gameWinners.size() == 1) {
+/*        if (finalScores.size() == 1) {
             System.out.println(oneWinnerEndPhrase + gameWinners.get(0));
         } else {
             System.out.println(moreWinnerEndPhrase + gameWinners);
-        }
+        }*/
 
-        connectionControl.sendWinner(gameWinners);
+        connectionControl.sendFinalScores(gameModel.calcFinalScore());
         connectionControl.onEndGame(gameFilePath);
     }
 
@@ -179,6 +190,7 @@ public class GameController implements PropertyChangeListener {
      * Waits for the player's action caught by ConnectionControl and calls the method to check and perform it.
      * Every player has three minutes to complete his turn:
      * if this timer exceeds, the player is set as offline, and the game continues with the next one.
+     * @param indexCurrPlayer: the playersList's index of the nickname that has to play.
      */
     private void playerTurn(int indexCurrPlayer) {
         currPlayer = playersList.get(indexCurrPlayer);
@@ -269,7 +281,6 @@ public class GameController implements PropertyChangeListener {
             connectionControl.SendError(notYourTurnResponse, nickname);
             return;
         }
-
         try {
             gameModel.selectCard(positions);
         } catch (NoRightItemCardSelection e) {
@@ -296,35 +307,43 @@ public class GameController implements PropertyChangeListener {
             connectionControl.SendError(evt.getPropertyName(), (String) evt.getSource());
         } else {
             switch (evt.getPropertyName()) {
-                case "BOOKSHELF_CHANGED" -> {
+                case BOOKSHELF_CHANGED -> {
                     connectionControl.SendBookshelfChanged((String) evt.getSource(), (ItemCard[][]) evt.getNewValue(), (String) evt.getOldValue());
-
-                    if (evt.getOldValue() == null) {
+/*                    if (evt.getOldValue() == null) {
                         turnPhase = TurnPhase.ENDTURN;
-                    }
+                    }*/
                 }
-                case "BOARD_CHANGED" -> {
+                case BOARD_CHANGED -> {
                     connectionControl.SendBoardChanged((ItemCard[][]) evt.getNewValue(), (String) evt.getOldValue());
+/*                    if ((evt.getOldValue() == null) && (turnPhase == TurnPhase.SELECTCARDS)) {
 
-                    if ((evt.getOldValue() == null) && (turnPhase == TurnPhase.SELECTCARDS)) {
+                    }*/
+                }
+                case BOOKSHELF_RENEWED -> {
+                    connectionControl.sendBookshelfRenewed((ItemCard[]) evt.getNewValue(), (Integer) evt.getOldValue(), (String) evt.getSource());
+                    turnPhase = TurnPhase.ENDTURN;
+                }
+                case BOARD_RENEWED -> {
+                    connectionControl.sendBoardRenewed((Integer[]) evt.getNewValue());
+                    if (turnPhase == TurnPhase.SELECTCARDS) {
                         turnPhase = TurnPhase.INSERTCARDS;
                         connectionControl.askInsert(currPlayer);
                     }
                 }
-                case "COM_GOAL_CREATED" ->
+                case COM_GOAL_CREATED ->
                         connectionControl.SendCommonGoalCreated((Integer) evt.getSource(), (Integer) evt.getNewValue(), (String) evt.getOldValue());
-                case "EMPTY_CARD_BAG" -> connectionControl.SendEmptyCardBag();
-                case "PLAYER_SCORE" ->
+                case EMPTY_CARD_BAG -> connectionControl.SendEmptyCardBag();
+                case PLAYER_SCORE ->
                         connectionControl.sendPlayerScore((String) evt.getSource(), (Integer) evt.getNewValue());
-                case "COM_GOAL_DONE" ->
+                case COM_GOAL_DONE ->
                         connectionControl.SendCommonGoalDone((String) evt.getSource(), (int[]) evt.getNewValue());
-                case "PERS_GOAL_CREATED" ->
+                case PERS_GOAL_CREATED ->
                         connectionControl.SendPersGoalCreated((String) evt.getSource(), (String) evt.getNewValue());
-                case "BOOKSHELF_COMPLETED" -> {
+                case BOOKSHELF_COMPLETED -> {
                     winner = true;
                     connectionControl.SendBookshelfCompleted((String) evt.getSource());
                 }
-                case "FINAL_SCORE" ->
+                case FINAL_SCORES ->
                         connectionControl.sendErrorToEveryone(evt.getSource() + " has done" + evt.getNewValue() + " points.");
                 default -> {
                 }

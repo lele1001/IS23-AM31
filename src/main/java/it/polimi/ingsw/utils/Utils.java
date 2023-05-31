@@ -1,6 +1,6 @@
 package it.polimi.ingsw.utils;
 
-public class Utils {
+public abstract class Utils {
     //TODO Connection controll
     /*
     DONE:

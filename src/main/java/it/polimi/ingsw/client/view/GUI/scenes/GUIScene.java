@@ -63,7 +63,7 @@ public abstract class GUIScene {
      *
      * @param tilesToRemove contains the ItemCard to remove and its position on the Board
      */
-    public abstract void changeBoard(Map<Integer, ItemCard> tilesToRemove);
+    public abstract void changeBoard(Integer[] tilesToRemove);
 
     /**
      * Prints the player's Bookshelf in the scene

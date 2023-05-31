@@ -3,6 +3,7 @@ package it.polimi.ingsw.client.view;
 import it.polimi.ingsw.server.model.HouseItem;
 import it.polimi.ingsw.server.model.ItemCard;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -67,7 +68,7 @@ public interface View {
      *
      * @param tilesToRemove contains the ItemCard to remove and its position on the Board
      */
-    void changeBoard(Map<Integer, ItemCard> tilesToRemove);
+    void changeBoard(Integer[] tilesToRemove);
 
     /**
      * Implementation for CLI and GUI: prints the player's Bookshelf
@@ -153,4 +154,6 @@ public interface View {
      * Implementation for CLI and GUI: disconnects the client after a request done by the server
      */
     void disconnectMe();
+
+    void finalScores (LinkedHashMap<String, Integer> finalScores);
 }

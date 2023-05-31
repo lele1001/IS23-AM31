@@ -18,6 +18,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import static it.polimi.ingsw.server.model.Position.getColumn;
+import static it.polimi.ingsw.server.model.Position.getRow;
+
 
 public class TakeCardsScene extends GUIScene {
     @FXML
@@ -147,22 +150,12 @@ public class TakeCardsScene extends GUIScene {
     /**
      * Updates the Board removing the given Tiles
      *
-     * @param tilesToRemove contains the ItemCard to remove and its position on the Board
+     * @param tilesToRemove contains the positions of the tiles to be removed from the board
      */
     @Override
-    public void changeBoard(Map<Integer, ItemCard> tilesToRemove) {
-        for (ItemCard itemCard : tilesToRemove.values()) {
-            String itemName = itemCard.getMyItem().toString();
-            String itemNumber = itemCard.getMyNum().toString();
-            String myItem = itemName + itemNumber;
-
-            ImageView tileImage = new ImageView(GUIResources.getItem(myItem));
-            tileImage.setPreserveRatio(true);
-            tileImage.setFitHeight(46);
-            tileImage.setFitWidth(46);
-
-            boardPane.getChildren().remove(tileImage);
-        }
+    public void changeBoard(Integer[] tilesToRemove) {
+        for (Integer i : tilesToRemove)
+            boardPane.getChildren().removeIf(n -> GridPane.getRowIndex(n) == getRow(i) && GridPane.getColumnIndex(n) == getColumn(i));
     }
 
     /**
@@ -204,14 +197,14 @@ public class TakeCardsScene extends GUIScene {
     public void changeBookshelf(Map<Integer, ItemCard> tilesToAdd, String player) {
         if (clientController.getMyNickname().equals(player)) {
             for (Integer i : tilesToAdd.keySet()) {
-                String itemName = tilesToAdd.get(i).getMyItem().toString();
+                String itemName = tilesToAdd.get(i).getMyItem().toString().toLowerCase();
                 String itemNumber = tilesToAdd.get(i).getMyNum().toString();
                 String myItem = itemName + itemNumber;
 
                 ImageView tileImage = new ImageView(GUIResources.getItem(myItem));
                 tileImage.setPreserveRatio(true);
-                tileImage.setFitHeight(46);
-                tileImage.setFitWidth(46);
+                tileImage.setFitHeight(24);
+                tileImage.setFitWidth(24);
 
                 bookshelfPane.add(tileImage, Position.getColumn(i), Position.getRow(i));
             }
@@ -313,6 +306,7 @@ public class TakeCardsScene extends GUIScene {
         chatHistory.appendText("> " + sender + ": " + message + "\n");
         writtenMessage.setText("");
     }
+
 
     @Override
     public void printError(String error) {

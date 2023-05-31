@@ -82,7 +82,7 @@ public class EndGameScene extends GUIScene {
      * @param tilesToRemove contains the ItemCard to remove and its position on the Board
      */
     @Override
-    public void changeBoard(Map<Integer, ItemCard> tilesToRemove) {
+    public void changeBoard(Integer[] tilesToRemove) {
     }
 
     /**

@@ -12,8 +12,14 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
+import java.io.PrintStream;
 import java.io.PrintWriter;
+import java.lang.reflect.Array;
 import java.util.*;
+import java.util.stream.Collectors;
+
+import static it.polimi.ingsw.utils.ModelPropertyChange.*;
+
 
 public class GameModel implements ModelInterface {
     private final Map<String, Player> playerMap = new HashMap<>();
@@ -42,7 +48,7 @@ public class GameModel implements ModelInterface {
         try {
             board.fillBoard();
             System.out.println("Board Filled.");
-            evt = new PropertyChangeEvent("null", "BOARD_CHANGED", null, board.getAsArrayList());
+            evt = new PropertyChangeEvent("null", BOARD_CHANGED, null, board.getAsArrayList());
             this.listener.propertyChange(evt);
         } catch (EmptyCardBagException e) {
             System.out.println("Impossible State");
@@ -59,11 +65,11 @@ public class GameModel implements ModelInterface {
 
         comGoals.add(selectComGoal(firstGoal, players.size()));
         System.out.println("ComGoals created: " + firstGoal + "," + secondGoal);
-        evt = new PropertyChangeEvent(firstGoal, "COM_GOAL_CREATED", null, comGoals.get(0).getCurrScore());
+        evt = new PropertyChangeEvent(firstGoal, COM_GOAL_CREATED, null, comGoals.get(0).getCurrScore());
         this.listener.propertyChange(evt);
 
         comGoals.add(selectComGoal(secondGoal, players.size()));
-        evt = new PropertyChangeEvent(secondGoal, "COM_GOAL_CREATED", null, comGoals.get(1).getCurrScore());
+        evt = new PropertyChangeEvent(secondGoal, COM_GOAL_CREATED, null, comGoals.get(1).getCurrScore());
         this.listener.propertyChange(evt);
 
         ArrayList<PersGoal> persGoals = new ArrayList<>(Arrays.asList(PersGoal.values()));
@@ -73,7 +79,7 @@ public class GameModel implements ModelInterface {
             this.playerMap.put(s, new Player(s));
             playerMap.get(s).assignPersGoal(persGoals.get(0));
             System.out.println("PersGoal " + persGoals.get(0) + " assigned to " + s);
-            evt = new PropertyChangeEvent(s, "PERS_GOAL_CREATED", null, persGoals.get(0).toString());
+            evt = new PropertyChangeEvent(s, PERS_GOAL_CREATED, null, persGoals.get(0).toString());
             this.listener.propertyChange(evt);
             persGoals.remove(0);
         }
@@ -82,6 +88,12 @@ public class GameModel implements ModelInterface {
         saveJson(true);
     }
 
+    /**
+     * Called at the beginning of the game when the first player wants to resume one of the game he's into.
+     * @param onlinePlayers: the list of the players of this game already online and ready to play.
+     * @param json: the jsonObject with all the details of the game (taken from the file).
+     * @param gameFilePath: the path of the file with all game's details.
+     */
     public void resumeGame(ArrayList<String> onlinePlayers, JsonObject json, String gameFilePath) {
         this.gameJson = json;
         this.gameFilePath = gameFilePath;
@@ -131,13 +143,13 @@ public class GameModel implements ModelInterface {
         PropertyChangeEvent evt;
         boolean a;
         a = playerMap.get(nickname).insertCard(cards, column);
-        evt = new PropertyChangeEvent(nickname, "BOOKSHELF_CHANGED", null, playerMap.get(nickname).getBookshelfAsMatrix());
+        evt = new PropertyChangeEvent(nickname, BOOKSHELF_RENEWED, column, cards.toArray(new ItemCard[0]));
         this.listener.propertyChange(evt);
 
         if (a && winner == null) {
             winner = nickname;
             gameJson.addProperty("winner", winner);
-            evt = new PropertyChangeEvent(nickname, "BOOKSHELF_COMPLETED", null, null);
+            evt = new PropertyChangeEvent(nickname, BOOKSHELF_COMPLETED, null, null);
             this.listener.propertyChange(evt);
         }
 
@@ -154,8 +166,9 @@ public class GameModel implements ModelInterface {
     public void selectCard(ArrayList<Integer> positions) throws NoRightItemCardSelection {
         PropertyChangeEvent evt;
         selected = board.deleteSelection(positions);
-        evt = new PropertyChangeEvent("null", "BOARD_CHANGED", null, board.getAsArrayList());
+        evt = new PropertyChangeEvent("null", BOARD_RENEWED, null, positions.toArray(new Integer[0]));
         this.listener.propertyChange(evt);
+        updateBoardForTest();
     }
 
     /**
@@ -170,29 +183,25 @@ public class GameModel implements ModelInterface {
      *
      * @return a set (whose size is > 1 only in case of parity) with all the winners.
      */
-    public ArrayList<String> calcFinalScore() { //su tutti i player sulla mappa devo chiamare il metodo per calcolare il punteggio
+    public LinkedHashMap<String, Integer> calcFinalScore() { //su tutti i player sulla mappa devo chiamare il metodo per calcolare il punteggio
         int temp;
-        int max = 0;
         Map<String, Integer> finalScores = new HashMap<>();
-        ArrayList<String> winners;
+        LinkedHashMap<String, Integer> sortedMap = new LinkedHashMap<>();
 
         for (String s : playerMap.keySet()) {
             temp = playerMap.get(s).calculateFinScore();
-            if (s.equals(winner)) {
-                temp++;
-            }
-            finalScores.put(s, temp);
-            PropertyChangeEvent evt = new PropertyChangeEvent(s, "FINAL_SCORE", null, temp);
-            listener.propertyChange(evt);
-            if (temp > max)
-                max = temp;
+            finalScores.put(s, s.equals(winner) ? temp+1 : temp);
         }
-
-        winners = new ArrayList<>(finalScores.keySet().stream().toList());
-        for (String s : finalScores.keySet())
-            if (finalScores.get(s) < max)
-                winners.remove(s);
-        return winners;
+        for (Integer i : finalScores.values().stream().sorted(Comparator.reverseOrder()).toList()) {
+            for (String s : finalScores.keySet()) {
+                if ((Objects.equals(finalScores.get(s), i)) && (!sortedMap.containsKey(s))) {
+                    sortedMap.put(s, i);
+                    break;
+                }
+            }
+        }
+        System.out.println("Final classify : " + sortedMap);
+        return sortedMap;
     }
 
     /**
@@ -235,22 +244,24 @@ public class GameModel implements ModelInterface {
 
             if (ComGoalDone) {
                 int[] toSend = {c.getCGID(), c.getCurrScore()};
-                evt = new PropertyChangeEvent(nickname, "COM_GOAL_DONE", null, toSend);
+                evt = new PropertyChangeEvent(nickname, COM_GOAL_DONE, null, toSend);
                 this.listener.propertyChange(evt);
             }
         }
 
         try {
             if (board.checkRefill()) {
-                evt = new PropertyChangeEvent("null", "BOARD_CHANGED", null, board.getAsArrayList());
+                evt = new PropertyChangeEvent("null", BOARD_CHANGED, null, board.getAsArrayList());
                 this.listener.propertyChange(evt);
+                updateBoardForTest();
             }
         } catch (EmptyCardBagException e) {
-            evt = new PropertyChangeEvent("null", "EMPTY_CARD_BAG", null, null); // posso anche unirlo a change board
+            evt = new PropertyChangeEvent("null", EMPTY_CARD_BAG, null, null); // posso anche unirlo a change board
             this.listener.propertyChange(evt);
 
-            evt = new PropertyChangeEvent("null", "BOARD_CHANGED", null, board.getAsArrayList()); // faccio sempre anche se non modifica fa nulla
+            evt = new PropertyChangeEvent("null", BOARD_CHANGED, null, board.getAsArrayList()); // faccio sempre anche se non modifica fa nulla
             this.listener.propertyChange(evt);
+            updateBoardForTest();
         }
 
         this.gameJson.addProperty("lastPlayer", nickname);
@@ -264,8 +275,9 @@ public class GameModel implements ModelInterface {
     @Override
     public void resumeBoard() {
         board.resumeBoard();
-        PropertyChangeEvent evt = new PropertyChangeEvent("null", "BOARD_CHANGED", null, board.getAsArrayList());
+        PropertyChangeEvent evt = new PropertyChangeEvent("null", BOARD_CHANGED, null, board.getAsArrayList());
         this.listener.propertyChange(evt);
+        updateBoardForTest();
     }
 
     /**
@@ -276,27 +288,27 @@ public class GameModel implements ModelInterface {
     @Override
     public void sendGameDetails(String nickname) {
         // Sending board...
-        PropertyChangeEvent evt = new PropertyChangeEvent("null", "BOARD_CHANGED", nickname, board.getAsArrayList());
+        PropertyChangeEvent evt = new PropertyChangeEvent("null", BOARD_CHANGED, nickname, board.getAsArrayList());
         this.listener.propertyChange(evt);
 
         //Sending all bookshelves...
         for (String s : playerMap.keySet()) {
-            evt = new PropertyChangeEvent(s, "BOOKSHELF_CHANGED", nickname, playerMap.get(s).getBookshelfAsMatrix());
+            evt = new PropertyChangeEvent(s, BOOKSHELF_CHANGED, nickname, playerMap.get(s).getBookshelfAsMatrix());
             this.listener.propertyChange(evt);
         }
 
         //Sending his personal goal
-        evt = new PropertyChangeEvent(nickname, "PERS_GOAL_CREATED", null, playerMap.get(nickname).getPersGoal());
+        evt = new PropertyChangeEvent(nickname, PERS_GOAL_CREATED, null, playerMap.get(nickname).getPersGoal());
         this.listener.propertyChange(evt);
 
         //Sending common goals
         for (ComGoal c : comGoals) {
-            evt = new PropertyChangeEvent(c.getCGID(), "COM_GOAL_CREATED", nickname, c.getCurrScore());
+            evt = new PropertyChangeEvent(c.getCGID(), COM_GOAL_CREATED, nickname, c.getCurrScore());
             this.listener.propertyChange(evt);
         }
 
         //Sending player's actual score
-        evt = new PropertyChangeEvent(nickname, "PLAYER_SCORE", null, (nickname.equalsIgnoreCase(winner) ? playerMap.get(nickname).getScore() + 1 : playerMap.get(nickname).getScore()));
+        evt = new PropertyChangeEvent(nickname, PLAYER_SCORE, null, (nickname.equalsIgnoreCase(winner) ? playerMap.get(nickname).getScore() + 1 : playerMap.get(nickname).getScore()));
         this.listener.propertyChange(evt);
     }
 
@@ -321,6 +333,24 @@ public class GameModel implements ModelInterface {
         } catch (Exception e) {
             e.printStackTrace();
             System.err.println("Unable to write on game's file.");
+        }
+    }
+
+    /**
+     * A private method used to update "boardTest.json", a file with the current board used only for tests.
+     * The tests in which we use this file are in "GameControllerTest" class.
+     */
+    private void updateBoardForTest () {
+        // Just for tests: saving the board in a temporary file to check the insert.
+        PrintStream printStream;
+
+        try {
+            printStream = new PrintStream("src/main/boardTest.json");
+            Gson gson = new Gson();
+            printStream.print(gson.toJson(board.getAsArrayList()));
+            printStream.close();
+        } catch (Exception e) {
+            System.out.println("File BoardTest not found.");
         }
     }
 }

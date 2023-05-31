@@ -103,7 +103,7 @@ public class LoginScene extends GUIScene {
      * @param tilesToRemove contains the ItemCard to remove and its position on the Board
      */
     @Override
-    public void changeBoard(Map<Integer, ItemCard> tilesToRemove) {
+    public void changeBoard(Integer[] tilesToRemove) {
     }
 
     /**

@@ -9,10 +9,7 @@ import it.polimi.ingsw.server.controller.TurnPhase;
 import it.polimi.ingsw.server.model.HouseItem;
 import it.polimi.ingsw.server.model.ItemCard;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
 
 import static it.polimi.ingsw.utils.Utils.*;
 
@@ -416,7 +413,7 @@ public class CLI implements View {
      * @param tilesToRemove contains the ItemCard to remove and its position on the Board
      */
     @Override
-    public void changeBoard(Map<Integer, ItemCard> tilesToRemove) {
+    public void changeBoard(Integer[] tilesToRemove) {
         printBoard(clientController.getBoard());
     }
 
@@ -734,5 +731,23 @@ public class CLI implements View {
     public void disconnectMe() {
         stopListening = true;
         System.out.println((char) 27 + "[0;39m" + "You are being disconnected from the server, please press ENTER to exit");
+    }
+
+    @Override
+    public void finalScores(LinkedHashMap<String, Integer> finalScores) {
+        System.out.println("Game is ended!");
+        System.out.println("Final classify: ");
+        int i = 1, max = -1;
+        for (String s : finalScores.keySet()) {
+            if (finalScores.get(s) == max)
+                System.out.print(" parity with " + s);
+            else {
+                System.out.println();
+                System.out.print(i + ") " + s);
+                max = finalScores.get(s);
+                i++;
+            }
+        }
+        System.out.println();
     }
 }

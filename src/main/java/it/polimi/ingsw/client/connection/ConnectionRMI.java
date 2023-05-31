@@ -320,12 +320,17 @@ public class ConnectionRMI extends ConnectionClient implements RMIClientConnecti
     }
 
     @Override
-    public void onBookshelfRenewed(Map<Integer, ItemCard> tilesToAdd, String player) {
-        getController().onBookshelfRenewed(tilesToAdd, player);
+    public void onBookshelfRenewed(ItemCard[] tilesToAdd, int column, String player) throws RemoteException {
+        getController().onBookshelfRenewed(tilesToAdd, column, player);
     }
 
     @Override
-    public void onBoardRenewed(Map<Integer, ItemCard> tilesToRemove) {
+    public void onBoardRenewed(Integer[] tilesToRemove) throws RemoteException {
         getController().onBoardRenewed(tilesToRemove);
+    }
+
+    @Override
+    public void onFinalScores(LinkedHashMap<String, Integer> finalScores) throws RemoteException {
+        getController().onFinalScores(finalScores);
     }
 }

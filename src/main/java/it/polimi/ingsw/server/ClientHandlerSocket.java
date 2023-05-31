@@ -12,6 +12,7 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 public class ClientHandlerSocket extends ClientHandler implements Runnable {
@@ -273,6 +274,15 @@ public class ClientHandlerSocket extends ClientHandler implements Runnable {
     }
 
     /**
+     * Sends board's update to the client.
+     * @param tilesToRemove: the array of board's positions to remove tiles from.
+     */
+    @Override
+    public void sendBoardRenewed(Integer[] tilesToRemove) {
+        send(generateStandardMessage("boardRenewed", new Gson().toJson(tilesToRemove)));
+    }
+
+    /**
      * Called to inform the client that a new commonGoal has been created (usually at the beginning of the game).
      *
      * @param comGoalID that has been created
@@ -310,6 +320,20 @@ public class ClientHandlerSocket extends ClientHandler implements Runnable {
     }
 
     /**
+     * Sends bookshelf's update to the client.
+     * @param nickname: the player whose bookshelf has changed.
+     * @param tilesToAdd: the ordered array of tiles to add in nickname's bookshelf.
+     * @param column: the column of the bookshelf to add tiles into.
+     */
+    @Override
+    public void sendBookshelfRenewed(String nickname, ItemCard[] tilesToAdd, int column) {
+        JsonObject toSend = generateStandardMessage("bookshelfRenewed", new Gson().toJson(tilesToAdd));
+        toSend.addProperty("column", column);
+        toSend.addProperty("player", nickname);
+        send(toSend);
+    }
+
+    /**
      * Called to inform that someone has reached a commonGoal.
      *
      * @param source  is the nickname of the client that reached it
@@ -322,14 +346,22 @@ public class ClientHandlerSocket extends ClientHandler implements Runnable {
         send(toSend);
     }
 
-    /**
+/*    /**
      * It is the end of the game: there's a winner!
      *
      * @param winners contains the winners' nicknames
-     */
+
     @Override
     public void sendWinner(List<String> winners) {
         send(generateStandardMessage("winner", winners.toString()));
+    }*/
+
+    @Override
+    public void sendFinalScores(LinkedHashMap<String, Integer> finalScores) {
+        Gson gson = new Gson();
+        JsonObject toSend = generateStandardMessage("finalScores", gson.toJson(finalScores.keySet()));
+        toSend.addProperty("scores", gson.toJson(finalScores.values()));
+        send(toSend);
     }
 
     /**
@@ -371,6 +403,10 @@ public class ClientHandlerSocket extends ClientHandler implements Runnable {
         send(generateStandardMessage("bookshelf_completed", null));
     }
 
+    /**
+     * Asks the client if he wants to resume one of the game he's into.
+     * @param savedGames: the list of saved games' names the client is into.
+     */
     @Override
     public void askSavedGame(List<String> savedGames) {
         send(generateStandardMessage("savedGameFound", savedGames.toString()));

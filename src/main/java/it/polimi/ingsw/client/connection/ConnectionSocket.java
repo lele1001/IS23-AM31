@@ -12,6 +12,7 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedHashMap;
 
 public class ConnectionSocket extends ConnectionClient {
     private PrintWriter socketOut = null;
@@ -189,6 +190,10 @@ public class ConnectionSocket extends ConnectionClient {
                 case "askInsert" -> getController().onInsert();
                 case "boardChanged" ->
                         getController().onBoardChanged(gson.fromJson(jsonObject.get("Value").getAsString(), ItemCard[][].class));
+                case "bookshelfRenewed" ->
+                        getController().onBookshelfRenewed(gson.fromJson(jsonObject.get("Value").getAsString(), ItemCard[].class), jsonObject.get("column").getAsInt(), jsonObject.get("player").getAsString());
+                case "boardRenewed" ->
+                        getController().onBoardRenewed(gson.fromJson(jsonObject.get("Value").getAsString(), Integer[].class));
                 case "bookshelfChanged" ->
                         getController().onBookshelfChanged(jsonObject.get("nickname").getAsString(), gson.fromJson(jsonObject.get("Value").getAsString(), ItemCard[][].class));
                 case "error" -> getController().onError(jsonObject.get("Value").getAsString());
@@ -206,6 +211,15 @@ public class ConnectionSocket extends ConnectionClient {
                 case "bookshelf_completed" -> getController().onBookshelfCompleted();
                 case "chatToMe" ->
                         getController().chatToMe(jsonObject.get("sender").getAsString(), jsonObject.get("Value").getAsString());
+                case "finalScores" -> {
+                    String[] nicknames = gson.fromJson(jsonObject.get("Value").getAsString(), String[].class);
+                    Integer[] scores = gson.fromJson(jsonObject.get("scores").getAsString(), Integer[].class);
+                    LinkedHashMap<String, Integer> finalScores = new LinkedHashMap<>();
+                    for (int i = 0; i < nicknames.length; i++)
+                        finalScores.put(nicknames[i], scores[i]);
+                    getController().onFinalScores(finalScores);
+
+                }
                 default -> getController().onError("Unknown message from server.");
 
             }

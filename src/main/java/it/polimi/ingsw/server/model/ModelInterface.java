@@ -7,6 +7,8 @@ import it.polimi.ingsw.server.gameExceptions.NotSameSelectedException;
 
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 public interface ModelInterface {
     /**
@@ -49,7 +51,7 @@ public interface ModelInterface {
      *
      * @return a set (whose size is > 1 only in case of parity) with all the winners.
      */
-    ArrayList<String> calcFinalScore();
+    LinkedHashMap<String, Integer> calcFinalScore();
 
     /**
      * Called at the end of a turn, checks if common goals have been reached from the current player,

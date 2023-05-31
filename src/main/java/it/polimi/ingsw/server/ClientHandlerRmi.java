@@ -5,10 +5,7 @@ import it.polimi.ingsw.server.controller.ConnectionControl;
 import it.polimi.ingsw.server.model.ItemCard;
 
 import java.rmi.RemoteException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 
 import static it.polimi.ingsw.utils.Utils.pingTimer;
 
@@ -142,6 +139,21 @@ public class ClientHandlerRmi extends ClientHandler {
     }
 
     /**
+     * Sends bookshelf's update to the client.
+     * @param nickname: the player whose bookshelf has changed.
+     * @param tilesToAdd: the ordered array of tiles to add in nickname's bookshelf.
+     * @param column: the column of the bookshelf to add tiles into.
+     */
+    @Override
+    public void sendBookshelfRenewed(String nickname, ItemCard[] tilesToAdd, int column) {
+        try {
+            client.onBookshelfRenewed(tilesToAdd, column, nickname);
+        } catch (RemoteException e) {
+            System.out.println("Impossible to send bookshelf's update to " + this.nickname);
+        }
+    }
+
+    /**
      * The RMI server calls the client's method when a Common goal is completed by the player nickname
      *
      * @param source  is the nickname of the player
@@ -200,16 +212,39 @@ public class ClientHandlerRmi extends ClientHandler {
     }
 
     /**
+     * Sends board's update to the client.
+     * @param tilesToRemove: the array of board's positions to remove tiles from.
+     */
+    @Override
+    public void sendBoardRenewed(Integer[] tilesToRemove) {
+        try {
+            client.onBoardRenewed(tilesToRemove);
+        } catch (RemoteException e) {
+            System.out.println("Impossible to send to " + nickname + " the modified board.");
+        }
+
+    }
+
+/*    /**
      * The RMI server calls the client's method when a player wins
      *
      * @param winners contains the winners' nicknames
-     */
+     *//*
     @Override
     public void sendWinner(List<String> winners) {
         try {
             client.onWinner(winners);
         } catch (RemoteException e) {
             System.out.println("Impossible to send to " + nickname + " the winner/s");
+        }
+    }*/
+
+    @Override
+    public void sendFinalScores(LinkedHashMap<String, Integer> finalScores) {
+        try {
+            client.onFinalScores(finalScores);
+        } catch (RemoteException e) {
+            System.out.println("Impossible to send to " + this.nickname + " final scores.");
         }
     }
 
@@ -267,6 +302,10 @@ public class ClientHandlerRmi extends ClientHandler {
         }
     }
 
+    /**
+     * Asks the client if he want to resume one of the game he's into.
+     * @param savedGames: the list of saved games' names the client is into.
+     */
     @Override
     public void askSavedGame(List<String> savedGames) {
         try {

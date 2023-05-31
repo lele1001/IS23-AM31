@@ -4,6 +4,7 @@ import it.polimi.ingsw.server.controller.ConnectionControl;
 import it.polimi.ingsw.server.model.ItemCard;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 public abstract class ClientHandler {
@@ -81,6 +82,14 @@ public abstract class ClientHandler {
     public abstract void SendBookshelfChanged(String nickname, ItemCard[][] newBookshelf);
 
     /**
+     * Sends bookshelf's update to the client.
+     * @param nickname: the player whose bookshelf has changed.
+     * @param tilesToAdd: the ordered array of tiles to add in nickname's bookshelf.
+     * @param column: the column of the bookshelf to add tiles into.
+     */
+    public abstract void sendBookshelfRenewed(String nickname, ItemCard[] tilesToAdd, int column);
+
+    /**
      * The server calls the client's method to update the client's side board
      *
      * @param newBoard is the updated board
@@ -88,11 +97,17 @@ public abstract class ClientHandler {
     public abstract void SendBoardChanged(ItemCard[][] newBoard);
 
     /**
+     * Sends board's update to the client.
+     * @param tilesToRemove: the array of board's positions to remove tiles from.
+     */
+    public abstract void sendBoardRenewed(Integer[] tilesToRemove);
+
+    /**
      * The server calls the client's method when a player wins
      *
-     * @param winners contains the winners' nicknames
+     * @param finalScores contains all the players' scores.
      */
-    public abstract void sendWinner(List<String> winners);
+    public abstract void sendFinalScores(LinkedHashMap<String, Integer> finalScores);
 
     /**
      * The server calls the client's method when a player wants to send a chat message to the client
@@ -115,5 +130,9 @@ public abstract class ClientHandler {
      */
     public abstract void sendBookshelfCompleted();
 
+    /**
+     * Asks the client if he wants to resume one of the game he's into.
+     * @param savedGames: the list of saved games' names the client is into.
+     */
     public abstract void askSavedGame(List<String> savedGames);
 }

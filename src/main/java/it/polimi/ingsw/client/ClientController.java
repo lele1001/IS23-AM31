@@ -479,22 +479,31 @@ public class ClientController {
     public String getPersGoalValue() {
         return myPersGoalNumber;
     }
-
-    public void onBookshelfRenewed(Map<Integer, ItemCard> tilesToAdd, String player) {
-
-        for (Integer position : tilesToAdd.keySet()) {
-            playersBookshelf.get(player)[getRow(position)][getColumn(position)] = tilesToAdd.get(position);
+    public void onBookshelfRenewed(ItemCard[] tilesToAdd, int column, String player) {
+        int i;
+        Map<Integer, ItemCard> added = new HashMap<>();
+        for (i = BOOKSHELF_HEIGHT - 1; i >= 0; i--) {
+            if (this.playersBookshelf.get(player)[i][column] == null)
+                break;
         }
-        view.changeBookshelf(tilesToAdd, player);
+        for(ItemCard ic : tilesToAdd){
+            playersBookshelf.get(player)[i][column] = ic;
+            added.put(Position.getNumber(column, i), ic);
+            i--;
+        }
+        view.changeBookshelf(added, player);
     }
-
-    public void onBoardRenewed(Map<Integer, ItemCard> tilesToRemove) {
-        if (isMyTurn()) {
-            selectedTiles.putAll(tilesToRemove);
-        }
-        for (Integer position : tilesToRemove.keySet()) {
-            board[getRow(position)][getColumn(position)] = null;
+    public void onBoardRenewed(Integer[] tilesToRemove) {
+        for(Integer position:tilesToRemove){
+            if (isMyTurn())
+                selectedTiles.put(position, board[getRow(position)][getColumn(position)]);
+            board[getRow(position)][getColumn(position)]=null;
         }
         view.changeBoard(tilesToRemove);
     }
+
+    public void onFinalScores(LinkedHashMap<String, Integer> finalScores) {
+        view.finalScores(finalScores);
+    }
+
 }
