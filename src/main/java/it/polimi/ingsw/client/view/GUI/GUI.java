@@ -131,6 +131,7 @@ public class GUI implements View {
      */
     @Override
     public void changeBoard(Map<Integer, ItemCard> tilesToRemove) {
+        Platform.runLater(() -> sceneController.changeBoard(tilesToRemove));
     }
 
     /**
@@ -152,7 +153,7 @@ public class GUI implements View {
      */
     @Override
     public void changeBookshelf(Map<Integer, ItemCard> tilesToAdd, String player) {
-
+        Platform.runLater(() -> sceneController.changeBookshelf(tilesToAdd, player));
     }
 
     /**
