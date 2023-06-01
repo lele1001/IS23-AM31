@@ -3,7 +3,9 @@ package it.polimi.ingsw.client.view.GUI.scenes;
 import it.polimi.ingsw.client.ClientController;
 import it.polimi.ingsw.server.model.ItemCard;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -222,8 +224,14 @@ public class EndGameScene extends GUIScene {
     }
 
     public void closeGame() {
-        clientController.disconnectMe();
-        System.out.println("exit");
-        System.exit(1);
+        Alert alert=new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("EXIT");
+        alert.setHeaderText("You're about to exit the program");
+        alert.setContentText("Are you sure you want to exit?");
+        if(alert.showAndWait().get() == ButtonType.OK) {
+            clientController.disconnectMe();
+            System.out.println("exit");
+            System.exit(1);
+        }
     }
 }

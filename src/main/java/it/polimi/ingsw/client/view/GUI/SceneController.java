@@ -301,9 +301,10 @@ public class SceneController {
      * @param error is the error that will be printed
      */
     public void fatalError(String error) {
-        if(!activeStage.getScene().equals(this.scenesMap.get("endGameScene").getMyScene()))
-        activeStage.setScene(this.scenesMap.get("errorScene").getMyScene());
-        this.currentController.printError(error);
+        if(!activeStage.getScene().equals(this.scenesMap.get("endGameScene").getMyScene())) {
+            activeStage.setScene(this.scenesMap.get("errorScene").getMyScene());
+            this.currentController.printError(error);
+        }
     }
 
     /**
