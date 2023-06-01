@@ -4,6 +4,7 @@ import it.polimi.ingsw.server.model.ItemCard;
 import it.polimi.ingsw.server.model.Position;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 
 import static it.polimi.ingsw.utils.Utils.*;
@@ -46,8 +47,7 @@ public class InputController {
                 return null;
             }
         }
-
-        if (coords.size() > 1 && !checkSelection(coords)) {
+        if (!checkSelection(coords)) {
             System.out.println("Position failed");
             return null;
         }
@@ -325,5 +325,21 @@ public class InputController {
         }
 
         return tilesToPut;
+    }
+    public boolean isValidInet4Address(String ip)
+    {
+        String[] groups = ip.split("\\.");
+        if (groups.length != 4) {
+            return false;
+        }
+        try {
+            return Arrays.stream(groups)
+                    .filter(s -> !(s.length() > 1 && s.startsWith("0")))
+                    .map(Integer::parseInt)
+                    .filter(i -> (i >= 0 && i <= 255))
+                    .count() == 4;
+        } catch (NumberFormatException e) {
+            return false;
+        }
     }
 }

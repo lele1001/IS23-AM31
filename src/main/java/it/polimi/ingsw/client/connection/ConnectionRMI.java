@@ -121,8 +121,8 @@ public class ConnectionRMI extends ConnectionClient implements RMIClientConnecti
      * @throws RemoteException if an error occurred calling the RMI client
      */
     @Override
-    public void onPlayerNumber() throws RemoteException {
-        getController().onPlayerNumber(new ArrayList<>());
+    public void onPlayerNumber(List<String> notAvailableNames) throws RemoteException {
+        getController().onPlayerNumber(notAvailableNames);
     }
 
     /**

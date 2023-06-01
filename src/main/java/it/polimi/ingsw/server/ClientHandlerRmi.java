@@ -37,7 +37,6 @@ public class ClientHandlerRmi extends ClientHandler {
             //If it disconnects
             connectionControl.changePlayerStatus(nickname, true);
             timer.cancel();
-            disconnectPlayer();
         }
 
     }
@@ -49,7 +48,7 @@ public class ClientHandlerRmi extends ClientHandler {
     public void askPlayerNumber(List<String> notAvailableNames) {
         // chiedo il numero di giocatori
         try {
-            client.onPlayerNumber();
+            client.onPlayerNumber(notAvailableNames);
         } catch (RemoteException e) {
             System.out.println("Impossible to ask " + nickname + " the player number");
         }

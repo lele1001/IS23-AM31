@@ -15,7 +15,7 @@ public interface RMIClientConnection extends Remote {
      *
      * @throws RemoteException if an error occurred calling the RMI client
      */
-    void onPlayerNumber() throws RemoteException;
+    void onPlayerNumber(List<String> notAvailableNames) throws RemoteException;
 
     /**
      * Method called by the server in case of error on the server side

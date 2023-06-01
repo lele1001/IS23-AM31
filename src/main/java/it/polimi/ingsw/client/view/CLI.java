@@ -206,7 +206,7 @@ public class CLI implements View {
             if (in.hasNext()) {
                 address = in.next();
             }
-        } while (address.equals(""));
+        } while (address.equals("")||!checkInput.isValidInet4Address(address));
 
         // Asks the port
         do {
@@ -221,6 +221,7 @@ public class CLI implements View {
 
         in.nextLine();
     }
+
 
     /**
      * Implementation for CLI: prints the request to join or not a saved game
