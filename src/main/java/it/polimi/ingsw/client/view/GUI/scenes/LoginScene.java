@@ -1,6 +1,7 @@
 package it.polimi.ingsw.client.view.GUI.scenes;
 
 import it.polimi.ingsw.client.ClientController;
+import it.polimi.ingsw.client.InputController;
 import it.polimi.ingsw.server.model.ItemCard;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -238,7 +239,7 @@ public class LoginScene extends GUIScene {
     private boolean checkIP(TextField text) {
         String toCheck = text.getText();
 
-        return !toCheck.isEmpty() && toCheck.matches("[.0-9]+");
+        return !toCheck.isEmpty() && (new InputController(clientController)).isValidInet4Address(toCheck);
     }
 
     private int checkPort() {

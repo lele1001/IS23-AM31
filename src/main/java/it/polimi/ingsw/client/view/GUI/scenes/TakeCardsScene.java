@@ -386,21 +386,23 @@ public class TakeCardsScene extends GUIScene {
         }
 
         Node clickedNode = event.getPickResult().getIntersectedNode();
-        int clickedColumn = GridPane.getColumnIndex(clickedNode);
-        int clickedRow = GridPane.getRowIndex(clickedNode);
+        if(GridPane.getColumnIndex(clickedNode)!=null) {
+            int clickedColumn = GridPane.getColumnIndex(clickedNode);
+            int clickedRow = GridPane.getRowIndex(clickedNode);
 
-        if (boardPane.getChildren().contains(clickedNode)) {
-            ImageView imageView = (ImageView) clickedNode;
+            if (boardPane.getChildren().contains(clickedNode)) {
+                ImageView imageView = (ImageView) clickedNode;
 
-            if (imageView != null && selectedTiles.size() < 3) {
-                int coord = Position.getNumber(clickedColumn, clickedRow);
-                selectedTiles.add(coord);
+                if (imageView != null && selectedTiles.size() < 3) {
+                    int coord = Position.getNumber(clickedColumn, clickedRow);
+                    selectedTiles.add(coord);
 
-                imageView.setPreserveRatio(true);
-                imageView.setFitWidth(50);
-                imageView.setFitWidth(50);
+                    imageView.setPreserveRatio(true);
+                    imageView.setFitWidth(50);
+                    imageView.setFitWidth(50);
 
-                youSelectedThis.add(imageView, selectedTiles.size() - 1, 0);
+                    youSelectedThis.add(imageView, selectedTiles.size() - 1, 0);
+                }
             }
         }
     }

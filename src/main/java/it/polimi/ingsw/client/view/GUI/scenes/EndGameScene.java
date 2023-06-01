@@ -30,6 +30,7 @@ public class EndGameScene extends GUIScene {
     @Override
     public void initialize(ClientController clientController) {
         this.clientController = clientController;
+        bindEvents();
     }
 
     /**
@@ -211,9 +212,9 @@ public class EndGameScene extends GUIScene {
             }
 
             posString = String.valueOf(pos);
-            rankingTable.add(new Label(posString), index, 0);
-            rankingTable.add(new Label(s), index, 1);
-            rankingTable.add(new Label(finalScores.get(s).toString()), index, 2);
+            rankingTable.add(new Label(posString), 0, index);
+            rankingTable.add(new Label(s), 1, index);
+            rankingTable.add(new Label(finalScores.get(s).toString()), 2, index);
             index++;
         }
 
@@ -222,6 +223,7 @@ public class EndGameScene extends GUIScene {
 
     public void closeGame() {
         clientController.disconnectMe();
+        System.out.println("exit");
         System.exit(1);
     }
 }

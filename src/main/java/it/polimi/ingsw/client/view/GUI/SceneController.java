@@ -301,6 +301,7 @@ public class SceneController {
      * @param error is the error that will be printed
      */
     public void fatalError(String error) {
+        if(!activeStage.getScene().equals(this.scenesMap.get("endGameScene").getMyScene()))
         activeStage.setScene(this.scenesMap.get("errorScene").getMyScene());
         this.currentController.printError(error);
     }
@@ -320,6 +321,9 @@ public class SceneController {
      * @param finalScores contains the players' nicknames and their score
      */
     public void finalScores(LinkedHashMap<String, Integer> finalScores) {
+        this.currentController = this.scenesMap.get("endGameScene");
         this.currentController.finalScores(finalScores);
+        this.activeStage.setScene(currentController.getMyScene());
+        this.activeStage.setResizable(false);
     }
 }
