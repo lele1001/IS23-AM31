@@ -7,7 +7,6 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 public interface RMIClientConnection extends Remote {
     /**
@@ -144,11 +143,33 @@ public interface RMIClientConnection extends Remote {
      */
     void onBookshelfCompleted() throws RemoteException;
 
+    /**
+     * Called when there are some saved games with client's nicknames, to ask him if he wants to resume one of them.
+     * @param savedGames: the list of saved games' names.
+     * @throws RemoteException if an error occurred calling the RMI client
+     */
     void onSavedGame(List<String> savedGames) throws RemoteException;
 
+    /**
+     * Called when there's a bookshelf's update.
+     * @param tilesToAdd: the tiles to be added in the bookshelf.
+     * @param column: the column of the bookshelf to put tiles into.
+     * @param player: the owner of the just updated bookshelf.
+     * @throws RemoteException if an error occurred calling the RMI client.
+     */
     void onBookshelfRenewed(ItemCard[] tilesToAdd, int column, String player) throws RemoteException;
 
+    /**
+     * Called when there's a board's update.
+     * @param tilesToRemove: the positions of the tiles to be removed from the board.
+     * @throws RemoteException if an error occurred calling the RMI client.
+     */
     void onBoardRenewed(Integer[] tilesToRemove) throws RemoteException;
 
+    /**
+     * Called at the end of the game to send the final classification to the client.
+     * @param finalScores: an ordered map with players' nicknames and final scores.
+     * @throws RemoteException if an error occurred calling the RMI client.
+     */
     void onFinalScores(LinkedHashMap<String, Integer> finalScores) throws RemoteException;
 }

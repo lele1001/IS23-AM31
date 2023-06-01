@@ -109,6 +109,12 @@ public class ConnectionRMI extends ConnectionClient implements RMIClientConnecti
         server.setPlayerNumber(getController().getMyNickname(), players, gameName);
     }
 
+    /**
+     * Called after client's decision about saved games.
+     * @param wantToSave: true if he wants to re-start from a saved game.
+     * @param gameName: the name of the game he wants to resume.
+     * @throws Exception if an error occurred calling the RMI client
+     */
     @Override
     public void setSavedGame(boolean wantToSave, String gameName) throws Exception {
         server.setSavedGames(wantToSave, gameName);
@@ -314,21 +320,43 @@ public class ConnectionRMI extends ConnectionClient implements RMIClientConnecti
         getController().onBookshelfCompleted();
     }
 
+    /**
+     * Called when there are some saved games with client's nicknames, to ask him if he wants to resume one of them.
+     * @param savedGames: the list of saved games' names.
+     * @throws RemoteException if an error occurred calling the RMI client
+     */
     @Override
     public void onSavedGame(List<String> savedGames) throws RemoteException {
         getController().onSavedGame(savedGames);
     }
 
+    /**
+     * Called when there's a bookshelf's update.
+     * @param tilesToAdd: the tiles to be added in the bookshelf.
+     * @param column: the column of the bookshelf to put tiles into.
+     * @param player: the owner of the just updated bookshelf.
+     * @throws RemoteException if an error occurred calling the RMI client.
+     */
     @Override
     public void onBookshelfRenewed(ItemCard[] tilesToAdd, int column, String player) throws RemoteException {
         getController().onBookshelfRenewed(tilesToAdd, column, player);
     }
 
+    /**
+     * Called when there's a board's update.
+     * @param tilesToRemove: the positions of the tiles to be removed from the board.
+     * @throws RemoteException if an error occurred calling the RMI client.
+     */
     @Override
     public void onBoardRenewed(Integer[] tilesToRemove) throws RemoteException {
         getController().onBoardRenewed(tilesToRemove);
     }
 
+    /**
+     * Called at the end of the game to send the final classification to the client.
+     * @param finalScores: an ordered map with players' nicknames and final scores.
+     * @throws RemoteException if an error occurred calling the RMI client.
+     */
     @Override
     public void onFinalScores(LinkedHashMap<String, Integer> finalScores) throws RemoteException {
         getController().onFinalScores(finalScores);

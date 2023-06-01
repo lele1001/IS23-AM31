@@ -240,9 +240,8 @@ public class GameModel implements ModelInterface {
         //boolean playerPointUpdate = false;
         PropertyChangeEvent evt;
         for (ComGoal c : comGoals) {
-            ComGoalDone = playerMap.get(nickname).checkComGoal(c);
-
-            if (ComGoalDone) {
+            if (playerMap.get(nickname).checkComGoal(c)) {
+                ComGoalDone = true;
                 int[] toSend = {c.getCGID(), c.getCurrScore()};
                 evt = new PropertyChangeEvent(nickname, COM_GOAL_DONE, null, toSend);
                 this.listener.propertyChange(evt);
