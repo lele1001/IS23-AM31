@@ -137,6 +137,8 @@ public class GameModel implements ModelInterface {
     public void InsertCard(String nickname, ArrayList<ItemCard> cards, int column) throws NoBookshelfSpaceException, NotSameSelectedException {
         //Checks if the player wants to insert the previously selected cards
         if (!((cards.containsAll(selected)) && (selected.containsAll(cards)) && (cards.size() == selected.size()))) {
+            sendBoard(nickname);
+            sendBookshelf(nickname);
             throw new NotSameSelectedException();
         }
 
@@ -162,10 +164,21 @@ public class GameModel implements ModelInterface {
      *
      * @param positions of the cards to be selected.
      * @throws NoRightItemCardSelection if the selection is not valid.
+     * @throws NoBookshelfSpaceException if there's no enough space in player's bookshelf for the number of tiles he selected.
      */
-    public void selectCard(ArrayList<Integer> positions) throws NoRightItemCardSelection {
+    public void selectCard(String player, ArrayList<Integer> positions) throws NoRightItemCardSelection, NoBookshelfSpaceException {
         PropertyChangeEvent evt;
-        selected = board.deleteSelection(positions);
+        if(!this.playerMap.get(player).checkBookshelfSpace(positions.size())) {
+            sendBoard(player);
+            sendBookshelf(player);
+            throw new NoBookshelfSpaceException();
+        }
+        try {
+            selected = board.deleteSelection(positions);
+        } catch (NoRightItemCardSelection e) {
+            sendBoard(player);
+            throw new NoRightItemCardSelection();
+        }
         evt = new PropertyChangeEvent("null", BOARD_RENEWED, null, positions.toArray(new Integer[0]));
         this.listener.propertyChange(evt);
         updateBoardForTest();
@@ -351,6 +364,25 @@ public class GameModel implements ModelInterface {
         } catch (Exception e) {
             System.out.println("File BoardTest not found.");
         }
+    }
+
+    /**
+     * A private method used to send all the board when the player returns in the game or there's an error in select/insert phase from him.
+     * @param player to send board to.
+     */
+    private void sendBoard (String player) {
+        PropertyChangeEvent evt = new PropertyChangeEvent("null", BOARD_CHANGED, player, board.getAsArrayList());
+        this.listener.propertyChange(evt);
+
+    }
+
+    /**
+     * A private method used to send all the bookshelf when the player returns in the game or there's an error in select/insert phase from him.
+     * @param player to send board to.
+     */
+    private void sendBookshelf (String player) {
+        PropertyChangeEvent evt = new PropertyChangeEvent(player, BOOKSHELF_CHANGED, player, playerMap.get(player).getBookshelfAsMatrix());
+        this.listener.propertyChange(evt);
     }
 }
 

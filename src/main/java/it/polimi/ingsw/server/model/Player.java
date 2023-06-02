@@ -134,4 +134,16 @@ public class Player {
     public String getPersGoal() {
         return this.persGoal.toString();
     }
+
+    /**
+     * Called when the player tries to select tiles from the board to check if there's enough space for them in his bookshelf.
+     * @param numOfTiles: the number of the tiles selected from the player
+     * @return true if there's enough space in at least one column.
+     */
+    public boolean checkBookshelfSpace(int numOfTiles) {
+        for (int i = 0; i < BOOKSHELF_LENGTH; i++)
+            if (this.myBookshelf.checkSpace(i, numOfTiles))
+                return true;
+        return false;
+    }
 }

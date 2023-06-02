@@ -36,8 +36,9 @@ public interface ModelInterface {
      *
      * @param positions of the cards to be selected.
      * @throws NoRightItemCardSelection if the selection is not valid.
+     * @throws NoBookshelfSpaceException if there's no enough space in player's bookshelf for the number of tiles he selected.
      */
-    void selectCard(ArrayList<Integer> positions) throws NoRightItemCardSelection; //chiedo conferma che sia la stessa eccezione
+    void selectCard(String player, ArrayList<Integer> positions) throws NoRightItemCardSelection, NoBookshelfSpaceException; //chiedo conferma che sia la stessa eccezione
 
     /**
      * Used to set GameController as a GameModel's listener.

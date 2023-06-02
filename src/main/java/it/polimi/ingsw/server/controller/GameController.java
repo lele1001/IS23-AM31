@@ -282,9 +282,12 @@ public class GameController implements PropertyChangeListener {
             return;
         }
         try {
-            gameModel.selectCard(positions);
+            gameModel.selectCard(nickname, positions);
         } catch (NoRightItemCardSelection e) {
             connectionControl.SendError(noRightBoardSelectionResponse, nickname);
+            connectionControl.askSelect(nickname);
+        } catch (NoBookshelfSpaceException e) {
+            connectionControl.SendError(noBookshelfSpaceResponse, nickname);
             connectionControl.askSelect(nickname);
         }
     }
