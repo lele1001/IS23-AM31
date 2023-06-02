@@ -58,9 +58,7 @@ public class GUI implements View {
      */
     @Override
     public void printLobby() {
-        if (!clientController.isGameStarted()) {
             Platform.runLater(this.sceneController::loadLobby);
-        }
     }
 
     /**

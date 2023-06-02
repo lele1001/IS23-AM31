@@ -105,6 +105,7 @@ public class GameController implements PropertyChangeListener {
 
             if (playersList.stream().filter(connectionControl::isOnline).count() < 2) {
                 System.out.println("Too many absents for this game.. waiting for players' returning in game.");
+                //TODO add method to print waiting for players
                 connectionControl.sendErrorToEveryone("Too many absents for this game.. waiting for players' returning in game.");
                 timer.schedule(new TimerTask() {
                     @Override
@@ -361,6 +362,7 @@ public class GameController implements PropertyChangeListener {
      */
     public void sendGameDetails(String nickname) {
         gameModel.sendGameDetails(nickname);
-        connectionControl.sendPlayerTurn(currPlayer);
+        if(playersList.stream().filter(connectionControl::isOnline).count() !=1)
+            connectionControl.sendPlayerTurn(currPlayer);
     }
 }

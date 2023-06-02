@@ -27,11 +27,14 @@ public class LoginScene extends GUIScene {
     RadioButton connectionRMI, connectionSocket;
     private ClientController clientController;
 
+    InputController inputController;
+
     /**
      * Initializes the login page showing the connection setup page
      */
     public void initialize(ClientController clientController) {
         this.clientController = clientController;
+        inputController=new InputController(clientController);
         errorArea.setVisible(false);
         ipPort.setText("1501");
         ipAddress.setText("127.0.0.1");
@@ -239,7 +242,7 @@ public class LoginScene extends GUIScene {
     private boolean checkIP(TextField text) {
         String toCheck = text.getText();
 
-        return !toCheck.isEmpty() && (new InputController(clientController)).isValidInet4Address(toCheck);
+        return !toCheck.isEmpty() && inputController.isValidInet4Address(toCheck);
     }
 
     private int checkPort() {

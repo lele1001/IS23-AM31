@@ -277,9 +277,9 @@ public class ClientController {
         } else {
             connectionClient = new ConnectionSocket(this, address, port);
         }
-
-        connectionClient.startConnection();
         printWaitingForGame();
+        connectionClient.startConnection();
+
     }
 
     /**
@@ -377,16 +377,16 @@ public class ClientController {
         if ((notAvailableNames.contains(gameName)) || gameName.contains(".")) {
             throw new NotAvailableNameException();
         }
-
+        printWaitingForGame();
         selectNumberOfPlayers = false;
         connectionClient.setPlayersNumber(players, gameName);
-        printWaitingForGame();
+
     }
 
     public void printWaitingForGame() {
-        if (!gameStarted) {
+
             view.printLobby();
-        }
+
     }
 
     public void setSavedGame(boolean wantToSave, String gameName) throws Exception {
@@ -397,10 +397,10 @@ public class ClientController {
         if ((wantToSave) && (!savedGames.contains(gameName))) {
             throw new NotExistingGameException();
         }
-
+        printWaitingForGame();
         selectSavedGame = false;
         connectionClient.setSavedGame(wantToSave, gameName);
-        printWaitingForGame();
+
     }
 
     /**

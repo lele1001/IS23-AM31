@@ -39,10 +39,12 @@ public class TakeCardsScene extends GUIScene {
     TextArea chatHistory;
     private ClientController clientController;
     private ArrayList<Integer> selectedTiles;
+    InputController inputController ;
 
     @Override
     public void initialize(ClientController clientController) {
         this.clientController = clientController;
+        inputController= new InputController(clientController);
         yourPoints.setText("You have 0 points");
         errorArea.setVisible(false);
         selectedTiles = new ArrayList<>();
@@ -322,7 +324,7 @@ public class TakeCardsScene extends GUIScene {
      */
     private void sendChat() {
         String[] checkChatMessage = {"@chat", destinationMenu.getText(), writtenMessage.getText()};
-        InputController inputController = new InputController(clientController);
+
 
         if (inputController.checkChat(checkChatMessage) != 0) {
             String destination = checkChatMessage[1];
@@ -354,22 +356,20 @@ public class TakeCardsScene extends GUIScene {
      * Checks the selected Tiles from the Board and eventually communicates the change to the server
      */
     private void selectTiles() {
-        InputController inputController = new InputController(clientController);
-
-        if (!inputController.checkSelection(selectedTiles)) {
+         if (!inputController.checkSelection(selectedTiles)) {
             printError("ERROR: wrong selection");
         }
+        else {
+             clientController.setSelectedTiles(selectedTiles);
 
-        clientController.setSelectedTiles(selectedTiles);
-
-        try {
-            clientController.selectCard();
-            selectTiles.setDisable(true);
-        } catch (Exception e) {
-            e.printStackTrace();
-            printError("ERROR: server error");
-        }
-
+             try {
+                 clientController.selectCard();
+                 selectTiles.setDisable(true);
+             } catch (Exception e) {
+                 e.printStackTrace();
+                 printError("ERROR: server error");
+             }
+         }
         selectedTiles.clear();
         youSelectedThis.getChildren().clear();
     }
