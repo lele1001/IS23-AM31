@@ -105,6 +105,12 @@ public interface RMIClientConnection extends Remote {
     void onGameIsStarting(ArrayList<String> playersList) throws RemoteException;
 
     /**
+     * Called when the client is the only one online and the game needs to be interrupted waiting for other players coming back.
+     * @throws RemoteException if an error occurred calling the RMI client
+     */
+    void onGameInterrupted() throws RemoteException;
+
+    /**
      * Method called by the server to ensure the player is online and connected
      *
      * @throws RemoteException if an error occurred calling the RMI client

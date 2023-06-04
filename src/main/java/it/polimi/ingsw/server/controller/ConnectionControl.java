@@ -487,6 +487,15 @@ public class ConnectionControl {
     }
 
     /**
+     * Notifies the remaining client that the game has been interrupted because of too many absents for it.
+     */
+    public void sendGameInterrupted() {
+        System.out.println("Sending that game has been interrupted because of too many absents..");
+        for (ClientHandler c : getClientHandlerMap().values())
+            c.sendGameInterrupted();
+    }
+
+    /**
      * Used by GameController to check if a client is still online.
      *
      * @param nickname of the players to be checked.

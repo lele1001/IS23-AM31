@@ -264,4 +264,12 @@ public class GUI implements View {
     public void finalScores(LinkedHashMap<String, Integer> finalScores) {
         Platform.runLater(() -> this.sceneController.finalScores(finalScores));
     }
+
+    /**
+     * Called when the game has been interrupted because of too many absents.
+     */
+    @Override
+    public void gameInterrupted() {
+        Platform.runLater(this.sceneController::loadLobby);
+    }
 }

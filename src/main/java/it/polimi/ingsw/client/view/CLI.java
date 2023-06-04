@@ -759,4 +759,13 @@ public class CLI implements View {
 
         System.out.println();
     }
+
+    /**
+     * Called when the game has been interrupted because of too many absents for it.
+     */
+    @Override
+    public void gameInterrupted() {
+        print("Game has been interrupted because of too many absents.");
+        print("Waiting for other players...");
+    }
 }

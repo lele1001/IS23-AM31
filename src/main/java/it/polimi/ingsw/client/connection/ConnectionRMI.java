@@ -361,4 +361,13 @@ public class ConnectionRMI extends ConnectionClient implements RMIClientConnecti
     public void onFinalScores(LinkedHashMap<String, Integer> finalScores) throws RemoteException {
         getController().onFinalScores(finalScores);
     }
+
+    /**
+     * Called when the game has been interrupted because of too many absents.
+     * @throws RemoteException if an error occurred calling the RMI client.
+     */
+    @Override
+    public void onGameInterrupted() throws RemoteException {
+        getController().gameInterrupted();
+    }
 }

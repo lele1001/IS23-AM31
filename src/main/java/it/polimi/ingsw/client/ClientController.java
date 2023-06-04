@@ -468,6 +468,13 @@ public class ClientController {
     }
 
     /**
+     * Called when the game has been interrupted because there are too many absents.
+     */
+    public void gameInterrupted() {
+        view.gameInterrupted();
+    }
+
+    /**
      * Method called by the server to print the name(s) of the winner(s)
      *
      * @param winners The player(s) tha has/have done the highest number of points

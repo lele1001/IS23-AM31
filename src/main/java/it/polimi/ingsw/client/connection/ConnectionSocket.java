@@ -223,8 +223,9 @@ public class ConnectionSocket extends ConnectionClient {
                     for (int i = 0; i < nicknames.length; i++)
                         finalScores.put(nicknames[i], scores[i]);
                     getController().onFinalScores(finalScores);
-
                 }
+                case "gameInterrupted" ->
+                    getController().gameInterrupted();
                 default -> getController().onError("Unknown message from server.");
 
             }

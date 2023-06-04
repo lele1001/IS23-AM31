@@ -10,7 +10,9 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
+import java.net.URISyntaxException;
 import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.rmi.AlreadyBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -34,7 +36,7 @@ public class Server {
     private boolean firstAsked;
     private String gameName;
     private final Map<String, JsonObject> savedGames = new HashMap<>();
-    private final static String savedGamesPath = "C:\\MyShelfieSavedGames";
+    private static String savedGamesPath;
 
     public Server() {
     }
@@ -42,6 +44,19 @@ public class Server {
     public static void main(String[] args) {
         System.out.println("Hello! Starting server...");
         System.out.println("Type \"stop\" to stop server.");
+
+        try {
+            if (System.getProperty("os.name").equalsIgnoreCase("linux"))
+                Server.savedGamesPath = new File(Server.class.getProtectionDomain().getCodeSource()
+                        .getLocation().toURI().getPath()).getParent() + "/MyShelfieSavedGames";
+            else
+                Server.savedGamesPath = new File(Server.class.getProtectionDomain().getCodeSource()
+                        .getLocation().toURI().getPath()).getParent() + "\\MyShelfieSavedGames";
+        } catch (URISyntaxException e) {
+            System.out.println("Impossible to read current path: using standard path for saved games.");
+        }
+        System.out.println("Current saved games' path: " + Server.savedGamesPath);
+
         new Thread(Server::listen).start();
 
         try {
@@ -218,7 +233,12 @@ public class Server {
                 savedGames.put(file.getName().split("\\.")[0], gson.fromJson(Files.readString(file.toPath()), JsonObject.class));
             }
         } catch (Exception e) {
-            System.out.println("Unable to read from savedGames file.");
+            System.out.println("Unable to read from savedGames file... creating its directory.");
+            try {
+                Files.createDirectory(Paths.get(savedGamesPath));
+            } catch (IOException ex) {
+                System.out.println("Impossible to create directory.");
+            }
         }
     }
 

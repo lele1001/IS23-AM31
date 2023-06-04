@@ -365,6 +365,14 @@ public class ClientHandlerSocket extends ClientHandler implements Runnable {
     }
 
     /**
+     * Called when there are too many absents for the game: it needs to be interrupted waiting for them.
+     */
+    @Override
+    public void sendGameInterrupted() {
+        send(generateStandardMessage("gameInterrupted", null));
+    }
+
+    /**
      * Called when someone wants to send a message to this client.
      *
      * @param sender  of the message

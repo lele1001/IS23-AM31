@@ -144,7 +144,12 @@ public class GameModel implements ModelInterface {
 
         PropertyChangeEvent evt;
         boolean a;
-        a = playerMap.get(nickname).insertCard(cards, column);
+        try {
+            a = playerMap.get(nickname).insertCard(cards, column);
+        } catch (NoBookshelfSpaceException e) {
+            sendBookshelf(nickname);
+            throw new NoBookshelfSpaceException();
+        }
         evt = new PropertyChangeEvent(nickname, BOOKSHELF_RENEWED, column, cards.toArray(new ItemCard[0]));
         this.listener.propertyChange(evt);
 
@@ -300,8 +305,8 @@ public class GameModel implements ModelInterface {
     @Override
     public void sendGameDetails(String nickname) {
         // Sending board...
-        PropertyChangeEvent evt = new PropertyChangeEvent("null", BOARD_CHANGED, nickname, board.getAsArrayList());
-        this.listener.propertyChange(evt);
+        PropertyChangeEvent evt;
+        sendBoard(nickname);
 
         //Sending all bookshelves...
         for (String s : playerMap.keySet()) {
@@ -378,7 +383,7 @@ public class GameModel implements ModelInterface {
 
     /**
      * A private method used to send all the bookshelf when the player returns in the game or there's an error in select/insert phase from him.
-     * @param player to send board to.
+     * @param player to send bookshelf to.
      */
     private void sendBookshelf (String player) {
         PropertyChangeEvent evt = new PropertyChangeEvent(player, BOOKSHELF_CHANGED, player, playerMap.get(player).getBookshelfAsMatrix());

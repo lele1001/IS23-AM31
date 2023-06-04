@@ -22,17 +22,17 @@ class GameModelTest {
         GameController gameController = new GameController(connectionControl);
 
         gameModel.setListener(gameController);
-        gameModel.CreateGame(new ArrayList<>(List.of("Luca", "Filippo", "Giovanni", "Topolino")), "C:\\MyShelfieSavedGames\\prova");
+        gameModel.CreateGame(new ArrayList<>(List.of("Luca", "Filippo", "Giovanni", "Topolino")), null);
         System.out.println(Arrays.deepToString(gameModel.board.getAsArrayList()));
 
         try {
-            gameModel.selectCard(new ArrayList<>(List.of(32, 33)));
-        } catch (NoRightItemCardSelection e) {
+            gameModel.selectCard("Luca", new ArrayList<>(List.of(32, 33)));
+        } catch (Exception e) {
             System.out.println("Eccezione");
         }
         try {
-            gameModel.selectCard(new ArrayList<>(List.of(3, 4)));
-        } catch (NoRightItemCardSelection e) {
+            gameModel.selectCard("Filippo", new ArrayList<>(List.of(3, 4)));
+        } catch (Exception e) {
             System.out.println("Eccezione not Right");
         }
 

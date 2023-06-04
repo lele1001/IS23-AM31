@@ -224,7 +224,19 @@ public class ClientHandlerRmi extends ClientHandler {
 
     }
 
-/*    /**
+    /**
+     * Called when there are too many absents for the game: it needs to be interrupted waiting for them.
+     */
+    @Override
+    public void sendGameInterrupted() {
+        try {
+            client.onGameInterrupted();
+        } catch (RemoteException e) {
+            System.out.println("Impossible to send to " + nickname + " that the game has been interrupted.");
+        }
+    }
+
+    /*    /**
      * The RMI server calls the client's method when a player wins
      *
      * @param winners contains the winners' nicknames

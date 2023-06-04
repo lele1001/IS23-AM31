@@ -144,6 +144,11 @@ public interface View {
     void disconnectionError();
 
     /**
+     * Called when the game has been interrupted because there are too many absents.
+     */
+    void gameInterrupted();
+
+    /**
      * Implementation for CLI and GUI: prints the name(s) of the winning player(s)
      *
      * @param winners is(are) the winner(s) of the game

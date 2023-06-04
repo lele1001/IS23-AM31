@@ -131,6 +131,11 @@ public abstract class ClientHandler {
     public abstract void sendBookshelfCompleted();
 
     /**
+     * Called when there are too many absents for the game: it needs to be interrupted waiting for them.
+     */
+    public abstract void sendGameInterrupted ();
+
+    /**
      * Asks the client if he wants to resume one of the game he's into.
      * @param savedGames: the list of saved games' names the client is into.
      */
