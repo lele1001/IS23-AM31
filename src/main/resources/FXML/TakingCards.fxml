@@ -106,7 +106,7 @@
 
     <Label alignment="CENTER" contentDisplay="CENTER" layoutX="630.0" layoutY="70.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="400.0" text="Select up to 3 Tiles from the board" textFill="WHITE" wrapText="true" />
 
-    <TextArea fx:id="chatHistory" editable="false" layoutX="1060.0" layoutY="20.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="510.0" prefWidth="200.0" wrapText="true" />
+    <TextArea fx:id="chatHistory" editable="false" layoutX="1060.0" layoutY="83.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="459.0" prefWidth="200.0" wrapText="true" />
 
     <TextField fx:id="writtenMessage" layoutX="1060.0" layoutY="535.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="200.0" promptText="Insert your message" />
 
@@ -130,4 +130,6 @@
             <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="25.0" vgrow="SOMETIMES" />
         </rowConstraints>
     </GridPane>
+   <Button fx:id="exitButton" layoutX="1171.0" layoutY="24.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="94.0" text="Exit" />
+   <Button fx:id="helpButton" layoutX="1060.0" layoutY="24.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="94.0" text="Help" />
 </AnchorPane>

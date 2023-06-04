@@ -14,5 +14,6 @@
       <Text layoutX="12.0" layoutY="107.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Select a game name if you want to resume one" />
       <Text layoutX="44.0" layoutY="228.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Do you want to resume the Game?" />
       <Label fx:id="errorLabel" layoutX="282.0" layoutY="313.0" visible="false" />
+      <Button fx:id="exitButton" layoutX="471.0" layoutY="331.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="94.0" text="Exit" />
    </children>
 </AnchorPane>

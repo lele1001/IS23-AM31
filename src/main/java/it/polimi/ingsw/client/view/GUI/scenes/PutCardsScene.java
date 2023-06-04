@@ -30,7 +30,7 @@ public class PutCardsScene extends GUIScene {
     @FXML
     TextArea chatHistory;
     @FXML
-    Button undoSelection, selectTiles, sendMessage;
+    Button undoSelection, selectTiles, sendMessage, exitButton;
     @FXML
     Label yourPoints, errorArea;
     @FXML
@@ -65,6 +65,7 @@ public class PutCardsScene extends GUIScene {
         sendMessage.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> sendChat());
         undoSelection.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> revert());
         selectTiles.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> putTiles());
+        exitButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> closeGame());
     }
 
     /**
@@ -443,5 +444,17 @@ public class PutCardsScene extends GUIScene {
         }
 
         selectedTiles.clear();
+    }
+
+    private void closeGame(){
+        Alert alert=new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("EXIT");
+        alert.setHeaderText("You're about to exit the program");
+        alert.setContentText("Are you sure you want to exit?");
+        if(alert.showAndWait().get() == ButtonType.OK) {
+            clientController.disconnectMe();
+            System.out.println("exit");
+            System.exit(1);
+        }
     }
 }

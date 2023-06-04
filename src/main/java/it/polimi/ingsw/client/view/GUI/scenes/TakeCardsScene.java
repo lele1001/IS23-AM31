@@ -34,7 +34,7 @@ public class TakeCardsScene extends GUIScene {
     @FXML
     Label errorArea, yourPoints;
     @FXML
-    Button selectTiles, undoSelection, sendMessage;
+    Button selectTiles, undoSelection, sendMessage, exitButton;
     @FXML
     TextArea chatHistory;
     private ClientController clientController;
@@ -60,6 +60,7 @@ public class TakeCardsScene extends GUIScene {
         selectTiles.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> selectTiles());
         undoSelection.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> revert());
         sendMessage.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> sendChat());
+        exitButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> closeGame());
     }
 
     /**
@@ -422,6 +423,18 @@ public class TakeCardsScene extends GUIScene {
                 boardPane.add(imageView, Position.getColumn(selectedTiles.get(i)), Position.getRow(selectedTiles.get(i)));
                 selectedTiles.remove(i);
             }
+        }
+    }
+
+    private void closeGame(){
+        Alert alert=new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("EXIT");
+        alert.setHeaderText("You're about to exit the program");
+        alert.setContentText("Are you sure you want to exit?");
+        if(alert.showAndWait().get() == ButtonType.OK) {
+            clientController.disconnectMe();
+            System.out.println("exit");
+            System.exit(1);
         }
     }
 }

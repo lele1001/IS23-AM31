@@ -58,7 +58,7 @@ public class InputController {
     /**
      * @return The maximum number of a tiles that can be inserted in the client's bookshelf
      */
-    private int maxTilesSize() {
+    public int maxTilesSize() {
         int maxTiles = 0;
 
         for (int column = 0; column < BOOKSHELF_LENGTH; column++) {
