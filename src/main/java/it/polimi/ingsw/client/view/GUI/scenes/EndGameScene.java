@@ -84,7 +84,7 @@ public class EndGameScene extends GUIScene {
 
         for (String s : finalScores.keySet()) {
             if (finalScores.get(s) != max) {
-                winnerToken.setVisible(pos == 0);
+                winnerToken.setVisible(pos == 0 && s.equals(clientController.getMyNickname()));
 
                 pos++;
                 max = finalScores.get(s);
