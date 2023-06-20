@@ -1,15 +1,23 @@
 package it.polimi.ingsw.client.view.GUI.scenes;
 
 import it.polimi.ingsw.client.ClientController;
+import it.polimi.ingsw.client.InputController;
+import it.polimi.ingsw.client.view.GUI.GUIResources;
 import it.polimi.ingsw.server.model.ItemCard;
 import javafx.scene.Scene;
+import javafx.scene.control.*;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.GridPane;
+import javafx.stage.Stage;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 public abstract class GUIScene {
     private Scene myScene;
+    private Alert alert;
 
     public abstract void initialize(ClientController clientController);
 
@@ -31,40 +39,79 @@ public abstract class GUIScene {
      *
      * @param savedGames contains all the saved games in which the player was in
      */
-    public abstract void updateSavedGames(List<String> savedGames);
+    public void updateSavedGames(List<String> savedGames) {
+
+    }
 
     /**
      * Sets the scene based on the number of players in the game
      */
-    public abstract void setPlayers();
+    public void setPlayers() {
+
+    }
+
+    protected void setPlayersShared(ClientController clientController, MenuButton destinationMenu, Button sendMessage) {
+        ArrayList<String> players = new ArrayList<>(clientController.getPlayersBookshelves().keySet());
+
+        MenuItem msgEverybody = new MenuItem("everybody");
+        msgEverybody.setId("msgEverybody");
+        destinationMenu.getItems().add(msgEverybody);
+        msgEverybody.setOnAction(event -> {
+            destinationMenu.setDisable(false);
+            sendMessage.setDisable(false);
+            destinationMenu.setText(msgEverybody.getText());
+        });
+
+        for (String player : players) {
+            if (!player.equals(clientController.getMyNickname())) {
+                MenuItem msgPlayer = new MenuItem(player);
+                msgPlayer.setId("msgTo" + player);
+                destinationMenu.getItems().add(msgPlayer);
+
+                msgPlayer.setOnAction(event -> {
+                    destinationMenu.setDisable(false);
+                    sendMessage.setDisable(false);
+                    destinationMenu.setText(msgPlayer.getText());
+                });
+            }
+        }
+    }
 
     /**
      * Updates the current player
      *
      * @param player is the curren player
      */
-    public abstract void updateCurrPlayer(String player);
+    public void updateCurrPlayer(String player) {
+
+    }
 
     /**
      * Shows the Tiles selected from the player in the TakeCard scene
      *
      * @param selectedTiles contains the Tiles selected by the player and their position on the Board
      */
-    public abstract void updateSelectedTiles(Map<Integer, ItemCard> selectedTiles);
+    public void updateSelectedTiles(Map<Integer, ItemCard> selectedTiles) {
+
+    }
 
     /**
      * Prints the Board in the scene
      *
      * @param board is the updated Board
      */
-    public abstract void updateBoard(ItemCard[][] board);
+    public void updateBoard(ItemCard[][] board) {
+
+    }
 
     /**
      * Updates the Board removing the given Tiles
      *
      * @param tilesToRemove contains the ItemCard to remove and its position on the Board
      */
-    public abstract void changeBoard(Integer[] tilesToRemove);
+    public void changeBoard(Integer[] tilesToRemove) {
+
+    }
 
     /**
      * Prints the player's Bookshelf in the scene
@@ -72,7 +119,9 @@ public abstract class GUIScene {
      * @param bookshelf is the player's updated Bookshelf
      * @param nickname  is the owner of the Bookshelf
      */
-    public abstract void updateBookshelf(String nickname, ItemCard[][] bookshelf);
+    public void updateBookshelf(String nickname, ItemCard[][] bookshelf) {
+
+    }
 
     /**
      * Updates the player's Bookshelf adding the given Tiles
@@ -80,14 +129,18 @@ public abstract class GUIScene {
      * @param tilesToAdd contains the ItemCard to add and its position on the Bookshelf
      * @param player     is the owner of the Bookshelf to modify
      */
-    public abstract void changeBookshelf(Map<Integer, ItemCard> tilesToAdd, String player);
+    public void changeBookshelf(Map<Integer, ItemCard> tilesToAdd, String player) {
+
+    }
 
     /**
      * Prints the CommonGoals and its available score in the scene
      *
      * @param playerCommonGoal contains the CommonGoalID and its available score
      */
-    public abstract void comGoal(Map<Integer, Integer> playerCommonGoal);
+    public void comGoal(Map<Integer, Integer> playerCommonGoal) {
+
+    }
 
     /**
      * Updates the available score of a CommonGoal each time it is reached and in the scene
@@ -95,21 +148,104 @@ public abstract class GUIScene {
      * @param comGoalDoneID identifies the CommonGoal reached
      * @param newValue      is the available score
      */
-    public abstract void updateCommonGoal(int comGoalDoneID, int newValue);
+    public void updateCommonGoal(int comGoalDoneID, int newValue) {
+
+    }
+
+    protected void comGoalDone (int comGoalDoneID, int newValue, GridPane score_0, GridPane score_1, ClientController clientController, int height) {
+        int n = 0;
+        for (Integer cgNum : clientController.getPlayerComGoal().keySet()) {
+            if (cgNum == comGoalDoneID) {
+                ImageView scoreImage = new ImageView(GUIResources.getScore("sc0" + newValue));
+                scoreImage.setFitHeight(height);
+                scoreImage.setFitWidth(height);
+
+                if (n == 0) {
+                    score_0.add(scoreImage, 0, 0);
+                } else {
+                    score_1.add(scoreImage, 0, 0);
+                }
+            }
+
+            n++;
+        }
+    }
+
+    protected void comGoalCreated(Map<Integer, Integer> playerCommonGoal, GridPane score_0, GridPane score_1, GridPane comGoals, boolean horizontal, int height, int width, int imgHeight) {
+        int n = 0;
+        for (Integer i : playerCommonGoal.keySet()) {
+            ImageView scoreImage = new ImageView(GUIResources.getScore("sc0" + playerCommonGoal.get(i)));
+            scoreImage.setFitHeight(imgHeight);
+            scoreImage.setFitWidth(imgHeight);
+
+            if (n == 0) {
+                score_0.add(scoreImage, 0, 0);
+            } else {
+                score_1.add(scoreImage, 0, 0);
+            }
+
+            String cgNum = i.toString();
+            if (i < 10) {
+                cgNum = "0" + cgNum;
+            }
+
+            ImageView comGoalImage = new ImageView(GUIResources.getComGoal("cg" + cgNum));
+            comGoalImage.setFitHeight(height);
+            comGoalImage.setFitWidth(width);
+
+            if(horizontal)
+                comGoals.add(comGoalImage, n, 0);
+            else
+                comGoals.add(comGoalImage, 0, n);
+            n++;
+        }
+    }
 
     /**
      * Prints the PersonalGoal assigned to the player
      *
      * @param newValue is the PersonalGoal name
      */
-    public abstract void persGoal(String newValue);
+    public void persGoal(String newValue) {
+
+    }
+
+    protected void sendChat(InputController inputController, ClientController clientController, MenuButton destinationMenu, TextField writtenMessage) {
+        String[] checkChatMessage = {"@chat", destinationMenu.getText(), writtenMessage.getText()};
+        if (inputController.checkChat(checkChatMessage) != 0) {
+            String destination = checkChatMessage[1];
+            String message = writtenMessage.getText();
+
+            if (destination.equalsIgnoreCase("Everybody")) {
+                try {
+                    clientController.chatToAll(message);
+                } catch (Exception e) {
+                    printError("ERRROR: server error");
+                }
+            } else {
+                try {
+                    clientController.chatToPlayer(destination, message);
+                } catch (Exception e) {
+                    printError("ERROR: server error");
+                }
+            }
+
+            try {
+                clientController.chatToMe("you", message);
+            } catch (Exception e) {
+                printError("ERROR: server error");
+            }
+        }
+    }
 
     /**
      * Prints the player's points in the scene
      *
      * @param myPoint are the points of the player
      */
-    public abstract void printPoints(int myPoint);
+    public void printPoints(int myPoint) {
+
+    }
 
     /**
      * Prints the message in the chat field of the scene
@@ -117,14 +253,32 @@ public abstract class GUIScene {
      * @param sender  is the player that sent the message
      * @param message is the message to print
      */
-    public abstract void receiveMessage(String sender, String message);
+    public void receiveMessage(String sender, String message) {
+
+    }
 
     /**
      * Prints an error message in the scene
      *
      * @param error is the error message to display
      */
-    public abstract void printError(String error);
+    public void printError(String error) {
+        if(this.alert == null) {
+            this.alert = new Alert(Alert.AlertType.INFORMATION);
+            Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+            stage.getIcons().add(GUIResources.icon);
+            alert.setTitle("MyShelfie");
+            alert.setHeaderText("Attention!");
+            alert.setContentText(error);
+            alert.showAndWait();
+            if(alert.getResult() == ButtonType.OK || alert.getResult() == ButtonType.CLOSE) {
+                this.alert = null;
+            }
+        } else {
+            alert.setHeight(alert.getHeight() + 30);
+            alert.setContentText(alert.getContentText() + "\n" + error);
+        }
+    }
 
     /**
      * Displays the final ranking of the game, showing the score of each player
@@ -132,5 +286,21 @@ public abstract class GUIScene {
      * @param finalScores contains the players' nicknames and their score
      */
     public void finalScores(LinkedHashMap<String, Integer> finalScores) {
+
+    }
+
+    public void closeGame(ClientController clientController) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+        stage.getIcons().add(GUIResources.icon);
+        alert.setTitle("MyShelfie");
+        alert.setHeaderText("You're about to exit the program...");
+        alert.setContentText("Are you sure?");
+        alert.showAndWait();
+        if(alert.getResult() == ButtonType.OK) {
+            clientController.disconnectMe();
+            System.out.println("exit");
+            System.exit(1);
+        }
     }
 }

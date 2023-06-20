@@ -10,14 +10,14 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedHashMap;
+import java.util.*;
 
 public class ConnectionSocket extends ConnectionClient {
     private PrintWriter socketOut = null;
     private BufferedReader in;
     private Socket socket;
+    private volatile boolean isConnected;
+    private Timer ping;
 
     /**
      * Initialize the Socket connection to the server
@@ -44,11 +44,29 @@ public class ConnectionSocket extends ConnectionClient {
         } catch (Exception e) {
             throw new Exception("Error establishing socket connection.");
         }
-
+        isConnected = true;
         getController().onError("Connection established.");
         getController().onError("Sending nickname...");
         send(generateStandardMessage("nickname", getController().getMyNickname()));
         new Thread(this::listen).start();
+        new Thread(this::ping).start();
+        ping = new Timer();
+        ping.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                isConnected = false;
+            }
+        }, 10000);
+    }
+
+    private void ping() {
+        // Always sends a ping to the client.
+        new Timer().scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                send(generateStandardMessage("ping", null));
+            }
+        }, 0, 5000);
     }
 
     /**
@@ -116,8 +134,9 @@ public class ConnectionSocket extends ConnectionClient {
 
     /**
      * Called after client's decision about saved games.
+     *
      * @param wantToSave: true if he wants to re-start from a saved game.
-     * @param gameName: the name of the game he wants to resume.
+     * @param gameName:   the name of the game he wants to resume.
      */
     @Override
     public void setSavedGame(boolean wantToSave, String gameName) {
@@ -155,16 +174,20 @@ public class ConnectionSocket extends ConnectionClient {
      * This method notifies the client if the server has disconnected for some reason.
      */
     public void listen() {
-        while (true) {
+        while (isConnected) {
             try {
                 String line = in.readLine();
-                //System.out.println("Received: " + line);
-                onMessageReceived(line);
+                if (line != null) {
+                    //System.out.println("Received: " + line);
+                    onMessageReceived(line);
+                }
             } catch (IOException e) {
-                getController().onError("Server disconnected.");
-                break;
+                isConnected = false;
             }
         }
+
+        getController().onError("Server disconnected.");
+
         socketOut.close();
         try {
             in.close();
@@ -224,8 +247,17 @@ public class ConnectionSocket extends ConnectionClient {
                         finalScores.put(nicknames[i], scores[i]);
                     getController().onFinalScores(finalScores);
                 }
-                case "gameInterrupted" ->
-                    getController().gameInterrupted();
+                case "gameInterrupted" -> getController().gameInterrupted();
+                case "ping" -> {
+                    ping.cancel();
+                    ping = new Timer();
+                    ping.schedule(new TimerTask() {
+                        @Override
+                        public void run() {
+                            isConnected = false;
+                        }
+                    }, 10000);
+                }//System.out.println("ping");
                 default -> getController().onError("Unknown message from server.");
 
             }

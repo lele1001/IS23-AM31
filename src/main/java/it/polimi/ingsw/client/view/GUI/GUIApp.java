@@ -11,7 +11,6 @@ public class GUIApp extends Application {
     public static Label out;
     @FXML
     public static Label error;
-    private ClientController clientController;
 
     /**
      * Loads the stage and starts the launcher.
@@ -20,9 +19,7 @@ public class GUIApp extends Application {
      */
     @Override
     public void start(Stage stage) {
-        this.clientController = new ClientController();
-
-        GUI gui = new GUI(this.clientController);
+        GUI gui = new GUI(new ClientController());
         gui.gameLogin();
     }
 

@@ -248,7 +248,13 @@ public class Server {
      *
      * @param availablePlayers to set.
      */
-    public synchronized void setAvailablePlayers(int availablePlayers, String gameName) {
+    public synchronized void setAvailablePlayers(String nickname, int availablePlayers, String gameName) {
+        if (availablePlayers < 2 || availablePlayers > 4) {
+            this.connectionControl.SendError(nickname, "Players' number not correct.");
+            this.connectionControl.askPlayerNumber(nickname, new ArrayList<>(this.savedGames.keySet()));
+            return;
+        }
+
         this.availablePlayers = availablePlayers;
         this.gameName = gameName;
         this.notifyAll();
