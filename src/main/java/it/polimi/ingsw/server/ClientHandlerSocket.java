@@ -224,14 +224,7 @@ public class ClientHandlerSocket extends ClientHandler implements Runnable {
                     }
                     case "playersNumber" -> {
                         if (playerNumberAsked) {
-                            int given = Integer.parseInt(jsonObject.get("Value").getAsString());
-
-                            if ((given < 2) || (given > 4)) {
-                                sendError("Players' number not correct.");
-                            } else {
-                                server.setAvailablePlayers(given, jsonObject.get("gameName").getAsString());
-                            }
-
+                            server.setAvailablePlayers(nickname, Integer.parseInt(jsonObject.get("Value").getAsString()), jsonObject.get("gameName").getAsString());
                             playerNumberAsked = false;
                         }
                     }

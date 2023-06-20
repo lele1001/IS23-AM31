@@ -4,7 +4,6 @@ import it.polimi.ingsw.client.ClientController;
 import it.polimi.ingsw.client.InputController;
 import it.polimi.ingsw.client.view.GUI.GUIResources;
 import it.polimi.ingsw.server.model.ItemCard;
-import it.polimi.ingsw.server.model.Position;
 import it.polimi.ingsw.utils.Utils;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -16,7 +15,6 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 import static it.polimi.ingsw.server.model.Position.getColumn;
@@ -40,11 +38,13 @@ public class NotMyTurnScene extends GUIScene {
     @FXML
     MenuButton destinationMenu;
     private ClientController clientController;
+    private InputController inputController;
     private ArrayList<String> players;
 
     @Override
     public void initialize(ClientController clientController) {
         this.clientController = clientController;
+        this.inputController = new InputController(clientController);
         yourPoints.setText("You have 0 points");
         bindEvents();
     }
@@ -54,17 +54,8 @@ public class NotMyTurnScene extends GUIScene {
      */
     @Override
     public void bindEvents() {
-        sendMessage.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> sendChat());
-        exitButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> closeGame());
-    }
-
-    /**
-     * Shows the name(s) of the saved game(s)
-     *
-     * @param savedGames contains all the saved games in which the player was in
-     */
-    @Override
-    public void updateSavedGames(List<String> savedGames) {
+        sendMessage.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> sendChat(inputController,clientController,destinationMenu,writtenMessage));
+        exitButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> closeGame(clientController));
     }
 
     /**
@@ -72,20 +63,13 @@ public class NotMyTurnScene extends GUIScene {
      */
     @Override
     public void setPlayers() {
-        MenuItem msgEverybody = new MenuItem("everybody");
-        msgEverybody.setId("msgEverybody");
-        destinationMenu.getItems().add(msgEverybody);
-        msgEverybody.setOnAction(event -> {
-            destinationMenu.setDisable(false);
-            sendMessage.setDisable(false);
-            destinationMenu.setText(msgEverybody.getText());
-        });
+        setPlayersShared(clientController, destinationMenu, sendMessage);
 
-        players = new ArrayList<>(clientController.getPlayersBookshelves().keySet());
+       players = new ArrayList<>(clientController.getPlayersBookshelves().keySet());
 
         for (int i = 0; i < players.size(); i++) {
             setBookshelf(i);
-            setChat(players.get(i));
+            //setChat(players.get(i));
         }
     }
 
@@ -100,15 +84,6 @@ public class NotMyTurnScene extends GUIScene {
         } else {
             userTurn.setText("It is your turn");
         }
-    }
-
-    /**
-     * Shows the Tiles selected from the player in the TakeCard scene
-     *
-     * @param selectedTiles contains the Tiles selected by the player and their position on the Board
-     */
-    @Override
-    public void updateSelectedTiles(Map<Integer, ItemCard> selectedTiles) {
     }
 
     /**
@@ -220,31 +195,7 @@ public class NotMyTurnScene extends GUIScene {
      */
     @Override
     public void comGoal(Map<Integer, Integer> playerCommonGoal) {
-        int n = 0;
-
-        for (Integer i : playerCommonGoal.keySet()) {
-            ImageView scoreImage = new ImageView(GUIResources.getScore("sc0" + playerCommonGoal.get(i).toString()));
-            scoreImage.setFitHeight(45);
-            scoreImage.setFitWidth(45);
-
-            if (n == 0) {
-                score_0.add(scoreImage, 0, 0);
-            } else {
-                score_1.add(scoreImage, 0, 0);
-            }
-
-            String cgNum = i.toString();
-            if (i < 10) {
-                cgNum = "0" + cgNum;
-            }
-
-            ImageView comGoalImage = new ImageView(GUIResources.getComGoal("cg" + cgNum));
-            comGoalImage.setFitHeight(100);
-            comGoalImage.setFitWidth(175);
-
-            comGoals.add(comGoalImage, 0, n);
-            n++;
-        }
+        comGoalCreated(playerCommonGoal, score_0, score_1, comGoals, false, 100, 175, 45);
     }
 
     /**
@@ -255,23 +206,7 @@ public class NotMyTurnScene extends GUIScene {
      */
     @Override
     public void updateCommonGoal(int comGoalDoneID, int newValue) {
-        int n = 0;
-
-        for (Integer cgNum : clientController.getPlayerComGoal().keySet()) {
-            if (cgNum == comGoalDoneID) {
-                ImageView scoreImage = new ImageView(GUIResources.getScore("sc0" + newValue));
-                scoreImage.setFitHeight(60);
-                scoreImage.setFitWidth(60);
-
-                if (n == 0) {
-                    score_0.add(scoreImage, 0, 0);
-                } else {
-                    score_1.add(scoreImage, 0, 0);
-                }
-            }
-
-            n++;
-        }
+        comGoalDone(comGoalDoneID, newValue, score_0, score_1, clientController, 45);
     }
 
     /**
@@ -308,15 +243,6 @@ public class NotMyTurnScene extends GUIScene {
     public void receiveMessage(String sender, String message) {
         chatHistory.appendText("> " + sender + ": " + message + "\n");
         writtenMessage.setText("");
-    }
-
-    /**
-     * Prints an error message in the scene
-     *
-     * @param error is the error message to display
-     */
-    @Override
-    public void printError(String error) {
     }
 
     /**
@@ -363,10 +289,8 @@ public class NotMyTurnScene extends GUIScene {
         playerTab.setId(tabId);
         bookshelvesPane.getTabs().add(playerTab);
     }
+/*
 
-    /**
-     * Initializes the chat destination options, setting the players' names
-     */
     private void setChat(String nickname) {
         if (!nickname.equals(clientController.getMyNickname())) {
             MenuItem msgPlayer = new MenuItem(nickname);
@@ -379,50 +303,7 @@ public class NotMyTurnScene extends GUIScene {
                 destinationMenu.setText(msgPlayer.getText());
             });
         }
-    }
+    }*/
 
-    /**
-     * Checks the message destination and eventually sends the message
-     */
-    private void sendChat() {
-        String[] checkChatMessage = {"@chat", destinationMenu.getText(), writtenMessage.getText()};
-        InputController inputController = new InputController(clientController);
 
-        if (inputController.checkChat(checkChatMessage) != 0) {
-            String destination = checkChatMessage[1];
-            String message = writtenMessage.getText();
-
-            if (destination.equalsIgnoreCase("Everybody")) {
-                try {
-                    clientController.chatToAll(message);
-                } catch (Exception e) {
-                    printError("ERRROR: server error");
-                }
-            } else {
-                try {
-                    clientController.chatToPlayer(destination, message);
-                } catch (Exception e) {
-                    printError("ERROR: server error");
-                }
-            }
-
-            try {
-                clientController.chatToMe("you", message);
-            } catch (Exception e) {
-                printError("ERROR: server error");
-            }
-        }
-    }
-
-    private void closeGame(){
-        Alert alert=new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("EXIT");
-        alert.setHeaderText("You're about to exit the program");
-        alert.setContentText("Are you sure you want to exit?");
-        if(alert.showAndWait().get() == ButtonType.OK) {
-            clientController.disconnectMe();
-            System.out.println("exit");
-            System.exit(1);
-        }
-    }
 }

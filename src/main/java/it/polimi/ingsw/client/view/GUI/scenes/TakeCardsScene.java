@@ -15,7 +15,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 import static it.polimi.ingsw.server.model.Position.getColumn;
@@ -39,7 +38,7 @@ public class TakeCardsScene extends GUIScene {
     TextArea chatHistory;
     private ClientController clientController;
     private ArrayList<Integer> selectedTiles;
-    InputController inputController ;
+    private InputController inputController ;
 
     @Override
     public void initialize(ClientController clientController) {
@@ -59,48 +58,17 @@ public class TakeCardsScene extends GUIScene {
         boardPane.addEventHandler(MouseEvent.MOUSE_CLICKED, this::remove);
         selectTiles.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> selectTiles());
         undoSelection.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> revert());
-        sendMessage.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> sendChat());
-        exitButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> closeGame());
+        sendMessage.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> sendChat(inputController, clientController, destinationMenu, writtenMessage));
+        exitButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> closeGame(clientController));
     }
 
-    /**
-     * Shows the name(s) of the saved game(s)
-     *
-     * @param savedGames contains all the saved games in which the player was in
-     */
-    @Override
-    public void updateSavedGames(List<String> savedGames) {
-    }
 
     /**
      * Sets the scene based on the number of players in the game
      */
     @Override
     public void setPlayers() {
-        ArrayList<String> players = new ArrayList<>(clientController.getPlayersBookshelves().keySet());
-
-        MenuItem msgEverybody = new MenuItem("everybody");
-        msgEverybody.setId("msgEverybody");
-        destinationMenu.getItems().add(msgEverybody);
-        msgEverybody.setOnAction(event -> {
-            destinationMenu.setDisable(false);
-            sendMessage.setDisable(false);
-            destinationMenu.setText(msgEverybody.getText());
-        });
-
-        for (String player : players) {
-            if (!player.equals(clientController.getMyNickname())) {
-                MenuItem msgPlayer = new MenuItem(player);
-                msgPlayer.setId("msgTo" + player);
-                destinationMenu.getItems().add(msgPlayer);
-
-                msgPlayer.setOnAction(event -> {
-                    destinationMenu.setDisable(false);
-                    sendMessage.setDisable(false);
-                    destinationMenu.setText(msgPlayer.getText());
-                });
-            }
-        }
+        setPlayersShared(clientController, destinationMenu, sendMessage);
     }
 
     /**
@@ -114,14 +82,6 @@ public class TakeCardsScene extends GUIScene {
         selectTiles.setDisable(false);
     }
 
-    /**
-     * Shows the Tiles selected from the player in the TakeCard scene
-     *
-     * @param selectedTiles contains the Tiles selected by the player and their position on the Board
-     */
-    @Override
-    public void updateSelectedTiles(Map<Integer, ItemCard> selectedTiles) {
-    }
 
     /**
      * Prints the Board in the scene
@@ -221,30 +181,7 @@ public class TakeCardsScene extends GUIScene {
      */
     @Override
     public void comGoal(Map<Integer, Integer> playerCommonGoal) {
-        int n = 0;
-        for (Integer i : playerCommonGoal.keySet()) {
-            ImageView scoreImage = new ImageView(GUIResources.getScore("sc0" + playerCommonGoal.get(i).toString()));
-            scoreImage.setFitHeight(60);
-            scoreImage.setFitWidth(60);
-
-            if (n == 0) {
-                score_0.add(scoreImage, 0, 0);
-            } else {
-                score_1.add(scoreImage, 0, 0);
-            }
-
-            String cgNum = i.toString();
-            if (i < 10) {
-                cgNum = "0" + cgNum;
-            }
-
-            ImageView comGoalImage = new ImageView(GUIResources.getComGoal("cg" + cgNum));
-            comGoalImage.setFitHeight(150);
-            comGoalImage.setFitWidth(200);
-
-            comGoals.add(comGoalImage, n, 0);
-            n++;
-        }
+        comGoalCreated(playerCommonGoal, score_0, score_1, comGoals, true, 150, 200, 60);
     }
 
     /**
@@ -255,23 +192,7 @@ public class TakeCardsScene extends GUIScene {
      */
     @Override
     public void updateCommonGoal(int comGoalDoneID, int newValue) {
-        int n = 0;
-
-        for (Integer cgNum : clientController.getPlayerComGoal().keySet()) {
-            if (cgNum == comGoalDoneID) {
-                ImageView scoreImage = new ImageView(GUIResources.getScore("sc0" + newValue));
-                scoreImage.setFitHeight(60);
-                scoreImage.setFitWidth(60);
-
-                if (n == 0) {
-                    score_0.add(scoreImage, 0, 0);
-                } else {
-                    score_1.add(scoreImage, 0, 0);
-                }
-            }
-
-            n++;
-        }
+        comGoalDone(comGoalDoneID, newValue, score_0, score_1, clientController, 60);
     }
 
     /**
@@ -311,47 +232,15 @@ public class TakeCardsScene extends GUIScene {
     }
 
 
-    @Override
+/*    @Override
     public void printError(String error) {
         errorArea.setVisible(true);
         errorArea.setText(error);
 
         revert();
         selectTiles.setDisable(false);
-    }
+    }*/
 
-    /**
-     * Checks the message destination and eventually sends the message
-     */
-    private void sendChat() {
-        String[] checkChatMessage = {"@chat", destinationMenu.getText(), writtenMessage.getText()};
-
-
-        if (inputController.checkChat(checkChatMessage) != 0) {
-            String destination = checkChatMessage[1];
-            String message = writtenMessage.getText();
-
-            if (destination.equalsIgnoreCase("everybody")) {
-                try {
-                    clientController.chatToAll(message);
-                } catch (Exception e) {
-                    printError("ERRROR: server error");
-                }
-            } else {
-                try {
-                    clientController.chatToPlayer(destination, message);
-                } catch (Exception e) {
-                    printError("ERROR: server error");
-                }
-            }
-
-            try {
-                clientController.chatToMe("you", message);
-            } catch (Exception e) {
-                printError("ERROR: server error");
-            }
-        }
-    }
 
     /**
      * Checks the selected Tiles from the Board and eventually communicates the change to the server
@@ -359,6 +248,8 @@ public class TakeCardsScene extends GUIScene {
     private void selectTiles() {
          if (!inputController.checkSelection(selectedTiles)&&selectedTiles.size()<inputController.maxTilesSize()+1) {
             printError("ERROR: wrong selection");
+             revert();
+             selectTiles.setDisable(false);
         }
         else {
              clientController.setSelectedTiles(selectedTiles);
@@ -369,6 +260,8 @@ public class TakeCardsScene extends GUIScene {
              } catch (Exception e) {
                  e.printStackTrace();
                  printError("ERROR: server error");
+                 revert();
+                 selectTiles.setDisable(false);
              }
          }
         selectedTiles.clear();
@@ -412,29 +305,20 @@ public class TakeCardsScene extends GUIScene {
      * Removes all the images from the SelectedTiles pane and puts them back in the Bord pane
      */
     private void revert() {
-        for (int i = youSelectedThis.getChildren().size() - 1; i >= 0; i--) {
-            ImageView imageView = (ImageView) youSelectedThis.getChildren().get(i);
+        youSelectedThis.getChildren().clear();
+        ItemCard[][] board = clientController.getBoard();
+        for (Integer i : selectedTiles) {
+            String itemName = board[Position.getRow(i)][Position.getColumn(i)].getMyItem().toString().toLowerCase();
+            String itemNumber = board[Position.getRow(i)][Position.getColumn(i)].getMyNum().toString();
+            String myItem = itemName + itemNumber;
 
-            if (imageView != null && !selectedTiles.isEmpty()) {
-                imageView.setPreserveRatio(true);
-                imageView.setFitWidth(50);
-                imageView.setFitHeight(50);
-
-                boardPane.add(imageView, Position.getColumn(selectedTiles.get(i)), Position.getRow(selectedTiles.get(i)));
-                selectedTiles.remove(i);
-            }
+            ImageView tileImage = new ImageView(GUIResources.getItem(myItem));
+            tileImage.setPreserveRatio(true);
+            tileImage.setFitHeight(50);
+            tileImage.setFitWidth(50);
+            boardPane.add(tileImage, Position.getColumn(i), Position.getRow(i));
         }
+        selectedTiles.clear();
     }
 
-    private void closeGame(){
-        Alert alert=new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("EXIT");
-        alert.setHeaderText("You're about to exit the program");
-        alert.setContentText("Are you sure you want to exit?");
-        if(alert.showAndWait().get() == ButtonType.OK) {
-            clientController.disconnectMe();
-            System.out.println("exit");
-            System.exit(1);
-        }
-    }
 }

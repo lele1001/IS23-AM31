@@ -15,7 +15,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 public class PutCardsScene extends GUIScene {
@@ -38,11 +37,13 @@ public class PutCardsScene extends GUIScene {
     @FXML
     ToggleGroup columns;
     private ClientController clientController;
+    private InputController inputController;
     private ArrayList<Integer> selectedTiles;
 
     @Override
     public void initialize(ClientController clientController) {
         this.clientController = clientController;
+        this.inputController = new InputController(clientController);
         yourPoints.setText("You have 0 points");
 
         columns = new ToggleGroup();
@@ -62,19 +63,10 @@ public class PutCardsScene extends GUIScene {
     @Override
     public void bindEvents() {
         youSelectedThis.addEventHandler(MouseEvent.MOUSE_CLICKED, this::remove);
-        sendMessage.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> sendChat());
+        sendMessage.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> sendChat(inputController, clientController, destinationMenu, writtenMessage));
         undoSelection.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> revert());
         selectTiles.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> putTiles());
-        exitButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> closeGame());
-    }
-
-    /**
-     * Shows the name(s) of the saved game(s)
-     *
-     * @param savedGames contains all the saved games in which the player was in
-     */
-    @Override
-    public void updateSavedGames(List<String> savedGames) {
+        exitButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> closeGame(clientController));
     }
 
     /**
@@ -82,39 +74,7 @@ public class PutCardsScene extends GUIScene {
      */
     @Override
     public void setPlayers() {
-        ArrayList<String> players = new ArrayList<>(clientController.getPlayersBookshelves().keySet());
-
-        MenuItem msgEverybody = new MenuItem("everybody");
-        msgEverybody.setId("msgEverybody");
-        destinationMenu.getItems().add(msgEverybody);
-        msgEverybody.setOnAction(event -> {
-            destinationMenu.setDisable(false);
-            sendMessage.setDisable(false);
-            destinationMenu.setText(msgEverybody.getText());
-        });
-
-        for (String player : players) {
-            if (!player.equals(clientController.getMyNickname())) {
-                MenuItem msgPlayer = new MenuItem(player);
-                msgPlayer.setId("msgTo" + player);
-                destinationMenu.getItems().add(msgPlayer);
-
-                msgPlayer.setOnAction(event -> {
-                    destinationMenu.setDisable(false);
-                    sendMessage.setDisable(false);
-                    destinationMenu.setText(msgPlayer.getText());
-                });
-            }
-        }
-    }
-
-    /**
-     * Updates the current player
-     *
-     * @param player is the curren player
-     */
-    @Override
-    public void updateCurrPlayer(String player) {
+        setPlayersShared(clientController, destinationMenu, sendMessage);
     }
 
     /**
@@ -139,24 +99,6 @@ public class PutCardsScene extends GUIScene {
             i++;
         }
 
-    }
-
-    /**
-     * Prints the Board in the scene
-     *
-     * @param board is the updated Board
-     */
-    @Override
-    public void updateBoard(ItemCard[][] board) {
-    }
-
-    /**
-     * Updates the Board removing the given Tiles
-     *
-     * @param tilesToRemove contains the ItemCard to remove and its position on the Board
-     */
-    @Override
-    public void changeBoard(Integer[] tilesToRemove) {
     }
 
     /**
@@ -220,31 +162,7 @@ public class PutCardsScene extends GUIScene {
      */
     @Override
     public void comGoal(Map<Integer, Integer> playerCommonGoal) {
-        int n = 0;
-
-        for (Integer i : playerCommonGoal.keySet()) {
-            ImageView scoreImage = new ImageView(GUIResources.getScore("sc0" + playerCommonGoal.get(i).toString()));
-            scoreImage.setFitHeight(60);
-            scoreImage.setFitWidth(60);
-
-            if (n == 0) {
-                score_0.add(scoreImage, 0, 0);
-            } else {
-                score_1.add(scoreImage, 0, 0);
-            }
-
-            String cgNum = i.toString();
-            if (i < 10) {
-                cgNum = "0" + cgNum;
-            }
-
-            ImageView comGoalImage = new ImageView(GUIResources.getComGoal("cg" + cgNum));
-            comGoalImage.setFitHeight(150);
-            comGoalImage.setFitWidth(200);
-
-            comGoals.add(comGoalImage, 0, n);
-            n++;
-        }
+        comGoalCreated(playerCommonGoal, score_0, score_1, comGoals, false, 150, 200, 60);
     }
 
     /**
@@ -255,23 +173,7 @@ public class PutCardsScene extends GUIScene {
      */
     @Override
     public void updateCommonGoal(int comGoalDoneID, int newValue) {
-        int n = 0;
-
-        for (Integer cgNum : clientController.getPlayerComGoal().keySet()) {
-            if (cgNum == comGoalDoneID) {
-                ImageView scoreImage = new ImageView(GUIResources.getScore("sc0" + newValue));
-                scoreImage.setFitHeight(60);
-                scoreImage.setFitWidth(60);
-
-                if (n == 0) {
-                    score_0.add(scoreImage, 0, 0);
-                } else {
-                    score_1.add(scoreImage, 0, 0);
-                }
-            }
-
-            n++;
-        }
+        comGoalDone(comGoalDoneID, newValue, score_0, score_1, clientController, 60);
     }
 
     /**
@@ -310,68 +212,30 @@ public class PutCardsScene extends GUIScene {
         writtenMessage.setText("");
     }
 
-    /**
-     * Prints an error message in the scene
-     *
-     * @param error is the error message to display
-     */
+/*
     @Override
     public void printError(String error) {
         errorArea.setVisible(true);
         errorArea.setText(error);
         revert();
-    }
-
-    /**
-     * Checks the message destination and eventually sends the message
-     */
-    private void sendChat() {
-        destinationMenu.setDisable(false);
-
-        String[] checkChatMessage = {"@chat", destinationMenu.getText(), writtenMessage.getText()};
-        InputController inputController = new InputController(clientController);
-        if (inputController.checkChat(checkChatMessage) != 0) {
-            String destination = checkChatMessage[1];
-            String message = writtenMessage.getText();
-
-            if (destination.equalsIgnoreCase("Everybody")) {
-                try {
-                    clientController.chatToAll(message);
-                } catch (Exception e) {
-                    printError("ERRROR: server error");
-                }
-            } else {
-                try {
-                    clientController.chatToPlayer(destination, message);
-                } catch (Exception e) {
-                    printError("ERROR: server error");
-                }
-            }
-
-            try {
-                clientController.chatToMe("you", message);
-            } catch (Exception e) {
-                printError("ERROR: server error");
-            }
-        }
-    }
+    }*/
 
     /**
      * Checks the Tiles to put in the Bookshelf and eventually communicates the change to the server
      */
     private void putTiles() {
         int i = 0;
-
+        String column;
         try {
-            String column = ((RadioButton) columns.getSelectedToggle()).getId();
+            column= ((RadioButton) columns.getSelectedToggle()).getId();
             i = Integer.parseInt(String.valueOf(column.charAt(column.length() - 1)));
-        } catch (NumberFormatException e) {
-            printError("ERROR: parse exception");
+        } catch (Exception e) {
+            printError("ERROR: please select a valid column.");
+            return;
         }
 
-        InputController inputController = new InputController(clientController);
         ArrayList<ItemCard> tilesToPut = inputController.checkPutGUI(selectedTiles);
-        System.out.println(tilesToPut);
+        //System.out.println(tilesToPut);
         if (tilesToPut != null) {
             try {
                 clientController.insertCard(tilesToPut, i);
@@ -440,15 +304,4 @@ public class PutCardsScene extends GUIScene {
         selectedTiles.clear();
     }
 
-    private void closeGame(){
-        Alert alert=new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("EXIT");
-        alert.setHeaderText("You're about to exit the program");
-        alert.setContentText("Are you sure you want to exit?");
-        if(alert.showAndWait().get() == ButtonType.OK) {
-            clientController.disconnectMe();
-            System.out.println("exit");
-            System.exit(1);
-        }
-    }
 }

@@ -75,6 +75,7 @@ public final class GUIResources {
     public final static Image pg12 = new Image(Objects.requireNonNull(GUIResources.class.getResource("/images/personalGoalCards/Personal_Goals12.png")).toString());
 
     //scoring
+    public final static Image sc00 = new Image(Objects.requireNonNull(GUIResources.class.getResource("/images/scoringTokens/scoring.jpg")).toString());
     public final static Image sc01 = new Image(Objects.requireNonNull(GUIResources.class.getResource("/images/scoringTokens/endGame.jpg")).toString());
     public final static Image sc02 = new Image(Objects.requireNonNull(GUIResources.class.getResource("/images/scoringTokens/scoring_2.jpg")).toString());
     public final static Image sc04 = new Image(Objects.requireNonNull(GUIResources.class.getResource("/images/scoringTokens/scoring_4.jpg")).toString());
@@ -132,6 +133,7 @@ public final class GUIResources {
         put("pg12", pg12);
     }};
     private static final Map<String, Image> scoringTokens = new HashMap<>() {{
+        put("sc00", sc00);
         put("sc01", sc01);
         put("sc02", sc02);
         put("sc04", sc04);
