@@ -10,18 +10,17 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedHashMap;
-import java.util.List;
+import java.util.*;
 
 public class ClientHandlerSocket extends ClientHandler implements Runnable {
     private final Server server;
     private boolean playerNumberAsked;
-    private boolean isConnected;
+    private volatile boolean isConnected;
     private final Socket socket;
     private final PrintWriter socketOut;
     private Thread listeningThread;
+    private Thread pingThread;
+    private Timer ping;
     private volatile Boolean savedGame;
 
     public ClientHandlerSocket(Socket socket, Server server, ConnectionControl connectionControl) {
@@ -54,6 +53,17 @@ public class ClientHandlerSocket extends ClientHandler implements Runnable {
             Thread.onSpinWait();
         }
 
+        pingThread = new Thread(this::ping);
+        pingThread.start();
+
+        ping = new Timer();
+        ping.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                isConnected = false;
+            }
+        }, 10000);
+
         if (!connectionControl.tryAddInQueue(this, nickname)) {
             // Game is not available.
             System.out.println("Sending " + nickname + " that game is not available.");
@@ -62,10 +72,20 @@ public class ClientHandlerSocket extends ClientHandler implements Runnable {
         }
     }
 
+    private void ping() {
+        // Always sends a ping to the client.
+        new Timer().scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                send(generateStandardMessage("ping", null));
+            }
+        }, 0, 5000);
+    }
+
     /**
      * The infinitive loop that listens from client's messages, until it is online.
      */
-    public void listen() {
+    private void listen() {
         BufferedReader in;
         try {
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -75,10 +95,9 @@ public class ClientHandlerSocket extends ClientHandler implements Runnable {
         }
 
         // Always listens from the client's message and notifies the server of its disconnection.
-        while (true) {
+        while (isConnected) {
             try {
                 String line = in.readLine();
-
                 if (line != null) {
                     //System.out.println("Received: " + line);
                     onMessageReceived(line);
@@ -87,13 +106,13 @@ public class ClientHandlerSocket extends ClientHandler implements Runnable {
                 if ((nickname == null) || (Thread.interrupted())) {
                     return;
                 }
-
-                System.out.println("Client: " + nickname + " disconnected.");
                 isConnected = false;
-                connectionControl.changePlayerStatus(nickname, true);
-                break;
             }
         }
+
+
+        System.out.println("Client: " + nickname + " disconnected.");
+        connectionControl.changePlayerStatus(nickname, true);
 
         try {
             in.close();
@@ -228,6 +247,16 @@ public class ClientHandlerSocket extends ClientHandler implements Runnable {
                     case "chatToAll" -> connectionControl.chatToAll(nickname, jsonObject.get("Value").getAsString());
                     case "chatToPlayer" ->
                             connectionControl.chatToPlayer(nickname, jsonObject.get("receiver").getAsString(), jsonObject.get("Value").getAsString());
+                    case "ping" -> {
+                        ping.cancel();
+                        ping = new Timer();
+                        ping.schedule(new TimerTask() {
+                            @Override
+                            public void run() {
+                                isConnected = false;
+                            }
+                        }, 10000);
+                    }
                     default -> System.out.println("Unknown message from client.");
                 }
             } catch (Exception e) {
@@ -275,6 +304,7 @@ public class ClientHandlerSocket extends ClientHandler implements Runnable {
 
     /**
      * Sends board's update to the client.
+     *
      * @param tilesToRemove: the array of board's positions to remove tiles from.
      */
     @Override
@@ -321,9 +351,10 @@ public class ClientHandlerSocket extends ClientHandler implements Runnable {
 
     /**
      * Sends bookshelf's update to the client.
-     * @param nickname: the player whose bookshelf has changed.
+     *
+     * @param nickname:   the player whose bookshelf has changed.
      * @param tilesToAdd: the ordered array of tiles to add in nickname's bookshelf.
-     * @param column: the column of the bookshelf to add tiles into.
+     * @param column:     the column of the bookshelf to add tiles into.
      */
     @Override
     public void sendBookshelfRenewed(String nickname, ItemCard[] tilesToAdd, int column) {
@@ -413,6 +444,7 @@ public class ClientHandlerSocket extends ClientHandler implements Runnable {
 
     /**
      * Asks the client if he wants to resume one of the game he's into.
+     *
      * @param savedGames: the list of saved games' names the client is into.
      */
     @Override

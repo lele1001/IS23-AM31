@@ -61,7 +61,7 @@ public class ConnectionControl {
                     System.out.println(nickname + " is back!");
 
                     System.out.println("Sending him game details...");
-                    this.sendGameIsStarting(new ArrayList<>(getClientHandlerMap().keySet()), nickname);
+                    this.sendGameIsStarting(new ArrayList<>(clientStatusMap.keySet()), nickname);
                     gameController.sendGameDetails(nickname);
                     return true;
                 } else {
