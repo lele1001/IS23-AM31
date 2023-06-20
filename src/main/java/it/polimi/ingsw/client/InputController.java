@@ -305,7 +305,7 @@ public class InputController {
             return null;
         }
 
-        if (selectedTiles.size() > 3) {
+        if (selectedTiles.size() !=clientController.getSelectedTiles().size()) {
             System.out.println("Invalid number of cards");
             return null;
         }

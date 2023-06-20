@@ -125,7 +125,7 @@ public class PutCardsScene extends GUIScene {
     @Override
     public void updateSelectedTiles(Map<Integer, ItemCard> selectedTiles) {
         int i = 0;
-        for (ItemCard itemCard : clientController.getSelectedTiles().values()) {
+        for (ItemCard itemCard : selectedTiles.values()) {
             String itemName = itemCard.getMyItem().toString().toLowerCase();
             String itemNumber = itemCard.getMyNum().toString();
             String myItem = itemName + itemNumber;
@@ -371,7 +371,7 @@ public class PutCardsScene extends GUIScene {
 
         InputController inputController = new InputController(clientController);
         ArrayList<ItemCard> tilesToPut = inputController.checkPutGUI(selectedTiles);
-
+        System.out.println(tilesToPut);
         if (tilesToPut != null) {
             try {
                 clientController.insertCard(tilesToPut, i);
@@ -380,10 +380,13 @@ public class PutCardsScene extends GUIScene {
             }
         } else {
             printError("ERROR: wrong selection");
+            youSelectedThis.getChildren().clear();
+            updateSelectedTiles(clientController.getSelectedTiles());
         }
 
         selectedTiles.clear();
         youPutThis.getChildren().clear();
+
     }
 
     /**
@@ -431,18 +434,9 @@ public class PutCardsScene extends GUIScene {
      * Removes all the images from the PutTiles pane and puts them back in the SelectedTiles pane
      */
     private void revert() {
-        for (int i = youPutThis.getChildren().size() - 1; i >= 0; i--) {
-            ImageView imageView = (ImageView) youPutThis.getChildren().get(i);
-
-            if (imageView != null && !youPutThis.getChildren().isEmpty()) {
-                imageView.setPreserveRatio(true);
-                imageView.setFitWidth(50);
-                imageView.setFitHeight(50);
-
-                youSelectedThis.add(imageView, i, 0);
-            }
-        }
-
+        youSelectedThis.getChildren().clear();
+        youPutThis.getChildren().clear();
+        updateSelectedTiles(clientController.getSelectedTiles());
         selectedTiles.clear();
     }
 

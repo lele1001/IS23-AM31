@@ -357,7 +357,7 @@ public class TakeCardsScene extends GUIScene {
      * Checks the selected Tiles from the Board and eventually communicates the change to the server
      */
     private void selectTiles() {
-         if (!inputController.checkSelection(selectedTiles)) {
+         if (!inputController.checkSelection(selectedTiles)&&selectedTiles.size()<inputController.maxTilesSize()+1) {
             printError("ERROR: wrong selection");
         }
         else {
