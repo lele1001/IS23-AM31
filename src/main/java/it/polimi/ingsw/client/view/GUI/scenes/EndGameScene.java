@@ -32,6 +32,7 @@ public class EndGameScene extends GUIScene {
     @Override
     public void initialize(ClientController clientController) {
         this.clientController = clientController;
+        winnerToken.setVisible(false);
         bindEvents();
     }
 
@@ -209,6 +210,13 @@ public class EndGameScene extends GUIScene {
 
         for (String s : finalScores.keySet()) {
             if (finalScores.get(s) != max) {
+                if (pos == 0) {
+                    winnerToken.setVisible(true);
+                }
+                else {
+                    winnerToken.setVisible(false);
+                }
+
                 pos++;
                 max = finalScores.get(s);
             }
