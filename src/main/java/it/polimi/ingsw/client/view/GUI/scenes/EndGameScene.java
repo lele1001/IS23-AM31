@@ -27,7 +27,6 @@ public class EndGameScene extends GUIScene {
     @Override
     public void initialize(ClientController clientController) {
         this.clientController = clientController;
-        winnerToken.setVisible(false);
         bindEvents();
     }
 
@@ -79,19 +78,19 @@ public class EndGameScene extends GUIScene {
     @Override
     public void finalScores(LinkedHashMap<String, Integer> finalScores) {
         int pos = 0, max = -1, index = 1;
-        String posString;
         GridPane rankingTable = (GridPane) rankingPane.getChildren().get(0);
 
         for (String s : finalScores.keySet()) {
             if (finalScores.get(s) != max) {
-                winnerToken.setVisible(pos == 0 && s.equals(clientController.getMyNickname()));
-
                 pos++;
                 max = finalScores.get(s);
             }
 
-            posString = String.valueOf(pos);
-            rankingTable.add(new Label(posString), 0, index);
+        if (s.equals(clientController.getMyNickname())) {
+                winnerToken.setVisible(pos == 1);
+            }
+
+            rankingTable.add(new Label(String.valueOf(pos)), 0, index);
             rankingTable.add(new Label(s), 1, index);
             rankingTable.add(new Label(finalScores.get(s).toString()), 2, index);
             index++;
@@ -99,6 +98,4 @@ public class EndGameScene extends GUIScene {
 
         System.out.println();
     }
-
-
 }
