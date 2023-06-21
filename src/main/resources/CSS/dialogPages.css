@@ -1,10 +1,16 @@
-#loginScenePane, #playersScenePane, #endGameLose, #endGameWin {
+#loginScenePane, #playersScenePane {
     -fx-background-image: url('../images/publisherMaterial/Display_5.jpg');
     -fx-background-size: 100%;
     -fx-effect: dropshadow(gaussian, white, 127, 1, 0, 0);
 }
 
-#connectionPane, #firstPlayerPane {
+#savedGamesPane, #endGamePane {
+    -fx-background-image: url('../images/misc/sfondoParquet.jpg');
+    -fx-background-size: 100%;
+    -fx-effect: dropshadow(gaussian, white, 127, 1, 0, 0);
+}
+
+#connectionPane, #firstPlayerPane, #savedGamesPane, #rankingPane, #selectGame, #resumeGame {
     -fx-font-family: "Bauhaus 93";
     -fx-font-size: 18;
     -fx-font-weight: bolder;
@@ -17,7 +23,7 @@
     -fx-font-size: 30;
 }
 
-#endMessage {
+#endMessage, #savedLabel {
     -fx-font-family: "Bauhaus 93";
     -fx-font-size: 24;
     -fx-font-weight: bolder;

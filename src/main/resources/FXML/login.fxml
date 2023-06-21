@@ -31,7 +31,7 @@
         <RadioButton fx:id="connectionSocket" text="Socket" GridPane.columnIndex="2" GridPane.rowIndex="2">
         </RadioButton>
 
-        <Label fx:id="ipText" text="IP Address:" GridPane.rowIndex="3">
+        <Label fx:id="ipText" stylesheets="@../CSS/dialogPages.css" text="IP Address:" GridPane.rowIndex="3">
         </Label>
         <TextField fx:id="ipAddress" GridPane.columnIndex="1" GridPane.columnSpan="2147483647" GridPane.rowIndex="3" />
 

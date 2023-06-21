@@ -1,19 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.*?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.text.Text?>
-
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.view.GUI.scenes.SavedGamesScene">
-   <children>
-      <Button fx:id="yesButton" layoutX="282.0" layoutY="211.0" mnemonicParsing="false" text="Yes" />
-      <Button fx:id="noButton" layoutX="369.0" layoutY="211.0" mnemonicParsing="false" text="No" />
-      <MenuButton fx:id="listGames" layoutX="369.0" layoutY="90.0" mnemonicParsing="false" text="Saved games" />
-      <Text layoutX="12.0" layoutY="107.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Select a game name if you want to resume one" />
-      <Text layoutX="44.0" layoutY="228.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Do you want to resume the Game?" />
-      <Label fx:id="errorLabel" layoutX="282.0" layoutY="313.0" visible="false" />
-      <Button fx:id="exitButton" layoutX="471.0" layoutY="331.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="94.0" text="Exit" />
-   </children>
+<AnchorPane fx:id="savedGamesPane" prefHeight="400.0" prefWidth="600.0" stylesheets="@../CSS/dialogPages.css"
+            xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="it.polimi.ingsw.client.view.GUI.scenes.SavedGamesScene">
+    <Button fx:id="yesButton" layoutX="360.0" layoutY="150.0" maxHeight="-Infinity" maxWidth="-Infinity"
+            minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="30.0" prefWidth="50.0"
+            text="Yes"/>
+    <Button fx:id="noButton" layoutX="435.0" layoutY="150.0" maxHeight="-Infinity" maxWidth="-Infinity"
+            minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="30.0" prefWidth="50.0"
+            text="No"/>
+    <MenuButton fx:id="listGames" layoutX="360.0" layoutY="210.0" maxHeight="-Infinity" maxWidth="-Infinity"
+                minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="30.0" prefWidth="150.0"
+                text="Saved games"/>
+    <Label id="selectGame" layoutX="50.0" layoutY="210.0" maxHeight="-Infinity" maxWidth="-Infinity"
+           minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="300.0"
+           text="Select the game you want to resume"/>
+    <Label id="resumeGame" layoutX="50.0" layoutY="150.0" maxHeight="-Infinity" maxWidth="-Infinity"
+           minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="300.0"
+           text="Do you want to resume a game?"/>
+    <Label id="savedLabel" layoutX="50.0" layoutY="40.0" prefHeight="80.0" prefWidth="500.0"
+           text="There are some saved games matching with your nickname..." wrapText="true"/>
+    <Button fx:id="exitButton" layoutX="471.0" layoutY="331.0" mnemonicParsing="false" prefHeight="42.0"
+            prefWidth="94.0" text="Exit"/>
+    <Label fx:id="errorLabel" layoutX="50.0" layoutY="337.0" prefHeight="30.0" prefWidth="400.0"/>
 </AnchorPane>

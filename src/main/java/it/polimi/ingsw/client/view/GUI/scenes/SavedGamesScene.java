@@ -10,16 +10,19 @@ import javafx.scene.control.Label;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 
 import java.util.List;
 
 public class SavedGamesScene extends GUIScene {
     @FXML
-    Button yesButton, noButton;
+    Button yesButton, noButton, exitButton;
     @FXML
     MenuButton listGames;
     @FXML
     Label errorLabel;
+    @FXML
+    AnchorPane savedGamesPane;
     ClientController clientController;
 
     @Override

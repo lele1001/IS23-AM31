@@ -20,7 +20,7 @@ public class EndGameScene extends GUIScene {
     @FXML
     Button closeButton;
     @FXML
-    AnchorPane rankingPane;
+    AnchorPane rankingPane, endGamePane;
     @FXML
     Label endMessage;
 
