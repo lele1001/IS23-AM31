@@ -19,7 +19,6 @@ public class ClientHandlerSocket extends ClientHandler implements Runnable {
     private final Socket socket;
     private final PrintWriter socketOut;
     private Thread listeningThread;
-    private Thread pingThread;
     private Timer ping;
     private volatile Boolean savedGame;
 
@@ -53,8 +52,7 @@ public class ClientHandlerSocket extends ClientHandler implements Runnable {
             Thread.onSpinWait();
         }
 
-        pingThread = new Thread(this::ping);
-        pingThread.start();
+        new Thread(this::ping).start();
 
         ping = new Timer();
         ping.schedule(new TimerTask() {
@@ -72,6 +70,9 @@ public class ClientHandlerSocket extends ClientHandler implements Runnable {
         }
     }
 
+    /**
+     * A private method that sends a ping to the client every 5 seconds to check if it is still online.
+     */
     private void ping() {
         // Always sends a ping to the client.
         new Timer().scheduleAtFixedRate(new TimerTask() {

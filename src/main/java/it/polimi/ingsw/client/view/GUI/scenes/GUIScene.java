@@ -50,6 +50,13 @@ public abstract class GUIScene {
 
     }
 
+    /**
+     * A shared method called by different scenes to initialize chat field.
+     *
+     * @param clientController: a reference to the client controller.
+     * @param destinationMenu:  the button that allows player to select the recipient of the chat message.
+     * @param sendMessage:      the button that allows player to send the message.
+     */
     protected void setPlayersShared(ClientController clientController, MenuButton destinationMenu, Button sendMessage) {
         ArrayList<String> players = new ArrayList<>(clientController.getPlayersBookshelves().keySet());
 
@@ -152,7 +159,17 @@ public abstract class GUIScene {
 
     }
 
-    protected void comGoalDone (int comGoalDoneID, int newValue, GridPane score_0, GridPane score_1, ClientController clientController, int height) {
+    /**
+     * A protected method shared by different scenes to update common goals' scores.
+     *
+     * @param comGoalDoneID:    the id ot the common goal to be update.
+     * @param newValue:         the remained score.
+     * @param score_0:          the grid pane with the first common goal's score.
+     * @param score_1:          the grid pane with the second common goal's score.
+     * @param clientController: a reference to the client controller.
+     * @param height:           the height of the score image.
+     */
+    protected void comGoalDone(int comGoalDoneID, int newValue, GridPane score_0, GridPane score_1, ClientController clientController, int height) {
         int n = 0;
         for (Integer cgNum : clientController.getPlayerComGoal().keySet()) {
             if (cgNum == comGoalDoneID) {
@@ -171,6 +188,18 @@ public abstract class GUIScene {
         }
     }
 
+    /**
+     * A protected method shared by different scenes to create common goals' cards.
+     *
+     * @param playerCommonGoal: the common goals for the game.
+     * @param score_0:          the grid pane for the first common goal's score.
+     * @param score_1:          the grid pane for the second common goal's score.
+     * @param comGoals:         the grid pane for the common goals' cards.
+     * @param horizontal:       a boolean that is true if the scene has common goals cards in horizontal, false anyway.
+     * @param height:           the height of the common goal image.
+     * @param width:            thr width of the common goal image.
+     * @param imgHeight:        the height of the score image.
+     */
     protected void comGoalCreated(Map<Integer, Integer> playerCommonGoal, GridPane score_0, GridPane score_1, GridPane comGoals, boolean horizontal, int height, int width, int imgHeight) {
         int n = 0;
         for (Integer i : playerCommonGoal.keySet()) {
@@ -193,7 +222,7 @@ public abstract class GUIScene {
             comGoalImage.setFitHeight(height);
             comGoalImage.setFitWidth(width);
 
-            if(horizontal)
+            if (horizontal)
                 comGoals.add(comGoalImage, n, 0);
             else
                 comGoals.add(comGoalImage, 0, n);
@@ -210,6 +239,14 @@ public abstract class GUIScene {
 
     }
 
+    /**
+     * A method shared by different scenes to send chat's messages.
+     *
+     * @param inputController:  a reference to the input controller.
+     * @param clientController: a reference to the client controller.
+     * @param destinationMenu:  the button that allows players to select the recipient of the message.
+     * @param writtenMessage:   the text field that contains the message.
+     */
     protected void sendChat(InputController inputController, ClientController clientController, MenuButton destinationMenu, TextField writtenMessage) {
         String[] checkChatMessage = {"@chat", destinationMenu.getText(), writtenMessage.getText()};
         if (inputController.checkChat(checkChatMessage) != 0) {
@@ -263,7 +300,7 @@ public abstract class GUIScene {
      * @param error is the error message to display
      */
     public void printError(String error) {
-        if(this.alert == null) {
+        if (this.alert == null) {
             this.alert = new Alert(Alert.AlertType.INFORMATION);
             Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
             stage.getIcons().add(GUIResources.icon);
@@ -271,7 +308,7 @@ public abstract class GUIScene {
             alert.setHeaderText("Attention!");
             alert.setContentText(error);
             alert.showAndWait();
-            if(alert.getResult() == ButtonType.OK || alert.getResult() == ButtonType.CLOSE) {
+            if (alert.getResult() == ButtonType.OK || alert.getResult() == ButtonType.CLOSE) {
                 this.alert = null;
             }
         } else {
@@ -289,6 +326,11 @@ public abstract class GUIScene {
 
     }
 
+    /**
+     * Called in all the scenes when the player clicks on close button, asks him if he wants to be disconnected from the game and closes the connection in case of confirmation.
+     *
+     * @param clientController: a reference to the client controller.
+     */
     public void closeGame(ClientController clientController) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
@@ -297,7 +339,7 @@ public abstract class GUIScene {
         alert.setHeaderText("You're about to exit the program...");
         alert.setContentText("Are you sure?");
         alert.showAndWait();
-        if(alert.getResult() == ButtonType.OK) {
+        if (alert.getResult() == ButtonType.OK) {
             clientController.disconnectMe();
             System.out.println("exit");
             System.exit(1);

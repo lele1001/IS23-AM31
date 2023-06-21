@@ -59,6 +59,9 @@ public class ConnectionSocket extends ConnectionClient {
         }, 10000);
     }
 
+    /**
+     * A private method that sends a ping to the server every 5 seconds to check if it is still online.
+     */
     private void ping() {
         // Always sends a ping to the client.
         new Timer().scheduleAtFixedRate(new TimerTask() {
@@ -257,7 +260,7 @@ public class ConnectionSocket extends ConnectionClient {
                             isConnected = false;
                         }
                     }, 10000);
-                }//System.out.println("ping");
+                }
                 default -> getController().onError("Unknown message from server.");
 
             }
