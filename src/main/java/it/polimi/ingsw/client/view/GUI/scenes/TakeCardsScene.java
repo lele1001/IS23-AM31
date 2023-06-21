@@ -256,7 +256,7 @@ public class TakeCardsScene extends GUIScene {
 
              try {
                  clientController.selectCard();
-                 selectTiles.setDisable(true);
+                 //selectTiles.setDisable(true);
              } catch (Exception e) {
                  e.printStackTrace();
                  printError("ERROR: server error");

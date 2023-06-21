@@ -54,16 +54,16 @@ public class LoginScene extends GUIScene {
         loginButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> loginAction());
     }
 
-    /**
+    /*
      * Prints an error message in the scene
      *
      * @param error is the error message to display
-     */
+
     @Override
     public void printError(String error) {
         errorArea.setVisible(true);
         errorArea.setText(error);
-    }
+    }*/
 
     /**
      * Checks the parameters inserted by the user and tries to start a connection with the server

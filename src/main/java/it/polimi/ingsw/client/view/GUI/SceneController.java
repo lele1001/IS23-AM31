@@ -302,7 +302,8 @@ public class SceneController {
      */
     public void fatalError(String error) {
         if(!activeStage.getScene().equals(this.scenesMap.get("endGameScene").getMyScene())) {
-            activeStage.setScene(this.scenesMap.get("errorScene").getMyScene());
+            this.currentController = this.scenesMap.get("errorScene");
+            activeStage.setScene(currentController.getMyScene());
             this.currentController.printError(error);
         }
     }
