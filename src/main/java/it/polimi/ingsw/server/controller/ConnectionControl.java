@@ -458,18 +458,9 @@ public class ConnectionControl {
      * @param nickname of the client to be notified.
      */
     public void SendBookshelfCompleted(String nickname) {
-        System.out.println("Sending bookshelf completed to everyone.");
-        ClientHandler first = getClientHandlerMap().get(nickname);
-
-        if (first != null) {
-            first.sendBookshelfCompleted();
-        }
-//TODO change send Error with method for completion
+        System.out.println("Sending bookshelf completed to everyone...");
         for (ClientHandler clientHandler : getClientHandlerMap().values()) {
-            if (clientHandler != first) {
-                clientHandler.sendError(nickname + " has completed his Bookshelf. Let's go on for the last turn of the game.");
-
-            }
+            clientHandler.sendBookshelfCompleted(nickname);
         }
     }
 

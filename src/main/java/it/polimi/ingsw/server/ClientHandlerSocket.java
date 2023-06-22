@@ -428,10 +428,12 @@ public class ClientHandlerSocket extends ClientHandler implements Runnable {
 
     /**
      * Called when a player completes his bookshelf
+     *
+     * @param nickname of the player that has completed the bookshelf.
      */
     @Override
-    public void sendBookshelfCompleted() {
-        send(generateStandardMessage("bookshelf_completed", null));
+    public void sendBookshelfCompleted(String nickname) {
+        send(generateStandardMessage("bookshelf_completed", nickname));
     }
 
     /**

@@ -144,10 +144,11 @@ public interface RMIClientConnection extends Remote {
 
     /**
      * Method called by the server when a player completes his bookshelf
+     * @param nickname of the player that has completed the bookshelf.
      *
      * @throws RemoteException if an error occurred calling the RMI client
      */
-    void onBookshelfCompleted() throws RemoteException;
+    void onBookshelfCompleted(String nickname) throws RemoteException;
 
     /**
      * Called when there are some saved games with client's nicknames, to ask him if he wants to resume one of them.

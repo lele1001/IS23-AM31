@@ -742,16 +742,16 @@ public class CLI implements View {
 
     @Override
     public void finalScores(LinkedHashMap<String, Integer> finalScores) {
-        System.out.println("Game is ended!");
-        System.out.println("Final rank: ");
+        print("Game is ended!");
+        print("Final rank: ");
         int i = 1, max = -1;
 
         for (String s : finalScores.keySet()) {
             if (finalScores.get(s) == max)
-                System.out.print(" parity with " + s);
+                print(" parity with " + s);
             else {
                 System.out.println();
-                System.out.print(i + ") " + s);
+                print(i + ") " + s);
                 max = finalScores.get(s);
                 i++;
             }

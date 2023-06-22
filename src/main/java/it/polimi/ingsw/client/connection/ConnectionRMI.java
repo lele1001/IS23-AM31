@@ -312,12 +312,13 @@ public class ConnectionRMI extends ConnectionClient implements RMIClientConnecti
 
     /**
      * Method called by the server when a player completes his bookshelf
+     * @param nickname of the player that has completed the bookshelf.
      *
      * @throws RemoteException if an error occurred calling the RMI client
      */
     @Override
-    public void onBookshelfCompleted() throws RemoteException {
-        getController().onBookshelfCompleted();
+    public void onBookshelfCompleted(String nickname) throws RemoteException {
+        getController().onBookshelfCompleted(nickname);
     }
 
     /**

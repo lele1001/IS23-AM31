@@ -303,11 +303,12 @@ public class ClientHandlerRmi extends ClientHandler {
 
     /**
      * The RMI server calls the client's method when a player completes his bookshelf
+     * @param nickname of the player that has completed the bookshelf.
      */
     @Override
-    public void sendBookshelfCompleted() {
+    public void sendBookshelfCompleted(String nickname) {
         try {
-            client.onBookshelfCompleted();
+            client.onBookshelfCompleted(nickname);
         } catch (RemoteException e) {
             System.out.println("Impossible to send to " + nickname + " that they have completed their bookshelf");
         }

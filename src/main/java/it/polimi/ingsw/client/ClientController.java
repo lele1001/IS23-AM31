@@ -180,14 +180,21 @@ public class ClientController {
     }
 
     /**
-     * Just notifies the client that he has completed his bookshelf and earned an extra point.
+     * Just notifies the client that someone has completed his bookshelf.
+     * @param nickname of the player that has just completed his bookshelf.
+     *
      */
-    public void onBookshelfCompleted() {
-        view.print("Congrats! You have just completed your bookshelf.");
-        view.print("Adding you an extra point...");
-        myPoint++;
-        view.printPoints(myPoint);
+    public void onBookshelfCompleted(String nickname) {
+        if (nickname.equals(getMyNickname())) {
+            view.print("Congrats! You have just completed your bookshelf.");
+            view.print("Adding you an extra point...");
+            myPoint++;
+            view.printPoints(myPoint);
+        }
+        else
+            view.print(nickname + " has just completed his bookshelf!");
         view.print("Let's go on for the last turn of the game!");
+        view.bookshelfCompleted();
     }
 
     /**

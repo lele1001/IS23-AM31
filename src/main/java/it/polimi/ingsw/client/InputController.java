@@ -22,7 +22,7 @@ public class InputController {
      * Checks that the user selects a correct number of cards, that they exist on the board and that they are adjacent
      */
     public ArrayList<Integer> checkTake(String[] input) {
-        System.out.println(Arrays.toString(input));
+        //System.out.println(Arrays.toString(input));
         if (!clientController.isMyTurn()) {
             clientController.onError("It is not your turn!");
             return null;

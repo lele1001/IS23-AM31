@@ -83,9 +83,10 @@ public abstract class ClientHandler {
 
     /**
      * Sends bookshelf's update to the client.
-     * @param nickname: the player whose bookshelf has changed.
+     *
+     * @param nickname:   the player whose bookshelf has changed.
      * @param tilesToAdd: the ordered array of tiles to add in nickname's bookshelf.
-     * @param column: the column of the bookshelf to add tiles into.
+     * @param column:     the column of the bookshelf to add tiles into.
      */
     public abstract void sendBookshelfRenewed(String nickname, ItemCard[] tilesToAdd, int column);
 
@@ -98,6 +99,7 @@ public abstract class ClientHandler {
 
     /**
      * Sends board's update to the client.
+     *
      * @param tilesToRemove: the array of board's positions to remove tiles from.
      */
     public abstract void sendBoardRenewed(Integer[] tilesToRemove);
@@ -127,16 +129,19 @@ public abstract class ClientHandler {
 
     /**
      * The server calls the client's method when a player completes his bookshelf
+     *
+     * @param nickname of the player that has completed the bookshelf.
      */
-    public abstract void sendBookshelfCompleted();
+    public abstract void sendBookshelfCompleted(String nickname);
 
     /**
      * Called when there are too many absents for the game: it needs to be interrupted waiting for them.
      */
-    public abstract void sendGameInterrupted ();
+    public abstract void sendGameInterrupted();
 
     /**
      * Asks the client if he wants to resume one of the game he's into.
+     *
      * @param savedGames: the list of saved games' names the client is into.
      */
     public abstract void askSavedGame(List<String> savedGames);

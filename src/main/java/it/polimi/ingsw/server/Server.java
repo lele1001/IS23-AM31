@@ -397,15 +397,14 @@ public class Server {
      */
     public void onEndGame(String gameFilePath) {
         File file = new File(gameFilePath);
-
         if (file.delete()) {
             System.out.println("Game file successfully deleted.");
         } else {
             System.out.println("Game file deletion failed.");
         }
+        savedGames.remove(file.getName().split("\\.")[0]);
 
         initialize();
-
         if (rmiInterface != null) {
             rmiInterface.setConnectionControl(connectionControl);
         }

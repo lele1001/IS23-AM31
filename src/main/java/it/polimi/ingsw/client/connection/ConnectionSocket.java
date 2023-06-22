@@ -239,7 +239,7 @@ public class ConnectionSocket extends ConnectionClient {
                 case "gameStarted" ->
                         getController().gameStarted(new ArrayList<>(Arrays.asList(gson.fromJson(jsonObject.get("Value").getAsString(), String[].class))), true);
                 case "player_score" -> getController().onPlayerScore(jsonObject.get("Value").getAsInt());
-                case "bookshelf_completed" -> getController().onBookshelfCompleted();
+                case "bookshelf_completed" -> getController().onBookshelfCompleted(jsonObject.get("Value").getAsString());
                 case "chatToMe" ->
                         getController().chatToMe(jsonObject.get("sender").getAsString(), jsonObject.get("Value").getAsString());
                 case "finalScores" -> {
