@@ -464,7 +464,7 @@ public class ConnectionControl {
         if (first != null) {
             first.sendBookshelfCompleted();
         }
-
+//TODO change send Error with method for completion
         for (ClientHandler clientHandler : getClientHandlerMap().values()) {
             if (clientHandler != first) {
                 clientHandler.sendError(nickname + " has completed his Bookshelf. Let's go on for the last turn of the game.");

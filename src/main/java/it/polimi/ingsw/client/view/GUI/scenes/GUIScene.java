@@ -139,7 +139,9 @@ public abstract class GUIScene {
     public void changeBookshelf(Map<Integer, ItemCard> tilesToAdd, String player) {
 
     }
+    public void bookshelfCompleted() {
 
+    }
     /**
      * Prints the CommonGoals and its available score in the scene
      *

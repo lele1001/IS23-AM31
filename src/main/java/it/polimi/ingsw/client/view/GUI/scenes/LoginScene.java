@@ -16,7 +16,7 @@ public class LoginScene extends GUIScene {
     @FXML
     Label welcomeText, usernameText, connectionText, ipText, portText, errorArea;
     @FXML
-    Button loginButton;
+    Button loginButton,exitButton;
     @FXML
     TextField username, ipPort, ipAddress;
     @FXML
@@ -52,6 +52,7 @@ public class LoginScene extends GUIScene {
     @Override
     public void bindEvents() {
         loginButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> loginAction());
+        exitButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> closeGame(clientController));
     }
 
     /*

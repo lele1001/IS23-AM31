@@ -16,7 +16,7 @@ import java.util.List;
 
 public class SavedGamesScene extends GUIScene {
     @FXML
-    Button yesButton, noButton, exitButton;
+    Button yesButton, noButton,exitButton;
     @FXML
     MenuButton listGames;
     @FXML
@@ -38,6 +38,7 @@ public class SavedGamesScene extends GUIScene {
     public void bindEvents() {
         yesButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> checkGameSelection());
         noButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> sendSavedGames(false, null));
+        exitButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> closeGame(clientController));
     }
 
     /**

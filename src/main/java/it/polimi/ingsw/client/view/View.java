@@ -166,4 +166,6 @@ public interface View {
      * @param finalScores contains the players' nicknames and their score
      */
     void finalScores (LinkedHashMap<String, Integer> finalScores);
+
+    void bookshelfCompleted();
 }

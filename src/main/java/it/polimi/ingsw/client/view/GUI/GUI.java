@@ -265,6 +265,11 @@ public class GUI implements View {
         Platform.runLater(() -> this.sceneController.finalScores(finalScores));
     }
 
+    @Override
+    public void bookshelfCompleted() {
+        Platform.runLater(this.sceneController::bookshelfCompleted);
+    }
+
     /**
      * Called when the game has been interrupted because of too many absents.
      */

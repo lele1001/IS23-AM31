@@ -121,8 +121,8 @@ public class PutCardsScene extends GUIScene {
 
                         ImageView tileImage = new ImageView(GUIResources.getItem(myItem));
                         tileImage.setPreserveRatio(true);
-                        tileImage.setFitHeight(46);
-                        tileImage.setFitWidth(46);
+                        tileImage.setFitHeight(60);
+                        tileImage.setFitWidth(60);
 
                         bookshelfPane.add(tileImage, j, i);
                     }
@@ -147,8 +147,8 @@ public class PutCardsScene extends GUIScene {
 
                 ImageView tileImage = new ImageView(GUIResources.getItem(myItem));
                 tileImage.setPreserveRatio(true);
-                tileImage.setFitHeight(46);
-                tileImage.setFitWidth(46);
+                tileImage.setFitHeight(60);
+                tileImage.setFitWidth(60);
 
                 bookshelfPane.add(tileImage, Position.getColumn(i), Position.getRow(i));
             }
@@ -224,7 +224,7 @@ public class PutCardsScene extends GUIScene {
      * Checks the Tiles to put in the Bookshelf and eventually communicates the change to the server
      */
     private void putTiles() {
-        int i = 0;
+        int i;
         String column;
         try {
             column= ((RadioButton) columns.getSelectedToggle()).getId();
@@ -233,8 +233,15 @@ public class PutCardsScene extends GUIScene {
             printError("ERROR: please select a valid column.");
             return;
         }
-
-        ArrayList<ItemCard> tilesToPut = inputController.checkPutGUI(selectedTiles);
+        String[] checktoPut = {"@put", String.valueOf(i)};
+        for (Integer sel:selectedTiles){
+            int n=checktoPut.length;
+            String [] newel= new String[n+1];
+            System.arraycopy(checktoPut, 0, newel, 0, n);
+            newel[n]=sel.toString();
+            checktoPut=newel;
+        }
+        ArrayList<ItemCard> tilesToPut = inputController.checkPut(checktoPut);
         //System.out.println(tilesToPut);
         if (tilesToPut != null) {
             try {

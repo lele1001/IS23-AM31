@@ -29,7 +29,7 @@ public class TakeCardsScene extends GUIScene {
     @FXML
     AnchorPane takeCardsPane;
     @FXML
-    GridPane boardPane, comGoals, bookshelfPane, persGoal, youSelectedThis, score_0, score_1;
+    GridPane boardPane, comGoals, bookshelfPane, persGoal, youSelectedThis, score_0, score_1,winnerScore;
     @FXML
     Label errorArea, yourPoints;
     @FXML
@@ -47,6 +47,7 @@ public class TakeCardsScene extends GUIScene {
         yourPoints.setText("You have 0 points");
         errorArea.setVisible(false);
         selectedTiles = new ArrayList<>();
+        setWinnerPointImage();
         bindEvents();
     }
 
@@ -62,7 +63,12 @@ public class TakeCardsScene extends GUIScene {
         exitButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> closeGame(clientController));
     }
 
-
+    public void setWinnerPointImage(){
+        ImageView scoreImage = new ImageView(GUIResources.getScore("sc01"));
+        scoreImage.setFitHeight(55);
+        scoreImage.setFitWidth(55);
+        winnerScore.add(scoreImage,0,0);
+    }
     /**
      * Sets the scene based on the number of players in the game
      */
@@ -140,8 +146,8 @@ public class TakeCardsScene extends GUIScene {
 
                         ImageView tileImage = new ImageView(GUIResources.getItem(myItem));
                         tileImage.setPreserveRatio(true);
-                        tileImage.setFitHeight(24);
-                        tileImage.setFitWidth(24);
+                        tileImage.setFitHeight(28);
+                        tileImage.setFitWidth(28);
 
                         bookshelfPane.add(tileImage, j, i);
                     }
@@ -166,8 +172,8 @@ public class TakeCardsScene extends GUIScene {
 
                 ImageView tileImage = new ImageView(GUIResources.getItem(myItem));
                 tileImage.setPreserveRatio(true);
-                tileImage.setFitHeight(24);
-                tileImage.setFitWidth(24);
+                tileImage.setFitHeight(28);
+                tileImage.setFitWidth(28);
 
                 bookshelfPane.add(tileImage, Position.getColumn(i), Position.getRow(i));
             }
@@ -246,7 +252,16 @@ public class TakeCardsScene extends GUIScene {
      * Checks the selected Tiles from the Board and eventually communicates the change to the server
      */
     private void selectTiles() {
-         if (!inputController.checkSelection(selectedTiles)&&selectedTiles.size()<inputController.maxTilesSize()+1) {
+        String[] checktoTake= {"@take"};
+        for (Integer sel:selectedTiles){
+            int n=checktoTake.length;
+            String [] newel= new String[n+1];
+            newel[n]=sel.toString();
+            System.arraycopy(checktoTake, 0, newel, 0, n);
+            checktoTake=newel;
+        }
+        ArrayList<Integer> tilesToTake=inputController.checkTake(checktoTake);
+         if (tilesToTake==null) {
             printError("ERROR: wrong selection");
              revert();
              selectTiles.setDisable(false);
@@ -321,4 +336,8 @@ public class TakeCardsScene extends GUIScene {
         selectedTiles.clear();
     }
 
+    @Override
+    public void bookshelfCompleted() {
+        winnerScore.getChildren().clear();
+    }
 }

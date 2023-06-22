@@ -1,20 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.SplitMenuButton?>
-<?import javafx.scene.control.TabPane?>
-<?import javafx.scene.control.TextArea?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.text.Font?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<AnchorPane fx:id="notYourPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="640.0" prefWidth="1280.0" stylesheets="@../CSS/gamePages.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.view.GUI.scenes.NotMyTurnScene">
+<AnchorPane fx:id="notYourPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="640.0" prefWidth="1280.0" stylesheets="@../CSS/gamePages.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.view.GUI.scenes.NotMyTurnScene">
     <TabPane fx:id="bookshelvesPane" layoutX="20.0" layoutY="240.0" prefHeight="300.0" prefWidth="280.0" tabClosingPolicy="UNAVAILABLE" tabMaxHeight="25.0" tabMaxWidth="96.0" tabMinHeight="25.0" tabMinWidth="96.0" />
     <GridPane fx:id="comGoals" alignment="CENTER_RIGHT" focusTraversable="true" hgap="5.0" layoutX="850.0" layoutY="390.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="220.0" prefWidth="175.0" vgap="20.0">
         <columnConstraints>
@@ -103,4 +94,12 @@
     </AnchorPane>
    <Button fx:id="exitButton" layoutX="1163.0" layoutY="17.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="94.0" text="Exit" />
    <Button fx:id="helpButton" layoutX="1060.0" layoutY="17.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="94.0" text="Button" />
+   <GridPane fx:id="winnerScore" layoutX="715.0" layoutY="475.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="45.0" prefWidth="45.0" rotate="8.5">
+      <columnConstraints>
+         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+      </columnConstraints>
+      <rowConstraints>
+         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+      </rowConstraints>
+   </GridPane>
 </AnchorPane>

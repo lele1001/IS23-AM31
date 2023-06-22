@@ -229,6 +229,11 @@ public class SceneController {
         }
     }
 
+    public void bookshelfCompleted(){
+        for (GUIScene gs : scenesMap.values()) {
+            gs.bookshelfCompleted();
+        }
+    }
     /**
      * Prints the CommonGoals and its available score in each scene that contains it
      *

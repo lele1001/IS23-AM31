@@ -22,13 +22,14 @@ public class InputController {
      * Checks that the user selects a correct number of cards, that they exist on the board and that they are adjacent
      */
     public ArrayList<Integer> checkTake(String[] input) {
+        System.out.println(Arrays.toString(input));
         if (!clientController.isMyTurn()) {
-            System.out.println("It is not your turn!");
+            clientController.onError("It is not your turn!");
             return null;
         }
 
         if (input.length < 2 || input.length > maxTilesSize() + 1) {
-            System.out.println("You can only take from 1 to 3 cards!");
+            clientController.onError("You can only take from 1 to 3 cards!");
             return null;
         }
 
@@ -39,7 +40,7 @@ public class InputController {
             try {
                 coord = Integer.parseInt(input[i]);
             } catch (NumberFormatException e) {
-                System.out.println("Parse exception!");
+                clientController.onError("Parse exception!");
                 return null;
             }
 
@@ -48,7 +49,7 @@ public class InputController {
             }
         }
         if (!checkSelection(coords)) {
-            System.out.println("Position failed");
+            clientController.onError("Position failed");
             return null;
         }
 
@@ -91,7 +92,7 @@ public class InputController {
             return true;
         }
 
-        System.out.println("The requested cell does not exists!");
+        clientController.onError("The requested cell does not exists!");
         return false;
     }
 
@@ -187,27 +188,38 @@ public class InputController {
         ArrayList<ItemCard> tilesToPut = new ArrayList<>();
 
         if (!clientController.isMyTurn()) {
-            System.out.println("It is not your turn!");
+            clientController.onError("It is not your turn!");
             return null;
         }
 
         if (input.length != clientController.getSelectedTiles().size() + 2) {
-            System.out.println("You are trying to put more cards than expected!");
+            clientController.onError("You are trying to put more cards than expected!");
             return null;
         }
 
         try {
             column = Integer.parseInt(input[1]);
         } catch (NumberFormatException e) {
-            System.out.println("Parse exception!");
+            clientController.onError("Parse exception!");
             return null;
         }
 
         if (column < 0 || column > 4) {
-            System.out.println("Wrong column range!");
+            clientController.onError("Wrong column range!");
             return null;
         }
+        int j;
 
+        for (j = BOOKSHELF_HEIGHT - 1; j >= 0; j--) {
+            if (clientController.getPlayersBookshelves().get(clientController.getMyNickname())[j][column] == null) {
+                break;
+            }
+        }
+        j++;
+        if ( clientController.getSelectedTiles().size()>j) {
+            clientController.onError("Not enough space in that column");
+            return null;
+        }
         coords.clear();
 
         // starts from 2 because input[0] == "@put" and input[1] = column
@@ -215,19 +227,19 @@ public class InputController {
             try {
                 coord = Integer.parseInt(input[i]);
             } catch (NumberFormatException e) {
-                System.out.println("Parse exception!");
+                clientController.onError("Parse exception!");
                 return null;
             }
 
             if (!checkPosition(coord)) {
-                System.out.println("Wrong tiles selected");
+                clientController.onError("Wrong tiles selected");
                 return null;
             }
 
         }
 
         if (!clientController.getSelectedTiles().keySet().containsAll(coords)) {
-            System.out.println("Wrong tiles selected");
+            clientController.onError("Wrong tiles selected");
             return null;
         }
 
@@ -235,7 +247,7 @@ public class InputController {
             if (clientController.getSelectedTiles().containsKey(i)) {
                 tilesToPut.add(clientController.getSelectedTiles().get(i));
             } else {
-                System.out.println("Wrong tiles selected");
+                clientController.onError("Wrong tiles selected");
                 return null;
             }
         }
@@ -250,13 +262,13 @@ public class InputController {
      */
     public int checkChat(String[] input) {
         if (input.length < 3) {
-            System.out.println("You should write both a recipient and a message!");
+            clientController.onError("You should write both a recipient and a message!");
             return 0;
         }
 
         // starts from 1 because input[0] == "@chat"
         if (input[1].equals(clientController.getMyNickname())) {
-            System.out.println("You can not send a message to yourself!");
+            clientController.onError("You can not send a message to yourself!");
             return 0;
         } else if (clientController.getPlayersBookshelves().containsKey(input[1])) {
             return 1;
@@ -264,7 +276,7 @@ public class InputController {
             return 2;
         }
 
-        System.out.println("Recipient not accepted!");
+        clientController.onError("Recipient not accepted!");
         return 0;
     }
 
@@ -275,7 +287,7 @@ public class InputController {
      */
     public int checkPlayers(String[] input) {
         if (input.length != 3) {
-            System.out.println("It looks like you're missing something... please, try again.");
+            clientController.onError("It looks like you're missing something... please, try again.");
             return -1;
         }
 
@@ -284,50 +296,20 @@ public class InputController {
         try {
             playersNum = Integer.parseInt(input[1]);
         } catch (NumberFormatException e) {
-            System.out.println("Parse exception!");
+            clientController.onError("Parse exception!");
             return -1;
         }
 
         // checks only input[1] because input[0] == "@players"
         if (playersNum < 2 || playersNum > 4) {
-            System.out.println("Players number not accepted!");
+            clientController.onError("Players number not accepted!");
             return 0;
         }
 
         return playersNum;
     }
 
-    public ArrayList<ItemCard> checkPutGUI(ArrayList<Integer> selectedTiles) {
-        ArrayList<ItemCard> tilesToPut = new ArrayList<>();
-
-        if (!clientController.isMyTurn()) {
-            System.out.println("It is not your turn");
-            return null;
-        }
-
-        if (selectedTiles.size() !=clientController.getSelectedTiles().size()) {
-            System.out.println("Invalid number of cards");
-            return null;
-        }
-
-        if (!clientController.getSelectedTiles().keySet().containsAll(selectedTiles)) {
-            System.out.print("Wrong tiles selected");
-            return null;
-        }
-
-        for (Integer i : selectedTiles) {
-            if (!checkPosition(i)) {
-                System.out.println("Wrong tiles selected");
-                return null;
-            } else {
-                tilesToPut.add(clientController.getSelectedTiles().get(i));
-            }
-        }
-
-        return tilesToPut;
-    }
-    public boolean isValidInet4Address(String ip)
-    {
+    public boolean isValidInet4Address(String ip) {
         String[] groups = ip.split("\\.");
         if (groups.length != 4) {
             return false;

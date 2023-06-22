@@ -18,7 +18,7 @@ public class NumberOfPlayersScene extends GUIScene {
     @FXML
     TextField playersNum, gameName;
     @FXML
-    Button submitButton;
+    Button submitButton,exitButton;
     @FXML
     AnchorPane playersScenePane;
     @FXML
@@ -37,6 +37,7 @@ public class NumberOfPlayersScene extends GUIScene {
     @Override
     public void bindEvents() {
         submitButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> submitAction());
+        exitButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> closeGame(clientController));
     }
 
     /**

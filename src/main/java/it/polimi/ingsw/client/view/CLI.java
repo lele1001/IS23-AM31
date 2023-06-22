@@ -272,7 +272,7 @@ public class CLI implements View {
     public synchronized void printStartGame() {
         synchronized (this) {
             System.out.print((char) 27 + "[0;39m" + "Welcome " + clientController.getMyNickname() + "! ");
-            System.out.println("You will play in a " + clientController.getPlayersBookshelves().keySet().size() + " players game.");
+            System.out.println("play in a " + clientController.getPlayersBookshelves().keySet().size() + " players game.");
             System.out.println("Type @MENU to see the game menu.\n");
         }
     }
@@ -758,6 +758,11 @@ public class CLI implements View {
         }
 
         System.out.println();
+    }
+
+    @Override
+    public void bookshelfCompleted() {
+
     }
 
     /**

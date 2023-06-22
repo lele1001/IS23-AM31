@@ -1,34 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Rectangle2D?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.RadioButton?>
-<?import javafx.scene.control.SplitMenuButton?>
-<?import javafx.scene.control.TextArea?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.shape.Polygon?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
 
-<AnchorPane fx:id="putCardsPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="640.0" prefWidth="1280.0" stylesheets="@../CSS/gamePages.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.view.GUI.scenes.PutCardsScene">
+<AnchorPane fx:id="putCardsPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="640.0" prefWidth="1280.0" stylesheets="@../CSS/gamePages.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.view.GUI.scenes.PutCardsScene">
     <ImageView fitHeight="614.0" fitWidth="500.0" layoutX="14.0" layoutY="14.0" pickOnBounds="true">
         <Image url="@../images/misc/sfondoParquet.jpg" />
         <viewport>
             <Rectangle2D />
         </viewport>
-    </ImageView>
-
-    <ImageView fitHeight="450.0" fitWidth="677.0" layoutX="37.0" layoutY="160.0" pickOnBounds="true" preserveRatio="true">
-        <Image url="@../images/boards/bookshelf_orth.png" />
-    </ImageView>
-
-    <ImageView fitHeight="450.0" fitWidth="677.0" layoutX="35.0" layoutY="161.0" pickOnBounds="true" preserveRatio="true">
-        <Image url="@../images/boards/bookshelf.png" />
     </ImageView>
 
     <GridPane fx:id="persGoal" layoutX="830.0" layoutY="50.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="150.0">
@@ -117,26 +100,30 @@
             </rowConstraints>
         </GridPane>
     </AnchorPane>
-    <Label alignment="CENTER" layoutX="554.0" layoutY="190.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="200.0" text="Chose the Tile order" textAlignment="CENTER" textFill="WHITE" />
+    <Label alignment="CENTER" layoutX="554.0" layoutY="190.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="200.0" text="Choose the Tile order" textAlignment="CENTER" textFill="WHITE" />
     <Label fx:id="errorArea" alignment="CENTER" contentDisplay="CENTER" layoutX="560.0" layoutY="90.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="200.0" text="error" textFill="RED" visible="false" wrapText="true" />
-
-    <GridPane fx:id="bookshelfPane" focusTraversable="true" hgap="22.0" layoutX="90.0" layoutY="193.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" vgap="12.0">
-        <columnConstraints>
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="50.0" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="50.0" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="50.0" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="49.0" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="50.0" />
-        </columnConstraints>
-        <rowConstraints>
-            <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="51.0" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="50.0" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="50.0" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="48.0" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="48.0" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="46.0" vgrow="SOMETIMES" />
-        </rowConstraints>
-    </GridPane>
    <Button fx:id="exitButton" layoutX="1162.0" layoutY="14.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="94.0" text="Exit" />
    <Button fx:id="helpButton" layoutX="1060.0" layoutY="14.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="94.0" text="Help" />
+
+    <GridPane fx:id="bookshelfPane" focusTraversable="true" hgap="12.0" layoutX="87.0" layoutY="190.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="356.0" prefWidth="342.0" vgap="2.0">
+        <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="58.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="58.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="58.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="58.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="58.0" />
+        </columnConstraints>
+        <rowConstraints>
+            <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="58.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="58.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="58.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="58.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="58.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="58.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+    </GridPane>
+
+    <ImageView fitHeight="450.0" fitWidth="677.0" layoutX="35.0" layoutY="161.0" pickOnBounds="true" preserveRatio="true">
+        <Image url="@../images/boards/bookshelf.png" />
+    </ImageView>
 </AnchorPane>

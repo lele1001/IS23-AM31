@@ -1,29 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.MenuButton?>
-<?import javafx.scene.control.TextArea?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
 
-<AnchorPane fx:id="takeCardsPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="640.0" prefWidth="1280.0" stylesheets="@../CSS/gamePages.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.view.GUI.scenes.TakeCardsScene">
+<AnchorPane fx:id="takeCardsPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="640.0" prefWidth="1280.0" stylesheets="@../CSS/gamePages.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.view.GUI.scenes.TakeCardsScene">
     <ImageView fitHeight="620.0" fitWidth="550.0" layoutX="15.0" layoutY="10.0" pickOnBounds="true">
         <Image url="@../images/misc/sfondoParquet.jpg" />
     </ImageView>
     <ImageView fitHeight="540.0" fitWidth="528.0" layoutX="24.0" layoutY="20.0" pickOnBounds="true" preserveRatio="true">
         <Image url="@../images/boards/livingroom.png" />
-    </ImageView>
-    <ImageView fitHeight="221.0" fitWidth="201.0" layoutX="819.0" layoutY="178.0" pickOnBounds="true" preserveRatio="true">
-        <Image url="@../images/boards/bookshelf_orth.png" />
-    </ImageView>
-    <ImageView fitHeight="205.0" fitWidth="237.0" layoutX="813.0" layoutY="174.0" pickOnBounds="true" preserveRatio="true">
-        <Image url="@../images/boards/bookshelf.png" />
     </ImageView>
     <GridPane fx:id="comGoals" focusTraversable="true" hgap="5.0" layoutX="615.0" layoutY="450.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="150.0" prefWidth="400.0">
         <columnConstraints>
@@ -113,18 +99,18 @@
     <MenuButton fx:id="destinationMenu" layoutX="1060.0" layoutY="590.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" popupSide="TOP" prefHeight="30.0" prefWidth="150.0" text="destination" />
 
     <Button fx:id="sendMessage" layoutX="1210.0" layoutY="590.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="30.0" prefWidth="50.0" text="OK" />
-    <GridPane fx:id="bookshelfPane" focusTraversable="true" hgap="5.0" layoutX="840.0" layoutY="190.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="160.0" prefWidth="150.0" vgap="2.0">
+    <GridPane fx:id="bookshelfPane" focusTraversable="true" hgap="5.0" layoutX="837.0" layoutY="189.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="164.0" prefWidth="158.0" vgap="2.0">
         <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="27.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="27.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="27.0" />
             <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="26.0" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="26.0" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="26.0" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="26.0" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="26.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="28.0" />
         </columnConstraints>
         <rowConstraints>
-            <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="25.0" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="25.0" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="25.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="24.0" minHeight="-Infinity" prefHeight="24.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="26.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="26.0" vgrow="SOMETIMES" />
             <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="25.0" vgrow="SOMETIMES" />
             <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="25.0" vgrow="SOMETIMES" />
             <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="25.0" vgrow="SOMETIMES" />
@@ -132,4 +118,15 @@
     </GridPane>
    <Button fx:id="exitButton" layoutX="1171.0" layoutY="24.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="94.0" text="Exit" />
    <Button fx:id="helpButton" layoutX="1060.0" layoutY="24.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="94.0" text="Help" />
+   <GridPane fx:id="winnerScore" layoutX="451.0" layoutY="387.0" prefHeight="55.0" prefWidth="55.0" rotate="8.5">
+     <columnConstraints>
+       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+     </columnConstraints>
+     <rowConstraints>
+       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+     </rowConstraints>
+   </GridPane>
+    <ImageView fitHeight="205.0" fitWidth="237.0" layoutX="813.0" layoutY="174.0" pickOnBounds="true" preserveRatio="true">
+        <Image url="@../images/boards/bookshelf.png" />
+    </ImageView>
 </AnchorPane>

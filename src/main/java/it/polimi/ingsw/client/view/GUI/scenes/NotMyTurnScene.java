@@ -28,7 +28,7 @@ public class NotMyTurnScene extends GUIScene {
     @FXML
     AnchorPane notYourPane;
     @FXML
-    GridPane boardPane, comGoals, persGoal, score_0, score_1;
+    GridPane boardPane, comGoals, persGoal, score_0, score_1,winnerScore;
     @FXML
     Label yourPoints, userTurn;
     @FXML
@@ -45,6 +45,7 @@ public class NotMyTurnScene extends GUIScene {
     public void initialize(ClientController clientController) {
         this.clientController = clientController;
         this.inputController = new InputController(clientController);
+        setWinnerPointImage();
         yourPoints.setText("You have 0 points");
         bindEvents();
     }
@@ -57,7 +58,12 @@ public class NotMyTurnScene extends GUIScene {
         sendMessage.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> sendChat(inputController,clientController,destinationMenu,writtenMessage));
         exitButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> closeGame(clientController));
     }
-
+    public void setWinnerPointImage(){
+        ImageView scoreImage = new ImageView(GUIResources.getScore("sc01"));
+        scoreImage.setFitHeight(45);
+        scoreImage.setFitWidth(45);
+        winnerScore.add(scoreImage,0,0);
+    }
     /**
      * Sets the scene based on the number of players in the game
      */
@@ -137,7 +143,7 @@ public class NotMyTurnScene extends GUIScene {
 
         if (tabToModify.getText().equals(nickname)) {
             AnchorPane myAnchor = (AnchorPane) tabToModify.getContent();
-            GridPane bookshelfToModify = (GridPane) myAnchor.getChildren().get(1);
+            GridPane bookshelfToModify = (GridPane) myAnchor.getChildren().get(0);
             bookshelfToModify.getChildren().clear();
 
             for (int i = 0; i < Utils.BOOKSHELF_HEIGHT; i++) {
@@ -149,8 +155,8 @@ public class NotMyTurnScene extends GUIScene {
 
                         ImageView tileImage = new ImageView(GUIResources.getItem(myItem));
                         tileImage.setPreserveRatio(true);
-                        tileImage.setFitHeight(25);
-                        tileImage.setFitWidth(25);
+                        tileImage.setFitHeight(28);
+                        tileImage.setFitWidth(28);
 
                         bookshelfToModify.add(tileImage, j, i);
                     }
@@ -172,7 +178,7 @@ public class NotMyTurnScene extends GUIScene {
 
         if (tabToModify.getText().equals(player)) {
             AnchorPane myAnchor = (AnchorPane) tabToModify.getContent();
-            GridPane bookshelfToModify = (GridPane) myAnchor.getChildren().get(1);
+            GridPane bookshelfToModify = (GridPane) myAnchor.getChildren().get(0);
 
             for (Integer i : tilesToAdd.keySet()) {
                 String itemName = tilesToAdd.get(i).getMyItem().toString().toLowerCase();
@@ -181,8 +187,8 @@ public class NotMyTurnScene extends GUIScene {
 
                 ImageView tileImage = new ImageView(GUIResources.getItem(myItem));
                 tileImage.setPreserveRatio(true);
-                tileImage.setFitHeight(25);
-                tileImage.setFitWidth(25);
+                tileImage.setFitHeight(28);
+                tileImage.setFitWidth(28);
                 bookshelfToModify.add(tileImage, getColumn(i), getRow(i));
             }
         }
@@ -262,13 +268,13 @@ public class NotMyTurnScene extends GUIScene {
 
         for (int c = 0; c < Utils.BOOKSHELF_LENGTH; c++) {
             ColumnConstraints colConst = new ColumnConstraints();
-            colConst.setPrefWidth(40.0);
+            colConst.setPrefWidth(28.0);
             bookshelfGrid.getColumnConstraints().add(colConst);
         }
 
         for (int r = 0; r < Utils.BOOKSHELF_HEIGHT; r++) {
             RowConstraints rowConst = new RowConstraints();
-            rowConst.setPrefHeight(40.0);
+            rowConst.setPrefHeight(27.0);
             bookshelfGrid.getRowConstraints().add(rowConst);
         }
 
@@ -282,9 +288,8 @@ public class NotMyTurnScene extends GUIScene {
 
         AnchorPane bookshelfPane = new AnchorPane();
         bookshelfPane.setId("bookshelf" + i + "Pane");
-        bookshelfPane.getChildren().add(bookshelfImage);
         bookshelfPane.getChildren().add(bookshelfGrid);
-
+        bookshelfPane.getChildren().add(bookshelfImage);
         Tab playerTab = new Tab(players.get(i), bookshelfPane);
         playerTab.setId(tabId);
         bookshelvesPane.getTabs().add(playerTab);
@@ -305,5 +310,8 @@ public class NotMyTurnScene extends GUIScene {
         }
     }*/
 
-
+    @Override
+    public void bookshelfCompleted() {
+        winnerScore.getChildren().clear();
+    }
 }
