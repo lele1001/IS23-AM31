@@ -118,7 +118,7 @@ public class Server {
      * @return false if an error occurs.
      */
     public boolean startRMI() {
-        rmiInterface = new RMIInterface(this, this.connectionControl);
+        rmiInterface = new RMIInterface(this.connectionControl);
         RMI stub;
 
         try {
@@ -203,7 +203,7 @@ public class Server {
             try {
                 Socket socket = serverSocket.accept();
                 System.out.println("There's a new socket client online!");
-                ClientHandlerSocket clientHandlerSocket = new ClientHandlerSocket(socket, this, this.connectionControl);
+                ClientHandlerSocket clientHandlerSocket = new ClientHandlerSocket(socket, this.connectionControl);
                 executor.submit(clientHandlerSocket);
             } catch (IOException e) {
                 //break;
@@ -247,6 +247,8 @@ public class Server {
      * Notifies setGame() method that was waiting for the first.
      *
      * @param availablePlayers to set.
+     * @param gameName: the name to be set for this game.
+     * @param nickname: the nickname of the client that wants to set players.
      */
     public synchronized void setAvailablePlayers(String nickname, int availablePlayers, String gameName) {
         if (availablePlayers < 2 || availablePlayers > 4) {
@@ -263,6 +265,11 @@ public class Server {
         System.out.println("Game name set to " + gameName);
     }
 
+    /**
+     * Called when the player wants to resume a saved game.
+     * @param wantToSave: true if he wants to resume a game.
+     * @param gameName: the name of the game to be resumed.
+     */
     public synchronized void setSavedGame(boolean wantToSave, String gameName) {
         this.wantToSave = wantToSave;
         this.gameName = gameName;

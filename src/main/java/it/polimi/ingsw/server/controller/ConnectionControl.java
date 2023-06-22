@@ -1,12 +1,10 @@
 package it.polimi.ingsw.server.controller;
 
-import com.google.gson.Gson;
 import it.polimi.ingsw.client.view.CLI;
 import it.polimi.ingsw.server.ClientHandler;
 import it.polimi.ingsw.server.Server;
 import it.polimi.ingsw.server.model.ItemCard;
 
-import java.io.PrintStream;
 import java.util.*;
 
 public class ConnectionControl {
@@ -14,11 +12,13 @@ public class ConnectionControl {
     private final Map<String, Boolean> clientStatusMap = new HashMap<>();
     private GameController gameController;
     private final Server server;
+    private boolean gameConfigured;
     CLI c; //added only for testing purpose
 
     public ConnectionControl(Server server) {
         c = new CLI();
         this.server = server;
+        gameConfigured = false;
     }
 
     /**
@@ -97,6 +97,30 @@ public class ConnectionControl {
     }
 
     /**
+     * Allows the first player to set the number of available players.
+     *
+     * @param availablePlayers to set.
+     * @param gameName: the name to be set for this game.
+     * @param nickname: the nickname of the client that wants to set players.
+     */
+    public void setAvailablePlayers(String nickname, int availablePlayers, String gameName) {
+        if (availablePlayers >= 2 && availablePlayers <= 4)
+            gameConfigured = true;
+        server.setAvailablePlayers(nickname, availablePlayers, gameName);
+    }
+
+    /**
+     * Called when the player wants to resume a saved game.
+     * @param wantToSave: true if he wants to resume a game.
+     * @param gameName: the name of the game to be resumed.
+     */
+    public void setSavedGame(boolean wantToSave, String gameName) {
+        if (wantToSave)
+            gameConfigured = true;
+        server.setSavedGame(wantToSave, gameName);
+    }
+
+    /**
      * Called to remove a client from the maps (when the game is not available for him).
      *
      * @param nickname of the client to be deleted.
@@ -150,10 +174,12 @@ public class ConnectionControl {
      */
     public void changePlayerStatus(String nickname, boolean adviceAll) {
         synchronized (clientHandlerMap) {
-            this.clientStatusMap.put(nickname, false);
+            if (gameConfigured)
+                this.clientStatusMap.put(nickname, false);
+            else
+                this.clientStatusMap.remove(nickname);
             server.removeFromQueue(nickname);
 
-            // Removes it if it was in the queue.
             if (clientHandlerMap.containsKey(nickname)) {
                 this.clientHandlerMap.get(nickname).disconnectPlayer();
                 this.clientHandlerMap.remove(nickname);

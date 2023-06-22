@@ -13,7 +13,6 @@ import java.net.Socket;
 import java.util.*;
 
 public class ClientHandlerSocket extends ClientHandler implements Runnable {
-    private final Server server;
     private boolean playerNumberAsked;
     private volatile boolean isConnected;
     private final Socket socket;
@@ -22,9 +21,8 @@ public class ClientHandlerSocket extends ClientHandler implements Runnable {
     private Timer ping;
     private volatile Boolean savedGame;
 
-    public ClientHandlerSocket(Socket socket, Server server, ConnectionControl connectionControl) {
+    public ClientHandlerSocket(Socket socket, ConnectionControl connectionControl) {
         this.socket = socket;
-        this.server = server;
         this.connectionControl = connectionControl;
         playerNumberAsked = false;
         isConnected = true;
@@ -225,13 +223,13 @@ public class ClientHandlerSocket extends ClientHandler implements Runnable {
                     }
                     case "playersNumber" -> {
                         if (playerNumberAsked) {
-                            server.setAvailablePlayers(nickname, Integer.parseInt(jsonObject.get("Value").getAsString()), jsonObject.get("gameName").getAsString());
+                            connectionControl.setAvailablePlayers(nickname, Integer.parseInt(jsonObject.get("Value").getAsString()), jsonObject.get("gameName").getAsString());
                             playerNumberAsked = false;
                         }
                     }
                     case "savedGameFound" -> {
                         if (savedGame) {
-                            server.setSavedGame(jsonObject.get("Value").getAsBoolean(), jsonObject.get("gameName").getAsString());
+                            connectionControl.setSavedGame(jsonObject.get("Value").getAsBoolean(), jsonObject.get("gameName").getAsString());
                         }
                     }
                     case "selectCards" ->

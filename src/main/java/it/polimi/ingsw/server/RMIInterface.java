@@ -8,11 +8,9 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 
 public class RMIInterface implements RMI {
-    private final Server server;
     private ConnectionControl connectionControl;
 
-    public RMIInterface(Server server, ConnectionControl connectionControl) {
-        this.server = server;
+    public RMIInterface(ConnectionControl connectionControl) {
         this.connectionControl = connectionControl;
     }
 
@@ -43,7 +41,7 @@ public class RMIInterface implements RMI {
      */
     @Override
     public void setPlayerNumber(String client, int number, String gameName) throws RemoteException {
-        server.setAvailablePlayers(client, number, gameName);
+        connectionControl.setAvailablePlayers(client, number, gameName);
     }
 
     /**
@@ -84,7 +82,7 @@ public class RMIInterface implements RMI {
 
     @Override
     public void setSavedGames(boolean wantToSave, String gameName) throws RemoteException {
-        server.setSavedGame(wantToSave, gameName);
+        connectionControl.setSavedGame(wantToSave, gameName);
     }
 
     /**
