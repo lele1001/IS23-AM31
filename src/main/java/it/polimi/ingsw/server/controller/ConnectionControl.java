@@ -1,6 +1,5 @@
 package it.polimi.ingsw.server.controller;
 
-import it.polimi.ingsw.client.view.CLI;
 import it.polimi.ingsw.server.ClientHandler;
 import it.polimi.ingsw.server.Server;
 import it.polimi.ingsw.server.model.ItemCard;
@@ -13,10 +12,8 @@ public class ConnectionControl {
     private GameController gameController;
     private final Server server;
     private boolean gameConfigured;
-    CLI c; //added only for testing purpose
 
     public ConnectionControl(Server server) {
-        c = new CLI();
         this.server = server;
         gameConfigured = false;
     }
@@ -283,19 +280,6 @@ public class ConnectionControl {
         if (receiver == null) {
             // Send it to all the players
             System.out.println("Sending board changes to all...");
-/*            c.printBoard(newBoard);
-
-            // Just for tests: saving the board in a temporary file to check the insert.
-            PrintStream printStream;
-
-            try {
-                printStream = new PrintStream("src/main/boardTest.json");
-                Gson gson = new Gson();
-                printStream.print(gson.toJson(newBoard));
-                printStream.close();
-            } catch (Exception e) {
-                System.out.println("File BoardTest not found.");
-            }*/
 
             for (ClientHandler c : getClientHandlerMap().values()) {
                 c.SendBoardChanged(newBoard);
@@ -343,7 +327,6 @@ public class ConnectionControl {
     public void SendBookshelfChanged(String nickname, ItemCard[][] newBookshelf, String receiver) {
         if (receiver == null) {
             System.out.println("Player " + nickname + " has changed the bookshelf");
-            c.printBookshelf(newBookshelf, nickname);
 
             for (ClientHandler c : getClientHandlerMap().values()) {
                 c.SendBookshelfChanged(nickname, newBookshelf);

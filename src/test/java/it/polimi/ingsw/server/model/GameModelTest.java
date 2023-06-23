@@ -4,13 +4,10 @@ import it.polimi.ingsw.server.Server;
 import it.polimi.ingsw.server.controller.ConnectionControl;
 import it.polimi.ingsw.server.controller.GameController;
 import it.polimi.ingsw.server.gameExceptions.NoBookshelfSpaceException;
-import it.polimi.ingsw.server.gameExceptions.NoRightItemCardSelection;
 import it.polimi.ingsw.server.gameExceptions.NotSameSelectedException;
 import org.junit.jupiter.api.Test;
 
-import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 class GameModelTest {
@@ -22,8 +19,7 @@ class GameModelTest {
         GameController gameController = new GameController(connectionControl);
 
         gameModel.setListener(gameController);
-        gameModel.CreateGame(new ArrayList<>(List.of("Luca", "Filippo", "Giovanni", "Topolino")), null);
-        System.out.println(Arrays.deepToString(gameModel.board.getAsArrayList()));
+        gameModel.CreateGame(new ArrayList<>(List.of("Luca", "Filippo", "Giovanni", "Topolino")), "target/MyShelfieSavedGames/test.json");
 
         try {
             gameModel.selectCard("Luca", new ArrayList<>(List.of(32, 33)));

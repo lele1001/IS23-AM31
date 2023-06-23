@@ -12,11 +12,8 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
-import java.io.PrintStream;
 import java.io.PrintWriter;
-import java.lang.reflect.Array;
 import java.util.*;
-import java.util.stream.Collectors;
 
 import static it.polimi.ingsw.utils.ModelPropertyChange.*;
 
@@ -90,9 +87,10 @@ public class GameModel implements ModelInterface {
 
     /**
      * Called at the beginning of the game when the first player wants to resume one of the game he's into.
+     *
      * @param onlinePlayers: the list of the players of this game already online and ready to play.
-     * @param json: the jsonObject with all the details of the game (taken from the file).
-     * @param gameFilePath: the path of the file with all game's details.
+     * @param json:          the jsonObject with all the details of the game (taken from the file).
+     * @param gameFilePath:  the path of the file with all game's details.
      */
     public void resumeGame(ArrayList<String> onlinePlayers, JsonObject json, String gameFilePath) {
         this.gameJson = json;
@@ -168,12 +166,12 @@ public class GameModel implements ModelInterface {
      * Tries to select cards from the board.
      *
      * @param positions of the cards to be selected.
-     * @throws NoRightItemCardSelection if the selection is not valid.
+     * @throws NoRightItemCardSelection  if the selection is not valid.
      * @throws NoBookshelfSpaceException if there's no enough space in player's bookshelf for the number of tiles he selected.
      */
     public void selectCard(String player, ArrayList<Integer> positions) throws NoRightItemCardSelection, NoBookshelfSpaceException {
         PropertyChangeEvent evt;
-        if(!this.playerMap.get(player).checkBookshelfSpace(positions.size())) {
+        if (!this.playerMap.get(player).checkBookshelfSpace(positions.size())) {
             sendBoard(player);
             sendBookshelf(player);
             throw new NoBookshelfSpaceException();
@@ -186,7 +184,6 @@ public class GameModel implements ModelInterface {
         }
         evt = new PropertyChangeEvent("null", BOARD_RENEWED, null, positions.toArray(new Integer[0]));
         this.listener.propertyChange(evt);
-        updateBoardForTest();
     }
 
     /**
@@ -208,7 +205,7 @@ public class GameModel implements ModelInterface {
 
         for (String s : playerMap.keySet()) {
             temp = playerMap.get(s).calculateFinScore();
-            finalScores.put(s, s.equals(winner) ? temp+1 : temp);
+            finalScores.put(s, s.equals(winner) ? temp + 1 : temp);
         }
         for (Integer i : finalScores.values().stream().sorted(Comparator.reverseOrder()).toList()) {
             for (String s : finalScores.keySet()) {
@@ -270,7 +267,6 @@ public class GameModel implements ModelInterface {
             if (board.checkRefill()) {
                 evt = new PropertyChangeEvent("null", BOARD_CHANGED, null, board.getAsArrayList());
                 this.listener.propertyChange(evt);
-                updateBoardForTest();
             }
         } catch (EmptyCardBagException e) {
             evt = new PropertyChangeEvent("null", EMPTY_CARD_BAG, null, null); // posso anche unirlo a change board
@@ -278,7 +274,6 @@ public class GameModel implements ModelInterface {
 
             evt = new PropertyChangeEvent("null", BOARD_CHANGED, null, board.getAsArrayList()); // faccio sempre anche se non modifica fa nulla
             this.listener.propertyChange(evt);
-            updateBoardForTest();
         }
 
         this.gameJson.addProperty("lastPlayer", nickname);
@@ -294,7 +289,6 @@ public class GameModel implements ModelInterface {
         board.resumeBoard();
         PropertyChangeEvent evt = new PropertyChangeEvent("null", BOARD_CHANGED, null, board.getAsArrayList());
         this.listener.propertyChange(evt);
-        updateBoardForTest();
     }
 
     /**
@@ -329,6 +323,11 @@ public class GameModel implements ModelInterface {
         this.listener.propertyChange(evt);
     }
 
+    /**
+     * A private method called at the end of the turn to save game's details on the json backup file.
+     *
+     * @param comGoalDone: a boolean that indicates if a common goal has been done and needs to be saved or not.
+     */
     private void saveJson(boolean comGoalDone) {
         Gson gson = new Gson();
         gameJson.addProperty("board", gson.toJson(board.getAsArrayList()));
@@ -354,28 +353,11 @@ public class GameModel implements ModelInterface {
     }
 
     /**
-     * A private method used to update "boardTest.json", a file with the current board used only for tests.
-     * The tests in which we use this file are in "GameControllerTest" class.
-     */
-    private void updateBoardForTest () {
-        // Just for tests: saving the board in a temporary file to check the insert.
-        PrintStream printStream;
-
-        try {
-            printStream = new PrintStream("src/main/boardTest.json");
-            Gson gson = new Gson();
-            printStream.print(gson.toJson(board.getAsArrayList()));
-            printStream.close();
-        } catch (Exception e) {
-            System.out.println("File BoardTest not found.");
-        }
-    }
-
-    /**
      * A private method used to send all the board when the player returns in the game or there's an error in select/insert phase from him.
+     *
      * @param player to send board to.
      */
-    private void sendBoard (String player) {
+    private void sendBoard(String player) {
         PropertyChangeEvent evt = new PropertyChangeEvent("null", BOARD_CHANGED, player, board.getAsArrayList());
         this.listener.propertyChange(evt);
 
@@ -383,9 +365,10 @@ public class GameModel implements ModelInterface {
 
     /**
      * A private method used to send all the bookshelf when the player returns in the game or there's an error in select/insert phase from him.
+     *
      * @param player to send bookshelf to.
      */
-    private void sendBookshelf (String player) {
+    private void sendBookshelf(String player) {
         PropertyChangeEvent evt = new PropertyChangeEvent(player, BOOKSHELF_CHANGED, player, playerMap.get(player).getBookshelfAsMatrix());
         this.listener.propertyChange(evt);
     }

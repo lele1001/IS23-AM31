@@ -7,7 +7,6 @@ import it.polimi.ingsw.server.gameExceptions.NotSameSelectedException;
 import it.polimi.ingsw.server.model.GameModel;
 import it.polimi.ingsw.server.model.ItemCard;
 import it.polimi.ingsw.server.model.ModelInterface;
-import it.polimi.ingsw.utils.ModelPropertyChange;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -176,12 +175,6 @@ public class GameController implements PropertyChangeListener {
             i++;
         }
 
-/*        if (finalScores.size() == 1) {
-            System.out.println(oneWinnerEndPhrase + gameWinners.get(0));
-        } else {
-            System.out.println(moreWinnerEndPhrase + gameWinners);
-        }*/
-
         connectionControl.sendFinalScores(gameModel.calcFinalScore());
         connectionControl.onEndGame(gameFilePath);
     }
@@ -310,18 +303,10 @@ public class GameController implements PropertyChangeListener {
             connectionControl.SendError(evt.getPropertyName(), (String) evt.getSource());
         } else {
             switch (evt.getPropertyName()) {
-                case BOOKSHELF_CHANGED -> {
+                case BOOKSHELF_CHANGED ->
                     connectionControl.SendBookshelfChanged((String) evt.getSource(), (ItemCard[][]) evt.getNewValue(), (String) evt.getOldValue());
-/*                    if (evt.getOldValue() == null) {
-                        turnPhase = TurnPhase.ENDTURN;
-                    }*/
-                }
-                case BOARD_CHANGED -> {
+                case BOARD_CHANGED ->
                     connectionControl.SendBoardChanged((ItemCard[][]) evt.getNewValue(), (String) evt.getOldValue());
-/*                    if ((evt.getOldValue() == null) && (turnPhase == TurnPhase.SELECTCARDS)) {
-
-                    }*/
-                }
                 case BOOKSHELF_RENEWED -> {
                     connectionControl.sendBookshelfRenewed((ItemCard[]) evt.getNewValue(), (Integer) evt.getOldValue(), (String) evt.getSource());
                     turnPhase = TurnPhase.ENDTURN;
