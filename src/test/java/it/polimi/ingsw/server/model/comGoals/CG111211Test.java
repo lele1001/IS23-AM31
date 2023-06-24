@@ -1,7 +1,7 @@
 package it.polimi.ingsw.server.model.comGoals;
 
-import it.polimi.ingsw.server.model.ItemCard;
 import it.polimi.ingsw.server.model.Bookshelf;
+import it.polimi.ingsw.server.model.ItemCard;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -9,7 +9,7 @@ import java.util.List;
 
 import static it.polimi.ingsw.server.model.HouseItem.*;
 import static it.polimi.ingsw.server.model.ItemNumber.*;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class CG111211Test {
     private final Bookshelf l1 = new Bookshelf();

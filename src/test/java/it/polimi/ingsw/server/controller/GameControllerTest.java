@@ -41,7 +41,7 @@ class GameControllerTest {
         GameController gameController5 = new GameController(new ConnectionControl(new Server()));
         gameController5.createGame(new ArrayList<>(List.of("Riccardo", "Eleonora", "Alice", "Topolino", "Andrea")), "target/MyShelfieSavedGames/testCreate.json");
 
-        if(!file.delete())
+        if (!file.delete())
             System.out.println("Error deleting game's file...");
     }
 
@@ -50,7 +50,7 @@ class GameControllerTest {
         GameController gameController4 = new GameController(new ConnectionControl(new Server()));
         File file = new File("target/MyShelfieSavedGames/test.json");
         gameController4.createGame(new ArrayList<>(List.of("Topolino", "Eleonora", "Luigi", "Niccolò")), "target/MyShelfieSavedGames/test.json");
-        new Thread(()-> gameController4.run(0)).start();
+        new Thread(() -> gameController4.run(0)).start();
         JsonObject jsonObject = new Gson().fromJson(Files.readString(file.toPath()), JsonObject.class);
         String[] nicknames = new Gson().fromJson(jsonObject.get("nicknames").getAsString(), String[].class);
 
@@ -67,7 +67,7 @@ class GameControllerTest {
         ArrayList<ItemCard> selected = new ArrayList<>(List.of(board[0][3], board[0][4]));
         // Selecting them from board.
         //test: NO RIGHT SELECTION
-        gameController4.selectCard(nicknames[0], new ArrayList<>(List.of(1,2))); //null case with 2 cards
+        gameController4.selectCard(nicknames[0], new ArrayList<>(List.of(1, 2))); //null case with 2 cards
         //wrong selection of 3 cards
         gameController4.selectCard(nicknames[0], new ArrayList<>(List.of(0, 1, 2))); //null case with 3 cards
         gameController4.selectCard(nicknames[0], new ArrayList<>(List.of(3, 13, 22)));
@@ -104,7 +104,7 @@ class GameControllerTest {
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
-      /*  gameController4.insertCard(nicknames[0], selected, 6);  */ //wrong insertion in bookshelf
+        /*  gameController4.insertCard(nicknames[0], selected, 6);  */ //wrong insertion in bookshelf
         gameController4.insertCard(nicknames[0], selected, 3);
         try {
             TimeUnit.MILLISECONDS.sleep(200);
@@ -213,7 +213,7 @@ class GameControllerTest {
 
         board = new Gson().fromJson(new Gson().fromJson(Files.readString(file.toPath()), JsonObject.class).get("board").getAsString(), ItemCard[][].class);
         selected = new ArrayList<>(List.of(board[3][1], board[4][1], board[5][1]));
-        gameController4.selectCard(nicknames[1], new ArrayList<>(List.of(31, 41 ,51)));
+        gameController4.selectCard(nicknames[1], new ArrayList<>(List.of(31, 41, 51)));
         gameController4.insertCard(nicknames[1], selected, 2);
         try {
             TimeUnit.SECONDS.sleep(2);
@@ -526,7 +526,7 @@ class GameControllerTest {
         board = new Gson().fromJson(new Gson().fromJson(Files.readString(file.toPath()), JsonObject.class).get("board").getAsString(), ItemCard[][].class);
         selected = new ArrayList<>(List.of(board[4][3], board[4][4]));
         gameController4.selectCard(nicknames[0], new ArrayList<>(List.of(43, 44)));
-        gameController4.insertCard(nicknames[0], selected,3);
+        gameController4.insertCard(nicknames[0], selected, 3);
         try {
             TimeUnit.SECONDS.sleep(2);
         } catch (InterruptedException e) {
@@ -673,7 +673,7 @@ class GameControllerTest {
         gameController4.createGame(new ArrayList<>(List.of("Topolino", "Eleonora", "Luigi", "Niccolò")), "target/MyShelfieSavedGames/testResume.json");
         gameController2.resumeGame(new ArrayList<>(List.of("Topolino", "Eleonora")), new ArrayList<>(List.of("Topolino", "Eleonora", "Luigi", "Niccolò")), new Gson().fromJson(Files.readString(file.toPath()), JsonObject.class), "target/MyShelfieSavedGames/testResume.json");
 
-        if(!file.delete())
+        if (!file.delete())
             System.out.println("Error deleting game's file...");
     }
 
@@ -682,7 +682,7 @@ class GameControllerTest {
         File file = new File("target/MyShelfieSavedGames/testDetails.json");
         GameController gameController = new GameController(new ConnectionControl(new Server()));
         gameController.createGame(new ArrayList<>(List.of("Andrea", "Luca", "Alice", "Paolo")), "target/MyShelfieSavedGames/testDetails.json");
-        new Thread(()-> gameController.run(0)).start();
+        new Thread(() -> gameController.run(0)).start();
         JsonObject jsonObject = new Gson().fromJson(Files.readString(file.toPath()), JsonObject.class);
         String[] nicknames = new Gson().fromJson(jsonObject.get("nicknames").getAsString(), String[].class);
 
@@ -715,7 +715,7 @@ class GameControllerTest {
         }
         gameController.sendGameDetails(nicknames[0]);
 
-        if(!file.delete())
+        if (!file.delete())
             System.out.println("Error deleting test file.");
     }
 }

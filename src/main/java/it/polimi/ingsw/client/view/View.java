@@ -165,7 +165,10 @@ public interface View {
      *
      * @param finalScores contains the players' nicknames and their score
      */
-    void finalScores (LinkedHashMap<String, Integer> finalScores);
+    void finalScores(LinkedHashMap<String, Integer> finalScores);
 
+    /**
+     * Implementation for CLI and GUI: Just notifies the client that someone has completed his bookshelf.
+     */
     void bookshelfCompleted();
 }

@@ -13,6 +13,11 @@ public class ConnectionControl {
     private final Server server;
     private boolean gameConfigured;
 
+    /**
+     * Set up the Connection Controller
+     *
+     * @param server the server instance
+     */
     public ConnectionControl(Server server) {
         this.server = server;
         gameConfigured = false;
@@ -32,7 +37,8 @@ public class ConnectionControl {
     /**
      * Called by the server, asks players' number to a client.
      *
-     * @param nickname of the client.
+     * @param nickname          of the client.
+     * @param notAvailableNames the names of the games already in existence
      */
     public void askPlayerNumber(String nickname, List<String> notAvailableNames) {
         System.out.println("Asking players number to " + nickname);
@@ -86,7 +92,8 @@ public class ConnectionControl {
 
     /**
      * Asks the client if he wants to resume one of the game he's into.
-     * @param nickname: the nickname of the client to be asked.
+     *
+     * @param nickname:   the nickname of the client to be asked.
      * @param savedGames: the list of the saved games the client is into.
      */
     public void askSavedGame(String nickname, List<String> savedGames) {
@@ -97,8 +104,8 @@ public class ConnectionControl {
      * Allows the first player to set the number of available players.
      *
      * @param availablePlayers to set.
-     * @param gameName: the name to be set for this game.
-     * @param nickname: the nickname of the client that wants to set players.
+     * @param gameName:        the name to be set for this game.
+     * @param nickname:        the nickname of the client that wants to set players.
      */
     public void setAvailablePlayers(String nickname, int availablePlayers, String gameName) {
         if (availablePlayers >= 2 && availablePlayers <= 4)
@@ -108,8 +115,9 @@ public class ConnectionControl {
 
     /**
      * Called when the player wants to resume a saved game.
+     *
      * @param wantToSave: true if he wants to resume a game.
-     * @param gameName: the name of the game to be resumed.
+     * @param gameName:   the name of the game to be resumed.
      */
     public void setSavedGame(boolean wantToSave, String gameName) {
         if (wantToSave)
@@ -167,7 +175,8 @@ public class ConnectionControl {
     /**
      * Called to set a player as offline.
      *
-     * @param nickname of the player that has gone out from the game.
+     * @param nickname  of the player that has gone out from the game.
+     * @param adviceAll define if an error is sent to everyone
      */
     public void changePlayerStatus(String nickname, boolean adviceAll) {
         synchronized (clientHandlerMap) {
@@ -211,6 +220,12 @@ public class ConnectionControl {
         gameController.insertCard(nickname, cards, column);
     }
 
+    /**
+     * Called by the client, send the message to all the other clients
+     *
+     * @param nickname The client that sent the message
+     * @param message  THe message sent
+     */
     public void chatToAll(String nickname, String message) {
         System.out.println(nickname + " sends to everyone: " + message);
         synchronized (clientHandlerMap) {
@@ -297,6 +312,7 @@ public class ConnectionControl {
 
     /**
      * Sends board's update to clients.
+     *
      * @param tilesToRemove: an array of the positions of the just removed tiles.
      */
     public void sendBoardRenewed(Integer[] tilesToRemove) {
@@ -307,9 +323,10 @@ public class ConnectionControl {
 
     /**
      * Sends bookshelf's update to clients.
+     *
      * @param tilesToAdd: an ordered array of tiles to add into the bookshelf.
-     * @param column: the column to put tiles into.
-     * @param player: the player whose bookshelf has just changed.
+     * @param column:     the column to put tiles into.
+     * @param player:     the player whose bookshelf has just changed.
      */
     public void sendBookshelfRenewed(ItemCard[] tilesToAdd, int column, String player) {
         System.out.println("Sending " + player + " bookshelf's update to all...");
@@ -376,6 +393,7 @@ public class ConnectionControl {
      *
      * @param comGoalID the ID of the Common Goal.
      * @param score     the maximum score available for the Common Goal.
+     * @param receiver  null if you want to send to everyone else the name of the player
      */
     public void SendCommonGoalCreated(Integer comGoalID, Integer score, String receiver) {
         if (receiver == null) {
@@ -509,6 +527,8 @@ public class ConnectionControl {
 
     /**
      * Used at the end of a game to clear the maps and initialize the server's features.
+     *
+     * @param gameFilePath the path to the json file of the game
      */
     public void onEndGame(String gameFilePath) {
         disconnectAll();

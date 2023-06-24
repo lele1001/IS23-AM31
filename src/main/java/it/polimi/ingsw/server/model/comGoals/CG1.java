@@ -13,10 +13,22 @@ import static it.polimi.ingsw.utils.Utils.BOOKSHELF_LENGTH;
  * The tiles of one square can be different from those of the other square.
  */
 public class CG1 extends ComGoal {
+    /**
+     * Set the Common Goal based on the number of players
+     *
+     * @param playerNum THe number of players
+     * @param CGID      the ID of th CommonGoal
+     */
     public CG1(int playerNum, int CGID) {
         super(playerNum, CGID);
     }
 
+    /**
+     * Checks if the player reached the common goals
+     *
+     * @return score assigned to the player
+     * the score is 0 if the goal is not reached, otherwise it is the max score available for the goal
+     */
     @Override
     public int goalReached(Bookshelf l) {
         int r, c;

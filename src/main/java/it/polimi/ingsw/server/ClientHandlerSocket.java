@@ -21,6 +21,12 @@ public class ClientHandlerSocket extends ClientHandler implements Runnable {
     private Timer ping;
     private volatile Boolean savedGame;
 
+    /**
+     * Create the Client handler RMI every time a client connects to the server
+     *
+     * @param connectionControl The defined connection control for the game
+     * @param socket            The connection of the client socket
+     */
     public ClientHandlerSocket(Socket socket, ConnectionControl connectionControl) {
         this.socket = socket;
         this.connectionControl = connectionControl;
@@ -369,16 +375,11 @@ public class ClientHandlerSocket extends ClientHandler implements Runnable {
         send(toSend);
     }
 
-/*    /**
-     * It is the end of the game: there's a winner!
+    /**
+     * The server calls the client's method when a player wins
      *
-     * @param winners contains the winners' nicknames
-
-    @Override
-    public void sendWinner(List<String> winners) {
-        send(generateStandardMessage("winner", winners.toString()));
-    }*/
-
+     * @param finalScores contains all the players' scores.
+     */
     @Override
     public void sendFinalScores(LinkedHashMap<String, Integer> finalScores) {
         Gson gson = new Gson();

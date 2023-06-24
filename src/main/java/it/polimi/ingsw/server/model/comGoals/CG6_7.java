@@ -17,6 +17,13 @@ import static it.polimi.ingsw.utils.Utils.BOOKSHELF_LENGTH;
 public class CG6_7 extends ComGoal {
     int numDiff;
 
+    /**
+     * Set the Common Goal based on the number of players
+     * Set up variables for controls
+     *
+     * @param playerNum THe number of players
+     * @param CGID      the ID of th CommonGoal
+     */
     public CG6_7(int playerNum, int CGID) {
         super(playerNum, CGID);
 
@@ -26,6 +33,13 @@ public class CG6_7 extends ComGoal {
             this.numDiff = 3;
         }
     }
+
+    /**
+     * Checks if the player reached the common goals
+     *
+     * @return score assigned to the player
+     * the score is 0 if the goal is not reached, otherwise it is the max score available for the goal
+     */
 
     @Override
     public int goalReached(Bookshelf l) {

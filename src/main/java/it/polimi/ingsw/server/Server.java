@@ -38,9 +38,17 @@ public class Server {
     private final Map<String, JsonObject> savedGames = new HashMap<>();
     private static String savedGamesPath;
 
+    /**
+     * Used to create the server
+     */
     public Server() {
     }
 
+    /**
+     * The start method for the server
+     *
+     * @param args Arguments inserted by the player on start
+     */
     public static void main(String[] args) {
         System.out.println("Hello! Starting server...");
         System.out.println("Type \"stop\" to stop server.");
@@ -222,6 +230,9 @@ public class Server {
         executor.shutdown();
     }
 
+    /**
+     * Find if there are game files , if not it creates the directory
+     */
     public void findSavedGames() {
         File directory;
         Gson gson = new Gson();
@@ -247,8 +258,8 @@ public class Server {
      * Notifies setGame() method that was waiting for the first.
      *
      * @param availablePlayers to set.
-     * @param gameName: the name to be set for this game.
-     * @param nickname: the nickname of the client that wants to set players.
+     * @param gameName:        the name to be set for this game.
+     * @param nickname:        the nickname of the client that wants to set players.
      */
     public synchronized void setAvailablePlayers(String nickname, int availablePlayers, String gameName) {
         if (availablePlayers < 2 || availablePlayers > 4) {
@@ -267,8 +278,9 @@ public class Server {
 
     /**
      * Called when the player wants to resume a saved game.
+     *
      * @param wantToSave: true if he wants to resume a game.
-     * @param gameName: the name of the game to be resumed.
+     * @param gameName:   the name of the game to be resumed.
      */
     public synchronized void setSavedGame(boolean wantToSave, String gameName) {
         this.wantToSave = wantToSave;

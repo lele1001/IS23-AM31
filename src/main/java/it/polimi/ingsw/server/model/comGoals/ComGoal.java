@@ -8,6 +8,12 @@ public abstract class ComGoal {
     final int CGID;
     ArrayList<Integer> score = new ArrayList<>();
 
+    /**
+     * Set the Common Goal based on the number of players
+     *
+     * @param playerNum THe number of players
+     * @param CGID      the ID of th CommonGoal
+     */
     public ComGoal(int playerNum, int CGID) {
         this.CGID = CGID;
 
@@ -29,11 +35,17 @@ public abstract class ComGoal {
     /**
      * Checks if the player reached the common goals
      *
+     * @param l the bookshelf
      * @return score assigned to the player
      * the score is 0 if the goal is not reached, otherwise it is the max score available for the goal
      */
     public abstract int goalReached(Bookshelf l);
 
+    /**
+     * Getter methods for the score of the common goal
+     *
+     * @return the value of the Common Goal
+     */
     public int getCurrScore() {
         try {
             return this.score.get(0);
@@ -43,6 +55,11 @@ public abstract class ComGoal {
 
     }
 
+    /**
+     * Getter methods to get the ID
+     *
+     * @return the Common Goal ID
+     */
     public int getCGID() {
         return CGID;
     }

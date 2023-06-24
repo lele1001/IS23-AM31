@@ -5,14 +5,18 @@ import java.util.List;
 import static it.polimi.ingsw.utils.Utils.BOOKSHELF_HEIGHT;
 import static it.polimi.ingsw.utils.Utils.BOOKSHELF_LENGTH;
 
+/**
+ * Class that defines all the characteristics and methods of the game model Bookshelf
+ */
 public class Bookshelf {
-
-
     private final ItemCard[][] bookshelf = new ItemCard[BOOKSHELF_HEIGHT][BOOKSHELF_LENGTH];
 
     /**
-     * @requires checkSpace(column, cards.size)==TRUE && cards.size()<=3
      * Insert cards in the bookshelf (at the indicated column)
+     * requires checkSpace(column, cards.size)==TRUE and cards.size() less/equal to 3
+     *
+     * @param cards  the ItemTiles to insert
+     * @param column where to insert
      */
     public void insertCard(List<ItemCard> cards, int column) {
         int i;
@@ -28,6 +32,8 @@ public class Bookshelf {
     }
 
     /**
+     * Return a bookshelf copy
+     *
      * @return a copy of the bookshelf
      */
     public ItemCard[][] getAsMatrix() {
@@ -41,6 +47,10 @@ public class Bookshelf {
     }
 
     /**
+     * Check if there is space in the bookshelf
+     *
+     * @param column where to insert
+     * @param num    the number of available positions
      * @return a boolean which indicates if there is space in the indicated column for 'num' elements
      */
     public boolean checkSpace(int column, int num) {
@@ -58,6 +68,10 @@ public class Bookshelf {
     }
 
     /**
+     * Controls if position exists and return the ItemTiles in that position
+     *
+     * @param x horizontal coordinate of the ItemCard
+     * @param y vertical coordinate of the ItemCard
      * @return the element in x, y position
      */
     public ItemCard get(int x, int y) {
@@ -69,6 +83,8 @@ public class Bookshelf {
     }
 
     /**
+     * Calculate the score
+     *
      * @return calculates the score of adjacency of this library
      */
     public int calcScore() {

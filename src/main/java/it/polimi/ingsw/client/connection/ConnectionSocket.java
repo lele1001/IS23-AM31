@@ -25,6 +25,7 @@ public class ConnectionSocket extends ConnectionClient {
      * @param controller ClientController, on which it will call all the methods after the server request
      * @param address    IP address of the server
      * @param port       IP port of the server
+     * @throws IOException if an error occurred during connection
      */
     public ConnectionSocket(ClientController controller, String address, int port) throws IOException {
         super(controller, address, port);
@@ -239,7 +240,8 @@ public class ConnectionSocket extends ConnectionClient {
                 case "gameStarted" ->
                         getController().gameStarted(new ArrayList<>(Arrays.asList(gson.fromJson(jsonObject.get("Value").getAsString(), String[].class))), true);
                 case "player_score" -> getController().onPlayerScore(jsonObject.get("Value").getAsInt());
-                case "bookshelf_completed" -> getController().onBookshelfCompleted(jsonObject.get("Value").getAsString());
+                case "bookshelf_completed" ->
+                        getController().onBookshelfCompleted(jsonObject.get("Value").getAsString());
                 case "chatToMe" ->
                         getController().chatToMe(jsonObject.get("sender").getAsString(), jsonObject.get("Value").getAsString());
                 case "finalScores" -> {

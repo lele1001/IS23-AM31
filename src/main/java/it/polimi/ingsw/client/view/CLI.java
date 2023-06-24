@@ -13,6 +13,9 @@ import java.util.*;
 
 import static it.polimi.ingsw.utils.Utils.*;
 
+/**
+ * Class that defines all the characteristics and methods of the CLI view
+ */
 public class CLI implements View {
     private static boolean stopListening;
     Scanner in = new Scanner(System.in);
@@ -20,9 +23,6 @@ public class CLI implements View {
     ClientController clientController;
     String username, address;
     int port = -1, select = -1;
-
-    public CLI() {
-    }
 
     /**
      * Initialization of the client profile asking: username, type of connection, ip and port
@@ -45,6 +45,13 @@ public class CLI implements View {
         new Thread(this::listen).start();
     }
 
+    /**
+     * Prepared initialization of the client profile asking: username
+     *
+     * @param clientController defines the direct contact with all the object containers sen from the server
+     * @param conn             defines the type of connection
+     * @param port             defines the port to connect to
+     */
     public CLI(ClientController clientController, int port, String conn) {
         this.clientController = clientController;
         clientController.setView(this);
@@ -206,7 +213,7 @@ public class CLI implements View {
             if (in.hasNext()) {
                 address = in.next();
             }
-        } while (address.equals("")||!checkInput.isValidInet4Address(address));
+        } while (address.equals("") || !checkInput.isValidInet4Address(address));
 
         // Asks the port
         do {
@@ -221,7 +228,6 @@ public class CLI implements View {
 
         in.nextLine();
     }
-
 
     /**
      * Implementation for CLI: prints the request to join or not a saved game
@@ -760,6 +766,9 @@ public class CLI implements View {
         System.out.println();
     }
 
+    /**
+     * Implementation for CLI: does nothing, test already written from the Client controller
+     */
     @Override
     public void bookshelfCompleted() {
 

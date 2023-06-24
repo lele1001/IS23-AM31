@@ -24,6 +24,11 @@ public class EndGameScene extends GUIScene {
     @FXML
     Label endMessage;
 
+    /**
+     * Initialize the endGameScene
+     *
+     * @param clientController created for the GUI app
+     */
     @Override
     public void initialize(ClientController clientController) {
         this.clientController = clientController;
@@ -59,7 +64,7 @@ public class EndGameScene extends GUIScene {
         rankingTable.getRowConstraints().add(headingRow);
         rankingTable.setId("rankingTable");
 
-        rankingTable.add(new Label("pos"),0 ,0);
+        rankingTable.add(new Label("pos"), 0, 0);
         rankingTable.add(new Label("nickname"), 0, 1);
         rankingTable.add(new Label("score"), 0, 2);
 
@@ -86,7 +91,7 @@ public class EndGameScene extends GUIScene {
                 max = finalScores.get(s);
             }
 
-        if (s.equals(clientController.getMyNickname())) {
+            if (s.equals(clientController.getMyNickname())) {
                 winnerToken.setVisible(pos == 1);
             }
 

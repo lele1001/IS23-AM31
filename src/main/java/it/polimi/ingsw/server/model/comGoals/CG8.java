@@ -7,10 +7,22 @@ import it.polimi.ingsw.server.model.HouseItem;
  * Four tiles of the same type in the four corners of the bookshelf.
  */
 public class CG8 extends ComGoal {
+    /**
+     * Set the Common Goal based on the number of players
+     *
+     * @param playerNum THe number of players
+     * @param CGID      the ID of th CommonGoal
+     */
     public CG8(int playerNum, int CGID) {
         super(playerNum, CGID);
     }
 
+    /**
+     * Checks if the player reached the common goals
+     *
+     * @return score assigned to the player
+     * the score is 0 if the goal is not reached, otherwise it is the max score available for the goal
+     */
     @Override
     public int goalReached(Bookshelf l) {
         int toReturn = 0;

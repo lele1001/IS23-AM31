@@ -15,6 +15,13 @@ import static it.polimi.ingsw.utils.Utils.BOOKSHELF_LENGTH;
 public class CG11_12 extends ComGoal {
     boolean color;
 
+    /**
+     * Set the Common Goal based on the number of players
+     * Set up the variables for controls
+     *
+     * @param playerNum THe number of players
+     * @param CGID      the ID of th CommonGoal
+     */
     public CG11_12(int playerNum, int CGID) {
         super(playerNum, CGID);
 
@@ -25,6 +32,12 @@ public class CG11_12 extends ComGoal {
         }
     }
 
+    /**
+     * Checks if the player reached the common goals
+     *
+     * @return score assigned to the player
+     * the score is 0 if the goal is not reached, otherwise it is the max score available for the goal
+     */
     @Override
     public int goalReached(Bookshelf l) {
         boolean found = false;
@@ -56,6 +69,14 @@ public class CG11_12 extends ComGoal {
         return toReturn;
     }
 
+    /**
+     * Check if the number of Tiles similar/different is equal to the one requested by the common goal
+     *
+     * @param l         the bookshelf
+     * @param direction left or right
+     * @param offset    the starting height
+     * @return true if the Common goal is reached
+     */
     private boolean checkDiagonal(Bookshelf l, int direction, int offset) {
         HouseItem myItem;
         int i;

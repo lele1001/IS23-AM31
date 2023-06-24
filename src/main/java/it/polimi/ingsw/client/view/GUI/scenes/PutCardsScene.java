@@ -40,6 +40,11 @@ public class PutCardsScene extends GUIScene {
     private InputController inputController;
     private ArrayList<Integer> selectedTiles;
 
+    /**
+     * Initialize the putCardScene
+     *
+     * @param clientController created for the GUI app
+     */
     @Override
     public void initialize(ClientController clientController) {
         this.clientController = clientController;
@@ -212,14 +217,6 @@ public class PutCardsScene extends GUIScene {
         writtenMessage.setText("");
     }
 
-/*
-    @Override
-    public void printError(String error) {
-        errorArea.setVisible(true);
-        errorArea.setText(error);
-        revert();
-    }*/
-
     /**
      * Checks the Tiles to put in the Bookshelf and eventually communicates the change to the server
      */
@@ -227,19 +224,19 @@ public class PutCardsScene extends GUIScene {
         int i;
         String column;
         try {
-            column= ((RadioButton) columns.getSelectedToggle()).getId();
+            column = ((RadioButton) columns.getSelectedToggle()).getId();
             i = Integer.parseInt(String.valueOf(column.charAt(column.length() - 1)));
         } catch (Exception e) {
             printError("ERROR: please select a valid column.");
             return;
         }
         String[] checktoPut = {"@put", String.valueOf(i)};
-        for (Integer sel:selectedTiles){
-            int n=checktoPut.length;
-            String [] newel= new String[n+1];
+        for (Integer sel : selectedTiles) {
+            int n = checktoPut.length;
+            String[] newel = new String[n + 1];
             System.arraycopy(checktoPut, 0, newel, 0, n);
-            newel[n]=sel.toString();
-            checktoPut=newel;
+            newel[n] = sel.toString();
+            checktoPut = newel;
         }
         ArrayList<ItemCard> tilesToPut = inputController.checkPut(checktoPut);
         //System.out.println(tilesToPut);

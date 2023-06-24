@@ -28,7 +28,7 @@ public class NotMyTurnScene extends GUIScene {
     @FXML
     AnchorPane notYourPane;
     @FXML
-    GridPane boardPane, comGoals, persGoal, score_0, score_1,winnerScore;
+    GridPane boardPane, comGoals, persGoal, score_0, score_1, winnerScore;
     @FXML
     Label yourPoints, userTurn;
     @FXML
@@ -41,6 +41,11 @@ public class NotMyTurnScene extends GUIScene {
     private InputController inputController;
     private ArrayList<String> players;
 
+    /**
+     * Initialize the notMyTurnScene
+     *
+     * @param clientController created for the GUI app
+     */
     @Override
     public void initialize(ClientController clientController) {
         this.clientController = clientController;
@@ -55,15 +60,17 @@ public class NotMyTurnScene extends GUIScene {
      */
     @Override
     public void bindEvents() {
-        sendMessage.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> sendChat(inputController,clientController,destinationMenu,writtenMessage));
+        sendMessage.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> sendChat(inputController, clientController, destinationMenu, writtenMessage));
         exitButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> closeGame(clientController));
     }
-    public void setWinnerPointImage(){
+
+    public void setWinnerPointImage() {
         ImageView scoreImage = new ImageView(GUIResources.getScore("sc01"));
         scoreImage.setFitHeight(45);
         scoreImage.setFitWidth(45);
-        winnerScore.add(scoreImage,0,0);
+        winnerScore.add(scoreImage, 0, 0);
     }
+
     /**
      * Sets the scene based on the number of players in the game
      */
@@ -71,7 +78,7 @@ public class NotMyTurnScene extends GUIScene {
     public void setPlayers() {
         setPlayersShared(clientController, destinationMenu, sendMessage);
 
-       players = new ArrayList<>(clientController.getPlayersBookshelves().keySet());
+        players = new ArrayList<>(clientController.getPlayersBookshelves().keySet());
 
         for (int i = 0; i < players.size(); i++) {
             setBookshelf(i);
@@ -294,22 +301,10 @@ public class NotMyTurnScene extends GUIScene {
         playerTab.setId(tabId);
         bookshelvesPane.getTabs().add(playerTab);
     }
-/*
 
-    private void setChat(String nickname) {
-        if (!nickname.equals(clientController.getMyNickname())) {
-            MenuItem msgPlayer = new MenuItem(nickname);
-            msgPlayer.setId("msgTo" + nickname);
-            destinationMenu.getItems().add(msgPlayer);
-
-            msgPlayer.setOnAction(event -> {
-                destinationMenu.setDisable(false);
-                sendMessage.setDisable(false);
-                destinationMenu.setText(msgPlayer.getText());
-            });
-        }
-    }*/
-
+    /**
+     * Remove the completion point image
+     */
     @Override
     public void bookshelfCompleted() {
         winnerScore.getChildren().clear();

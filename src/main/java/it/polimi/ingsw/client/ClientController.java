@@ -27,6 +27,11 @@ import static it.polimi.ingsw.server.model.Position.getColumn;
 import static it.polimi.ingsw.server.model.Position.getRow;
 import static it.polimi.ingsw.utils.Utils.*;
 
+/**
+ * Class that defines all the characteristics and methods of the Client Controller
+ * All the main parameters for the client to operate are saved here
+ * Define the exchange of information between the view and the connection to the server
+ */
 public class ClientController {
 
     private String myNickname, myPersGoalNumber;
@@ -123,6 +128,8 @@ public class ClientController {
     /**
      * Methods called by the server to the first player of the game asking the number of players he wants in the game
      * Set selectNumberOfPlayers to true, so the Cli can accept the corresponding command
+     *
+     * @param notAvailableNames the names of the name already in existence
      */
     public void onPlayerNumber(List<String> notAvailableNames) {
         selectNumberOfPlayers = true;
@@ -130,6 +137,11 @@ public class ClientController {
         view.printAskPlayerNumber();
     }
 
+    /**
+     * Method called by the server to ask the player if he wants to resume a game
+     *
+     * @param savedGames all the not finished games with the user nickname as a nickname of a player
+     */
     public void onSavedGame(List<String> savedGames) {
         selectSavedGame = true;
         this.savedGames = savedGames;
@@ -181,8 +193,8 @@ public class ClientController {
 
     /**
      * Just notifies the client that someone has completed his bookshelf.
-     * @param nickname of the player that has just completed his bookshelf.
      *
+     * @param nickname of the player that has just completed his bookshelf.
      */
     public void onBookshelfCompleted(String nickname) {
         if (nickname.equals(getMyNickname())) {
@@ -190,8 +202,7 @@ public class ClientController {
             view.print("Adding you an extra point...");
             myPoint++;
             view.printPoints(myPoint);
-        }
-        else
+        } else
             view.print(nickname + " has just completed his bookshelf!");
         view.print("Let's go on for the last turn of the game!");
         view.bookshelfCompleted();
@@ -298,11 +309,6 @@ public class ClientController {
         ArrayList<Integer> integerSelected = new ArrayList<>(selectedTiles.keySet());
         connectionClient.selectCard(myNickname, integerSelected);
     }
-    /*
-    public void selectCard(ArrayList<Integer> integerSelected) throws Exception {
-        connectionClient.selectCard(myNickname, integerSelected);
-    }
-     */
 
     /**
      * Method called from the client that pass to the server the Tiles inserted by the client and in which column he wants to put them
@@ -347,6 +353,8 @@ public class ClientController {
     }
 
     /**
+     * Getter method for the nickname of the player
+     *
      * @return the player's nickname
      */
     public String getMyNickname() {
@@ -354,6 +362,8 @@ public class ClientController {
     }
 
     /**
+     * Getter method for the Board
+     *
      * @return the Board
      */
     public ItemCard[][] getBoard() {
@@ -361,6 +371,8 @@ public class ClientController {
     }
 
     /**
+     * Getter method for the Map of the bookshelves
+     *
      * @return the Map of all the Bookshelves
      */
     public Map<String, ItemCard[][]> getPlayersBookshelves() {
@@ -368,6 +380,8 @@ public class ClientController {
     }
 
     /**
+     * Getter method to see if it's the players turn
+     *
      * @return if it is my turn
      */
     public boolean isMyTurn() {
@@ -377,7 +391,8 @@ public class ClientController {
     /**
      * Method called by the client only if he is the first connected to the server
      *
-     * @param players number of players in the game
+     * @param players  number of players in the game
+     * @param gameName the name for the game to save
      * @throws Exception if an error occurred calling the server (Socket or RMI)
      */
     public void setPlayersNumber(int players, String gameName) throws Exception {
@@ -390,12 +405,22 @@ public class ClientController {
 
     }
 
+    /**
+     * Prints on the view that the number of player to start the game is insufficient, so it's waiting for enough people to start
+     */
     public void printWaitingForGame() {
 
-            view.printLobby();
+        view.printLobby();
 
     }
 
+    /**
+     * Called after client's decision about saved games.
+     *
+     * @param wantToSave: true if he wants to re-start from a saved game.
+     * @param gameName:   the name of the game he wants to resume.
+     * @throws Exception if an error occurred calling the server
+     */
     public void setSavedGame(boolean wantToSave, String gameName) throws Exception {
         if (!selectSavedGame) {
             throw new NotAskedException();
@@ -411,6 +436,8 @@ public class ClientController {
     }
 
     /**
+     * Getter method for the Common Goals
+     *
      * @return the CommonGoals of the game
      */
     public Map<Integer, Integer> getPlayerComGoal() {
@@ -418,6 +445,8 @@ public class ClientController {
     }
 
     /**
+     * Getter method for the client's points
+     *
      * @return the client's point
      */
     public int getMyPoint() {
@@ -425,6 +454,8 @@ public class ClientController {
     }
 
     /**
+     * Getter method for the clients personal goal
+     *
      * @return the client's personal goal
      */
     public Map<Integer, HouseItem> getMyPersGoal() {
@@ -432,6 +463,8 @@ public class ClientController {
     }
 
     /**
+     * Getter method for the phase turn
+     *
      * @return the game's turn phase if it is his turn, NULL all other times
      */
     public TurnPhase getPhase() {
@@ -439,6 +472,8 @@ public class ClientController {
     }
 
     /**
+     * Getter method to see if you can select the number of players
+     *
      * @return true if you can use the @player function on the Cli
      */
     public boolean isSelectNumberOfPlayers() {
@@ -446,6 +481,8 @@ public class ClientController {
     }
 
     /**
+     * Getter method to se if the game is started
+     *
      * @return true if the game is started else false
      */
     public boolean isGameStarted() {
@@ -490,9 +527,22 @@ public class ClientController {
         view.printWinners(winners);
     }
 
+    /**
+     * Getter method for the value of the personal goal
+     *
+     * @return the value that defines the personal goal
+     */
     public String getPersGoalValue() {
         return myPersGoalNumber;
     }
+
+    /**
+     * Called when there's a bookshelf's update.
+     *
+     * @param tilesToAdd: the tiles to be added in the bookshelf.
+     * @param column:     the column of the bookshelf to put tiles into.
+     * @param player:     the owner of the just updated bookshelf.
+     */
     public void onBookshelfRenewed(ItemCard[] tilesToAdd, int column, String player) {
         int i;
         Map<Integer, ItemCard> added = new HashMap<>();
@@ -500,22 +550,33 @@ public class ClientController {
             if (this.playersBookshelf.get(player)[i][column] == null)
                 break;
         }
-        for(ItemCard ic : tilesToAdd){
+        for (ItemCard ic : tilesToAdd) {
             playersBookshelf.get(player)[i][column] = ic;
             added.put(Position.getNumber(column, i), ic);
             i--;
         }
         view.changeBookshelf(added, player);
     }
+
+    /**
+     * Called when there's a board's update.
+     *
+     * @param tilesToRemove: the positions of the tiles to be removed from the board.
+     */
     public void onBoardRenewed(Integer[] tilesToRemove) {
-        for(Integer position:tilesToRemove){
+        for (Integer position : tilesToRemove) {
             if (isMyTurn())
                 selectedTiles.put(position, board[getRow(position)][getColumn(position)]);
-            board[getRow(position)][getColumn(position)]=null;
+            board[getRow(position)][getColumn(position)] = null;
         }
         view.changeBoard(tilesToRemove);
     }
 
+    /**
+     * Called at the end of the game to send the final classification to the client.
+     *
+     * @param finalScores: an ordered map with players' nicknames and final scores.
+     */
     public void onFinalScores(LinkedHashMap<String, Integer> finalScores) {
         view.finalScores(finalScores);
     }

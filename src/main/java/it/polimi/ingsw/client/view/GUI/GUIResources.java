@@ -145,18 +145,34 @@ public final class GUIResources {
     private GUIResources() {
     }
 
+    /**
+     * @param myItem String that symbolize the item
+     * @return The image of the Item
+     */
     public static Image getItem(String myItem) {
         return itemTiles.get(myItem);
     }
 
+    /**
+     * @param comGoal String that symbolize the Common Goal
+     * @return The image of the Common Goal
+     */
     public static Image getComGoal(String comGoal) {
         return comGoals.get(comGoal);
     }
 
+    /**
+     * @param persGoal String that symbolize the Personal Goal
+     * @return The image of the Personal Goal
+     */
     public static Image getPersGoal(String persGoal) {
         return persGoals.get(persGoal);
     }
 
+    /**
+     * @param s String that symbolize the Score Tile
+     * @return The image of the Score Tile
+     */
     public static Image getScore(String s) {
         return scoringTokens.get(s);
     }

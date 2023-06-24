@@ -1,7 +1,7 @@
 package it.polimi.ingsw.server.model.comGoals;
 
-import it.polimi.ingsw.server.model.ItemCard;
 import it.polimi.ingsw.server.model.Bookshelf;
+import it.polimi.ingsw.server.model.ItemCard;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;

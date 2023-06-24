@@ -9,7 +9,7 @@ import java.util.List;
 
 import static it.polimi.ingsw.server.model.HouseItem.*;
 import static it.polimi.ingsw.server.model.ItemNumber.*;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class CG1Test {
     private final Bookshelf l1 = new Bookshelf();

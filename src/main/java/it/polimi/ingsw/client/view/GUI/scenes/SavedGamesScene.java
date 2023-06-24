@@ -16,7 +16,7 @@ import java.util.List;
 
 public class SavedGamesScene extends GUIScene {
     @FXML
-    Button yesButton, noButton,exitButton;
+    Button yesButton, noButton, exitButton;
     @FXML
     MenuButton listGames;
     @FXML
@@ -25,6 +25,11 @@ public class SavedGamesScene extends GUIScene {
     AnchorPane savedGamesPane;
     ClientController clientController;
 
+    /**
+     * Initialize the savedGamesScene
+     *
+     * @param clientController created for the GUI app
+     */
     @Override
     public void initialize(ClientController clientController) {
         this.clientController = clientController;
@@ -69,6 +74,12 @@ public class SavedGamesScene extends GUIScene {
     public void updateBookshelf(String nickname, ItemCard[][] bookshelf) {
     }
 
+    /**
+     * Send to the server if the client wants ot use a saved games o start a new one
+     *
+     * @param val  if the client wants to use a saved games
+     * @param name the name of the game
+     */
     private void sendSavedGames(boolean val, String name) {
         try {
             clientController.setSavedGame(val, name);
@@ -84,6 +95,9 @@ public class SavedGamesScene extends GUIScene {
         }
     }
 
+    /**
+     * Send to the server the game selected
+     */
     private void checkGameSelection() {
         sendSavedGames(true, listGames.getText());
     }

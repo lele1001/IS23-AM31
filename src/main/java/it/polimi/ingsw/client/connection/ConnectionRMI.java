@@ -21,6 +21,7 @@ public class ConnectionRMI extends ConnectionClient implements RMIClientConnecti
      * @param controller ClientController, on which it will call all the methods after the server request
      * @param address    IP address of the server
      * @param port       IP port of the server
+     * @throws RemoteException if an error occurred during the connection
      */
     public ConnectionRMI(ClientController controller, String address, int port) throws RemoteException {
         super(controller, address, port);
@@ -111,9 +112,10 @@ public class ConnectionRMI extends ConnectionClient implements RMIClientConnecti
 
     /**
      * Called after client's decision about saved games.
+     *
      * @param wantToSave: true if he wants to re-start from a saved game.
-     * @param gameName: the name of the game he wants to resume.
-     * @throws Exception if an error occurred calling the RMI client
+     * @param gameName:   the name of the game he wants to resume.
+     * @throws Exception if an error occurred calling the RMI server
      */
     @Override
     public void setSavedGame(boolean wantToSave, String gameName) throws Exception {
@@ -232,17 +234,6 @@ public class ConnectionRMI extends ConnectionClient implements RMIClientConnecti
     }
 
     /**
-     * Method called by the server when a player wins
-     *
-     * @param winners is the player that won the game
-     * @throws RemoteException if an error occurred calling the RMI client
-     */
-    @Override
-    public void onWinner(List<String> winners) throws RemoteException {
-        getController().onWinner(winners);
-    }
-
-    /**
      * Method called by the server when a game is starting
      *
      * @throws RemoteException if an error occurred calling the RMI client
@@ -312,8 +303,8 @@ public class ConnectionRMI extends ConnectionClient implements RMIClientConnecti
 
     /**
      * Method called by the server when a player completes his bookshelf
-     * @param nickname of the player that has completed the bookshelf.
      *
+     * @param nickname of the player that has completed the bookshelf.
      * @throws RemoteException if an error occurred calling the RMI client
      */
     @Override
@@ -323,6 +314,7 @@ public class ConnectionRMI extends ConnectionClient implements RMIClientConnecti
 
     /**
      * Called when there are some saved games with client's nicknames, to ask him if he wants to resume one of them.
+     *
      * @param savedGames: the list of saved games' names.
      * @throws RemoteException if an error occurred calling the RMI client
      */
@@ -333,9 +325,10 @@ public class ConnectionRMI extends ConnectionClient implements RMIClientConnecti
 
     /**
      * Called when there's a bookshelf's update.
+     *
      * @param tilesToAdd: the tiles to be added in the bookshelf.
-     * @param column: the column of the bookshelf to put tiles into.
-     * @param player: the owner of the just updated bookshelf.
+     * @param column:     the column of the bookshelf to put tiles into.
+     * @param player:     the owner of the just updated bookshelf.
      * @throws RemoteException if an error occurred calling the RMI client.
      */
     @Override
@@ -345,6 +338,7 @@ public class ConnectionRMI extends ConnectionClient implements RMIClientConnecti
 
     /**
      * Called when there's a board's update.
+     *
      * @param tilesToRemove: the positions of the tiles to be removed from the board.
      * @throws RemoteException if an error occurred calling the RMI client.
      */
@@ -355,6 +349,7 @@ public class ConnectionRMI extends ConnectionClient implements RMIClientConnecti
 
     /**
      * Called at the end of the game to send the final classification to the client.
+     *
      * @param finalScores: an ordered map with players' nicknames and final scores.
      * @throws RemoteException if an error occurred calling the RMI client.
      */
@@ -365,6 +360,7 @@ public class ConnectionRMI extends ConnectionClient implements RMIClientConnecti
 
     /**
      * Called when the game has been interrupted because of too many absents.
+     *
      * @throws RemoteException if an error occurred calling the RMI client.
      */
     @Override

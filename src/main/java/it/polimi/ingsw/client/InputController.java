@@ -216,7 +216,7 @@ public class InputController {
             }
         }
         j++;
-        if ( clientController.getSelectedTiles().size()>j) {
+        if (clientController.getSelectedTiles().size() > j) {
             clientController.onError("Not enough space in that column");
             return null;
         }
@@ -309,6 +309,12 @@ public class InputController {
         return playersNum;
     }
 
+    /**
+     * Controls if the inserted String is a possible IP
+     *
+     * @param ip IP inserted by the user
+     * @return true if it is a possible ip else false
+     */
     public boolean isValidInet4Address(String ip) {
         String[] groups = ip.split("\\.");
         if (groups.length != 4) {

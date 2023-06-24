@@ -23,6 +23,9 @@ public class GUIApp extends Application {
         gui.gameLogin();
     }
 
+    /**
+     * Stop the application
+     */
     @Override
     public void stop() {
         try {

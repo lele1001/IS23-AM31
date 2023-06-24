@@ -101,8 +101,9 @@ public abstract class ConnectionClient extends UnicastRemoteObject {
 
     /**
      * Called by the client after his decision about saved games.
+     *
      * @param wantToSave: true if he wants to re-start from a saved game.
-     * @param gameName: the name of the game he wants to resume.
+     * @param gameName:   the name of the game he wants to resume.
      * @throws Exception if an error occurred calling the server (Socket or RMI)
      */
     public abstract void setSavedGame(boolean wantToSave, String gameName) throws Exception;

@@ -229,11 +229,12 @@ public class SceneController {
         }
     }
 
-    public void bookshelfCompleted(){
+    public void bookshelfCompleted() {
         for (GUIScene gs : scenesMap.values()) {
             gs.bookshelfCompleted();
         }
     }
+
     /**
      * Prints the CommonGoals and its available score in each scene that contains it
      *
@@ -306,7 +307,7 @@ public class SceneController {
      * @param error is the error that will be printed
      */
     public void fatalError(String error) {
-        if(!activeStage.getScene().equals(this.scenesMap.get("endGameScene").getMyScene())) {
+        if (!activeStage.getScene().equals(this.scenesMap.get("endGameScene").getMyScene())) {
             this.currentController = this.scenesMap.get("errorScene");
             activeStage.setScene(currentController.getMyScene());
             this.currentController.printError(error);

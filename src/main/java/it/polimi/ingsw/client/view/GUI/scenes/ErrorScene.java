@@ -14,6 +14,11 @@ public class ErrorScene extends GUIScene {
     @FXML
     Button closeButton;
 
+    /**
+     * Initialize the errorScene
+     *
+     * @param clientController created for the GUI app
+     */
     @Override
     public void initialize(ClientController clientController) {
         this.clientController = clientController;
@@ -49,6 +54,9 @@ public class ErrorScene extends GUIScene {
         errorDescription.setVisible(true);
     }
 
+    /**
+     * Close the GUI instance after disconnecting the client
+     */
     private void closeGameButton() {
         clientController.disconnectMe();
         System.exit(1);

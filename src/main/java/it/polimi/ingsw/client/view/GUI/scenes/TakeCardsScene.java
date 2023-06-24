@@ -29,7 +29,7 @@ public class TakeCardsScene extends GUIScene {
     @FXML
     AnchorPane takeCardsPane;
     @FXML
-    GridPane boardPane, comGoals, bookshelfPane, persGoal, youSelectedThis, score_0, score_1,winnerScore;
+    GridPane boardPane, comGoals, bookshelfPane, persGoal, youSelectedThis, score_0, score_1, winnerScore;
     @FXML
     Label errorArea, yourPoints;
     @FXML
@@ -38,12 +38,17 @@ public class TakeCardsScene extends GUIScene {
     TextArea chatHistory;
     private ClientController clientController;
     private ArrayList<Integer> selectedTiles;
-    private InputController inputController ;
+    private InputController inputController;
 
+    /**
+     * Initialize the takeCardsScene
+     *
+     * @param clientController created for the GUI app
+     */
     @Override
     public void initialize(ClientController clientController) {
         this.clientController = clientController;
-        inputController= new InputController(clientController);
+        inputController = new InputController(clientController);
         yourPoints.setText("You have 0 points");
         errorArea.setVisible(false);
         selectedTiles = new ArrayList<>();
@@ -63,12 +68,13 @@ public class TakeCardsScene extends GUIScene {
         exitButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> closeGame(clientController));
     }
 
-    public void setWinnerPointImage(){
+    public void setWinnerPointImage() {
         ImageView scoreImage = new ImageView(GUIResources.getScore("sc01"));
         scoreImage.setFitHeight(55);
         scoreImage.setFitWidth(55);
-        winnerScore.add(scoreImage,0,0);
+        winnerScore.add(scoreImage, 0, 0);
     }
+
     /**
      * Sets the scene based on the number of players in the game
      */
@@ -237,48 +243,36 @@ public class TakeCardsScene extends GUIScene {
         writtenMessage.setText("");
     }
 
-
-/*    @Override
-    public void printError(String error) {
-        errorArea.setVisible(true);
-        errorArea.setText(error);
-
-        revert();
-        selectTiles.setDisable(false);
-    }*/
-
-
     /**
      * Checks the selected Tiles from the Board and eventually communicates the change to the server
      */
     private void selectTiles() {
-        String[] checktoTake= {"@take"};
-        for (Integer sel:selectedTiles){
-            int n=checktoTake.length;
-            String [] newel= new String[n+1];
-            newel[n]=sel.toString();
+        String[] checktoTake = {"@take"};
+        for (Integer sel : selectedTiles) {
+            int n = checktoTake.length;
+            String[] newel = new String[n + 1];
+            newel[n] = sel.toString();
             System.arraycopy(checktoTake, 0, newel, 0, n);
-            checktoTake=newel;
+            checktoTake = newel;
         }
-        ArrayList<Integer> tilesToTake=inputController.checkTake(checktoTake);
-         if (tilesToTake==null) {
+        ArrayList<Integer> tilesToTake = inputController.checkTake(checktoTake);
+        if (tilesToTake == null) {
             printError("ERROR: wrong selection");
-             revert();
-             selectTiles.setDisable(false);
-        }
-        else {
-             clientController.setSelectedTiles(selectedTiles);
+            revert();
+            selectTiles.setDisable(false);
+        } else {
+            clientController.setSelectedTiles(selectedTiles);
 
-             try {
-                 clientController.selectCard();
-                 //selectTiles.setDisable(true);
-             } catch (Exception e) {
-                 e.printStackTrace();
-                 printError("ERROR: server error");
-                 revert();
-                 selectTiles.setDisable(false);
-             }
-         }
+            try {
+                clientController.selectCard();
+                //selectTiles.setDisable(true);
+            } catch (Exception e) {
+                e.printStackTrace();
+                printError("ERROR: server error");
+                revert();
+                selectTiles.setDisable(false);
+            }
+        }
         selectedTiles.clear();
         youSelectedThis.getChildren().clear();
     }
@@ -295,7 +289,7 @@ public class TakeCardsScene extends GUIScene {
         }
 
         Node clickedNode = event.getPickResult().getIntersectedNode();
-        if(GridPane.getColumnIndex(clickedNode)!=null) {
+        if (GridPane.getColumnIndex(clickedNode) != null) {
             int clickedColumn = GridPane.getColumnIndex(clickedNode);
             int clickedRow = GridPane.getRowIndex(clickedNode);
 
@@ -336,6 +330,9 @@ public class TakeCardsScene extends GUIScene {
         selectedTiles.clear();
     }
 
+    /**
+     * Remove the completion point image
+     */
     @Override
     public void bookshelfCompleted() {
         winnerScore.getChildren().clear();

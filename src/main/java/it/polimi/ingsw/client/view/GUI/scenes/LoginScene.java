@@ -16,7 +16,7 @@ public class LoginScene extends GUIScene {
     @FXML
     Label welcomeText, usernameText, connectionText, ipText, portText, errorArea;
     @FXML
-    Button loginButton,exitButton;
+    Button loginButton, exitButton;
     @FXML
     TextField username, ipPort, ipAddress;
     @FXML
@@ -30,7 +30,7 @@ public class LoginScene extends GUIScene {
      */
     public void initialize(ClientController clientController) {
         this.clientController = clientController;
-        inputController=new InputController(clientController);
+        inputController = new InputController(clientController);
         errorArea.setVisible(false);
         ipPort.setText("1501");
         ipAddress.setText("127.0.0.1");
@@ -55,16 +55,6 @@ public class LoginScene extends GUIScene {
         exitButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> closeGame(clientController));
     }
 
-    /*
-     * Prints an error message in the scene
-     *
-     * @param error is the error message to display
-
-    @Override
-    public void printError(String error) {
-        errorArea.setVisible(true);
-        errorArea.setText(error);
-    }*/
 
     /**
      * Checks the parameters inserted by the user and tries to start a connection with the server
@@ -101,6 +91,11 @@ public class LoginScene extends GUIScene {
         }
     }
 
+    /**
+     * Check if the connection parameter are correct
+     *
+     * @return 0 if RMI, 1 if Socket, -1 if incorrect
+     */
     private int checkConnection() {
         if (connectionRMI.isSelected()) {
             return 0;
@@ -111,18 +106,35 @@ public class LoginScene extends GUIScene {
         }
     }
 
+    /**
+     * CHeck if username contains any special character
+     *
+     * @param text the username
+     * @return true if doesn't contain special character
+     */
     private boolean checkText(TextField text) {
         String toCheck = text.getText();
 
         return !toCheck.isEmpty() && toCheck.matches("[a-zA-Z0-9]+");
     }
 
+    /**
+     * Check if the IP is correct
+     *
+     * @param text the IP
+     * @return true if the IP is correct
+     */
     private boolean checkIP(TextField text) {
         String toCheck = text.getText();
 
         return !toCheck.isEmpty() && inputController.isValidInet4Address(toCheck);
     }
 
+    /**
+     * Check if the port is a number
+     *
+     * @return the port number, -1 if not a number
+     */
     private int checkPort() {
         int port;
 

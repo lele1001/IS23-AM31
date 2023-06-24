@@ -8,16 +8,23 @@ import it.polimi.ingsw.server.gameExceptions.NotSameSelectedException;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
-import java.util.Map;
 
 public interface ModelInterface {
     /**
      * Creates the game with all the necessary things (board, bookshelves, personal goals and common goals).
      *
-     * @param playersList the list with all players' nicknames.
+     * @param playersList  the list with all players' nicknames.
+     * @param gameFilePath the path to the json file of the game
      */
     void CreateGame(ArrayList<String> playersList, String gameFilePath);
 
+    /**
+     * Called at the beginning of the game when the first player wants to resume one of the game he's into.
+     *
+     * @param onlinePlayers: the list of the players of this game already online and ready to play.
+     * @param json:          the jsonObject with all the details of the game (taken from the file).
+     * @param gameFilePath:  the path of the file with all game's details.
+     */
     void resumeGame(ArrayList<String> onlinePlayers, JsonObject json, String gameFilePath);
 
     /**
@@ -34,8 +41,9 @@ public interface ModelInterface {
     /**
      * Tries to select cards from the board.
      *
+     * @param player    the nickname of the player
      * @param positions of the cards to be selected.
-     * @throws NoRightItemCardSelection if the selection is not valid.
+     * @throws NoRightItemCardSelection  if the selection is not valid.
      * @throws NoBookshelfSpaceException if there's no enough space in player's bookshelf for the number of tiles he selected.
      */
     void selectCard(String player, ArrayList<Integer> positions) throws NoRightItemCardSelection, NoBookshelfSpaceException; //chiedo conferma che sia la stessa eccezione

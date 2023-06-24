@@ -10,10 +10,22 @@ import static it.polimi.ingsw.utils.Utils.BOOKSHELF_LENGTH;
  * Five tiles of the same type forming an X
  */
 public class CG10 extends ComGoal {
+    /**
+     * Set the Common Goal based on the number of players
+     *
+     * @param playerNum THe number of players
+     * @param CGID      the ID of th CommonGoal
+     */
     public CG10(int playerNum, int CGID) {
         super(playerNum, CGID);
     }
 
+    /**
+     * Checks if the player reached the common goals
+     *
+     * @return score assigned to the player
+     * the score is 0 if the goal is not reached, otherwise it is the max score available for the goal
+     */
     @Override
     public int goalReached(Bookshelf l) {
         int toReturn = 0;

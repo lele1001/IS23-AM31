@@ -23,6 +23,8 @@ public abstract class ClientHandler {
 
     /**
      * The server calls the client's method if the player is first in queue and ha to decide the number of players in the game
+     *
+     * @param notAvailableNames the name of the games already in existence
      */
     public abstract void askPlayerNumber(List<String> notAvailableNames);
 
@@ -40,6 +42,8 @@ public abstract class ClientHandler {
 
     /**
      * The server calls the client's method when a game is starting
+     *
+     * @param playersList the list that contains the name of the players
      */
     public abstract void sendGameIsStarting(ArrayList<String> playersList);
 

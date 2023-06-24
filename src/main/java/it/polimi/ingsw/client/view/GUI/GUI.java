@@ -58,7 +58,7 @@ public class GUI implements View {
      */
     @Override
     public void printLobby() {
-            Platform.runLater(this.sceneController::loadLobby);
+        Platform.runLater(this.sceneController::loadLobby);
     }
 
     /**
@@ -265,6 +265,9 @@ public class GUI implements View {
         Platform.runLater(() -> this.sceneController.finalScores(finalScores));
     }
 
+    /**
+     * Called when the first bookshelf is completed
+     */
     @Override
     public void bookshelfCompleted() {
         Platform.runLater(this.sceneController::bookshelfCompleted);

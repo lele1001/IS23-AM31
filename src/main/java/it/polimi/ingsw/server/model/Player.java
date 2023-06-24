@@ -89,7 +89,7 @@ public class Player {
      * @param cards  to be inserted
      * @param column of the bookshelf where cards have to be inserted
      * @throws NoBookshelfSpaceException if there's no such space in the column of the bookshelf for the cards
-     *                                   requires cards.size() <= 3
+     *                                   requires cards.size() lower than 3
      */
     public boolean insertCard(List<ItemCard> cards, int column) throws NoBookshelfSpaceException {
         if (!myBookshelf.checkSpace(column, cards.size())) {
@@ -137,6 +137,7 @@ public class Player {
 
     /**
      * Called when the player tries to select tiles from the board to check if there's enough space for them in his bookshelf.
+     *
      * @param numOfTiles: the number of the tiles selected from the player
      * @return true if there's enough space in at least one column.
      */

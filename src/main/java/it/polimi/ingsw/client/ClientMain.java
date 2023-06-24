@@ -34,6 +34,11 @@ public class ClientMain {
         }
     }
 
+    /**
+     * Call the run method to start the GUI
+     *
+     * @param args put by the player at start
+     */
     public static void main(String[] args) {
         new ClientMain().run(args);
     }

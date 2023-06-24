@@ -1,1 +1,230 @@
-[[null,null,null,null,null,null,null,null,null],[null,null,null,{"houseItem":"Frame","itemNumber":"Second"},{"houseItem":"Games","itemNumber":"Second"},null,null,null,null],[null,null,null,{"houseItem":"Cat","itemNumber":"First"},{"houseItem":"Books","itemNumber":"Second"},{"houseItem":"Cat","itemNumber":"Third"},null,null,null],[null,null,{"houseItem":"Frame","itemNumber":"First"},{"houseItem":"Frame","itemNumber":"Third"},{"houseItem":"Books","itemNumber":"Third"},{"houseItem":"Plants","itemNumber":"First"},{"houseItem":"Plants","itemNumber":"Third"},{"houseItem":"Trophy","itemNumber":"First"},null],[null,{"houseItem":"Frame","itemNumber":"Third"},{"houseItem":"Plants","itemNumber":"Second"},{"houseItem":"Games","itemNumber":"First"},{"houseItem":"Books","itemNumber":"First"},{"houseItem":"Frame","itemNumber":"Third"},{"houseItem":"Games","itemNumber":"First"},{"houseItem":"Games","itemNumber":"First"},null],[null,{"houseItem":"Cat","itemNumber":"Second"},{"houseItem":"Books","itemNumber":"Third"},{"houseItem":"Frame","itemNumber":"First"},{"houseItem":"Games","itemNumber":"Second"},{"houseItem":"Cat","itemNumber":"Second"},{"houseItem":"Plants","itemNumber":"Second"},null,null],[null,null,null,{"houseItem":"Books","itemNumber":"First"},{"houseItem":"Books","itemNumber":"Third"},{"houseItem":"Plants","itemNumber":"Third"},null,null,null],[null,null,null,null,{"houseItem":"Plants","itemNumber":"Third"},{"houseItem":"Books","itemNumber":"Second"},null,null,null],[null,null,null,null,null,null,null,null,null]]
+[
+  [
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null
+  ],
+  [
+    null,
+    null,
+    null,
+    {
+      "houseItem": "Books",
+      "itemNumber": "Third"
+    },
+    {
+      "houseItem": "Frame",
+      "itemNumber": "Second"
+    },
+    {
+      "houseItem": "Games",
+      "itemNumber": "First"
+    },
+    null,
+    null,
+    null
+  ],
+  [
+    null,
+    null,
+    {
+      "houseItem": "Trophy",
+      "itemNumber": "First"
+    },
+    {
+      "houseItem": "Books",
+      "itemNumber": "Third"
+    },
+    {
+      "houseItem": "Frame",
+      "itemNumber": "First"
+    },
+    {
+      "houseItem": "Frame",
+      "itemNumber": "Third"
+    },
+    {
+      "houseItem": "Books",
+      "itemNumber": "First"
+    },
+    null,
+    null
+  ],
+  [
+    null,
+    {
+      "houseItem": "Plants",
+      "itemNumber": "First"
+    },
+    {
+      "houseItem": "Games",
+      "itemNumber": "Second"
+    },
+    {
+      "houseItem": "Frame",
+      "itemNumber": "First"
+    },
+    {
+      "houseItem": "Games",
+      "itemNumber": "First"
+    },
+    {
+      "houseItem": "Frame",
+      "itemNumber": "First"
+    },
+    {
+      "houseItem": "Books",
+      "itemNumber": "Second"
+    },
+    {
+      "houseItem": "Cat",
+      "itemNumber": "First"
+    },
+    {
+      "houseItem": "Games",
+      "itemNumber": "Second"
+    }
+  ],
+  [
+    {
+      "houseItem": "Frame",
+      "itemNumber": "Second"
+    },
+    {
+      "houseItem": "Books",
+      "itemNumber": "Second"
+    },
+    {
+      "houseItem": "Plants",
+      "itemNumber": "Second"
+    },
+    {
+      "houseItem": "Books",
+      "itemNumber": "Third"
+    },
+    {
+      "houseItem": "Cat",
+      "itemNumber": "Third"
+    },
+    {
+      "houseItem": "Books",
+      "itemNumber": "Second"
+    },
+    {
+      "houseItem": "Trophy",
+      "itemNumber": "First"
+    },
+    {
+      "houseItem": "Plants",
+      "itemNumber": "Third"
+    },
+    {
+      "houseItem": "Cat",
+      "itemNumber": "First"
+    }
+  ],
+  [
+    {
+      "houseItem": "Cat",
+      "itemNumber": "First"
+    },
+    {
+      "houseItem": "Trophy",
+      "itemNumber": "Third"
+    },
+    {
+      "houseItem": "Trophy",
+      "itemNumber": "Second"
+    },
+    {
+      "houseItem": "Frame",
+      "itemNumber": "First"
+    },
+    {
+      "houseItem": "Plants",
+      "itemNumber": "First"
+    },
+    {
+      "houseItem": "Books",
+      "itemNumber": "Second"
+    },
+    {
+      "houseItem": "Plants",
+      "itemNumber": "First"
+    },
+    {
+      "houseItem": "Books",
+      "itemNumber": "Third"
+    },
+    null
+  ],
+  [
+    null,
+    null,
+    {
+      "houseItem": "Plants",
+      "itemNumber": "First"
+    },
+    {
+      "houseItem": "Trophy",
+      "itemNumber": "Third"
+    },
+    {
+      "houseItem": "Books",
+      "itemNumber": "First"
+    },
+    {
+      "houseItem": "Cat",
+      "itemNumber": "Third"
+    },
+    {
+      "houseItem": "Plants",
+      "itemNumber": "First"
+    },
+    null,
+    null
+  ],
+  [
+    null,
+    null,
+    null,
+    {
+      "houseItem": "Frame",
+      "itemNumber": "Second"
+    },
+    {
+      "houseItem": "Frame",
+      "itemNumber": "Third"
+    },
+    {
+      "houseItem": "Frame",
+      "itemNumber": "Second"
+    },
+    null,
+    null,
+    null
+  ],
+  [
+    null,
+    null,
+    null,
+    null,
+    {
+      "houseItem": "Plants",
+      "itemNumber": "Third"
+    },
+    {
+      "houseItem": "Frame",
+      "itemNumber": "Third"
+    },
+    null,
+    null,
+    null
+  ]
+]

@@ -18,13 +18,18 @@ public class NumberOfPlayersScene extends GUIScene {
     @FXML
     TextField playersNum, gameName;
     @FXML
-    Button submitButton,exitButton;
+    Button submitButton, exitButton;
     @FXML
     AnchorPane playersScenePane;
     @FXML
     TextArea errorArea;
     private ClientController clientController;
 
+    /**
+     * Initialize the numberOfPlayerScene
+     *
+     * @param clientController created for the GUI app
+     */
     @Override
     public void initialize(ClientController clientController) {
         this.clientController = clientController;
@@ -50,12 +55,6 @@ public class NumberOfPlayersScene extends GUIScene {
     public void updateBookshelf(String nickname, ItemCard[][] bookshelf) {
     }
 
-/*
-    @Override
-    public void printError(String error) {
-        errorArea.setVisible(true);
-        errorArea.setText(error);
-    }*/
 
     /**
      * Form to select the number of players
@@ -85,6 +84,12 @@ public class NumberOfPlayersScene extends GUIScene {
         }
     }
 
+    /**
+     * CHeck if the text is empty
+     *
+     * @param text the game name
+     * @return true if not empty, else false
+     */
     private boolean checkText(TextField text) {
         return !text.getText().isEmpty();
     }

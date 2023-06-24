@@ -19,12 +19,25 @@ public abstract class GUIScene {
     private Scene myScene;
     private Alert alert;
 
+    /**
+     * Initialize the scene
+     *
+     * @param clientController created for the GUI app
+     */
     public abstract void initialize(ClientController clientController);
 
+    /**
+     * @return the scene called
+     */
     public Scene getMyScene() {
         return myScene;
     }
 
+    /**
+     * Set the scene
+     *
+     * @param myScene the scene to set
+     */
     public void setMyScene(Scene myScene) {
         this.myScene = myScene;
     }
@@ -139,9 +152,11 @@ public abstract class GUIScene {
     public void changeBookshelf(Map<Integer, ItemCard> tilesToAdd, String player) {
 
     }
+
     public void bookshelfCompleted() {
 
     }
+
     /**
      * Prints the CommonGoals and its available score in the scene
      *

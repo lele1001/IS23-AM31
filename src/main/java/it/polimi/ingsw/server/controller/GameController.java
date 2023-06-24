@@ -13,7 +13,6 @@ import java.beans.PropertyChangeListener;
 import java.util.*;
 
 import static it.polimi.ingsw.utils.ModelPropertyChange.*;
-import static it.polimi.ingsw.utils.ModelPropertyChange.BOARD_CHANGED;
 import static it.polimi.ingsw.utils.Utils.*;
 
 public class GameController implements PropertyChangeListener {
@@ -40,8 +39,9 @@ public class GameController implements PropertyChangeListener {
 
     /**
      * Creates the game with all the necessary (board, bookshelves, ...) and starts it
+     *
      * @param gameFilePath: the file's path to save game into.
-     * @param playersList the list of this game's players.
+     * @param playersList   the list of this game's players.
      */
     public void createGame(ArrayList<String> playersList, String gameFilePath) {
         this.gameFilePath = gameFilePath;
@@ -67,10 +67,11 @@ public class GameController implements PropertyChangeListener {
 
     /**
      * Called to resume game from file.
+     *
      * @param onlinePlayers: players already online to play their game.
-     * @param playersList: all the players of the game.
-     * @param json: the jsonObject with game's details.
-     * @param gameFilePath: the path of the file with game's details.
+     * @param playersList:   all the players of the game.
+     * @param json:          the jsonObject with game's details.
+     * @param gameFilePath:  the path of the file with game's details.
      */
     public void resumeGame(ArrayList<String> onlinePlayers, List<String> playersList, JsonObject json, String gameFilePath) {
         this.gameFilePath = gameFilePath;
@@ -93,6 +94,7 @@ public class GameController implements PropertyChangeListener {
     /**
      * Calls each player's turn until somebody completes his/her Bookshelf.
      * If available players are less than two, stops the game and waits for their coming back for 60 seconds: if the timeout exceeds, ends the game.
+     *
      * @param startFrom: the position, in playersList array list, that indicates the first player that has to play.
      */
     public void run(int startFrom) {
@@ -165,6 +167,7 @@ public class GameController implements PropertyChangeListener {
     /**
      * If the current player is not the first one, makes all the remaining one play their turn
      * Calls the method to calculate the final score and end the game.
+     *
      * @param nickname: the nickname of the player that has just finished his turn.
      */
     public void runLastTurn(String nickname) {
@@ -183,6 +186,7 @@ public class GameController implements PropertyChangeListener {
      * Waits for the player's action caught by ConnectionControl and calls the method to check and perform it.
      * Every player has three minutes to complete his turn:
      * if this timer exceeds, the player is set as offline, and the game continues with the next one.
+     *
      * @param indexCurrPlayer: the playersList's index of the nickname that has to play.
      */
     private void playerTurn(int indexCurrPlayer) {
@@ -304,9 +308,9 @@ public class GameController implements PropertyChangeListener {
         } else {
             switch (evt.getPropertyName()) {
                 case BOOKSHELF_CHANGED ->
-                    connectionControl.SendBookshelfChanged((String) evt.getSource(), (ItemCard[][]) evt.getNewValue(), (String) evt.getOldValue());
+                        connectionControl.SendBookshelfChanged((String) evt.getSource(), (ItemCard[][]) evt.getNewValue(), (String) evt.getOldValue());
                 case BOARD_CHANGED ->
-                    connectionControl.SendBoardChanged((ItemCard[][]) evt.getNewValue(), (String) evt.getOldValue());
+                        connectionControl.SendBoardChanged((ItemCard[][]) evt.getNewValue(), (String) evt.getOldValue());
                 case BOOKSHELF_RENEWED -> {
                     connectionControl.sendBookshelfRenewed((ItemCard[]) evt.getNewValue(), (Integer) evt.getOldValue(), (String) evt.getSource());
                     turnPhase = TurnPhase.ENDTURN;
@@ -346,7 +350,7 @@ public class GameController implements PropertyChangeListener {
      */
     public void sendGameDetails(String nickname) {
         gameModel.sendGameDetails(nickname);
-        if(playersList.stream().filter(connectionControl::isOnline).count() !=1)
+        if (playersList.stream().filter(connectionControl::isOnline).count() != 1)
             connectionControl.sendPlayerTurn(currPlayer);
     }
 }

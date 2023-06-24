@@ -17,7 +17,9 @@ import java.util.*;
 
 import static it.polimi.ingsw.utils.ModelPropertyChange.*;
 
-
+/**
+ * Class that defines all the possible action on the Model and send response to the GameController
+ */
 public class GameModel implements ModelInterface {
     private final Map<String, Player> playerMap = new HashMap<>();
     public Board board;

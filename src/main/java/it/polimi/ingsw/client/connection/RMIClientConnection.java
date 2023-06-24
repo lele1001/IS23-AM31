@@ -12,6 +12,7 @@ public interface RMIClientConnection extends Remote {
     /**
      * Method called by the server if the player is first in queue and ha to decide the number of players in the game
      *
+     * @param notAvailableNames the name of the games that already exists
      * @throws RemoteException if an error occurred calling the RMI client
      */
     void onPlayerNumber(List<String> notAvailableNames) throws RemoteException;
@@ -89,13 +90,6 @@ public interface RMIClientConnection extends Remote {
      */
     void onChangeTurn(String nickname) throws RemoteException;
 
-    /**
-     * Method called by the server when a player wins
-     *
-     * @param winners is the player that won the game
-     * @throws RemoteException if an error occurred calling the RMI client
-     */
-    void onWinner(List<String> winners) throws RemoteException;
 
     /**
      * Method called by the server when a game is starting
@@ -106,6 +100,7 @@ public interface RMIClientConnection extends Remote {
 
     /**
      * Called when the client is the only one online and the game needs to be interrupted waiting for other players coming back.
+     *
      * @throws RemoteException if an error occurred calling the RMI client
      */
     void onGameInterrupted() throws RemoteException;
@@ -144,14 +139,15 @@ public interface RMIClientConnection extends Remote {
 
     /**
      * Method called by the server when a player completes his bookshelf
-     * @param nickname of the player that has completed the bookshelf.
      *
+     * @param nickname of the player that has completed the bookshelf.
      * @throws RemoteException if an error occurred calling the RMI client
      */
     void onBookshelfCompleted(String nickname) throws RemoteException;
 
     /**
      * Called when there are some saved games with client's nicknames, to ask him if he wants to resume one of them.
+     *
      * @param savedGames: the list of saved games' names.
      * @throws RemoteException if an error occurred calling the RMI client
      */
@@ -159,15 +155,17 @@ public interface RMIClientConnection extends Remote {
 
     /**
      * Called when there's a bookshelf's update.
+     *
      * @param tilesToAdd: the tiles to be added in the bookshelf.
-     * @param column: the column of the bookshelf to put tiles into.
-     * @param player: the owner of the just updated bookshelf.
+     * @param column:     the column of the bookshelf to put tiles into.
+     * @param player:     the owner of the just updated bookshelf.
      * @throws RemoteException if an error occurred calling the RMI client.
      */
     void onBookshelfRenewed(ItemCard[] tilesToAdd, int column, String player) throws RemoteException;
 
     /**
      * Called when there's a board's update.
+     *
      * @param tilesToRemove: the positions of the tiles to be removed from the board.
      * @throws RemoteException if an error occurred calling the RMI client.
      */
@@ -175,6 +173,7 @@ public interface RMIClientConnection extends Remote {
 
     /**
      * Called at the end of the game to send the final classification to the client.
+     *
      * @param finalScores: an ordered map with players' nicknames and final scores.
      * @throws RemoteException if an error occurred calling the RMI client.
      */

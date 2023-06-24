@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static it.polimi.ingsw.server.model.HouseItem.*;
-import static it.polimi.ingsw.server.model.HouseItem.Plants;
 import static it.polimi.ingsw.server.model.ItemNumber.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 

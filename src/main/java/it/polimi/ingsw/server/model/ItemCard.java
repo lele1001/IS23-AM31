@@ -2,6 +2,9 @@ package it.polimi.ingsw.server.model;
 
 import java.io.Serializable;
 
+/**
+ * Define the representation of the ItemCards and everything you can do with it
+ */
 public class ItemCard implements Serializable {
     private final HouseItem houseItem;
     private final ItemNumber itemNumber;

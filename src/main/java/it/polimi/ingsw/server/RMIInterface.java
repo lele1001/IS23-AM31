@@ -10,10 +10,20 @@ import java.util.ArrayList;
 public class RMIInterface implements RMI {
     private ConnectionControl connectionControl;
 
+    /**
+     * Set up the RMI interface
+     *
+     * @param connectionControl the connection control of the game
+     */
     public RMIInterface(ConnectionControl connectionControl) {
         this.connectionControl = connectionControl;
     }
 
+    /**
+     * Set up the connection control of the game
+     *
+     * @param connectionControl the connection control of the game
+     */
     public void setConnectionControl(ConnectionControl connectionControl) {
         this.connectionControl = connectionControl;
     }
@@ -80,6 +90,12 @@ public class RMIInterface implements RMI {
     public void pong() throws RemoteException {
     }
 
+    /**
+     * Called when the player wants to resume a saved game.
+     *
+     * @param wantToSave: true if he wants to resume a game.
+     * @param gameName:   the name of the game to be resumed.
+     */
     @Override
     public void setSavedGames(boolean wantToSave, String gameName) throws RemoteException {
         connectionControl.setSavedGame(wantToSave, gameName);
