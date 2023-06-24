@@ -8,6 +8,9 @@ import java.util.Collections;
 
 import static it.polimi.ingsw.utils.Utils.DIM_BOARD;
 
+/**
+ * Class that defines all the characteristics and methods of the game model Board
+ */
 public class Board {
 
     ItemCard[][] board = new ItemCard[DIM_BOARD][DIM_BOARD];
@@ -39,6 +42,13 @@ public class Board {
         Collections.shuffle(cardBag);
     }
 
+    /**
+     * Set the board and the card bag from existing ones
+     *
+     * @param board      the board to copy
+     * @param cardBag    the card bag to copy
+     * @param numPlayers the number of players
+     */
     public Board(ItemCard[][] board, ArrayList<ItemCard> cardBag, int numPlayers) {
         this.board = board;
         this.cardBag = cardBag;
@@ -48,6 +58,8 @@ public class Board {
     /**
      * Method that fills the board with Itemcard if there is not in the correspondent Cell
      * If the exception is thrown, the Game controller has to be notified
+     *
+     * @throws EmptyCardBagException if the card bag is empty
      */
     public void fillBoard() throws EmptyCardBagException {
         for (int i = 0; i < DIM_BOARD; i++) {
@@ -75,6 +87,9 @@ public class Board {
     /**
      * Check if there are only isolated cards on the board
      * I cannot have an edge case because edges are always null
+     *
+     * @return true if the refill of the board is done correctly
+     * @throws EmptyCardBagException if the card bag is empty
      */
     public synchronized boolean checkRefill() throws EmptyCardBagException {
         boolean refill = true;
@@ -229,6 +244,7 @@ public class Board {
      * Delete ItemCards in the selected Cells only if all the checks are successful
      *
      * @param position number from which we can extract row and column
+     * @return the ItemCards deleted
      * @throws NoRightItemCardSelection if the selected ItemCards do not pass the check selection
      */
 
@@ -255,18 +271,27 @@ public class Board {
         return toBeReturned;
     }
 
+    /**
+     * Resume the board from the old one when a player disconnects during his turn
+     */
     public synchronized void resumeBoard() {
         for (int i = 0; i < DIM_BOARD; i++) {
             System.arraycopy(oldBoard[i], 0, board[i], 0, DIM_BOARD);
         }
     }
 
+    /**
+     * Backup up the board in the old one
+     */
     public synchronized void backupBoard() {
         for (int i = 0; i < DIM_BOARD; i++) {
             System.arraycopy(board[i], 0, oldBoard[i], 0, DIM_BOARD);
         }
     }
 
+    /**
+     * Create the card bag using defined number of tiles of each type
+     */
     public void createcardBag() {
         for (HouseItem item : HouseItem.values()) {
             for (int i = 0; i < 8; i++) {
@@ -283,6 +308,11 @@ public class Board {
         }
     }
 
+    /**
+     * Return a copy of the board
+     *
+     * @return the board as an array list
+     */
     public synchronized ItemCard[][] getAsArrayList() {
         ItemCard[][] toBeReturned = new ItemCard[DIM_BOARD][DIM_BOARD];
 
@@ -293,6 +323,11 @@ public class Board {
         return toBeReturned;
     }
 
+    /**
+     * Return a copy of the cardBag
+     *
+     * @return the card bag as an Arraylist
+     */
     public ArrayList<ItemCard> getCardBag() {
         return cardBag;
     }
