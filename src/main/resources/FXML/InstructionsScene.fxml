@@ -1,47 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="643.0" prefWidth="510.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
-   <children>
-      <Text layoutX="40.0" layoutY="50.0" strokeType="OUTSIDE" strokeWidth="0.0" text="During your turn, choose 1, 2 or 3 tiles from the board following these rules:" wrappingWidth="333.3367156982422" />
-      <Text layoutX="40.0" layoutY="93.0" strokeType="OUTSIDE" strokeWidth="0.0" text="The tiles you take must be adjacent to each other and form a straight line" wrappingWidth="251.73670959472656" />
-      <Text layoutX="40.0" layoutY="137.0" strokeType="OUTSIDE" strokeWidth="0.0" text="All the tiles tou take must have at least one side free at the beginning of your tourn" wrappingWidth="292.5366897583008" />
-      <Text layoutX="37.0" layoutY="175.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Order the tiles and then place them into a column on the bookshelf to meet the requirements of your personal goal cards and/or the common goal cards. You also score points for connecting item tiles of the same type." wrappingWidth="283.3999443054199" />
-      <Text layoutX="40.0" layoutY="277.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="292.5366897583008" />
-      <Text layoutX="35.0" layoutY="268.0" strokeType="OUTSIDE" strokeWidth="0.0" text="The first player whio fills all the spaces of their bookshelf triggers the end of the game. Everyone else gets ore more turn, then final score are tallied." wrappingWidth="316.5085983276367" />
-      <Text layoutX="40.0" layoutY="355.0" strokeType="OUTSIDE" strokeWidth="0.0" text="The personal goal card grants pointsif you match the highlighted spaceswith the corresponding item tiles." wrappingWidth="316.5085983276367" />
-      <Text layoutX="40.0" layoutY="409.0" strokeType="OUTSIDE" strokeWidth="0.0" text="The common goal cards grant points tothe players who achieve the illustratedpattern. See the last page for a detaileddescriptions of the common goal cards" wrappingWidth="306.13671875" />
-      <Text layoutX="33.0" layoutY="497.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Groups of adjacent item tiles of thesame type on your bookshelf grant points depending on how manytiles are connected (with one sidetouching)" wrappingWidth="306.13671875" />
-      <Text layoutX="40.0" layoutY="568.0" strokeType="OUTSIDE" strokeWidth="0.0" text="The first player who completelyfills their bookshelf scores 1additional point" wrappingWidth="316.5085983276367" />
-      <ImageView fitHeight="118.0" fitWidth="127.0" layoutX="346.0" layoutY="54.0" pickOnBounds="true" preserveRatio="true" />
-      <ImageView fitHeight="48.0" fitWidth="70.0" layoutX="375.0" layoutY="400.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../images/commonGoalCards/3.jpg" />
-         </image>
-      </ImageView>
-      <ImageView fitHeight="91.0" fitWidth="49.0" layoutX="349.0" layoutY="306.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../images/personalGoalCards/Personal_Goals.png" />
-         </image>
-      </ImageView>
-      <ImageView fitHeight="51.0" fitWidth="42.0" layoutX="372.0" layoutY="555.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../images/scoringTokens/endGame.jpg" />
-         </image>
-      </ImageView>
-      <ImageView fitHeight="136.0" fitWidth="127.0" layoutX="358.0" layoutY="71.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../../../../../../Downloads/boardExample.png" />
-         </image>
-      </ImageView>
-      <ImageView fitHeight="48.0" fitWidth="99.0" layoutX="372.0" layoutY="488.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../../../../../../Downloads/pointsExample.png" />
-         </image>
-      </ImageView>
-   </children>
+<AnchorPane id="instructionsPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="640.0" prefWidth="640.0" stylesheets="@../CSS/dialogPages.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+    <Label layoutX="40.0" layoutY="137.0" />
+    <Label layoutX="40.0" layoutY="250.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="45.0" prefWidth="560.0" text="You can earn points by achieving your Pesonal Goal, a Common Goal, by connecting item tiles of the same type, or by completing the bookshelf before the other players." textAlignment="JUSTIFY" wrapText="true" />
+    <Label layoutX="40.0" layoutY="200.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="45.0" prefWidth="560.0" text="The first player who fills all the spaces of their bookshelf triggers the end of the game: everybody else gets ore more turn, then final score are tallied." textAlignment="JUSTIFY" wrapText="true" />
+    <Label layoutX="40.0" layoutY="336.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="45.0" prefWidth="480.0" text="The Personal Goal card grants points if you match the highlighted spaces with the corresponding item tiles." textAlignment="JUSTIFY" wrapText="true" />
+    <Label layoutX="40.0" layoutY="425.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="65.0" prefWidth="460.0" text="The Common Goal cards grant points to the players who achieve the illustrated pattern. See the last page for the detailed description of each Common Goal card." textAlignment="JUSTIFY" wrapText="true" />
+    <Label layoutX="40.0" layoutY="505.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="65.0" prefWidth="460.0" text="Groups of adjacent item tiles of thesame type on your bookshelf grant points depending on how manytiles are connected (with one sidetouching)" textAlignment="JUSTIFY" wrapText="true" />
+    <Label layoutX="40.0" layoutY="595.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="20.0" prefWidth="500.0" text="The first player who fills its bookshelf scores 1 additional point" />
+    <ImageView fitWidth="100.0" layoutX="500.0" layoutY="425.0" pickOnBounds="true" preserveRatio="true">
+        <Image url="@../images/commonGoalCards/3.jpg" />
+    </ImageView>
+    <ImageView fitWidth="70.0" layoutX="530.0" layoutY="305.0" pickOnBounds="true" preserveRatio="true">
+        <Image url="@../images/personalGoalCards/Personal_Goals.png" />
+    </ImageView>
+    <ImageView fitWidth="50.0" layoutX="550.0" layoutY="580.0" pickOnBounds="true" preserveRatio="true">
+        <Image url="@../images/scoringTokens/endGame.jpg" />
+    </ImageView>
+    <ImageView fitWidth="150.0" layoutX="450.0" layoutY="35.0" pickOnBounds="true" preserveRatio="true">
+        <Image url="@../images/instructions/boardExample.png" />
+    </ImageView>
+    <ImageView fitHeight="65.0" fitWidth="100.0" layoutX="500.0" layoutY="505.0" pickOnBounds="true">
+        <Image url="@../images/instructions/pointsExample.png" />
+    </ImageView>
+    <Label layoutX="40.0" layoutY="35.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="45.0" prefWidth="400.0" text="Choose 1, 2 or 3 tiles from the board that, at the beginning of your turn:" textAlignment="JUSTIFY" wrapText="true" />
+    <Label layoutX="40.0" layoutY="80.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="20.0" prefWidth="400.0" text="- must be adjacent to each other and must form a straight line" wrapText="true" />
+    <Label layoutX="40.0" layoutY="105.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="20.0" prefWidth="400.0" text="- must have at least one free side" wrapText="true" />
+   <Label layoutX="40.0" layoutY="145.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="45.0" prefWidth="400.0" text="Then order the chosen tiles and place them into a column of your bookshelf" textAlignment="JUSTIFY" wrapText="true" />
 </AnchorPane>
