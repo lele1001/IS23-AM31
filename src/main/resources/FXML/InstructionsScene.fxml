@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="643.0" prefWidth="489.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Text layoutX="40.0" layoutY="50.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Al tuo turno, puoi prenere 1, 2 o 3 tessere Oggetto dalla plancia Soggiorno, seguendo queste regole:" wrappingWidth="333.3367156982422" />
+      <Text layoutX="40.0" layoutY="93.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Le tessere che prendi dovranno essere adiacenti l'una all'altra e formare una linea retta." wrappingWidth="251.73670959472656" />
+      <Text layoutX="40.0" layoutY="154.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Tutte le tessere selezionate devono avere almeno un lato libero." wrappingWidth="292.5366897583008" />
+      <Text layoutX="40.0" layoutY="198.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Le tessere selezionate verranno prima ordinate e successivamente inserite nella colonna scelta della Libreria. Non verranno inserite le tessere se non è presente abbastanza spazio. " wrappingWidth="283.3999443054199" />
+      <Text layoutX="40.0" layoutY="277.0" strokeType="OUTSIDE" strokeWidth="0.0" text="SCOPO DEL GIOCO" wrappingWidth="292.5366897583008" />
+      <Text layoutX="40.0" layoutY="294.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Inserendo le tessere Oggetto nella Libreria si guadagnano punti. Il gioco termina quando un giocatore riempie completamente la propria Liberria; il giocatore con più punti alla fine della partità sarò il vincitore. Ci sono quattro modi per guadagnare punti:" wrappingWidth="316.5085983276367" />
+      <Text layoutX="40.0" layoutY="385.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Carta Obiettivo Personale: fornisce punti se il giocatore rimepie gli spazi indicati con le tessere Oggetto corrispondenti." wrappingWidth="316.5085983276367" />
+      <Text layoutX="40.0" layoutY="447.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Carta Obiettivo Comune: forniscono punti ai giocatori che realizzano lo schema illustrato." wrappingWidth="306.13671875" />
+      <Text layoutX="33.0" layoutY="497.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Tessere Oggetto adiacenti: forniscono punti a seconda di quante tessere sono collegate (hanno, cioè, un lato che si tocca).)" wrappingWidth="306.13671875" />
+      <Text layoutX="40.0" layoutY="568.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Innesco della fine della partita: il primo giocatore che rimepie completamente la propria Libreria guadagna 1 punto aggiuntivo." wrappingWidth="316.5085983276367" />
+      <ImageView fitHeight="118.0" fitWidth="127.0" layoutX="346.0" layoutY="54.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fitHeight="48.0" fitWidth="70.0" layoutX="362.0" layoutY="434.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/commonGoalCards/3.jpg" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="91.0" fitWidth="49.0" layoutX="372.0" layoutY="348.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/personalGoalCards/Personal_Goals.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="51.0" fitWidth="42.0" layoutX="352.0" layoutY="555.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/scoringTokens/endGame.jpg" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="136.0" fitWidth="127.0" layoutX="338.0" layoutY="77.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../../../../Downloads/boardExample.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="48.0" fitWidth="99.0" layoutX="353.0" layoutY="493.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../../../../Downloads/pointsExample.png" />
+         </image>
+      </ImageView>
+   </children>
+</AnchorPane>
