@@ -7,6 +7,7 @@ import it.polimi.ingsw.server.model.ItemCard;
 import it.polimi.ingsw.server.model.Position;
 import it.polimi.ingsw.utils.Utils;
 import javafx.fxml.FXML;
+import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
@@ -36,7 +37,8 @@ public class TakeCardsScene extends GUIScene {
     Button selectTiles, undoSelection, sendMessage, exitButton;
     @FXML
     TextArea chatHistory;
-    private ClientController clientController;
+    @FXML
+    Button helpButton;
     private ArrayList<Integer> selectedTiles;
     private InputController inputController;
 
@@ -47,7 +49,7 @@ public class TakeCardsScene extends GUIScene {
      */
     @Override
     public void initialize(ClientController clientController) {
-        this.clientController = clientController;
+        super.initialize(clientController);
         inputController = new InputController(clientController);
         yourPoints.setText("You have 0 points");
         errorArea.setVisible(false);
@@ -66,6 +68,7 @@ public class TakeCardsScene extends GUIScene {
         undoSelection.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> revert());
         sendMessage.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> sendChat(inputController, clientController, destinationMenu, writtenMessage));
         exitButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> closeGame(clientController));
+        helpButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> help());
     }
 
     public void setWinnerPointImage() {
@@ -115,6 +118,7 @@ public class TakeCardsScene extends GUIScene {
                     tileImage.setPreserveRatio(true);
                     tileImage.setFitHeight(50);
                     tileImage.setFitWidth(50);
+                    tileImage.setOnMouseMoved(mouseEvent -> tileImage.setCursor(Cursor.HAND));
 
                     boardPane.add(tileImage, j, i);
                 }
@@ -172,11 +176,7 @@ public class TakeCardsScene extends GUIScene {
     public void changeBookshelf(Map<Integer, ItemCard> tilesToAdd, String player) {
         if (clientController.getMyNickname().equals(player)) {
             for (Integer i : tilesToAdd.keySet()) {
-                String itemName = tilesToAdd.get(i).getMyItem().toString().toLowerCase();
-                String itemNumber = tilesToAdd.get(i).getMyNum().toString();
-                String myItem = itemName + itemNumber;
-
-                ImageView tileImage = new ImageView(GUIResources.getItem(myItem));
+                ImageView tileImage = new ImageView(GUIResources.getItem(tilesToAdd.get(i).getMyItem().toString().toLowerCase() + tilesToAdd.get(i).getMyNum().toString()));
                 tileImage.setPreserveRatio(true);
                 tileImage.setFitHeight(28);
                 tileImage.setFitWidth(28);
@@ -204,7 +204,7 @@ public class TakeCardsScene extends GUIScene {
      */
     @Override
     public void updateCommonGoal(int comGoalDoneID, int newValue) {
-        comGoalDone(comGoalDoneID, newValue, score_0, score_1, clientController, 60);
+        comGoalDone(comGoalDoneID, newValue, score_0, score_1, 60);
     }
 
     /**
@@ -317,14 +317,11 @@ public class TakeCardsScene extends GUIScene {
         youSelectedThis.getChildren().clear();
         ItemCard[][] board = clientController.getBoard();
         for (Integer i : selectedTiles) {
-            String itemName = board[Position.getRow(i)][Position.getColumn(i)].getMyItem().toString().toLowerCase();
-            String itemNumber = board[Position.getRow(i)][Position.getColumn(i)].getMyNum().toString();
-            String myItem = itemName + itemNumber;
-
-            ImageView tileImage = new ImageView(GUIResources.getItem(myItem));
+            ImageView tileImage = new ImageView(GUIResources.getItem(board[Position.getRow(i)][Position.getColumn(i)].getMyItem().toString().toLowerCase() + board[Position.getRow(i)][Position.getColumn(i)].getMyNum().toString()));
             tileImage.setPreserveRatio(true);
             tileImage.setFitHeight(50);
             tileImage.setFitWidth(50);
+            tileImage.setOnMouseMoved(mouseEvent -> tileImage.setCursor(Cursor.HAND));
             boardPane.add(tileImage, Position.getColumn(i), Position.getRow(i));
         }
         selectedTiles.clear();

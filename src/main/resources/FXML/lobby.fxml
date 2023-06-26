@@ -23,6 +23,4 @@
             <Font name="Bauhaus 93" size="24.0"/>
         </font>
     </Label>
-    <Button fx:id="exitButton" layoutX="416.0" layoutY="253.0" mnemonicParsing="false" prefHeight="20.0"
-            prefWidth="60.0" text="Exit"/>
 </AnchorPane>

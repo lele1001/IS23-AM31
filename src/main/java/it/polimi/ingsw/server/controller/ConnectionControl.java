@@ -3,6 +3,7 @@ package it.polimi.ingsw.server.controller;
 import it.polimi.ingsw.server.ClientHandler;
 import it.polimi.ingsw.server.Server;
 import it.polimi.ingsw.server.model.ItemCard;
+import it.polimi.ingsw.utils.Utils;
 
 import java.util.*;
 
@@ -43,6 +44,15 @@ public class ConnectionControl {
     public void askPlayerNumber(String nickname, List<String> notAvailableNames) {
         System.out.println("Asking players number to " + nickname);
         this.getClientHandlerMap().get(nickname).askPlayerNumber(notAvailableNames);
+        new Timer().schedule(new TimerTask() {
+            @Override
+            public void run() {
+                if(!gameConfigured) {
+                    getClientHandlerMap().get(nickname).sendError("Took too long to set... Please, try again.");
+                    changePlayerStatus(nickname, false);
+                }
+            }
+        }, Utils.timeOfReturning);
     }
 
     /**
@@ -98,6 +108,15 @@ public class ConnectionControl {
      */
     public void askSavedGame(String nickname, List<String> savedGames) {
         this.getClientHandlerMap().get(nickname).askSavedGame(savedGames);
+        new Timer().schedule(new TimerTask() {
+            @Override
+            public void run() {
+                if(!gameConfigured) {
+                    getClientHandlerMap().get(nickname).sendError("Took too long to set... Please, try again.");
+                    changePlayerStatus(nickname, false);
+                }
+            }
+        }, Utils.timeOfReturning);
     }
 
     /**

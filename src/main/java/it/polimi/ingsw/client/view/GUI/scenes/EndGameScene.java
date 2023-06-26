@@ -14,7 +14,6 @@ import javafx.scene.layout.RowConstraints;
 import java.util.LinkedHashMap;
 
 public class EndGameScene extends GUIScene {
-    private ClientController clientController;
     @FXML
     ImageView winnerToken;
     @FXML
@@ -31,7 +30,7 @@ public class EndGameScene extends GUIScene {
      */
     @Override
     public void initialize(ClientController clientController) {
-        this.clientController = clientController;
+        super.initialize(clientController);
         bindEvents();
     }
 

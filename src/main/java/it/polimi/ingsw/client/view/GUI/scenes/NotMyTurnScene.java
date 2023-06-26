@@ -37,7 +37,8 @@ public class NotMyTurnScene extends GUIScene {
     Button sendMessage, exitButton;
     @FXML
     MenuButton destinationMenu;
-    private ClientController clientController;
+    @FXML
+    Button helpButton;
     private InputController inputController;
     private ArrayList<String> players;
 
@@ -48,7 +49,7 @@ public class NotMyTurnScene extends GUIScene {
      */
     @Override
     public void initialize(ClientController clientController) {
-        this.clientController = clientController;
+        super.initialize(clientController);
         this.inputController = new InputController(clientController);
         setWinnerPointImage();
         yourPoints.setText("You have 0 points");
@@ -62,6 +63,7 @@ public class NotMyTurnScene extends GUIScene {
     public void bindEvents() {
         sendMessage.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> sendChat(inputController, clientController, destinationMenu, writtenMessage));
         exitButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> closeGame(clientController));
+        helpButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> help());
     }
 
     public void setWinnerPointImage() {
@@ -156,11 +158,7 @@ public class NotMyTurnScene extends GUIScene {
             for (int i = 0; i < Utils.BOOKSHELF_HEIGHT; i++) {
                 for (int j = 0; j < Utils.BOOKSHELF_LENGTH; j++) {
                     if (bookshelf[i][j] != null) {
-                        String itemName = bookshelf[i][j].getMyItem().toString().toLowerCase();
-                        String itemNumber = bookshelf[i][j].getMyNum().toString();
-                        String myItem = itemName + itemNumber;
-
-                        ImageView tileImage = new ImageView(GUIResources.getItem(myItem));
+                        ImageView tileImage = new ImageView(GUIResources.getItem(bookshelf[i][j].getMyItem().toString().toLowerCase() + bookshelf[i][j].getMyNum().toString()));
                         tileImage.setPreserveRatio(true);
                         tileImage.setFitHeight(28);
                         tileImage.setFitWidth(28);
@@ -188,11 +186,7 @@ public class NotMyTurnScene extends GUIScene {
             GridPane bookshelfToModify = (GridPane) myAnchor.getChildren().get(0);
 
             for (Integer i : tilesToAdd.keySet()) {
-                String itemName = tilesToAdd.get(i).getMyItem().toString().toLowerCase();
-                String itemNumber = tilesToAdd.get(i).getMyNum().toString();
-                String myItem = itemName + itemNumber;
-
-                ImageView tileImage = new ImageView(GUIResources.getItem(myItem));
+                ImageView tileImage = new ImageView(GUIResources.getItem(tilesToAdd.get(i).getMyItem().toString().toLowerCase() + tilesToAdd.get(i).getMyNum().toString()));
                 tileImage.setPreserveRatio(true);
                 tileImage.setFitHeight(28);
                 tileImage.setFitWidth(28);
@@ -219,7 +213,7 @@ public class NotMyTurnScene extends GUIScene {
      */
     @Override
     public void updateCommonGoal(int comGoalDoneID, int newValue) {
-        comGoalDone(comGoalDoneID, newValue, score_0, score_1, clientController, 45);
+        comGoalDone(comGoalDoneID, newValue, score_0, score_1, 45);
     }
 
     /**

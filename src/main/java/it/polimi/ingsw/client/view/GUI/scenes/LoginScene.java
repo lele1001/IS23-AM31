@@ -21,15 +21,13 @@ public class LoginScene extends GUIScene {
     TextField username, ipPort, ipAddress;
     @FXML
     RadioButton connectionRMI, connectionSocket;
-    private ClientController clientController;
-
     InputController inputController;
 
     /**
      * Initializes the login page showing the connection setup page
      */
     public void initialize(ClientController clientController) {
-        this.clientController = clientController;
+        super.initialize(clientController);
         inputController = new InputController(clientController);
         errorArea.setVisible(false);
         ipPort.setText("1501");

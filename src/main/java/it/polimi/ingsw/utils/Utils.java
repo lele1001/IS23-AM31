@@ -18,7 +18,7 @@ public abstract class Utils {
     public static final int timeOfSleep = 500;
     public static final String endForTimeFinished = "Took too long for returning... game is ending.";
     public static final String oneWinnerEndPhrase = "The winner of the game is ";
-    public static final String moreWinnerEndPhrase = "Parity: winners are ";
+    //public static final String moreWinnerEndPhrase = "Parity: winners are ";
     public static final String notYourTurnResponse = "NOT YOUR TURN";
     public static final String notValidNumberResponse = "NUMBER NOT VALID";
     public static final String noBookshelfSpaceResponse = "NO BOOKSHELF SPACE";
@@ -26,4 +26,45 @@ public abstract class Utils {
     public static final String notSameCardsResponse = "CARDS YOU WANT TO INSERT ARE NOT THE SAME YOU SELECTED";
     public static final int maxNumberOfSelectedCards = 3;
     public static final int pingTimer = 3000;
+
+    public enum comGoalDescription {
+        comGoal1("Two separate groups each containing four tiles of the same type in a 2x2 square.\n" + "The tiles of one square can be different from those of the other square."),
+        comGoal2("Two columns each formed by 6 different types of tiles.\n" + "One column can show the same or a different combination of the other column."),
+        comGoal3(
+                "Four groups each containing at least 4 tiles of the same type.\n" + "The tiles of one group can be different from those of another group."),
+        comGoal4(
+                "Six groups each containing at least 2 tiles of the same type.\n" + "The tiles of one group can be different from those of another group."),
+        comGoal5(
+                "Three columns each formed by 6 tiles of maximum three different types.\n" + "One column can show the same or a different combination of another column."),
+        comGoal6(
+                "Two lines each formed by 5 different types of tiles.\n" + "One line can show the same or a different combination of the other line."),
+        comGoal7(
+                "Four lines each formed by 5 tiles of maximum three different types.\n" + "One line can show the same or a different combination of another line."),
+        comGoal8(
+                "Four tiles of the same type in the four corners of the bookshelf."),
+        comGoal9(
+                "Eight tiles of the same type.\n" + "There is no restriction about the position of these tiles."),
+        comGoal10(
+                "Five tiles of the same type forming an X."),
+        comGoal11(
+                "Five tiles of the same item forming a diagonal."),
+        comGoal12(
+                """
+                        Five columns of increasing or decreasing height.\s
+                        Starting from the first column on the left or on the right, each next column must be made of exactly one more tile.\s
+                        Tiles can be of any type.""");
+
+        private final String description;
+
+        comGoalDescription(String description) {
+            this.description = description;
+        }
+
+        public String getDescription() {
+            return description;
+        }
+
+    }
+
+
 }

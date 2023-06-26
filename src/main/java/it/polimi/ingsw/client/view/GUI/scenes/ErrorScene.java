@@ -8,7 +8,6 @@ import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 
 public class ErrorScene extends GUIScene {
-    private ClientController clientController;
     @FXML
     Label errorDescription, errorArea;
     @FXML
@@ -21,7 +20,7 @@ public class ErrorScene extends GUIScene {
      */
     @Override
     public void initialize(ClientController clientController) {
-        this.clientController = clientController;
+        super.initialize(clientController);
         bindEvents();
     }
 

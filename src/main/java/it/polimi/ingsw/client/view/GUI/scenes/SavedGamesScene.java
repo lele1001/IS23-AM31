@@ -23,7 +23,6 @@ public class SavedGamesScene extends GUIScene {
     Label errorLabel;
     @FXML
     AnchorPane savedGamesPane;
-    ClientController clientController;
 
     /**
      * Initialize the savedGamesScene
@@ -32,7 +31,7 @@ public class SavedGamesScene extends GUIScene {
      */
     @Override
     public void initialize(ClientController clientController) {
-        this.clientController = clientController;
+        super.initialize(clientController);
         bindEvents();
     }
 

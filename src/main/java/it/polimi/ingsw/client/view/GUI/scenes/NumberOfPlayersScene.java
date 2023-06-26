@@ -23,7 +23,6 @@ public class NumberOfPlayersScene extends GUIScene {
     AnchorPane playersScenePane;
     @FXML
     TextArea errorArea;
-    private ClientController clientController;
 
     /**
      * Initialize the numberOfPlayerScene
@@ -32,7 +31,7 @@ public class NumberOfPlayersScene extends GUIScene {
      */
     @Override
     public void initialize(ClientController clientController) {
-        this.clientController = clientController;
+        super.initialize(clientController);
         bindEvents();
     }
 

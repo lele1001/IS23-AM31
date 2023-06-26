@@ -4,12 +4,17 @@ import it.polimi.ingsw.client.ClientController;
 import it.polimi.ingsw.client.InputController;
 import it.polimi.ingsw.client.view.GUI.GUIResources;
 import it.polimi.ingsw.server.model.ItemCard;
+import it.polimi.ingsw.utils.Utils;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Cursor;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -18,13 +23,17 @@ import java.util.Map;
 public abstract class GUIScene {
     private Scene myScene;
     private Alert alert;
+    private boolean helpSceneOn = false;
+    protected ClientController clientController;
 
     /**
      * Initialize the scene
      *
      * @param clientController created for the GUI app
      */
-    public abstract void initialize(ClientController clientController);
+    public void initialize(ClientController clientController) {
+        this.clientController = clientController;
+    }
 
     /**
      * @return the scene called
@@ -179,14 +188,13 @@ public abstract class GUIScene {
     /**
      * A protected method shared by different scenes to update common goals' scores.
      *
-     * @param comGoalDoneID:    the id ot the common goal to be update.
+     * @param comGoalDoneID:    the id ot the common goal to be updated.
      * @param newValue:         the remained score.
      * @param score_0:          the grid pane with the first common goal's score.
      * @param score_1:          the grid pane with the second common goal's score.
-     * @param clientController: a reference to the client controller.
      * @param height:           the height of the score image.
      */
-    protected void comGoalDone(int comGoalDoneID, int newValue, GridPane score_0, GridPane score_1, ClientController clientController, int height) {
+    protected void comGoalDone(int comGoalDoneID, int newValue, GridPane score_0, GridPane score_1, int height) {
         int n = 0;
         for (Integer cgNum : clientController.getPlayerComGoal().keySet()) {
             if (cgNum == comGoalDoneID) {
@@ -195,8 +203,10 @@ public abstract class GUIScene {
                 scoreImage.setFitWidth(height);
 
                 if (n == 0) {
+                    score_0.getChildren().remove(0);
                     score_0.add(scoreImage, 0, 0);
                 } else {
+                    score_1.getChildren().remove(0);
                     score_1.add(scoreImage, 0, 0);
                 }
             }
@@ -226,8 +236,12 @@ public abstract class GUIScene {
 
             if (n == 0) {
                 score_0.add(scoreImage, 0, 0);
+                score_0.setOnMouseClicked(mouseEvent -> comGoalInfo(i));
+                score_0.setOnMouseMoved(mouseEvent -> score_0.setCursor(Cursor.HAND));
             } else {
                 score_1.add(scoreImage, 0, 0);
+                score_1.setOnMouseClicked(mouseEvent -> comGoalInfo(i));
+                score_1.setOnMouseMoved(mouseEvent -> score_1.setCursor(Cursor.HAND));
             }
 
             String cgNum = i.toString();
@@ -238,6 +252,9 @@ public abstract class GUIScene {
             ImageView comGoalImage = new ImageView(GUIResources.getComGoal("cg" + cgNum));
             comGoalImage.setFitHeight(height);
             comGoalImage.setFitWidth(width);
+            comGoalImage.setPickOnBounds(true);
+            comGoalImage.setOnMouseClicked(mouseEvent -> comGoalInfo(i));
+            comGoalImage.setOnMouseMoved(mouseEvent -> comGoalImage.setCursor(Cursor.HAND));
 
             if (horizontal)
                 comGoals.add(comGoalImage, n, 0);
@@ -361,5 +378,48 @@ public abstract class GUIScene {
             System.out.println("exit");
             System.exit(1);
         }
+    }
+
+    /**
+     * Called when the user clicks on "help" button in TakeCardsScene and NotMyTurnScene, to show a new window with game's instructions.
+     */
+    protected void help() {
+        if (!helpSceneOn) {
+            helpSceneOn = true;
+            Stage stage = new Stage();
+            stage.getIcons().add(GUIResources.icon);
+            stage.setTitle("My Shelfie");
+            stage.setResizable(false);
+            try {
+                FXMLLoader loader = new FXMLLoader();
+                loader.setLocation(TakeCardsScene.class.getClassLoader().getResource(GUIResources.helpFXML));
+
+                if (loader.getLocation() == null) {
+                    System.out.println("Not possible to set " + GUIResources.helpFXML + " scene.");
+                }
+
+                Parent root = loader.load();
+                Scene scene = new Scene(root);
+                stage.setScene(scene);
+                stage.show();
+                stage.setOnCloseRequest(windowEvent -> helpSceneOn = false);
+            } catch (IOException e) {
+                printError("Unable to load help scene.");
+            }
+        }
+    }
+
+    /**
+     * Called on mouse clicked on a common goal to show its details.
+     * @param comGoalID: the id of the common goal to be explained.
+     */
+    protected void comGoalInfo(int comGoalID) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+        stage.getIcons().add(GUIResources.icon);
+        alert.setTitle("MyShelfie");
+        alert.setHeaderText("Common Goal n. " + comGoalID);
+        alert.setContentText(Utils.comGoalDescription.valueOf("comGoal" + comGoalID).getDescription());
+        alert.showAndWait();
     }
 }

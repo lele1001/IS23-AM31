@@ -7,6 +7,7 @@ import it.polimi.ingsw.server.model.ItemCard;
 import it.polimi.ingsw.server.model.Position;
 import it.polimi.ingsw.utils.Utils;
 import javafx.fxml.FXML;
+import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
@@ -36,7 +37,6 @@ public class PutCardsScene extends GUIScene {
     RadioButton col0, col1, col2, col3, col4;
     @FXML
     ToggleGroup columns;
-    private ClientController clientController;
     private InputController inputController;
     private ArrayList<Integer> selectedTiles;
 
@@ -47,7 +47,7 @@ public class PutCardsScene extends GUIScene {
      */
     @Override
     public void initialize(ClientController clientController) {
-        this.clientController = clientController;
+        super.initialize(clientController);
         this.inputController = new InputController(clientController);
         yourPoints.setText("You have 0 points");
 
@@ -99,6 +99,7 @@ public class PutCardsScene extends GUIScene {
             tileImage.setPreserveRatio(true);
             tileImage.setFitWidth(50);
             tileImage.setFitHeight(50);
+            tileImage.setOnMouseMoved(mouseEvent -> tileImage.setCursor(Cursor.HAND));
 
             youSelectedThis.add(tileImage, i, 0);
             i++;
@@ -178,7 +179,7 @@ public class PutCardsScene extends GUIScene {
      */
     @Override
     public void updateCommonGoal(int comGoalDoneID, int newValue) {
-        comGoalDone(comGoalDoneID, newValue, score_0, score_1, clientController, 60);
+        comGoalDone(comGoalDoneID, newValue, score_0, score_1, 60);
     }
 
     /**

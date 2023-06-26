@@ -8,6 +8,7 @@ import it.polimi.ingsw.client.InputController;
 import it.polimi.ingsw.server.controller.TurnPhase;
 import it.polimi.ingsw.server.model.HouseItem;
 import it.polimi.ingsw.server.model.ItemCard;
+import it.polimi.ingsw.utils.Utils;
 
 import java.util.*;
 
@@ -547,7 +548,8 @@ public class CLI implements View {
         if (!playerComGoal.isEmpty()) {
             for (Integer i : playerComGoal.keySet()) {
                 System.out.println((char) 27 + "[0;39m" + "Common Goal number " + i + ": ");
-                if (i == 1) {
+                System.out.println(Utils.comGoalDescription.valueOf("comGoal" + i).getDescription());
+/*                if (i == 1) {
                     System.out.println("Two separate groups each containing four tiles of the same type in a 2x2 square.\n" + "The tiles of one square can be different from those of the other square.");
                 } else if (i == 2) {
                     System.out.println("Two columns each formed by 6 different types of tiles.\n" + "One column can show the same or a different combination of the other column.");
@@ -574,7 +576,7 @@ public class CLI implements View {
                             Five columns of increasing or decreasing height.\s
                             Starting from the first column on the left or on the right, each next column must be made of exactly one more tile.\s
                             Tiles can be of any type.""");
-                }
+                }*/
 
                 System.out.println("The maximum available score for this card is " + playerComGoal.get(i) + ".\n");
             }
