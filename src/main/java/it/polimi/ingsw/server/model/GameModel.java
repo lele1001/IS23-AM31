@@ -336,8 +336,8 @@ public class GameModel implements ModelInterface {
         gameJson.addProperty("cardBag", gson.toJson(board.getCardBag().toArray()));
 
         if (comGoalDone) {
-            gameJson.addProperty("firstComGoal", gson.toJson(comGoals.get(0), ComGoal.class));
-            gameJson.addProperty("secondComGoal", gson.toJson(comGoals.get(1), ComGoal.class));
+            gameJson.addProperty("firstComGoal", gson.toJson(comGoals.get(0), selectComGoal(comGoals.get(0).getCGID(), 3).getClass()));
+            gameJson.addProperty("secondComGoal", gson.toJson(comGoals.get(1), selectComGoal(comGoals.get(1).getCGID(), 3).getClass()));
         }
 
         for (String s : playerMap.keySet()) {
