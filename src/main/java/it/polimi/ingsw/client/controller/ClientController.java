@@ -2,12 +2,12 @@ package it.polimi.ingsw.client.controller;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import it.polimi.ingsw.client.Exceptions.NotAskedException;
-import it.polimi.ingsw.client.Exceptions.NotAvailableNameException;
-import it.polimi.ingsw.client.Exceptions.NotExistingGameException;
 import it.polimi.ingsw.client.connection.ConnectionClient;
 import it.polimi.ingsw.client.connection.ConnectionRMI;
 import it.polimi.ingsw.client.connection.ConnectionSocket;
+import it.polimi.ingsw.client.exceptions.NotAskedException;
+import it.polimi.ingsw.client.exceptions.NotAvailableNameException;
+import it.polimi.ingsw.client.exceptions.NotExistingGameException;
 import it.polimi.ingsw.client.view.CLI;
 import it.polimi.ingsw.client.view.GUI.GUI;
 import it.polimi.ingsw.client.view.View;
@@ -192,7 +192,7 @@ public class ClientController {
     }
 
     /**
-     * Just notifies the client that someone has completed his bookshelf.
+     * Just notifies the client that someone has completed their bookshelf.
      *
      * @param nickname of the player that has just completed his bookshelf.
      */
@@ -380,7 +380,7 @@ public class ClientController {
     }
 
     /**
-     * Getter method to see if it's the players turn
+     * Getter method to see if it is the players turn
      *
      * @return if it is my turn
      */
@@ -406,7 +406,8 @@ public class ClientController {
     }
 
     /**
-     * Prints on the view that the number of player to start the game is insufficient, so it's waiting for enough people to start
+     * Prints on the view that the number of players to start the game is insufficient,
+     * so it is waiting for enough people to start
      */
     public void printWaitingForGame() {
 
@@ -417,8 +418,8 @@ public class ClientController {
     /**
      * Called after client's decision about saved games.
      *
-     * @param wantToSave: true if he wants to re-start from a saved game.
-     * @param gameName:   the name of the game he wants to resume.
+     * @param wantToSave true if he wants to re-start from a saved game.
+     * @param gameName   the name of the game he wants to resume.
      * @throws Exception if an error occurred calling the server
      */
     public void setSavedGame(boolean wantToSave, String gameName) throws Exception {
@@ -454,7 +455,7 @@ public class ClientController {
     }
 
     /**
-     * Getter method for the clients personal goal
+     * Getter method for the client's personal goal
      *
      * @return the client's personal goal
      */
@@ -539,9 +540,9 @@ public class ClientController {
     /**
      * Called when there's a bookshelf's update.
      *
-     * @param tilesToAdd: the tiles to be added in the bookshelf.
-     * @param column:     the column of the bookshelf to put tiles into.
-     * @param player:     the owner of the just updated bookshelf.
+     * @param tilesToAdd the tiles to be added in the bookshelf.
+     * @param column     the column of the bookshelf to put tiles into.
+     * @param player     the owner of the just updated bookshelf.
      */
     public void onBookshelfRenewed(ItemCard[] tilesToAdd, int column, String player) {
         int i;
@@ -561,7 +562,7 @@ public class ClientController {
     /**
      * Called when there's a board's update.
      *
-     * @param tilesToRemove: the positions of the tiles to be removed from the board.
+     * @param tilesToRemove the positions of the tiles to be removed from the board.
      */
     public void onBoardRenewed(Integer[] tilesToRemove) {
         for (Integer position : tilesToRemove) {
@@ -575,7 +576,7 @@ public class ClientController {
     /**
      * Called at the end of the game to send the final classification to the client.
      *
-     * @param finalScores: an ordered map with players' nicknames and final scores.
+     * @param finalScores an ordered map with players' nicknames and final scores.
      */
     public void onFinalScores(LinkedHashMap<String, Integer> finalScores) {
         view.finalScores(finalScores);

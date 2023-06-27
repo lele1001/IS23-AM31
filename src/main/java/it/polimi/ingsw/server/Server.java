@@ -237,7 +237,7 @@ public class Server {
     }
 
     /**
-     * Find if there are game files , if not it creates the directory
+     * Find if there are game files, if not it creates the directory
      */
     public void findSavedGames() {
         File directory;
@@ -264,8 +264,8 @@ public class Server {
      * Notifies setGame() method that was waiting for the first.
      *
      * @param availablePlayers to set.
-     * @param gameName:        the name to be set for this game.
-     * @param nickname:        the nickname of the client that wants to set players.
+     * @param gameName         the name to be set for this game.
+     * @param nickname         the nickname of the client that wants to set players.
      */
     public synchronized void setAvailablePlayers(String nickname, int availablePlayers, String gameName) {
         if (availablePlayers < 2 || availablePlayers > 4) {
@@ -285,8 +285,8 @@ public class Server {
     /**
      * Called when the player wants to resume a saved game.
      *
-     * @param wantToSave: true if he wants to resume a game.
-     * @param gameName:   the name of the game to be resumed.
+     * @param wantToSave true if he wants to resume a game.
+     * @param gameName   the name of the game to be resumed.
      */
     public synchronized void setSavedGame(boolean wantToSave, String gameName) {
         this.wantToSave = wantToSave;
@@ -331,7 +331,7 @@ public class Server {
 
     /**
      * A loop used at the beginning of the game with the aim of waiting for the first (to ask him players' number or saved games) and for the other clients.
-     * When the game is complete (and, if it's a new game, all the clients are online), it starts the game, calling methods on GameController.
+     * When the game is complete (and, if it is a new game, all the clients are online), it starts the game, calling methods on GameController.
      */
     public synchronized void setGame() {
         Gson gson = new Gson();

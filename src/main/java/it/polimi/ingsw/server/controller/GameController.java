@@ -43,8 +43,8 @@ public class GameController implements PropertyChangeListener {
     /**
      * Creates the game with all the necessary (board, bookshelves, ...) and starts it
      *
-     * @param gameFilePath: the file's path to save game into.
-     * @param playersList   the list of this game's players.
+     * @param gameFilePath the file's path to save game into.
+     * @param playersList  the list of this game's players.
      */
     public void createGame(ArrayList<String> playersList, String gameFilePath) {
         this.gameFilePath = gameFilePath;
@@ -69,12 +69,12 @@ public class GameController implements PropertyChangeListener {
     }
 
     /**
-     * Called to resume game from file.
+     * Called to resume game from a file.
      *
-     * @param onlinePlayers: players already online to play their game.
-     * @param playersList:   all the players of the game.
-     * @param json:          the jsonObject with game's details.
-     * @param gameFilePath:  the path of the file with game's details.
+     * @param onlinePlayers players already online to play their game.
+     * @param playersList   all the players of the game.
+     * @param json          the jsonObject with game's details.
+     * @param gameFilePath  the path of the file with game's details.
      */
     public void resumeGame(ArrayList<String> onlinePlayers, List<String> playersList, JsonObject json, String gameFilePath) {
         this.gameFilePath = gameFilePath;
@@ -98,7 +98,7 @@ public class GameController implements PropertyChangeListener {
      * Calls each player's turn until somebody completes his/her Bookshelf.
      * If available players are less than two, stops the game and waits for their coming back for 60 seconds: if the timeout exceeds, ends the game.
      *
-     * @param startFrom: the position, in playersList array list, that indicates the first player that has to play.
+     * @param startFrom the position, in playersList array list, that indicates the first player that has to play.
      */
     public void run(int startFrom) {
         gameIsActive = true;
@@ -171,7 +171,7 @@ public class GameController implements PropertyChangeListener {
      * If the current player is not the first one, makes all the remaining one play their turn
      * Calls the method to calculate the final score and end the game.
      *
-     * @param nickname: the nickname of the player that has just finished his turn.
+     * @param nickname the nickname of the player that has just finished his turn.
      */
     public void runLastTurn(String nickname) {
         int i = playersList.indexOf(nickname) + 1;
@@ -190,7 +190,7 @@ public class GameController implements PropertyChangeListener {
      * Every player has three minutes to complete his turn:
      * if this timer exceeds, the player is set as offline, and the game continues with the next one.
      *
-     * @param indexCurrPlayer: the playersList's index of the nickname that has to play.
+     * @param indexCurrPlayer the playersList's index of the nickname that has to play.
      */
     private void playerTurn(int indexCurrPlayer) {
         currPlayer = playersList.get(indexCurrPlayer);

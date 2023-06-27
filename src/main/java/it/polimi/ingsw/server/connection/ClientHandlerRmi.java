@@ -13,8 +13,8 @@ import static it.polimi.ingsw.utils.Utils.pingTimer;
  * Extension of Client Handler for RMI connections
  */
 public class ClientHandlerRmi extends ClientHandler {
-    RMIClientConnection client;
-    Timer timer = new Timer();
+    final RMIClientConnection client;
+    final Timer timer = new Timer();
 
     //Requires the client interface reference as an attribute
 
@@ -149,11 +149,11 @@ public class ClientHandlerRmi extends ClientHandler {
     }
 
     /**
-     * Sends bookshelf's update to the client.
+     * Sends a bookshelf's update to the client.
      *
-     * @param nickname:   the player whose bookshelf has changed.
-     * @param tilesToAdd: the ordered array of tiles to add in nickname's bookshelf.
-     * @param column:     the column of the bookshelf to add tiles into.
+     * @param nickname   the player whose bookshelf has changed.
+     * @param tilesToAdd the ordered array of tiles to add in the player's bookshelf.
+     * @param column     the column of the bookshelf to add tiles into.
      */
     @Override
     public void sendBookshelfRenewed(String nickname, ItemCard[] tilesToAdd, int column) {
@@ -225,7 +225,7 @@ public class ClientHandlerRmi extends ClientHandler {
     /**
      * Sends board's update to the client.
      *
-     * @param tilesToRemove: the array of board's positions to remove tiles from.
+     * @param tilesToRemove the array of board's positions to remove tiles from.
      */
     @Override
     public void sendBoardRenewed(Integer[] tilesToRemove) {
@@ -320,9 +320,9 @@ public class ClientHandlerRmi extends ClientHandler {
     }
 
     /**
-     * Asks the client if he wants to resume one of the game he's into.
+     * Asks the client if he wants to resume one of the game he was into.
      *
-     * @param savedGames: the list of saved games' names the client is into.
+     * @param savedGames the list of saved games' names the client is into.
      */
     @Override
     public void askSavedGame(List<String> savedGames) {

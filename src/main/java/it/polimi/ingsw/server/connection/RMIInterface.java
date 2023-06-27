@@ -96,8 +96,8 @@ public class RMIInterface implements RMI {
     /**
      * Called when the player wants to resume a saved game.
      *
-     * @param wantToSave: true if he wants to resume a game.
-     * @param gameName:   the name of the game to be resumed.
+     * @param wantToSave true if he wants to resume a game.
+     * @param gameName   the name of the game to be resumed.
      */
     @Override
     public void setSavedGames(boolean wantToSave, String gameName) throws RemoteException {

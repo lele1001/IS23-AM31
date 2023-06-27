@@ -248,15 +248,15 @@ public class TakeCardsScene extends GUIScene {
      * Checks the selected Tiles from the Board and eventually communicates the change to the server
      */
     private void selectTiles() {
-        String[] checktoTake = {"@take"};
+        String[] checkToTake = {"@take"};
         for (Integer sel : selectedTiles) {
-            int n = checktoTake.length;
+            int n = checkToTake.length;
             String[] newel = new String[n + 1];
             newel[n] = sel.toString();
-            System.arraycopy(checktoTake, 0, newel, 0, n);
-            checktoTake = newel;
+            System.arraycopy(checkToTake, 0, newel, 0, n);
+            checkToTake = newel;
         }
-        ArrayList<Integer> tilesToTake = inputController.checkTake(checktoTake);
+        ArrayList<Integer> tilesToTake = inputController.checkTake(checkToTake);
         if (tilesToTake == null) {
             printError("ERROR: wrong selection");
             revert();

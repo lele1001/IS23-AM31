@@ -1,10 +1,10 @@
 package it.polimi.ingsw.client.view;
 
-import it.polimi.ingsw.client.Exceptions.NotAskedException;
-import it.polimi.ingsw.client.Exceptions.NotAvailableNameException;
-import it.polimi.ingsw.client.Exceptions.NotExistingGameException;
 import it.polimi.ingsw.client.controller.ClientController;
 import it.polimi.ingsw.client.controller.InputController;
+import it.polimi.ingsw.client.exceptions.NotAskedException;
+import it.polimi.ingsw.client.exceptions.NotAvailableNameException;
+import it.polimi.ingsw.client.exceptions.NotExistingGameException;
 import it.polimi.ingsw.server.controller.TurnPhase;
 import it.polimi.ingsw.server.model.HouseItem;
 import it.polimi.ingsw.server.model.ItemCard;
@@ -19,9 +19,9 @@ import static it.polimi.ingsw.utils.Utils.*;
  */
 public class CLI implements View {
     private static boolean stopListening;
-    Scanner in = new Scanner(System.in);
-    InputController checkInput;
-    ClientController clientController;
+    final Scanner in = new Scanner(System.in);
+    final InputController checkInput;
+    final ClientController clientController;
     String username, address;
     int port = -1, select = -1;
 
@@ -266,10 +266,7 @@ public class CLI implements View {
      * Allows the user only to quit the game while waiting for it to start
      */
     private synchronized void waitForGameMenu() {
-        System.out.println("""
-                GAME MENU: type the corresponding command
-                 \t@MENU to show again this menu
-                 \t@QUIT to exit from the game""");
+        System.out.println("GAME MENU: type the corresponding command \n\t@MENU to show again this menu \n\t@QUIT to exit from the game");
     }
 
     /**
@@ -288,19 +285,7 @@ public class CLI implements View {
      * Prints a menu on the screen to let the user choose what to do next
      */
     private synchronized void printMenu() {
-        System.out.println((char) 27 + "[0;39m" + """
-                GAME MENU: type the corresponding command
-                \t@MENU to show again this menu
-                \t@COMGOAL to print the Common Goal of this game
-                \t@PERSGOAL to print your Personal Goal
-                \t@SCORE to print your score
-                \t@BOARD to print the game board
-                \t@TAKE to choose from 1 to 3 tiles from the board, followed by their coordinates (xy) of the chosen tiles
-                \t@MYSHELF to print you bookshelf
-                \t@ALLSHELVES to print the bookshelf of all the players
-                \t@PUT to choose a column for putting the cards, followed by the column number and the board coordinates of the tiles (from bottom to top)
-                \t@CHAT to open the chat, followed by the nickname/all and the message
-                \t@QUIT to exit from the game""");
+        System.out.println((char) 27 + "[0;39m" + "GAME MENU: type the corresponding command \n\t@MENU to show again this menu \n\t@COMGOAL to print the Common Goal of this game \n\t@PERSGOAL to print your Personal Goal \n\t@SCORE to print your score \n\t@BOARD to print the game board \n\t@TAKE to choose from 1 to 3 tiles from the board, followed by their coordinates (xy) of the chosen tiles \n\t@MYSHELF to print you bookshelf \n\t@ALLSHELVES to print the bookshelf of all the players \n\t@PUT to choose a column for putting the cards, followed by the column number and the board coordinates of the tiles (from bottom to top) \n\t@CHAT to open the chat, followed by the nickname/all and the message \n\t@QUIT to exit from the game");
     }
 
     /**

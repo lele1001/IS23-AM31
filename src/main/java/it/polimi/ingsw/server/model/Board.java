@@ -45,7 +45,7 @@ public class Board {
     }
 
     /**
-     * Set the board and the card bag from existing ones
+     * Set the board, and the card bag from existing ones
      *
      * @param board      the board to copy
      * @param cardBag    the card bag to copy
@@ -292,7 +292,7 @@ public class Board {
     }
 
     /**
-     * Create the card bag using defined number of tiles of each type
+     * Create the card bag using a defined number of tiles of each type
      */
     public void createcardBag() {
         for (HouseItem item : HouseItem.values()) {

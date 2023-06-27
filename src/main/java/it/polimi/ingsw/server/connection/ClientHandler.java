@@ -95,11 +95,11 @@ public abstract class ClientHandler {
     public abstract void SendBookshelfChanged(String nickname, ItemCard[][] newBookshelf);
 
     /**
-     * Sends bookshelf's update to the client.
+     * Sends a bookshelf's update to the client.
      *
-     * @param nickname:   the player whose bookshelf has changed.
-     * @param tilesToAdd: the ordered array of tiles to add in nickname's bookshelf.
-     * @param column:     the column of the bookshelf to add tiles into.
+     * @param nickname   the player whose bookshelf has changed.
+     * @param tilesToAdd the ordered array of tiles to add in the player's bookshelf.
+     * @param column     the column of the bookshelf to add tiles into.
      */
     public abstract void sendBookshelfRenewed(String nickname, ItemCard[] tilesToAdd, int column);
 
@@ -113,7 +113,7 @@ public abstract class ClientHandler {
     /**
      * Sends board's update to the client.
      *
-     * @param tilesToRemove: the array of board's positions to remove tiles from.
+     * @param tilesToRemove the array of board's positions to remove tiles from.
      */
     public abstract void sendBoardRenewed(Integer[] tilesToRemove);
 
@@ -153,9 +153,9 @@ public abstract class ClientHandler {
     public abstract void sendGameInterrupted();
 
     /**
-     * Asks the client if he wants to resume one of the game he's into.
+     * Asks the client if he wants to resume one of the game he was into.
      *
-     * @param savedGames: the list of saved games' names the client is into.
+     * @param savedGames the list of saved games' names the client is into.
      */
     public abstract void askSavedGame(List<String> savedGames);
 }

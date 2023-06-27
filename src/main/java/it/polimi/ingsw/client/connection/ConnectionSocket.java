@@ -142,8 +142,8 @@ public class ConnectionSocket extends ConnectionClient {
     /**
      * Called after client's decision about saved games.
      *
-     * @param wantToSave: true if he wants to re-start from a saved game.
-     * @param gameName:   the name of the game he wants to resume.
+     * @param wantToSave true if he wants to re-start from a saved game.
+     * @param gameName   the name of the game he wants to resume.
      */
     @Override
     public void setSavedGame(boolean wantToSave, String gameName) {

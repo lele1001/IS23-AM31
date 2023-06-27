@@ -1,8 +1,8 @@
 package it.polimi.ingsw.client.view.GUI.scenes;
 
-import it.polimi.ingsw.client.Exceptions.NotAskedException;
-import it.polimi.ingsw.client.Exceptions.NotExistingGameException;
 import it.polimi.ingsw.client.controller.ClientController;
+import it.polimi.ingsw.client.exceptions.NotAskedException;
+import it.polimi.ingsw.client.exceptions.NotExistingGameException;
 import it.polimi.ingsw.server.model.ItemCard;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -71,7 +71,7 @@ public class SavedGamesScene extends GUIScene {
     }
 
     /**
-     * Send to the server if the client wants ot use a saved games o start a new one
+     * Send to the server if the client wants ot use a saved games of start a new one
      *
      * @param val  if the client wants to use a saved games
      * @param name the name of the game

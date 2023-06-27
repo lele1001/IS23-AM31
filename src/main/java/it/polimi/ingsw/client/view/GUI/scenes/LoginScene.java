@@ -90,7 +90,7 @@ public class LoginScene extends GUIScene {
     }
 
     /**
-     * Check if the connection parameter are correct
+     * Check if the connection parameters are correct
      *
      * @return 0 if RMI, 1 if Socket, -1 if incorrect
      */
@@ -105,10 +105,10 @@ public class LoginScene extends GUIScene {
     }
 
     /**
-     * CHeck if username contains any special character
+     * Checks if the username contains any special character
      *
      * @param text the username
-     * @return true if doesn't contain special character
+     * @return true if it does not contain special characters
      */
     private boolean checkText(TextField text) {
         String toCheck = text.getText();

@@ -90,9 +90,9 @@ public class GameModel implements ModelInterface {
     /**
      * Called at the beginning of the game when the first player wants to resume one of the game he's into.
      *
-     * @param onlinePlayers: the list of the players of this game already online and ready to play.
-     * @param json:          the jsonObject with all the details of the game (taken from the file).
-     * @param gameFilePath:  the path of the file with all game's details.
+     * @param onlinePlayers the list of the players of this game already online and ready to play.
+     * @param json          the jsonObject with all the details of the game (taken from the file).
+     * @param gameFilePath  the path of the file with all game's details.
      */
     public void resumeGame(ArrayList<String> onlinePlayers, JsonObject json, String gameFilePath) {
         this.gameJson = json;
@@ -169,7 +169,7 @@ public class GameModel implements ModelInterface {
      *
      * @param positions of the cards to be selected.
      * @throws NoRightItemCardSelection  if the selection is not valid.
-     * @throws NoBookshelfSpaceException if there's no enough space in player's bookshelf for the number of tiles he selected.
+     * @throws NoBookshelfSpaceException if there's no enough space in a player's bookshelf for the number of tiles he selected.
      */
     public void selectCard(String player, ArrayList<Integer> positions) throws NoRightItemCardSelection, NoBookshelfSpaceException {
         PropertyChangeEvent evt;
@@ -328,7 +328,7 @@ public class GameModel implements ModelInterface {
     /**
      * A private method called at the end of the turn to save game's details on the json backup file.
      *
-     * @param comGoalDone: a boolean that indicates if a common goal has been done and needs to be saved or not.
+     * @param comGoalDone a boolean that indicates if a common goal has been done and needs to be saved or not.
      */
     private void saveJson(boolean comGoalDone) {
         Gson gson = new Gson();
@@ -367,7 +367,7 @@ public class GameModel implements ModelInterface {
     /**
      * A private method used to send all the bookshelf when the player returns in the game or there's an error in select/insert phase from him.
      *
-     * @param player to send bookshelf to.
+     * @param player to send a bookshelf to.
      */
     private void sendBookshelf(String player) {
         PropertyChangeEvent evt = new PropertyChangeEvent(player, BOOKSHELF_CHANGED, player, playerMap.get(player).getBookshelfAsMatrix());

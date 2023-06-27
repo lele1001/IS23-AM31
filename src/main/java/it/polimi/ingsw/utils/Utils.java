@@ -4,10 +4,10 @@ package it.polimi.ingsw.utils;
  * Defines static value used in all the project
  */
 public abstract class Utils {
-    //TODO Connection controll
+    //TODO Connection control
     /*
     DONE:
-    gamecontroller
+    gameController
     MODEL (/NO STRING OF GAME MODEL)
 
      */
@@ -54,11 +54,7 @@ public abstract class Utils {
                 "Five tiles of the same type forming an X."),
         comGoal11(
                 "Five tiles of the same item forming a diagonal."),
-        comGoal12(
-                """
-                        Five columns of increasing or decreasing height.\s
-                        Starting from the first column on the left or on the right, each next column must be made of exactly one more tile.\s
-                        Tiles can be of any type.""");
+        comGoal12("Five columns of increasing or decreasing height. Starting from the first column on the left or on the right, each next column must be made of exactly one more tile. Tiles can be of any type.");
 
         private final String description;
 
@@ -72,15 +68,13 @@ public abstract class Utils {
         }
 
         /**
-         * Return the String description of  the Common Goal
+         * Return the String description of the Common Goal
          *
-         * @return Return the String description of  the Common Goal
+         * @return Return the String description of the Common Goal
          */
         public String getDescription() {
             return description;
         }
 
     }
-
-
 }

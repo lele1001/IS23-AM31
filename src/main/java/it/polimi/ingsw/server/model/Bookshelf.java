@@ -70,8 +70,8 @@ public class Bookshelf {
     /**
      * Controls if position exists and return the ItemTiles in that position
      *
-     * @param x horizontal coordinate of the ItemCard
-     * @param y vertical coordinate of the ItemCard
+     * @param x is the horizontal coordinate of the ItemCard
+     * @param y is the vertical coordinate of the ItemCard
      * @return the element in x, y position
      */
     public ItemCard get(int x, int y) {

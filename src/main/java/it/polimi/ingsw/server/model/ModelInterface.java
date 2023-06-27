@@ -24,9 +24,9 @@ public interface ModelInterface {
     /**
      * Called at the beginning of the game when the first player wants to resume one of the game he's into.
      *
-     * @param onlinePlayers: the list of the players of this game already online and ready to play.
-     * @param json:          the jsonObject with all the details of the game (taken from the file).
-     * @param gameFilePath:  the path of the file with all game's details.
+     * @param onlinePlayers the list of the players of this game already online and ready to play.
+     * @param json          the jsonObject with all the details of the game (taken from the file).
+     * @param gameFilePath  the path of the file with all game's details.
      */
     void resumeGame(ArrayList<String> onlinePlayers, JsonObject json, String gameFilePath);
 
@@ -47,7 +47,7 @@ public interface ModelInterface {
      * @param player    the nickname of the player
      * @param positions of the cards to be selected.
      * @throws NoRightItemCardSelection  if the selection is not valid.
-     * @throws NoBookshelfSpaceException if there's no enough space in player's bookshelf for the number of tiles he selected.
+     * @throws NoBookshelfSpaceException if there's no enough space in the player's bookshelf for the number of tiles he selected.
      */
     void selectCard(String player, ArrayList<Integer> positions) throws NoRightItemCardSelection, NoBookshelfSpaceException; //chiedo conferma che sia la stessa eccezione
 

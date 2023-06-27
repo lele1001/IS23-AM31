@@ -234,15 +234,15 @@ public class PutCardsScene extends GUIScene {
             printError("ERROR: please select a valid column.");
             return;
         }
-        String[] checktoPut = {"@put", String.valueOf(i)};
+        String[] checkToPut = {"@put", String.valueOf(i)};
         for (Integer sel : selectedTiles) {
-            int n = checktoPut.length;
+            int n = checkToPut.length;
             String[] newel = new String[n + 1];
-            System.arraycopy(checktoPut, 0, newel, 0, n);
+            System.arraycopy(checkToPut, 0, newel, 0, n);
             newel[n] = sel.toString();
-            checktoPut = newel;
+            checkToPut = newel;
         }
-        ArrayList<ItemCard> tilesToPut = inputController.checkPut(checktoPut);
+        ArrayList<ItemCard> tilesToPut = inputController.checkPut(checkToPut);
         //System.out.println(tilesToPut);
         if (tilesToPut != null) {
             try {

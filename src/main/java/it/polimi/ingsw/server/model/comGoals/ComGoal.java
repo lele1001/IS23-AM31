@@ -9,7 +9,7 @@ import java.util.ArrayList;
  */
 public abstract class ComGoal {
     final int CGID;
-    ArrayList<Integer> score = new ArrayList<>();
+    final ArrayList<Integer> score = new ArrayList<>();
 
     /**
      * Set the Common Goal based on the number of players

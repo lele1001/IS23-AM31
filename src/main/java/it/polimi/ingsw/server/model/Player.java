@@ -128,7 +128,7 @@ public class Player {
     /**
      * Called when the player tries to select tiles from the board to check if there's enough space for them in his bookshelf.
      *
-     * @param numOfTiles: the number of the tiles selected from the player
+     * @param numOfTiles the number of the tiles selected from the player
      * @return true if there's enough space in at least one column.
      */
     public boolean checkBookshelfSpace(int numOfTiles) {

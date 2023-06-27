@@ -8,7 +8,7 @@ import it.polimi.ingsw.utils.Utils;
 import java.util.*;
 
 /**
- * Defines the actions and response to the clients requests
+ * Defines the actions and response to the client's requests
  */
 public class ConnectionControl {
     private final Map<String, ClientHandler> clientHandlerMap = new HashMap<>();
@@ -104,10 +104,10 @@ public class ConnectionControl {
     }
 
     /**
-     * Asks the client if he wants to resume one of the game he's into.
+     * Asks the client if he wants to resume one of the game he was into.
      *
-     * @param nickname:   the nickname of the client to be asked.
-     * @param savedGames: the list of the saved games the client is into.
+     * @param nickname   the nickname of the client to be asked.
+     * @param savedGames the list of the saved games the client is into.
      */
     public void askSavedGame(String nickname, List<String> savedGames) {
         this.getClientHandlerMap().get(nickname).askSavedGame(savedGames);
@@ -126,8 +126,8 @@ public class ConnectionControl {
      * Allows the first player to set the number of available players.
      *
      * @param availablePlayers to set.
-     * @param gameName:        the name to be set for this game.
-     * @param nickname:        the nickname of the client that wants to set players.
+     * @param gameName         the name to be set for this game.
+     * @param nickname         the nickname of the client that wants to set players.
      */
     public void setAvailablePlayers(String nickname, int availablePlayers, String gameName) {
         if (availablePlayers >= 2 && availablePlayers <= 4)
@@ -138,8 +138,8 @@ public class ConnectionControl {
     /**
      * Called when the player wants to resume a saved game.
      *
-     * @param wantToSave: true if he wants to resume a game.
-     * @param gameName:   the name of the game to be resumed.
+     * @param wantToSave true if he wants to resume a game.
+     * @param gameName   the name of the game to be resumed.
      */
     public void setSavedGame(boolean wantToSave, String gameName) {
         if (wantToSave)
@@ -335,7 +335,7 @@ public class ConnectionControl {
     /**
      * Sends board's update to clients.
      *
-     * @param tilesToRemove: an array of the positions of the just removed tiles.
+     * @param tilesToRemove an array of the positions of the just removed tiles.
      */
     public void sendBoardRenewed(Integer[] tilesToRemove) {
         System.out.println("Sending board's update to all...");
@@ -344,11 +344,11 @@ public class ConnectionControl {
     }
 
     /**
-     * Sends bookshelf's update to clients.
+     * Sends a bookshelf's update to clients.
      *
-     * @param tilesToAdd: an ordered array of tiles to add into the bookshelf.
-     * @param column:     the column to put tiles into.
-     * @param player:     the player whose bookshelf has just changed.
+     * @param tilesToAdd an ordered array of tiles to add into the bookshelf.
+     * @param column     the column to put tiles into.
+     * @param player     the player whose bookshelf has just changed.
      */
     public void sendBookshelfRenewed(ItemCard[] tilesToAdd, int column, String player) {
         System.out.println("Sending " + player + " bookshelf's update to all...");
@@ -490,7 +490,7 @@ public class ConnectionControl {
     /**
      * Sends to all clients the nickname of the winners of the game.
      *
-     * @param finalScores: ordered hash map with all final scores.
+     * @param finalScores an ordered hash map with all final scores.
      */
     public void sendFinalScores(LinkedHashMap<String, Integer> finalScores) {
         System.out.println("Sending winners' nickname...");

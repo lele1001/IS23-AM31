@@ -103,7 +103,8 @@ public interface RMIClientConnection extends Remote {
     void onGameIsStarting(ArrayList<String> playersList) throws RemoteException;
 
     /**
-     * Called when the client is the only one online and the game needs to be interrupted waiting for other players coming back.
+     * Called when the client is the only one online,
+     * and the game needs to be interrupted waiting for other players coming back.
      *
      * @throws RemoteException if an error occurred calling the RMI client
      */
@@ -150,9 +151,9 @@ public interface RMIClientConnection extends Remote {
     void onBookshelfCompleted(String nickname) throws RemoteException;
 
     /**
-     * Called when there are some saved games with client's nicknames, to ask him if he wants to resume one of them.
+     * Called when there are some saved games with a client's nicknames, to ask him if he wants to resume one of them.
      *
-     * @param savedGames: the list of saved games' names.
+     * @param savedGames the list of saved games' names.
      * @throws RemoteException if an error occurred calling the RMI client
      */
     void onSavedGame(List<String> savedGames) throws RemoteException;
@@ -160,9 +161,9 @@ public interface RMIClientConnection extends Remote {
     /**
      * Called when there's a bookshelf's update.
      *
-     * @param tilesToAdd: the tiles to be added in the bookshelf.
-     * @param column:     the column of the bookshelf to put tiles into.
-     * @param player:     the owner of the just updated bookshelf.
+     * @param tilesToAdd the tiles to be added in the bookshelf.
+     * @param column     the column of the bookshelf to put tiles into.
+     * @param player     the owner of the just updated bookshelf.
      * @throws RemoteException if an error occurred calling the RMI client.
      */
     void onBookshelfRenewed(ItemCard[] tilesToAdd, int column, String player) throws RemoteException;
@@ -170,7 +171,7 @@ public interface RMIClientConnection extends Remote {
     /**
      * Called when there's a board's update.
      *
-     * @param tilesToRemove: the positions of the tiles to be removed from the board.
+     * @param tilesToRemove the positions of the tiles to be removed from the board.
      * @throws RemoteException if an error occurred calling the RMI client.
      */
     void onBoardRenewed(Integer[] tilesToRemove) throws RemoteException;
@@ -178,7 +179,7 @@ public interface RMIClientConnection extends Remote {
     /**
      * Called at the end of the game to send the final classification to the client.
      *
-     * @param finalScores: an ordered map with players' nicknames and final scores.
+     * @param finalScores an ordered map with players' nicknames and final scores.
      * @throws RemoteException if an error occurred calling the RMI client.
      */
     void onFinalScores(LinkedHashMap<String, Integer> finalScores) throws RemoteException;

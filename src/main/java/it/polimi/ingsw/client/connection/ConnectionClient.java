@@ -11,9 +11,9 @@ import java.util.ArrayList;
  * Defines the methods used to communicate to the Server
  */
 public abstract class ConnectionClient extends UnicastRemoteObject {
-    ClientController controller;
-    String address;
-    int port;
+    final ClientController controller;
+    final String address;
+    final int port;
 
     /**
      * Initialize the connection to the server
@@ -112,8 +112,8 @@ public abstract class ConnectionClient extends UnicastRemoteObject {
     /**
      * Called by the client after his decision about saved games.
      *
-     * @param wantToSave: true if he wants to re-start from a saved game.
-     * @param gameName:   the name of the game he wants to resume.
+     * @param wantToSave true if he wants to re-start from a saved game.
+     * @param gameName   the name of the game he wants to resume.
      * @throws Exception if an error occurred calling the server (Socket or RMI)
      */
     public abstract void setSavedGame(boolean wantToSave, String gameName) throws Exception;

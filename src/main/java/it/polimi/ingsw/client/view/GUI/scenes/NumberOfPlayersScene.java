@@ -1,13 +1,14 @@
 package it.polimi.ingsw.client.view.GUI.scenes;
 
-import it.polimi.ingsw.client.Exceptions.NotAskedException;
-import it.polimi.ingsw.client.Exceptions.NotAvailableNameException;
 import it.polimi.ingsw.client.controller.ClientController;
+import it.polimi.ingsw.client.exceptions.NotAskedException;
+import it.polimi.ingsw.client.exceptions.NotAvailableNameException;
 import it.polimi.ingsw.server.model.ItemCard;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
+
 /**
  * Defines the controller for the NumberOfPlayersScene
  */

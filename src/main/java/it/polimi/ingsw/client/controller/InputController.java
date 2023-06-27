@@ -10,11 +10,11 @@ import java.util.Collections;
 import static it.polimi.ingsw.utils.Utils.*;
 
 /**
- * Defines all the controls methods of the Client input CLI or GUI
+ * Defines all the control methods of the Client input CLI or GUI
  */
 public class InputController {
     private final ClientController clientController;
-    ArrayList<Integer> coords = new ArrayList<>();
+    final ArrayList<Integer> coords = new ArrayList<>();
     int coord;
 
     /**
@@ -197,7 +197,7 @@ public class InputController {
      * and that the cards that he wants to put in it are the same he selected from the board
      *
      * @param input The input inserted by the Client
-     * @return The ItemCard that has to be inserted if all controls are successful, else null
+     * @return The ItemCard, which has to be inserted if all controls are successful or null
      */
     public ArrayList<ItemCard> checkPut(String[] input) {
         int column;

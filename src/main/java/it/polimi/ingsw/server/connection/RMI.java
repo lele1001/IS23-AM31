@@ -83,8 +83,8 @@ public interface RMI extends Remote {
     /**
      * Called when the player wants to resume a saved game.
      *
-     * @param wantToSave: true if he wants to resume a game.
-     * @param gameName:   the name of the game to be resumed.
+     * @param wantToSave true if he wants to resume a game.
+     * @param gameName   the name of the game to be resumed.
      * @throws RemoteException if an error occurred calling the server RMI
      */
     void setSavedGames(boolean wantToSave, String gameName) throws RemoteException;

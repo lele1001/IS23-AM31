@@ -7,7 +7,7 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * Class used to cache all necessary Image for the javafx project
+ * Class used to cache all necessary Images for the javafx project
  */
 public final class GUIResources {
     //fxml files
@@ -23,12 +23,9 @@ public final class GUIResources {
     public final static String helpFXML = "FXML/InstructionsScene.fxml";
 
     //images
-    public final Image background = new Image(Objects.requireNonNull(GUIResources.class.getResource("/images/misc/basePagina2.png")).toString());
     public static final Image bookshelfImage = new Image(Objects.requireNonNull(GUIResources.class.getResource("/images/boards/bookshelf.png")).toString());
     // Utility images
     public final static Image icon = new Image(Objects.requireNonNull(GUIResources.class.getResource("/images/publisherMaterial/Icon.png")).toString());
-    public final static Image publisher = new Image(Objects.requireNonNull(GUIResources.class.getResource("/images/publisherMaterial/Publisher.png")).toString());
-    public final static Image backgroundLogin = new Image(Objects.requireNonNull(GUIResources.class.getResource("/images/publisherMaterial/Display_5.jpg")).toString());
 
     // Item Tiles
     public final static Image frameFirst = new Image(Objects.requireNonNull(GUIResources.class.getResource("/images/itemTiles/frameFirst.png")).toString());
@@ -152,7 +149,7 @@ public final class GUIResources {
     /**
      * Called to get an Item Tiles Image
      *
-     * @param myItem String that symbolize the item
+     * @param myItem String that symbolizes the item
      * @return The image of the Item
      */
     public static Image getItem(String myItem) {
@@ -162,7 +159,7 @@ public final class GUIResources {
     /**
      * Called to get a Common Goal Image
      *
-     * @param comGoal String that symbolize the Common Goal
+     * @param comGoal String that symbolizes the Common Goal
      * @return The image of the Common Goal
      */
     public static Image getComGoal(String comGoal) {
@@ -172,7 +169,7 @@ public final class GUIResources {
     /**
      * Called to get a Personal Goal Image
      *
-     * @param persGoal String that symbolize the Personal Goal
+     * @param persGoal String that symbolizes the Personal Goal
      * @return The image of the Personal Goal
      */
     public static Image getPersGoal(String persGoal) {
@@ -182,7 +179,7 @@ public final class GUIResources {
     /**
      * Called to get a Score Image
      *
-     * @param s String that symbolize the Score Tile
+     * @param s String that symbolizes the Score Tile
      * @return The image of the Score Tile
      */
     public static Image getScore(String s) {

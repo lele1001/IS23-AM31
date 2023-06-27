@@ -14,7 +14,7 @@ import java.util.Map;
  * Implementation of the view using GUI elements and javafx
  */
 public class GUI implements View {
-    ClientController clientController;
+    final ClientController clientController;
     private final SceneController sceneController;
 
     /**

@@ -16,7 +16,7 @@ import java.util.*;
  */
 public class ConnectionRMI extends ConnectionClient implements RMIClientConnection {
     private RMI server;
-    Timer timer = new Timer();
+    final Timer timer = new Timer();
 
     /**
      * Initialize the RMI connection to the server
@@ -121,8 +121,8 @@ public class ConnectionRMI extends ConnectionClient implements RMIClientConnecti
     /**
      * Called after client's decision about saved games.
      *
-     * @param wantToSave: true if he wants to re-start from a saved game.
-     * @param gameName:   the name of the game he wants to resume.
+     * @param wantToSave true if he wants to re-start from a saved game.
+     * @param gameName   the name of the game he wants to resume.
      * @throws Exception if an error occurred calling the RMI server
      */
     @Override
@@ -321,9 +321,9 @@ public class ConnectionRMI extends ConnectionClient implements RMIClientConnecti
     }
 
     /**
-     * Called when there are some saved games with client's nicknames, to ask him if he wants to resume one of them.
+     * Called when there are some saved games with a client's nicknames, to ask him if he wants to resume one of them.
      *
-     * @param savedGames: the list of saved games' names.
+     * @param savedGames the list of saved games' names.
      * @throws RemoteException if an error occurred calling the RMI client
      */
     @Override
@@ -334,9 +334,9 @@ public class ConnectionRMI extends ConnectionClient implements RMIClientConnecti
     /**
      * Called when there's a bookshelf's update.
      *
-     * @param tilesToAdd: the tiles to be added in the bookshelf.
-     * @param column:     the column of the bookshelf to put tiles into.
-     * @param player:     the owner of the just updated bookshelf.
+     * @param tilesToAdd the tiles to be added in the bookshelf.
+     * @param column     the column of the bookshelf to put tiles into.
+     * @param player     the owner of the just updated bookshelf.
      * @throws RemoteException if an error occurred calling the RMI client.
      */
     @Override
@@ -347,7 +347,7 @@ public class ConnectionRMI extends ConnectionClient implements RMIClientConnecti
     /**
      * Called when there's a board's update.
      *
-     * @param tilesToRemove: the positions of the tiles to be removed from the board.
+     * @param tilesToRemove the positions of the tiles to be removed from the board.
      * @throws RemoteException if an error occurred calling the RMI client.
      */
     @Override
@@ -358,7 +358,7 @@ public class ConnectionRMI extends ConnectionClient implements RMIClientConnecti
     /**
      * Called at the end of the game to send the final classification to the client.
      *
-     * @param finalScores: an ordered map with players' nicknames and final scores.
+     * @param finalScores an ordered map with players' nicknames and final scores.
      * @throws RemoteException if an error occurred calling the RMI client.
      */
     @Override
