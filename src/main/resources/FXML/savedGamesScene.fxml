@@ -2,27 +2,27 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.AnchorPane?>
-<AnchorPane fx:id="savedGamesPane" prefHeight="400.0" prefWidth="600.0" stylesheets="@../CSS/dialogPages.css"
-            xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1"
+<AnchorPane fx:id="savedGamesPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+            prefHeight="300.0" prefWidth="500.0" stylesheets="@../CSS/dialogPages.css"
+            xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="it.polimi.ingsw.client.view.GUI.scenes.SavedGamesScene">
-    <Button fx:id="yesButton" layoutX="360.0" layoutY="150.0" maxHeight="-Infinity" maxWidth="-Infinity"
+    <Button fx:id="yesButton" layoutX="341.0" layoutY="102.0" maxHeight="-Infinity" maxWidth="-Infinity"
             minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="30.0" prefWidth="50.0"
             text="Yes"/>
-    <Button fx:id="noButton" layoutX="435.0" layoutY="150.0" maxHeight="-Infinity" maxWidth="-Infinity"
+    <Button fx:id="noButton" layoutX="435.0" layoutY="102.0" maxHeight="-Infinity" maxWidth="-Infinity"
             minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="30.0" prefWidth="50.0"
             text="No"/>
-    <MenuButton fx:id="listGames" layoutX="360.0" layoutY="210.0" maxHeight="-Infinity" maxWidth="-Infinity"
+    <MenuButton fx:id="listGames" layoutX="338.0" layoutY="165.0" maxHeight="-Infinity" maxWidth="-Infinity"
                 minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="30.0" prefWidth="150.0"
                 text="Saved games"/>
-    <Label id="selectGame" layoutX="50.0" layoutY="210.0" maxHeight="-Infinity" maxWidth="-Infinity"
+    <Label id="selectGame" layoutX="14.0" layoutY="165.0" maxHeight="-Infinity" maxWidth="-Infinity"
            minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="300.0"
            text="Select the game you want to resume"/>
-    <Label id="resumeGame" layoutX="50.0" layoutY="150.0" maxHeight="-Infinity" maxWidth="-Infinity"
+    <Label id="resumeGame" layoutX="14.0" layoutY="102.0" maxHeight="-Infinity" maxWidth="-Infinity"
            minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="300.0"
            text="Do you want to resume a game?"/>
-    <Label id="savedLabel" layoutX="50.0" layoutY="40.0" prefHeight="80.0" prefWidth="500.0"
+    <Label id="savedLabel" layoutY="7.0" prefHeight="80.0" prefWidth="500.0"
            text="There are some saved games matching with your nickname..." wrapText="true"/>
-    <Button fx:id="exitButton" layoutX="471.0" layoutY="331.0" mnemonicParsing="false" prefHeight="42.0"
+    <Button fx:id="exitButton" layoutX="366.0" layoutY="219.0" mnemonicParsing="false" prefHeight="42.0"
             prefWidth="94.0" text="Exit"/>
-    <Label fx:id="errorLabel" layoutX="50.0" layoutY="337.0" prefHeight="30.0" prefWidth="400.0"/>
 </AnchorPane>

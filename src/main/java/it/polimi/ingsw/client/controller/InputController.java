@@ -1,7 +1,7 @@
-package it.polimi.ingsw.client;
+package it.polimi.ingsw.client.controller;
 
 import it.polimi.ingsw.server.model.ItemCard;
-import it.polimi.ingsw.server.model.Position;
+import it.polimi.ingsw.utils.Position;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -9,17 +9,28 @@ import java.util.Collections;
 
 import static it.polimi.ingsw.utils.Utils.*;
 
+/**
+ * Defines all the controls methods of the Client input CLI or GUI
+ */
 public class InputController {
     private final ClientController clientController;
     ArrayList<Integer> coords = new ArrayList<>();
     int coord;
 
+    /**
+     * Create the input controller
+     *
+     * @param clientController The client controller
+     */
     public InputController(ClientController clientController) {
         this.clientController = clientController;
     }
 
     /**
      * Checks that the user selects a correct number of cards, that they exist on the board and that they are adjacent
+     *
+     * @param input The input written from the client
+     * @return The Arraylist of positions of the taken ItemTiles if all control are successful, else null
      */
     public ArrayList<Integer> checkTake(String[] input) {
         //System.out.println(Arrays.toString(input));
@@ -44,7 +55,7 @@ public class InputController {
                 return null;
             }
 
-            if (!checkPosition(coord)) {
+            if (checkPosition(coord)) {
                 return null;
             }
         }
@@ -57,6 +68,8 @@ public class InputController {
     }
 
     /**
+     * Controls all the bookshelf and return the max number of Tiles that can be inserted
+     *
      * @return The maximum number of a tiles that can be inserted in the client's bookshelf
      */
     public int maxTilesSize() {
@@ -84,16 +97,16 @@ public class InputController {
      * Checks that the given coordinate is inside the board range
      *
      * @param coord is the number from which we can extract row and column
-     * @return true if the position is correct
+     * @return false if the position is correct
      */
     private boolean checkPosition(int coord) {
         if (Position.getRow(coord) < DIM_BOARD || Position.getColumn(coord) < DIM_BOARD) {
             coords.add(coord);
-            return true;
+            return false;
         }
 
         clientController.onError("The requested cell does not exists!");
-        return false;
+        return true;
     }
 
     /**
@@ -182,6 +195,9 @@ public class InputController {
     /**
      * Checks that the user selects a correct number of cards, that the column exists in the bookshelf
      * and that the cards that he wants to put in it are the same he selected from the board
+     *
+     * @param input The input inserted by the Client
+     * @return The ItemCard that has to be inserted if all controls are successful, else null
      */
     public ArrayList<ItemCard> checkPut(String[] input) {
         int column;
@@ -231,7 +247,7 @@ public class InputController {
                 return null;
             }
 
-            if (!checkPosition(coord)) {
+            if (checkPosition(coord)) {
                 clientController.onError("Wrong tiles selected");
                 return null;
             }
@@ -258,6 +274,7 @@ public class InputController {
     /**
      * Checks that the chat is directed to an existing player or to all players in the game
      *
+     * @param input The input inserted by the Client
      * @return 0 if there is an error, 1 if the recipient is a player, 2 if the recipient are all players
      */
     public int checkChat(String[] input) {
@@ -283,6 +300,7 @@ public class InputController {
     /**
      * Checks that the selected number of player is in the correct range
      *
+     * @param input The input inserted by the Client
      * @return the number of players selected
      */
     public int checkPlayers(String[] input) {

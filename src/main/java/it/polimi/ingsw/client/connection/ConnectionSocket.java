@@ -2,7 +2,7 @@ package it.polimi.ingsw.client.connection;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import it.polimi.ingsw.client.ClientController;
+import it.polimi.ingsw.client.controller.ClientController;
 import it.polimi.ingsw.server.model.ItemCard;
 
 import java.io.BufferedReader;
@@ -12,6 +12,9 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.*;
 
+/**
+ * Implementation of Clients Socket TCP connection
+ */
 public class ConnectionSocket extends ConnectionClient {
     private PrintWriter socketOut = null;
     private BufferedReader in;

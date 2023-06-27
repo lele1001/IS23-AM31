@@ -4,7 +4,7 @@
 <?import javafx.scene.layout.*?>
 <AnchorPane fx:id="playersScenePane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
             minWidth="-Infinity" prefHeight="300.0" prefWidth="500.0" stylesheets="@../CSS/dialogPages.css"
-            xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1"
+            xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="it.polimi.ingsw.client.view.GUI.scenes.NumberOfPlayersScene">
     <GridPane fx:id="firstPlayerPane" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity"
               minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="500.0" vgap="10.0"
@@ -20,7 +20,6 @@
             <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES"/>
             <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES"/>
             <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES"/>
-            <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="35.0" vgrow="SOMETIMES"/>
         </rowConstraints>
 
         <Label alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity"
@@ -44,11 +43,6 @@
                 textAlignment="CENTER" textOverrun="CLIP" GridPane.columnIndex="1" GridPane.halignment="CENTER"
                 GridPane.rowIndex="4" GridPane.valignment="CENTER">
         </Button>
-
-        <TextArea fx:id="errorArea" editable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
-                  minWidth="-Infinity" prefHeight="35.0" prefWidth="300.0" visible="false"
-                  GridPane.columnSpan="2147483647" GridPane.rowIndex="5">
-        </TextArea>
         <Button fx:id="exitButton" mnemonicParsing="false" prefWidth="100.0" text="Exit" GridPane.halignment="CENTER"
                 GridPane.rowIndex="4" GridPane.valignment="CENTER"/>
     </GridPane>

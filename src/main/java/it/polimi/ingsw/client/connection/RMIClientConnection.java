@@ -8,6 +8,9 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 
+/**
+ * Defines all the possible methods the server can call on the client using RMI
+ */
 public interface RMIClientConnection extends Remote {
     /**
      * Method called by the server if the player is first in queue and ha to decide the number of players in the game
@@ -94,6 +97,7 @@ public interface RMIClientConnection extends Remote {
     /**
      * Method called by the server when a game is starting
      *
+     * @param playersList The list of players in the game
      * @throws RemoteException if an error occurred calling the RMI client
      */
     void onGameIsStarting(ArrayList<String> playersList) throws RemoteException;

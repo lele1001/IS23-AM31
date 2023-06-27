@@ -1,4 +1,4 @@
-package it.polimi.ingsw.server;
+package it.polimi.ingsw.server.connection;
 
 import it.polimi.ingsw.client.connection.RMIClientConnection;
 import it.polimi.ingsw.server.controller.ConnectionControl;
@@ -7,6 +7,9 @@ import it.polimi.ingsw.server.model.ItemCard;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 
+/**
+ * Implementation of the RMI interface
+ */
 public class RMIInterface implements RMI {
     private ConnectionControl connectionControl;
 
@@ -122,15 +125,12 @@ public class RMIInterface implements RMI {
      * @param client   is the client interface
      */
     @Override
-    public boolean login(String nickname, RMIClientConnection client) {        //deve prendere anche la classe del client
+    public void login(String nickname, RMIClientConnection client) {        //deve prendere anche la classe del client
         ClientHandlerRmi clientHandlerRmi = new ClientHandlerRmi(connectionControl, nickname, client); //deve passargli la classe dell'interfaccia rmi client
 
         if (!connectionControl.tryAddInQueue(clientHandlerRmi, nickname)) {
             clientHandlerRmi.sendError("Game not available.");
             clientHandlerRmi.disconnectPlayer();
-            return false;
         }
-
-        return true;
     }
 }

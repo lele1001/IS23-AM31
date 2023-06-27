@@ -1,10 +1,10 @@
 package it.polimi.ingsw.client.view;
 
-import it.polimi.ingsw.client.ClientController;
 import it.polimi.ingsw.client.Exceptions.NotAskedException;
 import it.polimi.ingsw.client.Exceptions.NotAvailableNameException;
 import it.polimi.ingsw.client.Exceptions.NotExistingGameException;
-import it.polimi.ingsw.client.InputController;
+import it.polimi.ingsw.client.controller.ClientController;
+import it.polimi.ingsw.client.controller.InputController;
 import it.polimi.ingsw.server.controller.TurnPhase;
 import it.polimi.ingsw.server.model.HouseItem;
 import it.polimi.ingsw.server.model.ItemCard;
@@ -549,35 +549,6 @@ public class CLI implements View {
             for (Integer i : playerComGoal.keySet()) {
                 System.out.println((char) 27 + "[0;39m" + "Common Goal number " + i + ": ");
                 System.out.println(Utils.comGoalDescription.valueOf("comGoal" + i).getDescription());
-/*                if (i == 1) {
-                    System.out.println("Two separate groups each containing four tiles of the same type in a 2x2 square.\n" + "The tiles of one square can be different from those of the other square.");
-                } else if (i == 2) {
-                    System.out.println("Two columns each formed by 6 different types of tiles.\n" + "One column can show the same or a different combination of the other column.");
-                } else if (i == 3) {
-                    System.out.println("Four groups each containing at least 4 tiles of the same type.\n" + "The tiles of one group can be different from those of another group.");
-                } else if (i == 4) {
-                    System.out.println("Six groups each containing at least 2 tiles of the same type.\n" + "The tiles of one group can be different from those of another group.");
-                } else if (i == 5) {
-                    System.out.println("Three columns each formed by 6 tiles of maximum three different types.\n" + "One column can show the same or a different combination of another column.");
-                } else if (i == 6) {
-                    System.out.println("Two lines each formed by 5 different types of tiles.\n" + "One line can show the same or a different combination of the other line.");
-                } else if (i == 7) {
-                    System.out.println("Four lines each formed by 5 tiles of maximum three different types.\n" + "One line can show the same or a different combination of another line.");
-                } else if (i == 8) {
-                    System.out.println("Four tiles of the same type in the four corners of the bookshelf.");
-                } else if (i == 9) {
-                    System.out.println("Eight tiles of the same type.\n" + "There is no restriction about the position of these tiles.");
-                } else if (i == 10) {
-                    System.out.println("Five tiles of the same type forming an X");
-                } else if (i == 11) {
-                    System.out.println("Five tiles of the same item forming a diagonal.");
-                } else if (i == 12) {
-                    System.out.println("""
-                            Five columns of increasing or decreasing height.\s
-                            Starting from the first column on the left or on the right, each next column must be made of exactly one more tile.\s
-                            Tiles can be of any type.""");
-                }*/
-
                 System.out.println("The maximum available score for this card is " + playerComGoal.get(i) + ".\n");
             }
         }

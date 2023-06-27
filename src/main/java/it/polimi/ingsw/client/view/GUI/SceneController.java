@@ -1,6 +1,6 @@
 package it.polimi.ingsw.client.view.GUI;
 
-import it.polimi.ingsw.client.ClientController;
+import it.polimi.ingsw.client.controller.ClientController;
 import it.polimi.ingsw.client.view.GUI.scenes.GUIScene;
 import it.polimi.ingsw.server.model.ItemCard;
 import javafx.fxml.FXMLLoader;
@@ -14,22 +14,36 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Defines the controller for all the GUI Scene
+ */
 public class SceneController {
     private final ClientController clientController;
     private Stage activeStage = null;
-    GUIScene currentController;
+    private GUIScene currentController;
     private final Map<String, GUIScene> scenesMap = new HashMap<>();
 
+    /**
+     * Creates the Scene controller and all the controller for the Scenes
+     *
+     * @param clientController the Client controller
+     */
     public SceneController(ClientController clientController) {
         this.clientController = clientController;
         this.createScene(GUIResources.loginFXML, "loginScene");
         this.createScene(GUIResources.askSavedGamesFXML, "askSavedGamesScene");
         this.createScene(GUIResources.numberOfPlayerFXML, "numberOfPlayersScene");
+        System.out.println("ciao");
         this.createScene(GUIResources.notMyTurnFXML, "notMyTurnScene");
+        System.out.println("ciao");
         this.createScene(GUIResources.takeCardsFXML, "takeCardsScene");
+        System.out.println("ciao");
         this.createScene(GUIResources.putCardsFXML, "putCardsScene");
+        System.out.println("ciao");
         this.createScene(GUIResources.errorFXML, "errorScene");
+        System.out.println("ciao");
         this.createScene(GUIResources.endGameFXML, "endGameScene");
+        System.out.println("ciao");
     }
 
     /**
@@ -46,11 +60,9 @@ public class SceneController {
             if (loader.getLocation() == null) {
                 System.out.println("Not possible to set " + fxml + " scene.");
             }
-
             Parent root = loader.load();
             GUIScene guiScene = loader.getController();
             guiScene.initialize(this.clientController);
-
             guiScene.setMyScene(new Scene(root));
             this.scenesMap.put(name, guiScene);
         } catch (IOException e) {

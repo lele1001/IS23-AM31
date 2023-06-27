@@ -6,6 +6,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
+/**
+ * Class used to cache all necessary Image for the javafx project
+ */
 public final class GUIResources {
     //fxml files
     public final static String loginFXML = "FXML/login.fxml";
@@ -147,6 +150,8 @@ public final class GUIResources {
     }
 
     /**
+     * Called to get an Item Tiles Image
+     *
      * @param myItem String that symbolize the item
      * @return The image of the Item
      */
@@ -155,6 +160,8 @@ public final class GUIResources {
     }
 
     /**
+     * Called to get a Common Goal Image
+     *
      * @param comGoal String that symbolize the Common Goal
      * @return The image of the Common Goal
      */
@@ -163,6 +170,8 @@ public final class GUIResources {
     }
 
     /**
+     * Called to get a Personal Goal Image
+     *
      * @param persGoal String that symbolize the Personal Goal
      * @return The image of the Personal Goal
      */
@@ -171,6 +180,8 @@ public final class GUIResources {
     }
 
     /**
+     * Called to get a Score Image
+     *
      * @param s String that symbolize the Score Tile
      * @return The image of the Score Tile
      */

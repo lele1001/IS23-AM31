@@ -1,10 +1,10 @@
 package it.polimi.ingsw.client.view.GUI.scenes;
 
-import it.polimi.ingsw.client.ClientController;
-import it.polimi.ingsw.client.InputController;
+import it.polimi.ingsw.client.controller.ClientController;
+import it.polimi.ingsw.client.controller.InputController;
 import it.polimi.ingsw.client.view.GUI.GUIResources;
 import it.polimi.ingsw.server.model.ItemCard;
-import it.polimi.ingsw.server.model.Position;
+import it.polimi.ingsw.utils.Position;
 import it.polimi.ingsw.utils.Utils;
 import javafx.fxml.FXML;
 import javafx.scene.Cursor;
@@ -12,33 +12,32 @@ import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 
 import java.util.ArrayList;
 import java.util.Map;
 
-import static it.polimi.ingsw.server.model.Position.getColumn;
-import static it.polimi.ingsw.server.model.Position.getRow;
+import static it.polimi.ingsw.utils.Position.getColumn;
+import static it.polimi.ingsw.utils.Position.getRow;
 
-
+/**
+ * Defines the controller for the TakeCardsScene
+ */
 public class TakeCardsScene extends GUIScene {
     @FXML
-    TextField writtenMessage;
+    private TextField writtenMessage;
     @FXML
-    MenuButton destinationMenu;
+    private MenuButton destinationMenu;
     @FXML
-    AnchorPane takeCardsPane;
+    private GridPane boardPane, comGoals, bookshelfPane, persGoal, youSelectedThis, score_0, score_1, winnerScore;
     @FXML
-    GridPane boardPane, comGoals, bookshelfPane, persGoal, youSelectedThis, score_0, score_1, winnerScore;
+    private Label yourPoints;
     @FXML
-    Label errorArea, yourPoints;
+    private Button selectTiles, undoSelection, sendMessage, exitButton;
     @FXML
-    Button selectTiles, undoSelection, sendMessage, exitButton;
+    private TextArea chatHistory;
     @FXML
-    TextArea chatHistory;
-    @FXML
-    Button helpButton;
+    private Button helpButton;
     private ArrayList<Integer> selectedTiles;
     private InputController inputController;
 
@@ -52,7 +51,6 @@ public class TakeCardsScene extends GUIScene {
         super.initialize(clientController);
         inputController = new InputController(clientController);
         yourPoints.setText("You have 0 points");
-        errorArea.setVisible(false);
         selectedTiles = new ArrayList<>();
         setWinnerPointImage();
         bindEvents();
@@ -71,6 +69,9 @@ public class TakeCardsScene extends GUIScene {
         helpButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> help());
     }
 
+    /**
+     * Put the image of the completed bookshelf point in the defined place
+     */
     public void setWinnerPointImage() {
         ImageView scoreImage = new ImageView(GUIResources.getScore("sc01"));
         scoreImage.setFitHeight(55);
@@ -283,11 +284,6 @@ public class TakeCardsScene extends GUIScene {
      * @param event is the click on the image
      */
     private void remove(MouseEvent event) {
-        if (errorArea.isVisible()) {
-            errorArea.setVisible(false);
-            errorArea.setText("");
-        }
-
         Node clickedNode = event.getPickResult().getIntersectedNode();
         if (GridPane.getColumnIndex(clickedNode) != null) {
             int clickedColumn = GridPane.getColumnIndex(clickedNode);

@@ -2,6 +2,7 @@ package it.polimi.ingsw.server.model;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import it.polimi.ingsw.utils.Position;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -9,6 +10,9 @@ import java.lang.reflect.Type;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * Define all the possible type of Personal Goal
+ */
 public enum PersGoal {
     pg01, pg02, pg03, pg04, pg05, pg06, pg07, pg08, pg09, pg10, pg11, pg12;
 
@@ -51,6 +55,8 @@ public enum PersGoal {
     }
 
     /**
+     * Calculate the score for the Personal goal at the end of the Game
+     *
      * @return the score reached on the library it takes as a parameter.
      */
     public int calcScore(Bookshelf l) {

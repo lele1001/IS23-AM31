@@ -1,11 +1,14 @@
 package it.polimi.ingsw.client.view.GUI;
 
-import it.polimi.ingsw.client.ClientController;
+import it.polimi.ingsw.client.controller.ClientController;
 import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
 
+/**
+ * Defines the start of the Application GUI
+ */
 public class GUIApp extends Application {
     @FXML
     public static Label out;

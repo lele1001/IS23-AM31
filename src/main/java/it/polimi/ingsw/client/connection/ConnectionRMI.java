@@ -1,7 +1,7 @@
 package it.polimi.ingsw.client.connection;
 
-import it.polimi.ingsw.client.ClientController;
-import it.polimi.ingsw.server.RMI;
+import it.polimi.ingsw.client.controller.ClientController;
+import it.polimi.ingsw.server.connection.RMI;
 import it.polimi.ingsw.server.model.ItemCard;
 
 import java.io.IOException;
@@ -11,6 +11,9 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.*;
 
+/**
+ * Implementation of Clients RMI connection
+ */
 public class ConnectionRMI extends ConnectionClient implements RMIClientConnection {
     private RMI server;
     Timer timer = new Timer();
@@ -30,12 +33,12 @@ public class ConnectionRMI extends ConnectionClient implements RMIClientConnecti
     /**
      * Start the connection and the login in RMI
      *
-     * @throws IOException       throws if it has an error with input or output
-     * @throws NotBoundException throws if it has an error with the connection
+     * @throws IOException          throws if it has an error with input or output
+     * @throws NotBoundException    throws if it has an error with the connection
+     * @throws NullPointerException throws if it has an error with the server instance
      */
     @Override
     public void startConnection() throws IOException, NotBoundException, NullPointerException {
-        boolean i;
         Registry registry = LocateRegistry.getRegistry(getAddress(), getPort());
         server = (RMI) registry.lookup("MyShelfieServer");
         TimerTask task = new TimerTask() {
@@ -46,7 +49,7 @@ public class ConnectionRMI extends ConnectionClient implements RMIClientConnecti
         };
         timer.scheduleAtFixedRate(task, 0, 5000);
         System.out.println("Connection established.");
-        i = server.login(getController().getMyNickname(), this);
+        server.login(getController().getMyNickname(), this);
     }
 
     /**
@@ -54,7 +57,8 @@ public class ConnectionRMI extends ConnectionClient implements RMIClientConnecti
      *
      * @param nickname      this client
      * @param cardsSelected Tiles selected by the client
-     * @throws RemoteException if an error occurred calling the server RMI
+     * @throws RemoteException      if an error occurred calling the server RMI
+     * @throws NullPointerException throws if it has an error with the server instance
      */
     @Override
     public void selectCard(String nickname, ArrayList<Integer> cardsSelected) throws RemoteException, NullPointerException {
@@ -67,7 +71,8 @@ public class ConnectionRMI extends ConnectionClient implements RMIClientConnecti
      * @param nickname this client
      * @param cards    Tiles selected by the client in order
      * @param column   column where to put the Tiles
-     * @throws RemoteException if an error occurred calling the server RMI
+     * @throws RemoteException      if an error occurred calling the server RMI
+     * @throws NullPointerException throws if it has an error with the server instance
      */
     @Override
     public void insertCard(String nickname, ArrayList<ItemCard> cards, int column) throws RemoteException, NullPointerException {
@@ -79,7 +84,8 @@ public class ConnectionRMI extends ConnectionClient implements RMIClientConnecti
      *
      * @param nickname this client
      * @param message  String to send to all the connected players
-     * @throws RemoteException if an error occurred calling the server RMI
+     * @throws RemoteException      if an error occurred calling the server RMI
+     * @throws NullPointerException throws if it has an error with the server instance
      */
     @Override
     public void chatToAll(String nickname, String message) throws RemoteException, NullPointerException {
@@ -92,7 +98,8 @@ public class ConnectionRMI extends ConnectionClient implements RMIClientConnecti
      * @param sender   this client
      * @param receiver player that receives the message
      * @param message  String to send to the receiver
-     * @throws RemoteException if an error occurred calling the server RMI
+     * @throws RemoteException      if an error occurred calling the server RMI
+     * @throws NullPointerException throws if it has an error with the server instance
      */
     @Override
     public void chatToPlayer(String sender, String receiver, String message) throws RemoteException, NullPointerException {
@@ -103,7 +110,8 @@ public class ConnectionRMI extends ConnectionClient implements RMIClientConnecti
      * Method called by the client only if he is the first connected to the server
      *
      * @param players number of players in the game
-     * @throws RemoteException if an error occurred calling the server RMI
+     * @throws RemoteException      if an error occurred calling the server RMI
+     * @throws NullPointerException throws if it has an error with the server instance
      */
     @Override
     public void setPlayersNumber(int players, String gameName) throws RemoteException, NullPointerException {

@@ -1,27 +1,28 @@
 package it.polimi.ingsw.client.view.GUI.scenes;
 
-import it.polimi.ingsw.client.ClientController;
-import it.polimi.ingsw.client.InputController;
+import it.polimi.ingsw.client.controller.ClientController;
+import it.polimi.ingsw.client.controller.InputController;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.RadioButton;
+import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 
+/**
+ * Defines the controller for the LoginScene
+ */
 public class LoginScene extends GUIScene {
     @FXML
-    AnchorPane loginScenePane;
+    private GridPane connectionPane;
     @FXML
-    GridPane connectionPane;
+    private Button loginButton, exitButton;
     @FXML
-    Label welcomeText, usernameText, connectionText, ipText, portText, errorArea;
+    private TextField username, ipPort, ipAddress;
     @FXML
-    Button loginButton, exitButton;
-    @FXML
-    TextField username, ipPort, ipAddress;
-    @FXML
-    RadioButton connectionRMI, connectionSocket;
-    InputController inputController;
+    private RadioButton connectionRMI, connectionSocket;
+    private InputController inputController;
 
     /**
      * Initializes the login page showing the connection setup page
@@ -29,7 +30,6 @@ public class LoginScene extends GUIScene {
     public void initialize(ClientController clientController) {
         super.initialize(clientController);
         inputController = new InputController(clientController);
-        errorArea.setVisible(false);
         ipPort.setText("1501");
         ipAddress.setText("127.0.0.1");
 

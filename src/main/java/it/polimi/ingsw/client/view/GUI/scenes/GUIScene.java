@@ -1,7 +1,7 @@
 package it.polimi.ingsw.client.view.GUI.scenes;
 
-import it.polimi.ingsw.client.ClientController;
-import it.polimi.ingsw.client.InputController;
+import it.polimi.ingsw.client.controller.ClientController;
+import it.polimi.ingsw.client.controller.InputController;
 import it.polimi.ingsw.client.view.GUI.GUIResources;
 import it.polimi.ingsw.server.model.ItemCard;
 import it.polimi.ingsw.utils.Utils;
@@ -20,6 +20,9 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Abstract class for all the GUI Scenes
+ */
 public abstract class GUIScene {
     private Scene myScene;
     private Alert alert;
@@ -36,6 +39,8 @@ public abstract class GUIScene {
     }
 
     /**
+     * Called to get a determinate scene
+     *
      * @return the scene called
      */
     public Scene getMyScene() {
@@ -162,6 +167,9 @@ public abstract class GUIScene {
 
     }
 
+    /**
+     * Prints that a player has completed its bookshelf and delete the image for the completion point
+     */
     public void bookshelfCompleted() {
 
     }
@@ -188,11 +196,11 @@ public abstract class GUIScene {
     /**
      * A protected method shared by different scenes to update common goals' scores.
      *
-     * @param comGoalDoneID:    the id ot the common goal to be updated.
-     * @param newValue:         the remained score.
-     * @param score_0:          the grid pane with the first common goal's score.
-     * @param score_1:          the grid pane with the second common goal's score.
-     * @param height:           the height of the score image.
+     * @param comGoalDoneID: the id ot the common goal to be updated.
+     * @param newValue:      the remained score.
+     * @param score_0:       the grid pane with the first common goal's score.
+     * @param score_1:       the grid pane with the second common goal's score.
+     * @param height:        the height of the score image.
      */
     protected void comGoalDone(int comGoalDoneID, int newValue, GridPane score_0, GridPane score_1, int height) {
         int n = 0;
@@ -411,6 +419,7 @@ public abstract class GUIScene {
 
     /**
      * Called on mouse clicked on a common goal to show its details.
+     *
      * @param comGoalID: the id of the common goal to be explained.
      */
     protected void comGoalInfo(int comGoalID) {

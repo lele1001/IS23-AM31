@@ -1,10 +1,13 @@
 package it.polimi.ingsw.client;
 
+import it.polimi.ingsw.client.controller.ClientController;
 import it.polimi.ingsw.client.view.CLI;
 import it.polimi.ingsw.client.view.GUI.GUIApp;
 import javafx.application.Application;
 
-
+/**
+ * Starting class for Client
+ */
 public class ClientMain {
     /**
      * Start of the player side game

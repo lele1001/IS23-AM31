@@ -1,12 +1,15 @@
 package it.polimi.ingsw.server.controller;
 
-import it.polimi.ingsw.server.ClientHandler;
 import it.polimi.ingsw.server.Server;
+import it.polimi.ingsw.server.connection.ClientHandler;
 import it.polimi.ingsw.server.model.ItemCard;
 import it.polimi.ingsw.utils.Utils;
 
 import java.util.*;
 
+/**
+ * Defines the actions and response to the clients requests
+ */
 public class ConnectionControl {
     private final Map<String, ClientHandler> clientHandlerMap = new HashMap<>();
     private final Map<String, Boolean> clientStatusMap = new HashMap<>();
@@ -47,7 +50,7 @@ public class ConnectionControl {
         new Timer().schedule(new TimerTask() {
             @Override
             public void run() {
-                if(!gameConfigured) {
+                if (!gameConfigured) {
                     getClientHandlerMap().get(nickname).sendError("Took too long to set... Please, try again.");
                     changePlayerStatus(nickname, false);
                 }
@@ -111,7 +114,7 @@ public class ConnectionControl {
         new Timer().schedule(new TimerTask() {
             @Override
             public void run() {
-                if(!gameConfigured) {
+                if (!gameConfigured) {
                     getClientHandlerMap().get(nickname).sendError("Took too long to set... Please, try again.");
                     changePlayerStatus(nickname, false);
                 }

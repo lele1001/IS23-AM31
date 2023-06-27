@@ -1,4 +1,4 @@
-package it.polimi.ingsw.server;
+package it.polimi.ingsw.server.connection;
 
 import it.polimi.ingsw.client.connection.RMIClientConnection;
 import it.polimi.ingsw.server.controller.ConnectionControl;
@@ -9,6 +9,9 @@ import java.util.*;
 
 import static it.polimi.ingsw.utils.Utils.pingTimer;
 
+/**
+ * Extension of Client Handler for RMI connections
+ */
 public class ClientHandlerRmi extends ClientHandler {
     RMIClientConnection client;
     Timer timer = new Timer();
@@ -317,7 +320,7 @@ public class ClientHandlerRmi extends ClientHandler {
     }
 
     /**
-     * Asks the client if he want to resume one of the game he's into.
+     * Asks the client if he wants to resume one of the game he's into.
      *
      * @param savedGames: the list of saved games' names the client is into.
      */

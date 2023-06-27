@@ -1,4 +1,4 @@
-package it.polimi.ingsw.server;
+package it.polimi.ingsw.server.connection;
 
 import it.polimi.ingsw.server.controller.ConnectionControl;
 import it.polimi.ingsw.server.model.ItemCard;
@@ -7,8 +7,17 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 
+/**
+ * Define methods used to communicate to the client
+ */
 public abstract class ClientHandler {
+    /**
+     * Nickname of the player
+     */
     protected volatile String nickname;
+    /**
+     * Connection controller of the Game
+     */
     protected ConnectionControl connectionControl;
 
     /**

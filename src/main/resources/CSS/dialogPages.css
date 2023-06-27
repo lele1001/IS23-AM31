@@ -28,10 +28,6 @@
     -fx-effect: dropshadow(three-pass-box, white, 10, 0.5, 0, 0);
 }
 
-#welcomeText {
-    -fx-font-size: 30;
-}
-
 #endMessage, #savedLabel {
     -fx-font-family: "Bauhaus 93";
     -fx-font-size: 24;

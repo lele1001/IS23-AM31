@@ -15,6 +15,9 @@ import java.util.*;
 import static it.polimi.ingsw.utils.ModelPropertyChange.*;
 import static it.polimi.ingsw.utils.Utils.*;
 
+/**
+ * Defines the course of all the game, change the model and send responses to the clients
+ */
 public class GameController implements PropertyChangeListener {
     private final ConnectionControl connectionControl;
     private final ArrayList<String> playersList = new ArrayList<>();
@@ -290,6 +293,8 @@ public class GameController implements PropertyChangeListener {
     }
 
     /**
+     * Called to see if the game is active
+     *
      * @return If the game is active
      */
     public boolean isGameIsActive() {

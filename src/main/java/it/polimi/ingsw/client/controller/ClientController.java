@@ -1,4 +1,4 @@
-package it.polimi.ingsw.client;
+package it.polimi.ingsw.client.controller;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -14,7 +14,7 @@ import it.polimi.ingsw.client.view.View;
 import it.polimi.ingsw.server.controller.TurnPhase;
 import it.polimi.ingsw.server.model.HouseItem;
 import it.polimi.ingsw.server.model.ItemCard;
-import it.polimi.ingsw.server.model.Position;
+import it.polimi.ingsw.utils.Position;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -23,8 +23,8 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import static it.polimi.ingsw.server.controller.TurnPhase.*;
-import static it.polimi.ingsw.server.model.Position.getColumn;
-import static it.polimi.ingsw.server.model.Position.getRow;
+import static it.polimi.ingsw.utils.Position.getColumn;
+import static it.polimi.ingsw.utils.Position.getRow;
 import static it.polimi.ingsw.utils.Utils.*;
 
 /**

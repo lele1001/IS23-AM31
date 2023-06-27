@@ -1,28 +1,25 @@
 package it.polimi.ingsw.client.view.GUI.scenes;
 
-import it.polimi.ingsw.client.ClientController;
 import it.polimi.ingsw.client.Exceptions.NotAskedException;
 import it.polimi.ingsw.client.Exceptions.NotExistingGameException;
+import it.polimi.ingsw.client.controller.ClientController;
 import it.polimi.ingsw.server.model.ItemCard;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
 
 import java.util.List;
 
+/**
+ * Defines the controller for the SavedGamesScene
+ */
 public class SavedGamesScene extends GUIScene {
     @FXML
-    Button yesButton, noButton, exitButton;
+    private Button yesButton, noButton, exitButton;
     @FXML
-    MenuButton listGames;
-    @FXML
-    Label errorLabel;
-    @FXML
-    AnchorPane savedGamesPane;
+    private MenuButton listGames;
 
     /**
      * Initialize the savedGamesScene
@@ -83,14 +80,11 @@ public class SavedGamesScene extends GUIScene {
         try {
             clientController.setSavedGame(val, name);
         } catch (NotAskedException e) {
-            errorLabel.setText("Input not recognised... it's not time to set saved games.");
-            errorLabel.setVisible(true);
+            printError("Input not recognised... it's not time to set saved games.");
         } catch (NotExistingGameException e) {
-            errorLabel.setText("The game you wrote doesn't exist: try again.");
-            errorLabel.setVisible(true);
+            printError("The game you wrote doesn't exist: try again.");
         } catch (Exception e) {
-            errorLabel.setText("Impossible to connect to the server.");
-            errorLabel.setVisible(true);
+            printError("Impossible to connect to the server.");
         }
     }
 

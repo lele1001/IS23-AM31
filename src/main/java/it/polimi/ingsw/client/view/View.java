@@ -7,6 +7,9 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Defines all the methods for GUI or CLI
+ */
 public interface View {
     /**
      * Implementation for CLI and GUI: prints the request to join or not a saved game

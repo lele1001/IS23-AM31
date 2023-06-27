@@ -1,12 +1,15 @@
 package it.polimi.ingsw.client.connection;
 
-import it.polimi.ingsw.client.ClientController;
+import it.polimi.ingsw.client.controller.ClientController;
 import it.polimi.ingsw.server.model.ItemCard;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 
+/**
+ * Defines the methods used to communicate to the Server
+ */
 public abstract class ConnectionClient extends UnicastRemoteObject {
     ClientController controller;
     String address;
@@ -33,6 +36,8 @@ public abstract class ConnectionClient extends UnicastRemoteObject {
     public abstract void startConnection() throws Exception;
 
     /**
+     * Return the Client controller
+     *
      * @return the ClientController for all the methods called by RMI/Socket
      */
     public ClientController getController() {
@@ -40,6 +45,8 @@ public abstract class ConnectionClient extends UnicastRemoteObject {
     }
 
     /**
+     * Return the IP Address
+     *
      * @return the server Address written by the player
      */
     public String getAddress() {
@@ -47,6 +54,8 @@ public abstract class ConnectionClient extends UnicastRemoteObject {
     }
 
     /**
+     * Return the IP port
+     *
      * @return the server port written by the client
      */
     public int getPort() {
@@ -94,7 +103,8 @@ public abstract class ConnectionClient extends UnicastRemoteObject {
     /**
      * Method called by the client only if he is the first connected to the server
      *
-     * @param players number of players in the game
+     * @param players  number of players in the game
+     * @param gameName The name the player wants to save the game with
      * @throws Exception if an error occurred calling the server (Socket or RMI)
      */
     public abstract void setPlayersNumber(int players, String gameName) throws Exception;

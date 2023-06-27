@@ -9,6 +9,9 @@ import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
+/**
+ * Defines all the methods that can be called on the Model
+ */
 public interface ModelInterface {
     /**
      * Creates the game with all the necessary things (board, bookshelves, personal goals and common goals).

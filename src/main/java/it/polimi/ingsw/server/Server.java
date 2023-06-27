@@ -2,6 +2,9 @@ package it.polimi.ingsw.server;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import it.polimi.ingsw.server.connection.ClientHandlerSocket;
+import it.polimi.ingsw.server.connection.RMI;
+import it.polimi.ingsw.server.connection.RMIInterface;
 import it.polimi.ingsw.server.controller.ConnectionControl;
 import it.polimi.ingsw.server.controller.GameController;
 
@@ -22,6 +25,9 @@ import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+/**
+ * Start class for the server side of the project
+ */
 public class Server {
     private static int port;
     private int availablePlayers;

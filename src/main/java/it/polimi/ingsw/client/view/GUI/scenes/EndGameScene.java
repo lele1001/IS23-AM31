@@ -1,6 +1,6 @@
 package it.polimi.ingsw.client.view.GUI.scenes;
 
-import it.polimi.ingsw.client.ClientController;
+import it.polimi.ingsw.client.controller.ClientController;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -13,15 +13,18 @@ import javafx.scene.layout.RowConstraints;
 
 import java.util.LinkedHashMap;
 
+/**
+ * Defines the controller for the EndGameScene
+ */
 public class EndGameScene extends GUIScene {
     @FXML
-    ImageView winnerToken;
+    private ImageView winnerToken;
     @FXML
-    Button closeButton;
+    private Button closeButton;
     @FXML
-    AnchorPane rankingPane, endGamePane;
+    private AnchorPane rankingPane;
     @FXML
-    Label endMessage;
+    private Label victoryMessage;
 
     /**
      * Initialize the endGameScene
@@ -92,6 +95,7 @@ public class EndGameScene extends GUIScene {
 
             if (s.equals(clientController.getMyNickname())) {
                 winnerToken.setVisible(pos == 1);
+                victoryMessage.setText("YOU'RE THE WINNER");
             }
 
             rankingTable.add(new Label(String.valueOf(pos)), 0, index);

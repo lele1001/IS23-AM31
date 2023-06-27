@@ -6,6 +6,9 @@ import it.polimi.ingsw.server.model.comGoals.ComGoal;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Define the player characteristics
+ */
 public class Player {
     private final String nickname;
     private final Bookshelf myBookshelf;

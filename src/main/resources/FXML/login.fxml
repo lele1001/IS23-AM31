@@ -1,69 +1,56 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.*?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
-<AnchorPane fx:id="loginScenePane" focusTraversable="true" prefHeight="300.0" prefWidth="500.0"
-            stylesheets="@../CSS/dialogPages.css" xmlns="http://javafx.com/javafx/19"
-            xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.view.GUI.scenes.LoginScene">
-    <GridPane fx:id="connectionPane" alignment="center" hgap="10.0" prefHeight="300.0" prefWidth="500.0" vgap="10.0"
-              AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
-              AnchorPane.topAnchor="0.0">
+<?import javafx.scene.text.*?>
 
-        <Label fx:id="welcomeText" alignment="CENTER" contentDisplay="CENTER" graphicTextGap="8.0" lineSpacing="1.0"
-               text="Welcome to MyShelfie" textOverrun="CLIP" GridPane.columnIndex="0" GridPane.columnSpan="2147483647"
-               GridPane.halignment="LEFT" GridPane.rowIndex="0">
-        </Label>
-        <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2"
-                   GridPane.halignment="RIGHT" GridPane.valignment="CENTER">
-            <Image url="@../images/publisherMaterial/Icon.png"/>
+<AnchorPane fx:id="loginScenePane" focusTraversable="true" prefHeight="300.0" prefWidth="500.0" stylesheets="@../CSS/dialogPages.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.view.GUI.scenes.LoginScene">
+    <GridPane fx:id="connectionPane" alignment="center" hgap="10.0" prefHeight="300.0" prefWidth="500.0" vgap="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+
+        <Label alignment="CENTER" contentDisplay="CENTER" graphicTextGap="8.0" lineSpacing="1.0" text="Welcome to MyShelfie" textOverrun="CLIP" GridPane.columnIndex="0" GridPane.columnSpan="2147483647" GridPane.halignment="LEFT" GridPane.rowIndex="0">
+         <font>
+            <Font name="Bauhaus 93" size="30.0" />
+         </font></Label>
+        <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.valignment="CENTER">
+            <Image url="@../images/publisherMaterial/Icon.png" />
         </ImageView>
 
-        <Label fx:id="usernameText" text="Username:" textOverrun="CLIP" GridPane.columnIndex="0" GridPane.columnSpan="2"
-               GridPane.rowIndex="1">
+        <Label text="Username:" textOverrun="CLIP" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="1">
         </Label>
-        <TextField fx:id="username" GridPane.columnIndex="1" GridPane.columnSpan="2147483647" GridPane.rowIndex="1"/>
+        <TextField fx:id="username" GridPane.columnIndex="1" GridPane.columnSpan="2147483647" GridPane.rowIndex="1" />
 
-        <Label fx:id="connectionText" text="Connection:" textOverrun="CLIP" GridPane.columnIndex="0"
-               GridPane.rowIndex="2">
+        <Label text="Connection:" textOverrun="CLIP" GridPane.columnIndex="0" GridPane.rowIndex="2">
         </Label>
         <RadioButton fx:id="connectionRMI" text="RMI" GridPane.columnIndex="1" GridPane.rowIndex="2">
         </RadioButton>
         <RadioButton fx:id="connectionSocket" text="Socket" GridPane.columnIndex="2" GridPane.rowIndex="2">
         </RadioButton>
 
-        <Label fx:id="ipText" stylesheets="@../CSS/dialogPages.css" text="IP Address:" GridPane.rowIndex="3">
+        <Label stylesheets="@../CSS/dialogPages.css" text="IP Address:" GridPane.rowIndex="3">
         </Label>
-        <TextField fx:id="ipAddress" GridPane.columnIndex="1" GridPane.columnSpan="2147483647" GridPane.rowIndex="3"/>
+        <TextField fx:id="ipAddress" GridPane.columnIndex="1" GridPane.columnSpan="2147483647" GridPane.rowIndex="3" />
 
-        <Label fx:id="portText" text="IP Port:" textOverrun="CLIP" GridPane.rowIndex="4">
+        <Label text="IP Port:" textOverrun="CLIP" GridPane.rowIndex="4">
         </Label>
-        <TextField fx:id="ipPort" GridPane.columnIndex="1" GridPane.columnSpan="2147483647" GridPane.rowIndex="4"/>
+        <TextField fx:id="ipPort" GridPane.columnIndex="1" GridPane.columnSpan="2147483647" GridPane.rowIndex="4" />
 
-        <Button fx:id="loginButton" alignment="CENTER" contentDisplay="CENTER" prefWidth="100.0" text="Login"
-                textOverrun="CLIP" GridPane.columnIndex="2" GridPane.rowIndex="5">
+        <Button fx:id="loginButton" alignment="CENTER" contentDisplay="CENTER" prefWidth="100.0" text="Login" textOverrun="CLIP" GridPane.columnIndex="2" GridPane.rowIndex="5">
         </Button>
-
-        <Label fx:id="errorArea" prefHeight="50.0" prefWidth="370.0" visible="false" wrapText="true"
-               GridPane.columnSpan="2147483647" GridPane.rowIndex="6">
-        </Label>
-        <Button fx:id="exitButton" mnemonicParsing="false" prefHeight="33.0" prefWidth="134.0" text="Exit"
-                GridPane.columnIndex="1" GridPane.rowIndex="5"/>
+        <Button fx:id="exitButton" mnemonicParsing="false" prefHeight="33.0" prefWidth="134.0" text="Exit" GridPane.columnIndex="1" GridPane.rowIndex="5" />
 
         <columnConstraints>
-            <ColumnConstraints prefWidth="150.0"/>
-            <ColumnConstraints prefWidth="100.0"/>
-            <ColumnConstraints prefWidth="100.0"/>
+            <ColumnConstraints prefWidth="150.0" />
+            <ColumnConstraints prefWidth="100.0" />
+            <ColumnConstraints prefWidth="100.0" />
         </columnConstraints>
         <rowConstraints>
-            <RowConstraints minHeight="25.0"/>
-            <RowConstraints prefHeight="25.0"/>
-            <RowConstraints prefHeight="25.0"/>
-            <RowConstraints prefHeight="25.0"/>
-            <RowConstraints prefHeight="25.0"/>
-            <RowConstraints prefHeight="30.0"/>
-            <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="50.0"/>
+            <RowConstraints minHeight="25.0" />
+            <RowConstraints prefHeight="25.0" />
+            <RowConstraints prefHeight="25.0" />
+            <RowConstraints prefHeight="25.0" />
+            <RowConstraints prefHeight="25.0" />
+            <RowConstraints prefHeight="30.0" />
         </rowConstraints>
     </GridPane>
 </AnchorPane>

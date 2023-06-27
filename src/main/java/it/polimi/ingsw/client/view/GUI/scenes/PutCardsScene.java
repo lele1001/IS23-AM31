@@ -1,10 +1,10 @@
 package it.polimi.ingsw.client.view.GUI.scenes;
 
-import it.polimi.ingsw.client.ClientController;
-import it.polimi.ingsw.client.InputController;
+import it.polimi.ingsw.client.controller.ClientController;
+import it.polimi.ingsw.client.controller.InputController;
 import it.polimi.ingsw.client.view.GUI.GUIResources;
 import it.polimi.ingsw.server.model.ItemCard;
-import it.polimi.ingsw.server.model.Position;
+import it.polimi.ingsw.utils.Position;
 import it.polimi.ingsw.utils.Utils;
 import javafx.fxml.FXML;
 import javafx.scene.Cursor;
@@ -12,33 +12,33 @@ import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 
 import java.util.ArrayList;
 import java.util.Map;
 
+/**
+ * Defines the controller for the PutCardScene
+ */
 public class PutCardsScene extends GUIScene {
     @FXML
-    TextField writtenMessage;
+    private TextField writtenMessage;
     @FXML
-    MenuButton destinationMenu;
+    private MenuButton destinationMenu;
     @FXML
-    AnchorPane putCardsPane;
+    private GridPane bookshelfPane, comGoals, persGoal, score_0, score_1, youSelectedThis, youPutThis;
     @FXML
-    GridPane bookshelfPane, comGoals, persGoal, score_0, score_1, youSelectedThis, youPutThis;
+    private TextArea chatHistory;
     @FXML
-    TextArea chatHistory;
+    private Button undoSelection, selectTiles, sendMessage, exitButton;
     @FXML
-    Button undoSelection, selectTiles, sendMessage, exitButton;
+    private Label yourPoints;
     @FXML
-    Label yourPoints, errorArea;
+    private RadioButton col0, col1, col2, col3, col4;
     @FXML
-    RadioButton col0, col1, col2, col3, col4;
+    private ToggleGroup columns;
     @FXML
-    ToggleGroup columns;
-    @FXML
-    Button helpButton;
+    private Button helpButton;
     private InputController inputController;
     private ArrayList<Integer> selectedTiles;
 
@@ -255,10 +255,9 @@ public class PutCardsScene extends GUIScene {
             youSelectedThis.getChildren().clear();
             updateSelectedTiles(clientController.getSelectedTiles());
         }
-
         selectedTiles.clear();
         youPutThis.getChildren().clear();
-
+        columns.getSelectedToggle().setSelected(false);
     }
 
     /**
@@ -268,11 +267,6 @@ public class PutCardsScene extends GUIScene {
      */
     private void remove(MouseEvent event) {
         Node clickedNode = event.getPickResult().getIntersectedNode();
-
-        if (errorArea.isVisible()) {
-            errorArea.setVisible(false);
-            errorArea.setText("");
-        }
 
         if (youSelectedThis.getChildren().contains(clickedNode)) {
             ImageView imageView = (ImageView) clickedNode;
@@ -311,6 +305,7 @@ public class PutCardsScene extends GUIScene {
         youPutThis.getChildren().clear();
         updateSelectedTiles(clientController.getSelectedTiles());
         selectedTiles.clear();
+        columns.getSelectedToggle().setSelected(false);
     }
 
 }

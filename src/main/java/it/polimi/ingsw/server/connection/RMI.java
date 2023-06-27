@@ -1,4 +1,4 @@
-package it.polimi.ingsw.server;
+package it.polimi.ingsw.server.connection;
 
 import it.polimi.ingsw.client.connection.RMIClientConnection;
 import it.polimi.ingsw.server.model.ItemCard;
@@ -7,6 +7,9 @@ import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 
+/**
+ * Defines the methods the client can use to call the Server using RMI
+ */
 public interface RMI extends Remote {
     /**
      * Method called by the client to start the connection to the server
@@ -14,10 +17,9 @@ public interface RMI extends Remote {
      *
      * @param nickname of the client
      * @param client   is a pointer to the client connectionRMI
-     * @return if the login was successful or not
      * @throws RemoteException if an error occurred calling the server RMI
      */
-    boolean login(String nickname, RMIClientConnection client) throws RemoteException;
+    void login(String nickname, RMIClientConnection client) throws RemoteException;
 
     /**
      * Method called from the client that pass to the server the Tiles inserted by the client and in which column he wants to put them

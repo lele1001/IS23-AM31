@@ -2,6 +2,7 @@ package it.polimi.ingsw.server.model;
 
 import it.polimi.ingsw.server.gameExceptions.EmptyCardBagException;
 import it.polimi.ingsw.server.gameExceptions.NoRightItemCardSelection;
+import it.polimi.ingsw.utils.Position;
 
 import java.util.ArrayList;
 import java.util.Collections;

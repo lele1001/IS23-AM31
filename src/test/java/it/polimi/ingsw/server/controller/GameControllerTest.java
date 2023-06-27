@@ -19,7 +19,6 @@ class GameControllerTest {
 
     /**
      * Used to test "createGame" method, in different number of players' cases.
-     *
      */
     @Test
     void createGame() {

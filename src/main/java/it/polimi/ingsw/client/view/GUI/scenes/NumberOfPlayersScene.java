@@ -1,28 +1,21 @@
 package it.polimi.ingsw.client.view.GUI.scenes;
 
-import it.polimi.ingsw.client.ClientController;
 import it.polimi.ingsw.client.Exceptions.NotAskedException;
 import it.polimi.ingsw.client.Exceptions.NotAvailableNameException;
+import it.polimi.ingsw.client.controller.ClientController;
 import it.polimi.ingsw.server.model.ItemCard;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.GridPane;
-
+/**
+ * Defines the controller for the NumberOfPlayersScene
+ */
 public class NumberOfPlayersScene extends GUIScene {
     @FXML
-    GridPane firstPlayerPane;
+    private TextField playersNum, gameName;
     @FXML
-    TextField playersNum, gameName;
-    @FXML
-    Button submitButton, exitButton;
-    @FXML
-    AnchorPane playersScenePane;
-    @FXML
-    TextArea errorArea;
+    private Button submitButton, exitButton;
 
     /**
      * Initialize the numberOfPlayerScene

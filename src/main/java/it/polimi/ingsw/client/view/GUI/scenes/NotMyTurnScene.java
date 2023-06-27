@@ -1,7 +1,7 @@
 package it.polimi.ingsw.client.view.GUI.scenes;
 
-import it.polimi.ingsw.client.ClientController;
-import it.polimi.ingsw.client.InputController;
+import it.polimi.ingsw.client.controller.ClientController;
+import it.polimi.ingsw.client.controller.InputController;
 import it.polimi.ingsw.client.view.GUI.GUIResources;
 import it.polimi.ingsw.server.model.ItemCard;
 import it.polimi.ingsw.utils.Utils;
@@ -17,28 +17,29 @@ import javafx.scene.layout.RowConstraints;
 import java.util.ArrayList;
 import java.util.Map;
 
-import static it.polimi.ingsw.server.model.Position.getColumn;
-import static it.polimi.ingsw.server.model.Position.getRow;
+import static it.polimi.ingsw.utils.Position.getColumn;
+import static it.polimi.ingsw.utils.Position.getRow;
 
+/**
+ * Defines the controller for the NotMyTurnScene
+ */
 public class NotMyTurnScene extends GUIScene {
     @FXML
-    TabPane bookshelvesPane;
+    private TabPane bookshelvesPane;
     @FXML
-    TextArea chatHistory;
+    private TextArea chatHistory;
     @FXML
-    AnchorPane notYourPane;
+    private GridPane boardPane, comGoals, persGoal, score_0, score_1, winnerScore;
     @FXML
-    GridPane boardPane, comGoals, persGoal, score_0, score_1, winnerScore;
+    private Label yourPoints, userTurn;
     @FXML
-    Label yourPoints, userTurn;
+    private TextField writtenMessage;
     @FXML
-    TextField writtenMessage;
+    private Button sendMessage, exitButton;
     @FXML
-    Button sendMessage, exitButton;
+    private MenuButton destinationMenu;
     @FXML
-    MenuButton destinationMenu;
-    @FXML
-    Button helpButton;
+    private Button helpButton;
     private InputController inputController;
     private ArrayList<String> players;
 

@@ -4,6 +4,9 @@ import it.polimi.ingsw.server.model.Bookshelf;
 
 import java.util.ArrayList;
 
+/**
+ * Define the characteristics of the Common Goals
+ */
 public abstract class ComGoal {
     final int CGID;
     ArrayList<Integer> score = new ArrayList<>();

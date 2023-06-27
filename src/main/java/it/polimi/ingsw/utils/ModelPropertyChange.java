@@ -1,5 +1,8 @@
 package it.polimi.ingsw.utils;
 
+/**
+ * Defines all the possible changes that can happened on the Model
+ */
 public abstract class ModelPropertyChange {
     public static final String BOOKSHELF_CHANGED = "BOOKSHELF_CHANGED";
     public static final String BOARD_CHANGED = "BOARD_CHANGED";

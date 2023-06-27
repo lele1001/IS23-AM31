@@ -1,5 +1,8 @@
 package it.polimi.ingsw.utils;
 
+/**
+ * Defines static value used in all the project
+ */
 public abstract class Utils {
     //TODO Connection controll
     /*
@@ -27,6 +30,9 @@ public abstract class Utils {
     public static final int maxNumberOfSelectedCards = 3;
     public static final int pingTimer = 3000;
 
+    /**
+     * Defines all the value for the different goal description
+     */
     public enum comGoalDescription {
         comGoal1("Two separate groups each containing four tiles of the same type in a 2x2 square.\n" + "The tiles of one square can be different from those of the other square."),
         comGoal2("Two columns each formed by 6 different types of tiles.\n" + "One column can show the same or a different combination of the other column."),
@@ -56,10 +62,20 @@ public abstract class Utils {
 
         private final String description;
 
+        /**
+         * Set the description of the Common Goal
+         *
+         * @param description The description of the Common Goal
+         */
         comGoalDescription(String description) {
             this.description = description;
         }
 
+        /**
+         * Return the String description of  the Common Goal
+         *
+         * @return Return the String description of  the Common Goal
+         */
         public String getDescription() {
             return description;
         }

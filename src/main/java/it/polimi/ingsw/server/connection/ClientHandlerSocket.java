@@ -1,4 +1,4 @@
-package it.polimi.ingsw.server;
+package it.polimi.ingsw.server.connection;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -12,6 +12,9 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.*;
 
+/**
+ * Extension of Client Handler for Socket TCP connections
+ */
 public class ClientHandlerSocket extends ClientHandler implements Runnable {
     private boolean playerNumberAsked;
     private volatile boolean isConnected;

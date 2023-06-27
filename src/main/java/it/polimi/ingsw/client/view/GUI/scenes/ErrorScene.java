@@ -1,17 +1,20 @@
 package it.polimi.ingsw.client.view.GUI.scenes;
 
-import it.polimi.ingsw.client.ClientController;
+import it.polimi.ingsw.client.controller.ClientController;
 import it.polimi.ingsw.server.model.ItemCard;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 
+/**
+ * Defines the controller for the ErrorScene
+ */
 public class ErrorScene extends GUIScene {
     @FXML
-    Label errorDescription, errorArea;
+    private Label errorDescription;
     @FXML
-    Button closeButton;
+    private Button closeButton;
 
     /**
      * Initialize the errorScene
