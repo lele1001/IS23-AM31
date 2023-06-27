@@ -67,9 +67,13 @@ public class SceneController {
         this.activeStage.setTitle("My Shelfie");
         this.activeStage.setResizable(false);
 
+        this.activeStage.setOnCloseRequest(e -> {
+            GUIScene.closeGame(clientController);
+            e.consume();
+        });
+
         this.currentController = this.scenesMap.get("loginScene");
         this.activeStage.setScene(currentController.getMyScene());
-        this.activeStage.setResizable(false);
         this.activeStage.show();
     }
 

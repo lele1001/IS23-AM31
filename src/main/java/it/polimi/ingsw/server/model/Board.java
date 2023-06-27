@@ -5,6 +5,7 @@ import it.polimi.ingsw.server.gameExceptions.NoRightItemCardSelection;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 import static it.polimi.ingsw.utils.Utils.DIM_BOARD;
 
@@ -13,13 +14,13 @@ import static it.polimi.ingsw.utils.Utils.DIM_BOARD;
  */
 public class Board {
 
-    ItemCard[][] board = new ItemCard[DIM_BOARD][DIM_BOARD];
+    private ItemCard[][] board = new ItemCard[DIM_BOARD][DIM_BOARD];
     private final ItemCard[][] oldBoard = new ItemCard[DIM_BOARD][DIM_BOARD];
-    ArrayList<ItemCard> cardBag = new ArrayList<>();
-    int numPlayers;
+    private ArrayList<ItemCard> cardBag = new ArrayList<>();
+    private final int numPlayers;
 
     //Matrix used for creating the board using the minimum number of players required to put an Itemcard in the Cell
-    int[][] numMinPlayer = new int[][]{
+    private final int[][] numMinPlayer = new int[][]{
             {5, 5, 5, 3, 4, 5, 5, 5, 5},
             {5, 5, 5, 2, 2, 4, 5, 5, 5},
             {5, 5, 3, 2, 2, 2, 3, 5, 5},
@@ -309,11 +310,11 @@ public class Board {
     }
 
     /**
-     * Return a copy of the board
+     * Returns a copy of the board as a matrix.
      *
-     * @return the board as an array list
+     * @return the board as a matrix.
      */
-    public synchronized ItemCard[][] getAsArrayList() {
+    public synchronized ItemCard[][] getAsMatrix() {
         ItemCard[][] toBeReturned = new ItemCard[DIM_BOARD][DIM_BOARD];
 
         for (int i = 0; i < DIM_BOARD; i++) {
@@ -324,11 +325,11 @@ public class Board {
     }
 
     /**
-     * Return a copy of the cardBag
+     * Returns a copy of the card bag.
      *
-     * @return the card bag as an Arraylist
+     * @return the card bag as an Arraylist.
      */
-    public ArrayList<ItemCard> getCardBag() {
-        return cardBag;
+    public List<ItemCard> getCardBag() {
+        return List.copyOf(cardBag);
     }
 }

@@ -37,6 +37,8 @@ public class PutCardsScene extends GUIScene {
     RadioButton col0, col1, col2, col3, col4;
     @FXML
     ToggleGroup columns;
+    @FXML
+    Button helpButton;
     private InputController inputController;
     private ArrayList<Integer> selectedTiles;
 
@@ -72,6 +74,7 @@ public class PutCardsScene extends GUIScene {
         undoSelection.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> revert());
         selectTiles.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> putTiles());
         exitButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> closeGame(clientController));
+        helpButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> help());
     }
 
     /**
@@ -99,7 +102,7 @@ public class PutCardsScene extends GUIScene {
             tileImage.setPreserveRatio(true);
             tileImage.setFitWidth(50);
             tileImage.setFitHeight(50);
-            tileImage.setOnMouseMoved(mouseEvent -> tileImage.setCursor(Cursor.HAND));
+            tileImage.setCursor(Cursor.HAND);
 
             youSelectedThis.add(tileImage, i, 0);
             i++;
@@ -273,8 +276,9 @@ public class PutCardsScene extends GUIScene {
 
         if (youSelectedThis.getChildren().contains(clickedNode)) {
             ImageView imageView = (ImageView) clickedNode;
+            imageView.setCursor(Cursor.DEFAULT);
 
-            if (imageView != null && youPutThis.getChildren().size() < 3) {
+            if (youPutThis.getChildren().size() < 3) {
                 imageView.setPreserveRatio(true);
                 imageView.setFitWidth(50);
                 imageView.setFitWidth(50);

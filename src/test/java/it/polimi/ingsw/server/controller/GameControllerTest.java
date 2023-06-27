@@ -17,6 +17,10 @@ import java.util.concurrent.TimeUnit;
 
 class GameControllerTest {
 
+    /**
+     * Used to test "createGame" method, in different number of players' cases.
+     *
+     */
     @Test
     void createGame() {
         File file = new File("target/MyShelfieSavedGames/testCreate.json");
@@ -45,8 +49,14 @@ class GameControllerTest {
             System.out.println("Error deleting game's file...");
     }
 
+    /**
+     * This method tests the game flow in a 4 players game.
+     * It uses the json saved from the gameController to get the board and to use it for selecting and inserting cards.
+     *
+     * @throws IOException if an error occurs.
+     */
     @Test
-    void run() throws IOException {
+    void gameFlow() throws IOException {
         GameController gameController4 = new GameController(new ConnectionControl(new Server()));
         File file = new File("target/MyShelfieSavedGames/test.json");
         gameController4.createGame(new ArrayList<>(List.of("Topolino", "Eleonora", "Luigi", "Niccolò")), "target/MyShelfieSavedGames/test.json");
@@ -652,6 +662,11 @@ class GameControllerTest {
 
     }
 
+    /**
+     * This method tests the resumeGame method using a json file in target's directory.
+     *
+     * @throws IOException if an error occurs.
+     */
     @Test
     void resumeGame() throws IOException {
         File file = new File("target/MyShelfieSavedGames/testResume.json");
@@ -677,6 +692,11 @@ class GameControllerTest {
             System.out.println("Error deleting game's file...");
     }
 
+    /**
+     * This method tests the sending of game details to a player that comes back to a game.
+     *
+     * @throws IOException if an error occurs.
+     */
     @Test
     void sendGameDetails() throws IOException {
         File file = new File("target/MyShelfieSavedGames/testDetails.json");

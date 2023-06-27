@@ -118,7 +118,7 @@ public class TakeCardsScene extends GUIScene {
                     tileImage.setPreserveRatio(true);
                     tileImage.setFitHeight(50);
                     tileImage.setFitWidth(50);
-                    tileImage.setOnMouseMoved(mouseEvent -> tileImage.setCursor(Cursor.HAND));
+                    tileImage.setCursor(Cursor.HAND);
 
                     boardPane.add(tileImage, j, i);
                 }
@@ -295,11 +295,13 @@ public class TakeCardsScene extends GUIScene {
 
             if (boardPane.getChildren().contains(clickedNode)) {
                 ImageView imageView = (ImageView) clickedNode;
+                imageView.setCursor(Cursor.DEFAULT);
 
-                if (imageView != null && selectedTiles.size() < 3) {
+                if (selectedTiles.size() < 3) {
                     int coord = Position.getNumber(clickedColumn, clickedRow);
                     selectedTiles.add(coord);
-
+                    if (selectedTiles.size() == 3)
+                        boardPane.getChildren().forEach(x -> x.setCursor(Cursor.DEFAULT));
                     imageView.setPreserveRatio(true);
                     imageView.setFitWidth(50);
                     imageView.setFitWidth(50);
@@ -311,7 +313,7 @@ public class TakeCardsScene extends GUIScene {
     }
 
     /**
-     * Removes all the images from the SelectedTiles pane and puts them back in the Bord pane
+     * Removes all the images from the SelectedTiles pane and puts them back in the Board pane
      */
     private void revert() {
         youSelectedThis.getChildren().clear();
@@ -321,9 +323,11 @@ public class TakeCardsScene extends GUIScene {
             tileImage.setPreserveRatio(true);
             tileImage.setFitHeight(50);
             tileImage.setFitWidth(50);
-            tileImage.setOnMouseMoved(mouseEvent -> tileImage.setCursor(Cursor.HAND));
+            tileImage.setCursor(Cursor.HAND);
             boardPane.add(tileImage, Position.getColumn(i), Position.getRow(i));
         }
+        if (selectedTiles.size() == 3)
+            boardPane.getChildren().forEach(x -> x.setCursor(Cursor.HAND));
         selectedTiles.clear();
     }
 

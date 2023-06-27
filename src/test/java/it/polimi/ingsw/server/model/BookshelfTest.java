@@ -11,7 +11,9 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class BookshelfTest {
 
-
+    /**
+     * Tests insertCard method checking if it inserts cards in the right positions.
+     */
     @Test
     void insertCard() {
         Bookshelf l = new Bookshelf();
@@ -40,12 +42,12 @@ class BookshelfTest {
         assertEquals(l.get(1, 4), new ItemCard(Cat, First));
         assertEquals(l.get(0, 4), new ItemCard(Plants, First));
 
-        //l.getAsArrayList().forEach(System.out::println);
-
     }
 
 
-    // Full library, always returns false
+    /**
+     * Tests checkSpace method, in case of full library.
+     */
     @Test
     void checkSpace1() {
         Bookshelf l = new Bookshelf();
@@ -68,7 +70,9 @@ class BookshelfTest {
         assertFalse(l.checkSpace(5, 2));
     }
 
-    // Empty library, always returns true
+    /**
+     * Tests the checkSpace method, in case of empty library.
+     */
     @Test
     void checkSpace2() {
         Bookshelf l = new Bookshelf();
@@ -84,6 +88,9 @@ class BookshelfTest {
         assertTrue(l.checkSpace(4, 2));
     }
 
+    /**
+     * Tests the checkSpace method in general conditions.
+     */
     @Test
     void checkSpace3() {
         Bookshelf l = new Bookshelf();
@@ -119,11 +126,9 @@ class BookshelfTest {
 
     }
 
-    @Test
-    void get() {
-    }
-
-
+    /**
+     * Tests the calculation of the total score reached by a player thanks to its bookshelf.
+     */
     @Test
     void calcScore1() {
         Bookshelf l = new Bookshelf();
@@ -142,6 +147,9 @@ class BookshelfTest {
 
     }
 
+    /**
+     * Tests the calculation of the total score reached by a player thanks to its bookshelf.
+     */
     @Test
     void calcScore2() {
         Bookshelf l = new Bookshelf();
@@ -159,6 +167,9 @@ class BookshelfTest {
         assertEquals(l.calcScore(), 18);
     }
 
+    /**
+     * Tests the calculation of the total score reached by a player thanks to its bookshelf.
+     */
     @Test
     void calcScore3() {
         Bookshelf l = new Bookshelf();

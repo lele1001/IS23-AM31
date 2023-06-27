@@ -13,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class PlayerTest {
     /**
-     * Testing the exception
+     * This method tests the insertCard and all the exceptions that this method can throw.
      */
     @Test
     void insertCard() {
@@ -24,7 +24,7 @@ class PlayerTest {
             p.insertCard(new ArrayList<>(List.of(new ItemCard(Books, Third), new ItemCard(Frame, Second), new ItemCard(Cat, First))), 2);
             p.insertCard(new ArrayList<>(List.of(new ItemCard(Frame, Third), new ItemCard(Books, Second))), 2);
         } catch (NoBookshelfSpaceException e) {
-            assertEquals(1, 1); // To be executed
+            assertTrue(true); // To be executed
         }
 
         try {
@@ -44,7 +44,7 @@ class PlayerTest {
         try {
             p.insertCard(new ArrayList<>(List.of(new ItemCard(Cat, First))), 1);
         } catch (NoBookshelfSpaceException e) {
-            assertEquals(1, 1);  // To be executed
+            assertTrue(true);  // To be executed
         }
 
         try {
@@ -60,7 +60,7 @@ class PlayerTest {
         try {
             p.insertCard(new ArrayList<>(List.of(new ItemCard(Books, Third), new ItemCard(Frame, Second), new ItemCard(Cat, First))), 3);
         } catch (NoBookshelfSpaceException e) {
-            assertEquals(1, 1); // To be executed
+            assertTrue(true); // To be executed
         }
 
         try {
@@ -73,10 +73,15 @@ class PlayerTest {
         try {
             p.insertCard(new ArrayList<>(List.of(new ItemCard(Frame, Third))), 4);
         } catch (NoBookshelfSpaceException e) {
-            assertEquals(1, 1); // To be executed
+            assertTrue(true); // To be executed
         }
     }
 
+    /**
+     * This method tests the checkComGoal, called at the end of a turn on each player.
+     *
+     * @throws NoBookshelfSpaceException if the insertCard throws this exception.
+     */
     @Test
     void checkComGoal1() throws NoBookshelfSpaceException {
         // Creating the game
@@ -107,6 +112,11 @@ class PlayerTest {
         assertEquals(34, p.calculateFinScore());
     }
 
+    /**
+     * This method tests the checkComGoal, called at the end of a turn on each player.
+     *
+     * @throws NoBookshelfSpaceException if the insertCard throws this exception.
+     */
     @Test
     void checkComGoal2() throws NoBookshelfSpaceException {
         // Creating the game
@@ -153,6 +163,11 @@ class PlayerTest {
         assertEquals(14, p.calculateFinScore());
     }
 
+    /**
+     * This method tests the checkComGoal, called at the end of a turn on each player.
+     *
+     * @throws NoBookshelfSpaceException if the insertCard throws this exception.
+     */
     @Test
     void checkComGoal3() throws NoBookshelfSpaceException {
         // Creating the game
@@ -203,52 +218,44 @@ class PlayerTest {
         assertEquals(14, p.calculateFinScore());
     }
 
+    /**
+     * This method tests the return value of "insertCard" that is true if the player has completed his bookshelf.
+     *
+     * @throws NoBookshelfSpaceException if an error occurs during the insert phase.
+     */
     @Test
     void checkEnd() throws NoBookshelfSpaceException {
         Player p = new Player("Nick");
 
         p.insertCard(new ArrayList<>(List.of(new ItemCard(Frame, First), new ItemCard(Books, Second), new ItemCard(Cat, First))), 1);
-        p.insertCard(new ArrayList<>(List.of(new ItemCard(Games, Second))), 1);
-        assertFalse(p.checkEnd());
-        p.insertCard(new ArrayList<>(List.of(new ItemCard(Frame, First), new ItemCard(Books, Second), new ItemCard(Cat, First))), 3);
-        assertFalse(p.checkEnd());
+        assertFalse(p.insertCard(new ArrayList<>(List.of(new ItemCard(Games, Second))), 1));
+        assertFalse(p.insertCard(new ArrayList<>(List.of(new ItemCard(Frame, First), new ItemCard(Books, Second), new ItemCard(Cat, First))), 3));
 
         p.insertCard(new ArrayList<>(List.of(new ItemCard(Frame, First), new ItemCard(Books, Second), new ItemCard(Cat, First))), 2);
-        p.insertCard(new ArrayList<>(List.of(new ItemCard(Games, Second), new ItemCard(Trophy, First))), 2);
-        assertFalse(p.checkEnd());
+
+        assertFalse(p.insertCard(new ArrayList<>(List.of(new ItemCard(Games, Second), new ItemCard(Trophy, First))), 2));
 
         p.insertCard(new ArrayList<>(List.of(new ItemCard(Frame, First), new ItemCard(Books, Second), new ItemCard(Cat, First))), 4);
-        p.insertCard(new ArrayList<>(List.of(new ItemCard(Games, Second), new ItemCard(Trophy, First))), 4);
-        assertFalse(p.checkEnd());
+        assertFalse(p.insertCard(new ArrayList<>(List.of(new ItemCard(Games, Second), new ItemCard(Trophy, First))), 4));
 
-        p.insertCard(new ArrayList<>(List.of(new ItemCard(Frame, First))), 0);
-        assertFalse(p.checkEnd());
+        assertFalse(p.insertCard(new ArrayList<>(List.of(new ItemCard(Frame, First))), 0));
 
-        p.insertCard(new ArrayList<>(List.of(new ItemCard(Games, Second), new ItemCard(Trophy, First), new ItemCard(Plants, Third))), 0);
-        assertFalse(p.checkEnd());
+        assertFalse(p.insertCard(new ArrayList<>(List.of(new ItemCard(Games, Second), new ItemCard(Trophy, First), new ItemCard(Plants, Third))), 0));
 
-        p.insertCard(new ArrayList<>(List.of(new ItemCard(Games, Second))), 1);
-        assertFalse(p.checkEnd());
+        assertFalse(p.insertCard(new ArrayList<>(List.of(new ItemCard(Games, Second))), 1));
 
-        p.insertCard(new ArrayList<>(List.of(new ItemCard(Frame, First))), 0);
-        assertFalse(p.checkEnd());
+        assertFalse(p.insertCard(new ArrayList<>(List.of(new ItemCard(Frame, First))), 0));
 
-        p.insertCard(new ArrayList<>(List.of(new ItemCard(Frame, First), new ItemCard(Cat, First))), 3);
-        assertFalse(p.checkEnd());
+        assertFalse(p.insertCard(new ArrayList<>(List.of(new ItemCard(Frame, First), new ItemCard(Cat, First))), 3));
 
-        p.insertCard(new ArrayList<>(List.of(new ItemCard(Frame, First))), 0);
-        assertFalse(p.checkEnd());
+        assertFalse(p.insertCard(new ArrayList<>(List.of(new ItemCard(Frame, First))), 0));
 
-        p.insertCard(new ArrayList<>(List.of(new ItemCard(Frame, First))), 1);
-        assertFalse(p.checkEnd());
+        assertFalse(p.insertCard(new ArrayList<>(List.of(new ItemCard(Frame, First))), 1));
 
-        p.insertCard(new ArrayList<>(List.of(new ItemCard(Frame, First))), 2);
-        assertFalse(p.checkEnd());
+        assertFalse(p.insertCard(new ArrayList<>(List.of(new ItemCard(Frame, First))), 3));
 
-        p.insertCard(new ArrayList<>(List.of(new ItemCard(Frame, First))), 3);
-        assertFalse(p.checkEnd());
+        assertFalse(p.insertCard(new ArrayList<>(List.of(new ItemCard(Cat, First))), 2));
 
-        p.insertCard(new ArrayList<>(List.of(new ItemCard(Frame, First))), 4);
-        assertTrue(p.checkEnd());
+        assertTrue(p.insertCard(new ArrayList<>(List.of(new ItemCard(Frame, First))), 4));
     }
 }

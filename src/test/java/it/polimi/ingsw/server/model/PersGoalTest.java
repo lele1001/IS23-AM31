@@ -10,6 +10,9 @@ import static it.polimi.ingsw.server.model.ItemNumber.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class PersGoalTest {
+    /**
+     * Tests the calculation of the score on Personal Goal card n. 1.
+     */
     @Test
     public void calcScoreCard1() {
         Bookshelf prova = new Bookshelf();
@@ -38,6 +41,9 @@ class PersGoalTest {
         assertEquals(PersGoal.pg01.calcScore(prova), 12);
     }
 
+    /**
+     * Tests the calculation of the score on Personal Goal card n. 2.
+     */
     @Test
     public void calcScoreCard2() {
         Bookshelf prova = new Bookshelf();
@@ -63,6 +69,9 @@ class PersGoalTest {
         assertEquals(PersGoal.pg02.calcScore(prova), 12);
     }
 
+    /**
+     * Tests the calculation of the score on Personal Goal card n. 3.
+     */
     @Test
     public void calcScoreCard3() {
         Bookshelf prova = new Bookshelf();
@@ -90,6 +99,9 @@ class PersGoalTest {
         assertEquals(PersGoal.pg03.calcScore(prova), 9);
     }
 
+    /**
+     * Tests the calculation of the score on Personal Goal card n. 4.
+     */
     @Test
     public void calcScoreCard4() {
         Bookshelf prova = new Bookshelf();
@@ -117,6 +129,9 @@ class PersGoalTest {
         assertEquals(PersGoal.pg04.calcScore(prova), 9);
     }
 
+    /**
+     * Tests the calculation of the score on Personal Goal card n. 5.
+     */
     @Test
     public void calcScoreCard5() {
         Bookshelf prova = new Bookshelf();
@@ -144,6 +159,9 @@ class PersGoalTest {
         assertEquals(PersGoal.pg05.calcScore(prova), 12);
     }
 
+    /**
+     * Tests the calculation of the score on Personal Goal card n. 6.
+     */
     @Test
     public void calcScoreCard6() {
         Bookshelf prova = new Bookshelf();
@@ -173,6 +191,9 @@ class PersGoalTest {
         assertEquals(PersGoal.pg06.calcScore(prova), 12);
     }
 
+    /**
+     * Tests the calculation of the score on Personal Goal card n. 7.
+     */
     @Test
     public void calcScoreCard7() {
         Bookshelf prova = new Bookshelf();
@@ -204,6 +225,9 @@ class PersGoalTest {
         assertEquals(PersGoal.pg07.calcScore(prova), 12);
     }
 
+    /**
+     * Tests the calculation of the score on Personal Goal card n. 8.
+     */
     @Test
     public void calcScoreCard8() {
         Bookshelf prova = new Bookshelf();
@@ -233,6 +257,9 @@ class PersGoalTest {
         assertEquals(PersGoal.pg08.calcScore(prova), 6);
     }
 
+    /**
+     * Tests the calculation of the score on Personal Goal card n. 9.
+     */
     @Test
     public void calcScoreCard9() {
         Bookshelf prova = new Bookshelf();
@@ -258,6 +285,9 @@ class PersGoalTest {
         assertEquals(PersGoal.pg09.calcScore(prova), 9);
     }
 
+    /**
+     * Tests the calculation of the score on Personal Goal card n. 10.
+     */
     @Test
     public void calcScoreCard10() {
         Bookshelf prova = new Bookshelf();
@@ -287,6 +317,9 @@ class PersGoalTest {
         assertEquals(PersGoal.pg10.calcScore(prova), 12);
     }
 
+    /**
+     * Tests the calculation of the score on Personal Goal card n. 11.
+     */
     @Test
     public void calcScoreCard11() {
         Bookshelf prova = new Bookshelf();
@@ -316,6 +349,9 @@ class PersGoalTest {
         assertEquals(PersGoal.pg11.calcScore(prova), 9);
     }
 
+    /**
+     * Tests the calculation of the score on Personal Goal card n. 12.
+     */
     @Test
     public void calcScoreCard12() {
         Bookshelf prova = new Bookshelf();

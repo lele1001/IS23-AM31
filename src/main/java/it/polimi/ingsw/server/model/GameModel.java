@@ -22,11 +22,11 @@ import static it.polimi.ingsw.utils.ModelPropertyChange.*;
  */
 public class GameModel implements ModelInterface {
     private final Map<String, Player> playerMap = new HashMap<>();
-    public Board board;
-    PropertyChangeListener listener;
+    private Board board;
+    private PropertyChangeListener listener;
     private final ArrayList<ComGoal> comGoals = new ArrayList<>();
     private ArrayList<ItemCard> selected = new ArrayList<>();
-    String winner = null;
+    private String winner = null;
     private String gameFilePath;
     private JsonObject gameJson;
 
@@ -47,7 +47,7 @@ public class GameModel implements ModelInterface {
         try {
             board.fillBoard();
             System.out.println("Board Filled.");
-            evt = new PropertyChangeEvent("null", BOARD_CHANGED, null, board.getAsArrayList());
+            evt = new PropertyChangeEvent("null", BOARD_CHANGED, null, board.getAsMatrix());
             this.listener.propertyChange(evt);
         } catch (EmptyCardBagException e) {
             System.out.println("Impossible State");
@@ -200,7 +200,7 @@ public class GameModel implements ModelInterface {
      *
      * @return a set (whose size is > 1 only in case of parity) with all the winners.
      */
-    public LinkedHashMap<String, Integer> calcFinalScore() { //su tutti i player sulla mappa devo chiamare il metodo per calcolare il punteggio
+    public LinkedHashMap<String, Integer> calcFinalScore() {
         int temp;
         Map<String, Integer> finalScores = new HashMap<>();
         LinkedHashMap<String, Integer> sortedMap = new LinkedHashMap<>();
@@ -217,7 +217,7 @@ public class GameModel implements ModelInterface {
                 }
             }
         }
-        System.out.println("Final classify : " + sortedMap);
+        System.out.println("Final classify: " + sortedMap);
         return sortedMap;
     }
 
@@ -267,14 +267,14 @@ public class GameModel implements ModelInterface {
 
         try {
             if (board.checkRefill()) {
-                evt = new PropertyChangeEvent("null", BOARD_CHANGED, null, board.getAsArrayList());
+                evt = new PropertyChangeEvent("null", BOARD_CHANGED, null, board.getAsMatrix());
                 this.listener.propertyChange(evt);
             }
         } catch (EmptyCardBagException e) {
             evt = new PropertyChangeEvent("null", EMPTY_CARD_BAG, null, null); // posso anche unirlo a change board
             this.listener.propertyChange(evt);
 
-            evt = new PropertyChangeEvent("null", BOARD_CHANGED, null, board.getAsArrayList()); // faccio sempre anche se non modifica fa nulla
+            evt = new PropertyChangeEvent("null", BOARD_CHANGED, null, board.getAsMatrix()); // faccio sempre anche se non modifica fa nulla
             this.listener.propertyChange(evt);
         }
 
@@ -289,7 +289,7 @@ public class GameModel implements ModelInterface {
     @Override
     public void resumeBoard() {
         board.resumeBoard();
-        PropertyChangeEvent evt = new PropertyChangeEvent("null", BOARD_CHANGED, null, board.getAsArrayList());
+        PropertyChangeEvent evt = new PropertyChangeEvent("null", BOARD_CHANGED, null, board.getAsMatrix());
         this.listener.propertyChange(evt);
     }
 
@@ -332,7 +332,7 @@ public class GameModel implements ModelInterface {
      */
     private void saveJson(boolean comGoalDone) {
         Gson gson = new Gson();
-        gameJson.addProperty("board", gson.toJson(board.getAsArrayList()));
+        gameJson.addProperty("board", gson.toJson(board.getAsMatrix()));
         gameJson.addProperty("cardBag", gson.toJson(board.getCardBag().toArray()));
 
         if (comGoalDone) {
@@ -360,9 +360,8 @@ public class GameModel implements ModelInterface {
      * @param player to send board to.
      */
     private void sendBoard(String player) {
-        PropertyChangeEvent evt = new PropertyChangeEvent("null", BOARD_CHANGED, player, board.getAsArrayList());
+        PropertyChangeEvent evt = new PropertyChangeEvent("null", BOARD_CHANGED, player, board.getAsMatrix());
         this.listener.propertyChange(evt);
-
     }
 
     /**

@@ -45,7 +45,7 @@ public class Server {
     }
 
     /**
-     * The start method for the server
+     * The start method for the server: checks the system name to select saved games' directory and sets socket and rmi ports based on parameters (or using default ports).
      *
      * @param args Arguments inserted by the player on start
      */
@@ -54,12 +54,12 @@ public class Server {
         System.out.println("Type \"stop\" to stop server.");
 
         try {
-            if (System.getProperty("os.name").equalsIgnoreCase("linux"))
-                Server.savedGamesPath = new File(Server.class.getProtectionDomain().getCodeSource()
-                        .getLocation().toURI().getPath()).getParent() + "/MyShelfieSavedGames";
-            else
+            if (System.getProperty("os.name").startsWith("Windows"))
                 Server.savedGamesPath = new File(Server.class.getProtectionDomain().getCodeSource()
                         .getLocation().toURI().getPath()).getParent() + "\\MyShelfieSavedGames";
+            else
+                Server.savedGamesPath = new File(Server.class.getProtectionDomain().getCodeSource()
+                        .getLocation().toURI().getPath()).getParent() + "/MyShelfieSavedGames";
         } catch (URISyntaxException e) {
             System.out.println("Impossible to read current path: using standard path for saved games.");
         }
@@ -324,8 +324,8 @@ public class Server {
     }
 
     /**
-     * A loop used at the beginning of the game with the aim of waiting for the first (to ask him players' number) and for the other clients.
-     * When the game is complete (and all the clients are online), it starts the game, calling methods on GameController.
+     * A loop used at the beginning of the game with the aim of waiting for the first (to ask him players' number or saved games) and for the other clients.
+     * When the game is complete (and, if it's a new game, all the clients are online), it starts the game, calling methods on GameController.
      */
     public synchronized void setGame() {
         Gson gson = new Gson();

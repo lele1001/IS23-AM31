@@ -237,11 +237,11 @@ public abstract class GUIScene {
             if (n == 0) {
                 score_0.add(scoreImage, 0, 0);
                 score_0.setOnMouseClicked(mouseEvent -> comGoalInfo(i));
-                score_0.setOnMouseMoved(mouseEvent -> score_0.setCursor(Cursor.HAND));
+                score_0.setCursor(Cursor.HAND);
             } else {
                 score_1.add(scoreImage, 0, 0);
                 score_1.setOnMouseClicked(mouseEvent -> comGoalInfo(i));
-                score_1.setOnMouseMoved(mouseEvent -> score_1.setCursor(Cursor.HAND));
+                score_1.setCursor(Cursor.HAND);
             }
 
             String cgNum = i.toString();
@@ -254,7 +254,7 @@ public abstract class GUIScene {
             comGoalImage.setFitWidth(width);
             comGoalImage.setPickOnBounds(true);
             comGoalImage.setOnMouseClicked(mouseEvent -> comGoalInfo(i));
-            comGoalImage.setOnMouseMoved(mouseEvent -> comGoalImage.setCursor(Cursor.HAND));
+            comGoalImage.setCursor(Cursor.HAND);
 
             if (horizontal)
                 comGoals.add(comGoalImage, n, 0);
@@ -365,7 +365,7 @@ public abstract class GUIScene {
      *
      * @param clientController: a reference to the client controller.
      */
-    public void closeGame(ClientController clientController) {
+    public static void closeGame(ClientController clientController) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
         stage.getIcons().add(GUIResources.icon);
