@@ -36,16 +36,16 @@ The final version includes:
 | Complete rules                   |             ✅             |
 | RMI                              |             ✅             |
 | Socket                           |             ✅             |
-| TUI _(Textual User Interface)_   | :arrows_counterclockwise: |
-| GUI _(Graphical User Interface)_ | :arrows_counterclockwise: |
+| TUI _(Textual User Interface)_   |             ✅             |
+| GUI _(Graphical User Interface)_ |             ✅             |
 
 ### Advanced functionalities
 
 | Functionality                | Status |
 |:-----------------------------|:------:|
-| Multiple simultaneous games  |   ⛔     |
-| Persistence                  | ✅  |
-| Resilience to disconnections |             ✅             |
-| Chat                         |             ✅             |
+| Multiple simultaneous games  |   ⛔    |
+| Persistence                  |   ✅    |
+| Resilience to disconnections |   ✅    |
+| Chat                         |   ✅    |
 
 ⛔ Not implemented &nbsp;&nbsp;&nbsp;&nbsp; :arrows_counterclockwise: In progress &nbsp;&nbsp;&nbsp;&nbsp; ✅ Implemented
