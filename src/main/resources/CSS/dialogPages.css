@@ -10,7 +10,7 @@
     -fx-effect: dropshadow(gaussian, white, 127, 1, 0, 0);
 }
 
-#connectionPane, #firstPlayerPane, #savedGamesPane, #rankingPane, #selectGame, #resumeGame {
+#connectionPane, #firstPlayerPane, #savedGamesPane, #rankingPane, #selectGame, #resumeGame, #victoryMessage {
     -fx-font-family: "Bauhaus 93";
     -fx-font-size: 18;
     -fx-font-weight: bolder;
@@ -19,7 +19,7 @@
     -fx-effect: dropshadow(three-pass-box, white, 10, 0.5, 0, 0);
 }
 
-#instructionsPane {
+#instructionsPane{
     -fx-font-family: "Bauhaus 93";
     -fx-font-size: 14;
     -fx-font-weight: bolder;

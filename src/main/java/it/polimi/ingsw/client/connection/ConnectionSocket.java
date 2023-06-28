@@ -50,7 +50,6 @@ public class ConnectionSocket extends ConnectionClient {
         }
         isConnected = true;
         System.out.println("Connection established.");
-        System.out.println("Sending nickname...");
         send(generateStandardMessage("nickname", getController().getMyNickname()));
         new Thread(this::listen).start();
         new Thread(this::ping).start();

@@ -86,16 +86,12 @@ public class EndGameScene extends GUIScene {
     public void finalScores(LinkedHashMap<String, Integer> finalScores) {
         int pos = 0, max = -1, index = 1;
         GridPane rankingTable = (GridPane) rankingPane.getChildren().get(0);
-
         for (String s : finalScores.keySet()) {
             if (finalScores.get(s) != max) {
                 pos++;
-                max = finalScores.get(s);
             }
-
-            if (s.equals(clientController.getMyNickname())) {
-                winnerToken.setVisible(pos == 1);
-                victoryMessage.setText("YOU'RE THE WINNER");
+            if (finalScores.get(s) > max) {
+                max = finalScores.get(s);
             }
 
             rankingTable.add(new Label(String.valueOf(pos)), 0, index);
@@ -103,7 +99,12 @@ public class EndGameScene extends GUIScene {
             rankingTable.add(new Label(finalScores.get(s).toString()), 2, index);
             index++;
         }
-
-        System.out.println();
+        if (finalScores.get(clientController.getMyNickname())==max) {
+            winnerToken.setVisible(true);
+            victoryMessage.setText("YOU'RE THE WINNER");
+        }
+        else{
+            winnerToken.setVisible(false);
+        }
     }
 }

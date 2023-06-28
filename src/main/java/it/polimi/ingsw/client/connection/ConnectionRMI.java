@@ -295,6 +295,7 @@ public class ConnectionRMI extends ConnectionClient implements RMIClientConnecti
     @Override
     public void disconnectMe() throws RemoteException {
         server = null;
+        getController().onError("Server disconnected.");
         getController().disconnectMe();
     }
 

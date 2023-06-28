@@ -263,14 +263,6 @@ public class ClientController {
      */
     public void setView(View view) {
         this.view = view;
-
-        if (view != null) {
-            if (view instanceof CLI) {
-                System.out.println("CLI added to ClientController");
-            } else if (view instanceof GUI) {
-                System.out.println("GUI added to ClientController");
-            }
-        }
     }
 
     /**

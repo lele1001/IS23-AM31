@@ -23,12 +23,31 @@ public class CLI implements View {
     int port = -1, select = -1;
 
     /**
+     * Prints the MyShelfie Logo
+     */
+    private void printLogo() {
+        System.out.println(" __       __  __      __         ______   __    __  ________  __        ________  ______  ________ \n" +
+                "/  \\     /  |/  \\    /  |       /      \\ /  |  /  |/        |/  |      /        |/      |/        |\n" +
+                "$$  \\   /$$ |$$  \\  /$$/       /$$$$$$  |$$ |  $$ |$$$$$$$$/ $$ |      $$$$$$$$/ $$$$$$/ $$$$$$$$/ \n" +
+                "$$$  \\ /$$$ | $$  \\/$$/        $$ \\__$$/ $$ |__$$ |$$ |__    $$ |      $$ |__      $$ |  $$ |__    \n" +
+                "$$$$  /$$$$ |  $$  $$/         $$      \\ $$    $$ |$$    |   $$ |      $$    |     $$ |  $$    |   \n" +
+                "$$ $$ $$/$$ |   $$$$/           $$$$$$  |$$$$$$$$ |$$$$$/    $$ |      $$$$$/      $$ |  $$$$$/    \n" +
+                "$$ |$$$/ $$ |    $$ |          /  \\__$$ |$$ |  $$ |$$ |_____ $$ |_____ $$ |       _$$ |_ $$ |_____ \n" +
+                "$$ | $/  $$ |    $$ |          $$    $$/ $$ |  $$ |$$       |$$       |$$ |      / $$   |$$       |\n" +
+                "$$/      $$/     $$/            $$$$$$/  $$/   $$/ $$$$$$$$/ $$$$$$$$/ $$/       $$$$$$/ $$$$$$$$/ \n" +
+                "                                                                                                   \n" +
+                "__________________________________________________________________________________________________\n");
+    }
+
+
+    /**
      * Initialization of the client profile asking: username, type of connection, ip and port
      *
      * @param clientController defines the direct contact with all the object containers sen from the server
      */
     public CLI(ClientController clientController) {
         this.clientController = clientController;
+        printLogo();
         clientController.setView(this);
         checkInput = new InputController(clientController);
         askLoginParameters();
@@ -567,10 +586,8 @@ public class CLI implements View {
                 } else {
                     System.out.print(" ");
                 }
-
-                if (j < BOOKSHELF_LENGTH - 1) {
                     System.out.print((char) 27 + "[39m" + " | ");
-                }
+
             }
 
             System.out.println();
