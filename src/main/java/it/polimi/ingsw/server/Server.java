@@ -62,10 +62,10 @@ public class Server {
         try {
             if (System.getProperty("os.name").startsWith("Windows"))
                 Server.savedGamesPath = new File(Server.class.getProtectionDomain().getCodeSource()
-                        .getLocation().toURI().getPath()).getParent() + "\\MyShelfieSavedGames";
+                        .getLocation().toURI().getPath()).getParent() + "\\MyShelfieSavedGames\\";
             else
                 Server.savedGamesPath = new File(Server.class.getProtectionDomain().getCodeSource()
-                        .getLocation().toURI().getPath()).getParent() + "/MyShelfieSavedGames";
+                        .getLocation().toURI().getPath()).getParent() + "/MyShelfieSavedGames/";
         } catch (URISyntaxException e) {
             System.out.println("Impossible to read current path: using standard path for saved games.");
         }
@@ -392,7 +392,7 @@ public class Server {
                 }
             }
 
-            this.gameController.resumeGame(onlinePlayers, players, savedGames.get(gameName), Server.savedGamesPath + "\\" + gameName + ".json");
+            this.gameController.resumeGame(onlinePlayers, players, savedGames.get(gameName), Server.savedGamesPath + gameName + ".json");
             new Thread(() -> this.gameController.run(players.indexOf(savedGames.get(gameName).get("lastPlayer").getAsString()) + 1)).start();
         } else {
             // Saying other players that game is not available for them.
@@ -404,7 +404,7 @@ public class Server {
             }
 
             queue.removeIf(x -> queue.indexOf(x) >= availablePlayers);
-            this.gameController.createGame(queue, savedGamesPath + "\\" + gameName + ".json");
+            this.gameController.createGame(queue, savedGamesPath + gameName + ".json");
             new Thread(() -> this.gameController.run(0)).start();
         }
 

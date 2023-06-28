@@ -50,7 +50,7 @@ public class ConnectionControl {
         new Timer().schedule(new TimerTask() {
             @Override
             public void run() {
-                if (!gameConfigured) {
+                if (!gameConfigured && clientStatusMap.get(nickname) != null) {
                     getClientHandlerMap().get(nickname).sendError("Took too long to set... Please, try again.");
                     changePlayerStatus(nickname, false);
                     System.out.println("Took too long to set... disconnecting " + nickname + ".");
@@ -115,7 +115,7 @@ public class ConnectionControl {
         new Timer().schedule(new TimerTask() {
             @Override
             public void run() {
-                if (!gameConfigured) {
+                if (!gameConfigured && clientStatusMap.get(nickname) != null) {
                     getClientHandlerMap().get(nickname).sendError("Took too long to set... Please, try again.");
                     changePlayerStatus(nickname, false);
                     System.out.println("Took too long to set... disconnecting " + nickname);

@@ -96,7 +96,6 @@ public class GameController implements PropertyChangeListener {
 
     /**
      * Calls each player's turn until somebody completes his/her Bookshelf.
-     * If available players are less than two, stops the game and waits for their coming back for 60 seconds: if the timeout exceeds, ends the game.
      *
      * @param startFrom the position, in playersList array list, that indicates the first player that has to play.
      */
@@ -105,52 +104,9 @@ public class GameController implements PropertyChangeListener {
         int i = (startFrom >= playersList.size() ? 0 : startFrom);
 
         while (!winner) {
-            Timer timer = new Timer();
-
-            if (playersList.stream().filter(connectionControl::isOnline).count() < 2) {
-                System.out.println("Too many absents for this game.. waiting for players' returning in game.");
-                connectionControl.sendGameInterrupted();
-                timer.schedule(new TimerTask() {
-                    @Override
-                    public void run() {
-                        winner = true;
-                    }
-                }, timeOfReturning);
-
-                while (!winner) {
-                    if (playersList.stream().filter(connectionControl::isOnline).count() >= 2) {
-                        break;
-                    }
-
-                    try {
-                        Thread.sleep(timeOfSleep);
-                    } catch (InterruptedException e) {
-                        System.out.println("Sleep problem.");
-                        break;
-                    }
-                }
-
-                timer.cancel();
-
-                if (winner) {
-                    // Took too long! The winner is the remaining player (if it is still online!)
-                    System.out.println(endForTimeFinished);
-                    connectionControl.sendErrorToEveryone(endForTimeFinished);
-                    List<String> remained = playersList.stream().filter(connectionControl::isOnline).toList();
-
-                    if (remained.size() == 1) {
-                        System.out.println(oneWinnerEndPhrase + remained.get(0));
-                        LinkedHashMap<String, Integer> toBeSent = new LinkedHashMap<>();
-                        toBeSent.put(remained.get(0), gameModel.calcFinalScore().get(remained.get(0)));
-                        connectionControl.sendFinalScores(toBeSent);
-                    }
-
-                    connectionControl.onEndGame(gameFilePath);
-                    return;
-                } else {
-                    connectionControl.sendErrorToEveryone("Game is resuming...");
-                }
-            }
+            checkForNumberOfOnlinePlayers();
+            if (winner)
+                return;
             if (playersList.get(i).equals(currPlayer)) {
                 System.out.println("Going to the next player...");
                 i++;
@@ -175,6 +131,10 @@ public class GameController implements PropertyChangeListener {
      */
     public void runLastTurn(String nickname) {
         int i = playersList.indexOf(nickname) + 1;
+        winner = false;
+        checkForNumberOfOnlinePlayers();
+        if (winner)
+            return;
 
         while (i < playersList.size()) {
             playerTurn(i);
@@ -183,6 +143,57 @@ public class GameController implements PropertyChangeListener {
 
         connectionControl.sendFinalScores(gameModel.calcFinalScore());
         connectionControl.onEndGame(gameFilePath);
+    }
+
+    /**
+     * Called at the beginning of the turn of each player, checks if available players are less than two.
+     * In that case, stops the game and waits for their coming back for 60 seconds: if the timeout exceeds, ends the game.
+     */
+    private void checkForNumberOfOnlinePlayers() {
+        Timer timer = new Timer();
+        if (playersList.stream().filter(connectionControl::isOnline).count() < 2) {
+            System.out.println("Too many absents for this game.. waiting for players' returning in game.");
+            connectionControl.sendGameInterrupted();
+            timer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    winner = true;
+                }
+            }, timeOfReturning);
+
+            while (!winner) {
+                if (playersList.stream().filter(connectionControl::isOnline).count() >= 2) {
+                    break;
+                }
+                try {
+                    Thread.sleep(timeOfSleep);
+                } catch (InterruptedException e) {
+                    System.out.println("Sleep problem.");
+                    break;
+                }
+            }
+
+            timer.cancel();
+
+            if (winner) {
+                // Took too long! The winner is the remaining player (if it is still online!)
+                System.out.println(endForTimeFinished);
+                connectionControl.sendErrorToEveryone(endForTimeFinished);
+                List<String> remained = playersList.stream().filter(connectionControl::isOnline).toList();
+
+                if (remained.size() == 1) {
+                    System.out.println(oneWinnerEndPhrase + remained.get(0));
+                    LinkedHashMap<String, Integer> toBeSent = new LinkedHashMap<>();
+                    toBeSent.put(remained.get(0), gameModel.calcFinalScore().get(remained.get(0)));
+                    connectionControl.sendFinalScores(toBeSent);
+                }
+
+                connectionControl.onEndGame(gameFilePath);
+                return;
+            } else {
+                connectionControl.sendErrorToEveryone("Game is resuming...");
+            }
+        }
     }
 
     /**
