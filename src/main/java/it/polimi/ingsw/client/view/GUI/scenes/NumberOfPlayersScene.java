@@ -1,8 +1,6 @@
 package it.polimi.ingsw.client.view.GUI.scenes;
 
 import it.polimi.ingsw.client.controller.ClientController;
-import it.polimi.ingsw.client.exceptions.NotAskedException;
-import it.polimi.ingsw.client.exceptions.NotAvailableNameException;
 import it.polimi.ingsw.server.model.ItemCard;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -53,7 +51,13 @@ public class NumberOfPlayersScene extends GUIScene {
      * Form to select the number of players
      */
     public void submitAction() {
-        int players = Integer.parseInt(playersNum.getText());
+        int players;
+        try {
+            players = Integer.parseInt(playersNum.getText());
+        } catch (NumberFormatException e) {
+            printError("Error: insert a valid number of players");
+            return;
+        }
 
         if (players <= 0 || players >= 5) {
             printError("Error: insert a valid number of players");
@@ -67,10 +71,6 @@ public class NumberOfPlayersScene extends GUIScene {
                 try {
                     //submitButton.setDisable(true);
                     clientController.setPlayersNumber(players, gameName.getText());
-                } catch (NotAskedException e) {
-                    printError("Input not recognised... it's not time to set game's name.");
-                } catch (NotAvailableNameException e) {
-                    printError("Name you want to set is not available, please try again.");
                 } catch (Exception e) {
                     printError("Impossible to connect to the server");
                 }

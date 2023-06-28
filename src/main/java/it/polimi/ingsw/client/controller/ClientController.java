@@ -5,9 +5,6 @@ import com.google.gson.reflect.TypeToken;
 import it.polimi.ingsw.client.connection.ConnectionClient;
 import it.polimi.ingsw.client.connection.ConnectionRMI;
 import it.polimi.ingsw.client.connection.ConnectionSocket;
-import it.polimi.ingsw.client.exceptions.NotAskedException;
-import it.polimi.ingsw.client.exceptions.NotAvailableNameException;
-import it.polimi.ingsw.client.exceptions.NotExistingGameException;
 import it.polimi.ingsw.client.view.CLI;
 import it.polimi.ingsw.client.view.GUI.GUI;
 import it.polimi.ingsw.client.view.View;
@@ -397,12 +394,12 @@ public class ClientController {
      */
     public void setPlayersNumber(int players, String gameName) throws Exception {
         if ((notAvailableNames.contains(gameName)) || gameName.contains(".")) {
-            throw new NotAvailableNameException();
+            view.printError("Name you want to set is not available, please try again.");
+        } else {
+            printWaitingForGame();
+            selectNumberOfPlayers = false;
+            connectionClient.setPlayersNumber(players, gameName);
         }
-        printWaitingForGame();
-        selectNumberOfPlayers = false;
-        connectionClient.setPlayersNumber(players, gameName);
-
     }
 
     /**
@@ -410,9 +407,7 @@ public class ClientController {
      * so it is waiting for enough people to start
      */
     public void printWaitingForGame() {
-
         view.printLobby();
-
     }
 
     /**
@@ -424,16 +419,16 @@ public class ClientController {
      */
     public void setSavedGame(boolean wantToSave, String gameName) throws Exception {
         if (!selectSavedGame) {
-            throw new NotAskedException();
+            view.printError("Input not recognised... it's not time to set saved games.");
+        } else {
+            if ((wantToSave) && (!savedGames.contains(gameName))) {
+                view.printError("The game you wrote doesn't exist: try again.");
+            } else {
+                printWaitingForGame();
+                selectSavedGame = false;
+                connectionClient.setSavedGame(wantToSave, gameName);
+            }
         }
-
-        if ((wantToSave) && (!savedGames.contains(gameName))) {
-            throw new NotExistingGameException();
-        }
-        printWaitingForGame();
-        selectSavedGame = false;
-        connectionClient.setSavedGame(wantToSave, gameName);
-
     }
 
     /**

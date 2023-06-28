@@ -6,6 +6,8 @@ import it.polimi.ingsw.server.model.comGoals.ComGoal;
 import java.util.ArrayList;
 import java.util.List;
 
+import static it.polimi.ingsw.utils.Utils.BOOKSHELF_LENGTH;
+
 /**
  * Define the player characteristics
  */
@@ -15,7 +17,6 @@ public class Player {
     private int score;
     private PersGoal persGoal;
     private final ArrayList<Integer> comGoalsReached;
-    private final static int BOOKSHELF_LENGTH = 5;
 
     /**
      * The constructor of the class initializes the player's bookshelf and common goals reached.

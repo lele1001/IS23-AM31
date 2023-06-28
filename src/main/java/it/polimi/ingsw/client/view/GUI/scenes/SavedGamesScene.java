@@ -1,8 +1,6 @@
 package it.polimi.ingsw.client.view.GUI.scenes;
 
 import it.polimi.ingsw.client.controller.ClientController;
-import it.polimi.ingsw.client.exceptions.NotAskedException;
-import it.polimi.ingsw.client.exceptions.NotExistingGameException;
 import it.polimi.ingsw.server.model.ItemCard;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -79,10 +77,6 @@ public class SavedGamesScene extends GUIScene {
     private void sendSavedGames(boolean val, String name) {
         try {
             clientController.setSavedGame(val, name);
-        } catch (NotAskedException e) {
-            printError("Input not recognised... it's not time to set saved games.");
-        } catch (NotExistingGameException e) {
-            printError("The game you wrote doesn't exist: try again.");
         } catch (Exception e) {
             printError("Impossible to connect to the server.");
         }

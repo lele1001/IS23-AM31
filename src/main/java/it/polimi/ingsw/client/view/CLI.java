@@ -2,9 +2,6 @@ package it.polimi.ingsw.client.view;
 
 import it.polimi.ingsw.client.controller.ClientController;
 import it.polimi.ingsw.client.controller.InputController;
-import it.polimi.ingsw.client.exceptions.NotAskedException;
-import it.polimi.ingsw.client.exceptions.NotAvailableNameException;
-import it.polimi.ingsw.client.exceptions.NotExistingGameException;
 import it.polimi.ingsw.server.controller.TurnPhase;
 import it.polimi.ingsw.server.model.HouseItem;
 import it.polimi.ingsw.server.model.ItemCard;
@@ -107,13 +104,8 @@ public class CLI implements View {
                             if (players != -1) {
                                 try {
                                     clientController.setPlayersNumber(players, splitString[2]);
-                                } catch (NotAskedException e) {
-                                    System.out.println("Input not recognised... it's not time to set game's name.");
-                                } catch (NotAvailableNameException e) {
-                                    System.out.println("Name you want to set is not available, please try again.");
                                 } catch (Exception e) {
                                     System.out.println("Impossible to connect to the server");
-                                    e.printStackTrace();
                                 }
                             }
                         } else {
@@ -121,19 +113,18 @@ public class CLI implements View {
                         }
                     }
                     case "@savedgame" -> {
-                        try {
-                            if (splitString[1].equalsIgnoreCase("n") || splitString[1].equalsIgnoreCase("no"))
-                                clientController.setSavedGame(false, null);
-                            else {
-                                clientController.setSavedGame(true, splitString[1]);
+                        if (splitString.length != 2)
+                            printError("Input not recognised... try again.");
+                        else
+                            try {
+                                if (splitString[1].equalsIgnoreCase("n") || splitString[1].equalsIgnoreCase("no"))
+                                    clientController.setSavedGame(false, null);
+                                else {
+                                    clientController.setSavedGame(true, splitString[1]);
+                                }
+                            } catch (Exception e) {
+                                System.out.println("Impossible to connect to the server.");
                             }
-                        } catch (NotAskedException e) {
-                            System.out.println("Input not recognised... it's not time to set saved games.");
-                        } catch (NotExistingGameException e) {
-                            System.out.println("The game you wrote doesn't exist: try again.");
-                        } catch (Exception e) {
-                            System.out.println("Impossible to connect to the server.");
-                        }
                     }
                     case "@menu" -> {
                         if (clientController.isGameStarted()) {
@@ -662,7 +653,7 @@ public class CLI implements View {
      */
     @Override
     public synchronized void printError(String error) {
-        System.out.println((char) 27 + "[0;39m" + error);
+        System.err.println(error);
     }
 
     /**

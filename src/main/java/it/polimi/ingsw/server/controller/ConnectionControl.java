@@ -53,6 +53,7 @@ public class ConnectionControl {
                 if (!gameConfigured) {
                     getClientHandlerMap().get(nickname).sendError("Took too long to set... Please, try again.");
                     changePlayerStatus(nickname, false);
+                    System.out.println("Took too long to set... disconnecting " + nickname + ".");
                 }
             }
         }, Utils.timeOfReturning);
@@ -117,6 +118,7 @@ public class ConnectionControl {
                 if (!gameConfigured) {
                     getClientHandlerMap().get(nickname).sendError("Took too long to set... Please, try again.");
                     changePlayerStatus(nickname, false);
+                    System.out.println("Took too long to set... disconnecting " + nickname);
                 }
             }
         }, Utils.timeOfReturning);
