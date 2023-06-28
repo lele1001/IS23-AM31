@@ -21,22 +21,25 @@ public class CLI implements View {
     final ClientController clientController;
     String username, address;
     int port = -1, select = -1;
+    boolean disconnected=false;
 
     /**
      * Prints the MyShelfie Logo
      */
     private void printLogo() {
-        System.out.println(" __       __  __      __         ______   __    __  ________  __        ________  ______  ________ \n" +
-                "/  \\     /  |/  \\    /  |       /      \\ /  |  /  |/        |/  |      /        |/      |/        |\n" +
-                "$$  \\   /$$ |$$  \\  /$$/       /$$$$$$  |$$ |  $$ |$$$$$$$$/ $$ |      $$$$$$$$/ $$$$$$/ $$$$$$$$/ \n" +
-                "$$$  \\ /$$$ | $$  \\/$$/        $$ \\__$$/ $$ |__$$ |$$ |__    $$ |      $$ |__      $$ |  $$ |__    \n" +
-                "$$$$  /$$$$ |  $$  $$/         $$      \\ $$    $$ |$$    |   $$ |      $$    |     $$ |  $$    |   \n" +
-                "$$ $$ $$/$$ |   $$$$/           $$$$$$  |$$$$$$$$ |$$$$$/    $$ |      $$$$$/      $$ |  $$$$$/    \n" +
-                "$$ |$$$/ $$ |    $$ |          /  \\__$$ |$$ |  $$ |$$ |_____ $$ |_____ $$ |       _$$ |_ $$ |_____ \n" +
-                "$$ | $/  $$ |    $$ |          $$    $$/ $$ |  $$ |$$       |$$       |$$ |      / $$   |$$       |\n" +
-                "$$/      $$/     $$/            $$$$$$/  $$/   $$/ $$$$$$$$/ $$$$$$$$/ $$/       $$$$$$/ $$$$$$$$/ \n" +
-                "                                                                                                   \n" +
-                "__________________________________________________________________________________________________\n");
+        System.out.println("""
+                 __       __  __      __         ______   __    __  ________  __        ________  ______  ________\s
+                /  \\     /  |/  \\    /  |       /      \\ /  |  /  |/        |/  |      /        |/      |/        |
+                $$  \\   /$$ |$$  \\  /$$/       /$$$$$$  |$$ |  $$ |$$$$$$$$/ $$ |      $$$$$$$$/ $$$$$$/ $$$$$$$$/\s
+                $$$  \\ /$$$ | $$  \\/$$/        $$ \\__$$/ $$ |__$$ |$$ |__    $$ |      $$ |__      $$ |  $$ |__   \s
+                $$$$  /$$$$ |  $$  $$/         $$      \\ $$    $$ |$$    |   $$ |      $$    |     $$ |  $$    |  \s
+                $$ $$ $$/$$ |   $$$$/           $$$$$$  |$$$$$$$$ |$$$$$/    $$ |      $$$$$/      $$ |  $$$$$/   \s
+                $$ |$$$/ $$ |    $$ |          /  \\__$$ |$$ |  $$ |$$ |_____ $$ |_____ $$ |       _$$ |_ $$ |_____\s
+                $$ | $/  $$ |    $$ |          $$    $$/ $$ |  $$ |$$       |$$       |$$ |      / $$   |$$       |
+                $$/      $$/     $$/            $$$$$$/  $$/   $$/ $$$$$$$$/ $$$$$$$$/ $$/       $$$$$$/ $$$$$$$$/\s
+                                                                                                                  \s
+                __________________________________________________________________________________________________
+                """);
     }
 
 
@@ -71,14 +74,19 @@ public class CLI implements View {
      */
     public CLI(ClientController clientController, int port, String conn) {
         this.clientController = clientController;
+        printLogo();
         clientController.setView(this);
         checkInput = new InputController(clientController);
 
         // Asks the username
         do {
-            System.out.print("Select Username: ");
+            System.out.print(grey + "Select Username: ");
             if (in.hasNext()) {
                 username = in.next();
+                if(username.length()>maxNameLength){
+                    System.out.println( red+"Name too long (max 18 characters)");
+                    username="";
+                }
             }
         } while (username.equals(""));
 
@@ -200,9 +208,13 @@ public class CLI implements View {
     private void askLoginParameters() {
         // Asks the username
         do {
-            System.out.print("Select Username: ");
+            System.out.print(grey+"Select Username: ");
             if (in.hasNext()) {
                 username = in.next();
+                if(username.length()>maxNameLength){
+                    System.out.println(red+"Name too long (max 18 characters)");
+                    username="";
+                }
             }
         } while (username.equals(""));
 
@@ -213,27 +225,30 @@ public class CLI implements View {
                 select = in.nextInt();
             } else if (in.hasNextLine()) {
                 in.nextLine();
-                System.out.println("Input error");
+                System.out.println(red+"Input error");
             }
         } while (select != 0 && select != 1);
 
         // Asks the IP
         in.nextLine();
         do {
-            System.out.print("Select Ip Address: ");
+            System.out.print(grey+"Select Ip Address: ");
             if (in.hasNext()) {
                 address = in.next();
+                if(!checkInput.isValidInet4Address(address)){
+                    System.out.println(red+"Input error");
+                }
             }
         } while (address.equals("") || !checkInput.isValidInet4Address(address));
 
         // Asks the port
         do {
-            System.out.print("Select Ip Port: ");
+            System.out.print(grey+"Select Ip Port: ");
             if (in.hasNextInt()) {
                 port = in.nextInt();
             } else if (in.hasNextLine()) {
                 in.nextLine();
-                System.out.println("Input error");
+                System.out.println(red+"Input error");
             }
         } while (port == -1);
 
@@ -257,7 +272,7 @@ public class CLI implements View {
      */
     @Override
     public synchronized void printAskPlayerNumber() {
-        System.out.println((char) 27 + "[0;39m" + "Write @PLAYERS followed by the number of players and a name for this game.");
+        System.out.println(grey + "Write @PLAYERS followed by the number of players and a name for this game.");
         System.out.println("Please, remember it in case of server crash (you can resume the game typing its name.)");
     }
 
@@ -285,7 +300,7 @@ public class CLI implements View {
     @Override
     public synchronized void printStartGame() {
         synchronized (this) {
-            System.out.print((char) 27 + "[0;39m" + "Welcome " + clientController.getMyNickname() + "! ");
+            System.out.print(grey + "Welcome " + clientController.getMyNickname() + "! ");
             System.out.println("play in a " + clientController.getPlayersBookshelves().keySet().size() + " players game.");
             System.out.println("Type @MENU to see the game menu.\n");
         }
@@ -295,7 +310,7 @@ public class CLI implements View {
      * Prints a menu on the screen to let the user choose what to do next
      */
     private synchronized void printMenu() {
-        System.out.println((char) 27 + "[0;39m" + "GAME MENU: type the corresponding command \n\t@MENU to show again this menu \n\t@COMGOAL to print the Common Goal of this game \n\t@PERSGOAL to print your Personal Goal \n\t@SCORE to print your score \n\t@BOARD to print the game board \n\t@TAKE to choose from 1 to 3 tiles from the board, followed by their coordinates (xy) of the chosen tiles \n\t@MYSHELF to print you bookshelf \n\t@ALLSHELVES to print the bookshelf of all the players \n\t@PUT to choose a column for putting the cards, followed by the column number and the board coordinates of the tiles (from bottom to top) \n\t@CHAT to open the chat, followed by the nickname/all and the message \n\t@QUIT to exit from the game");
+        System.out.println(grey + "GAME MENU: type the corresponding command \n\t@MENU to show again this menu \n\t@COMGOAL to print the Common Goal of this game \n\t@PERSGOAL to print your Personal Goal \n\t@SCORE to print your score \n\t@BOARD to print the game board \n\t@TAKE to choose from 1 to 3 tiles from the board, followed by their coordinates (xy) of the chosen tiles \n\t@MYSHELF to print you bookshelf \n\t@ALLSHELVES to print the bookshelf of all the players \n\t@PUT to choose a column for putting the cards, followed by the column number and the board coordinates of the tiles (from bottom to top) \n\t@CHAT to open the chat, followed by the nickname/all and the message \n\t@QUIT to exit from the game");
     }
 
     /**
@@ -306,9 +321,9 @@ public class CLI implements View {
     @Override
     public void onChangeTurn(String currPlayer) {
         if (currPlayer.equals(username)) {
-            print((char) 27 + "[0;39m" + "It is your turn\n");
+            print(grey + "It is your turn\n");
         } else {
-            print((char) 27 + "[0;39m" + "It is " + currPlayer + "'s turn\n");
+            print(grey+ "It is " + currPlayer + "'s turn\n");
         }
     }
 
@@ -318,7 +333,7 @@ public class CLI implements View {
      */
     @Override
     public void onSelect() {
-        print((char) 27 + "[0;39m" + "Type @TAKE to choose from 1 to 3 tiles from the board, followed by their coordinates (xy)");
+        print(grey+ "Type @TAKE to choose from 1 to 3 tiles from the board, followed by their coordinates (xy)");
         printBoard(clientController.getBoard());
     }
 
@@ -350,9 +365,9 @@ public class CLI implements View {
 
         for (Integer i : selectedTiles.keySet()) {
             char itemChar = selectedTiles.get(i).getMyItem().toString().charAt(0);
-            System.out.print((char) 27 + "[0;39m" + "(");
-            System.out.print((char) 27 + chooseColorCode(itemChar) + itemChar);
-            System.out.print((char) 27 + "[0;39m" + " - " + i + ")");
+            System.out.print(grey+ "(");
+            System.out.print(chooseColorCode(itemChar) + itemChar);
+            System.out.print(grey + " - " + i + ")");
 
             if (cardNumber > 1) {
                 System.out.print(" and ");
@@ -369,7 +384,7 @@ public class CLI implements View {
      */
     @Override
     public void onInsert() {
-        print((char) 27 + "[0;39m" + "Type @PUT followed by the column number and the board coordinates of the tiles (from bottom to top)");
+        print(grey + "Type @PUT followed by the column number and the board coordinates of the tiles (from bottom to top)");
         printSelectedTiles(clientController.getSelectedTiles());
         printPersGoal(clientController.getMyPersGoal(), clientController.getPersGoalValue());
         printBookshelf(clientController.getPlayersBookshelves().get(clientController.getMyNickname()), clientController.getMyNickname());
@@ -406,7 +421,7 @@ public class CLI implements View {
      */
     @Override
     public synchronized void printBoard(ItemCard[][] board) {
-        System.out.println((char) 27 + "[0;39m" + "    0   1   2   3   4   5   6   7   8");
+        System.out.println(grey + "    0   1   2   3   4   5   6   7   8");
         printMatrix(board, DIM_BOARD, DIM_BOARD);
     }
 
@@ -426,10 +441,38 @@ public class CLI implements View {
      * @param bookshelves contains the nickname of the player and its bookshelf
      */
     private synchronized void printBookshelves(Map<String, ItemCard[][]> bookshelves) {
-        if (!bookshelves.isEmpty()) {
+        /*if (!bookshelves.isEmpty()) {
             for (String s : bookshelves.keySet()) {
                 printBookshelf(bookshelves.get(s), s);
             }
+        }*/
+        System.out.println();
+        for (String s : bookshelves.keySet()) {
+            System.out.print(s+"'s bookshelf");
+            for(int i=0;i<18-s.length();i++){
+                System.out.print(" ");
+            }
+        }
+        System.out.println();
+        if (!bookshelves.isEmpty()) {
+            for (int i=0;i< bookshelves.keySet().size();i++) {
+                System.out.print("    0   1   2   3   4         ");
+            }
+            System.out.println();
+            for (int i = 0; i < BOOKSHELF_HEIGHT; i++) {
+                for (String s : bookshelves.keySet()) {
+                    for (int j = 0; j < BOOKSHELF_LENGTH; j++) {
+                        if (j == 0) {
+                            System.out.print(grey+ i + " | ");
+                        }
+
+                        printCell(bookshelves.get(s), i, j);
+                    }
+                    System.out.print("      ");
+                }
+                System.out.println();
+            }
+
         }
     }
 
@@ -441,14 +484,9 @@ public class CLI implements View {
      */
     @Override
     public synchronized void printBookshelf(ItemCard[][] bookshelf, String nickname) {
-        System.out.println((char) 27 + "[0;39m" + nickname + "'s bookshelf:");
-        if (bookshelf != null) {
-            System.out.println("    0   1   2   3   4");
-            printMatrix(bookshelf, BOOKSHELF_HEIGHT, BOOKSHELF_LENGTH);
-        } else {
-            System.out.println("    0   1   2   3   4");
-            printMatrix(new ItemCard[BOOKSHELF_HEIGHT][BOOKSHELF_LENGTH], BOOKSHELF_HEIGHT, BOOKSHELF_LENGTH);
-        }
+        System.out.println(grey + nickname + "'s bookshelf:");
+        System.out.println("    0   1   2   3   4");
+        printMatrix(Objects.requireNonNullElseGet(bookshelf, () -> new ItemCard[BOOKSHELF_HEIGHT][BOOKSHELF_LENGTH]), BOOKSHELF_HEIGHT, BOOKSHELF_LENGTH);
     }
 
     /**
@@ -473,7 +511,7 @@ public class CLI implements View {
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < length; j++) {
                 if (j == 0) {
-                    System.out.print((char) 27 + "[0;39m" + i + " | ");
+                    System.out.print(grey + i + " | ");
                 }
 
                 printCell(matrix, i, j);
@@ -494,11 +532,11 @@ public class CLI implements View {
         if (matrix[i][j] != null) {
             char itemChar = matrix[i][j].getMyItem().toString().charAt(0);
 
-            System.out.print((char) 27 + chooseColorCode(itemChar) + itemChar);
-            System.out.print((char) 27 + "[0;39m" + " | ");
+            System.out.print(chooseColorCode(itemChar) + itemChar);
+            System.out.print(grey + " | ");
         } else {
             System.out.print(" ");
-            System.out.print((char) 27 + "[0;39m" + " | ");
+            System.out.print(grey + " | ");
         }
     }
 
@@ -510,26 +548,19 @@ public class CLI implements View {
      */
     private String chooseColorCode(char itemChar) {
         if (itemChar == 'C') {
-            // Cats are green
-            return "[1;92m";
+            return green;
         } else if (itemChar == 'F') {
-            // Frames are blue
-            return "[1;94m";
+            return blue;
         } else if (itemChar == 'G') {
-            // Games are yellow
-            return "[1;93m";
+            return yellow;
         } else if (itemChar == 'B') {
-            // Books are white
-            return "[1;97m";
+            return white;
         } else if (itemChar == 'P') {
-            // Plants are purple
-            return "[1;95m";
+            return purple;
         } else if (itemChar == 'T') {
-            // Trophies are cyan
-            return "[1;96m";
+            return cyan;
         } else {
-            // Default color
-            return "[0;39m";
+            return grey;
         }
     }
 
@@ -542,7 +573,7 @@ public class CLI implements View {
     public synchronized void printCommonGoal(Map<Integer, Integer> playerComGoal) {
         if (!playerComGoal.isEmpty()) {
             for (Integer i : playerComGoal.keySet()) {
-                System.out.println((char) 27 + "[0;39m" + "Common Goal number " + i + ": ");
+                System.out.println(grey + "Common Goal number " + i + ": ");
                 System.out.println(Utils.comGoalDescription.valueOf("comGoal" + i).getDescription());
                 System.out.println("The maximum available score for this card is " + playerComGoal.get(i) + ".\n");
             }
@@ -568,7 +599,7 @@ public class CLI implements View {
      */
     @Override
     public synchronized void printPersGoal(Map<Integer, HouseItem> myPersGoal, String newValue) {
-        System.out.println((char) 27 + "[0;39m" + "Your personal goal is: ");
+        System.out.println(grey + "Your personal goal is: ");
         System.out.println("    0   1   2   3   4");
 
         for (int i = 0; i < BOOKSHELF_HEIGHT; i++) {
@@ -576,17 +607,17 @@ public class CLI implements View {
                 int k = i * 10 + j;
 
                 if (j == 0) {
-                    System.out.print((char) 27 + "[39m" + i + " | ");
+                    System.out.print(grey + i + " | ");
                 }
 
                 if (myPersGoal.containsKey(k)) {
                     char itemChar = myPersGoal.get(k).toString().charAt(0);
 
-                    System.out.print((char) 27 + chooseColorCode(itemChar) + itemChar);
+                    System.out.print(chooseColorCode(itemChar) + itemChar);
                 } else {
                     System.out.print(" ");
                 }
-                    System.out.print((char) 27 + "[39m" + " | ");
+                    System.out.print(grey + " | ");
 
             }
 
@@ -603,7 +634,7 @@ public class CLI implements View {
      */
     @Override
     public synchronized void printPoints(int myPoint) {
-        System.out.println((char) 27 + "[0;39m" + "You currently have " + myPoint + " points.");
+        System.out.println(grey + "You currently have " + myPoint + " points.");
     }
 
     /**
@@ -678,8 +709,11 @@ public class CLI implements View {
      */
     @Override
     public void disconnectionError() {
-        System.out.println("\nPress ENTER to exit");
-        in.nextLine();
+        if(!disconnected) {
+            disconnected=true;
+            System.out.println("\nPress ENTER to exit");
+            in.nextLine();
+        }
         System.exit(1);
     }
 
@@ -703,7 +737,10 @@ public class CLI implements View {
     @Override
     public void disconnectMe() {
         stopListening = true;
-        System.out.println((char) 27 + "[0;39m" + "You are being disconnected from the server, please press ENTER to exit");
+        if(!disconnected) {
+            disconnected = true;
+            System.out.println(grey + "You are being disconnected from the server, please press ENTER to exit");
+        }
     }
 
     /**

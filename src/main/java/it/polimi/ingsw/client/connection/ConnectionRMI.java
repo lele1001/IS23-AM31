@@ -11,6 +11,8 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.*;
 
+import static it.polimi.ingsw.utils.Utils.pingTimer;
+
 /**
  * Implementation of Clients RMI connection
  */
@@ -47,7 +49,7 @@ public class ConnectionRMI extends ConnectionClient implements RMIClientConnecti
                 ping();
             }
         };
-        timer.scheduleAtFixedRate(task, 0, 5000);
+        timer.scheduleAtFixedRate(task, 0, pingTimer);
         System.out.println("Connection established.");
         server.login(getController().getMyNickname(), this);
     }

@@ -100,11 +100,10 @@ public class InputController {
      * @return false if the position is correct
      */
     private boolean checkPosition(int coord) {
-        if (Position.getRow(coord) < DIM_BOARD || Position.getColumn(coord) < DIM_BOARD) {
+        if (Position.getRow(coord) < DIM_BOARD && Position.getColumn(coord) < DIM_BOARD) {
             coords.add(coord);
             return false;
         }
-
         clientController.onError("The requested cell does not exists!");
         return true;
     }
@@ -208,8 +207,12 @@ public class InputController {
             return null;
         }
 
-        if (input.length != clientController.getSelectedTiles().size() + 2) {
+        if (input.length > clientController.getSelectedTiles().size() + 2) {
             clientController.onError("You are trying to put more cards than expected!");
+            return null;
+        }
+        if (input.length < clientController.getSelectedTiles().size() + 2) {
+            clientController.onError("Some elements of the request are missing");
             return null;
         }
 
@@ -254,7 +257,7 @@ public class InputController {
 
         }
 
-        if (!clientController.getSelectedTiles().keySet().containsAll(coords)) {
+        if (!coords.containsAll(clientController.getSelectedTiles().keySet())) {
             clientController.onError("Wrong tiles selected");
             return null;
         }
