@@ -12,6 +12,9 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.*;
 
+import static it.polimi.ingsw.utils.Utils.maxTimer;
+import static it.polimi.ingsw.utils.Utils.pingTimer;
+
 /**
  * Extension of Client Handler for Socket TCP connections
  */
@@ -67,7 +70,7 @@ public class ClientHandlerSocket extends ClientHandler implements Runnable {
             public void run() {
                 isConnected = false;
             }
-        }, 10000);
+        }, maxTimer);
 
         if (!connectionControl.tryAddInQueue(this, nickname)) {
             // Game is not available.
@@ -87,7 +90,7 @@ public class ClientHandlerSocket extends ClientHandler implements Runnable {
             public void run() {
                 send(generateStandardMessage("ping", null));
             }
-        }, 0, 5000);
+        }, 0, pingTimer);
     }
 
     /**
@@ -256,7 +259,7 @@ public class ClientHandlerSocket extends ClientHandler implements Runnable {
                             public void run() {
                                 isConnected = false;
                             }
-                        }, 10000);
+                        }, maxTimer);
                     }
                     default -> System.out.println("Unknown message from client.");
                 }

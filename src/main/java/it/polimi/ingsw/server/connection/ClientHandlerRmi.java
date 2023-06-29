@@ -6,6 +6,8 @@ import it.polimi.ingsw.commons.ItemCard;
 
 import java.rmi.RemoteException;
 import java.util.*;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 import static it.polimi.ingsw.utils.Utils.pingTimer;
 
@@ -15,6 +17,8 @@ import static it.polimi.ingsw.utils.Utils.pingTimer;
 public class ClientHandlerRmi extends ClientHandler {
     final RMIClientConnection client;
     final Timer timer = new Timer();
+    private boolean isConnected = true;
+    private final BlockingQueue<Runnable> queue = new LinkedBlockingQueue<>();
 
     //Requires the client interface reference as an attribute
 
@@ -36,6 +40,24 @@ public class ClientHandlerRmi extends ClientHandler {
             }
         };
         timer.scheduleAtFixedRate(task, 0, pingTimer);
+        new Thread(this::send).start();
+    }
+
+    public void send() {
+        while (!Thread.currentThread().isInterrupted()) {
+            try {
+                if (isConnected)
+                    queue.take().run();
+                else {
+                    queue.clear();
+                    break;
+                }
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                connectionControl.changePlayerStatus(nickname, true);
+                timer.cancel();
+            }
+        }
     }
 
     /**
@@ -48,6 +70,7 @@ public class ClientHandlerRmi extends ClientHandler {
             //If it disconnects
             connectionControl.changePlayerStatus(nickname, true);
             timer.cancel();
+            isConnected = false;
         }
 
     }
@@ -57,13 +80,14 @@ public class ClientHandlerRmi extends ClientHandler {
      */
     @Override
     public void askPlayerNumber(List<String> notAvailableNames) {
-        // chiedo il numero di giocatori
-        try {
-            client.onPlayerNumber(notAvailableNames);
-        } catch (RemoteException e) {
-            System.out.println("Impossible to ask " + nickname + " the player number");
-        }
-
+        queue.add(() -> {
+            // chiedo il numero di giocatori
+            try {
+                client.onPlayerNumber(notAvailableNames);
+            } catch (RemoteException e) {
+                System.out.println("Impossible to ask " + nickname + " the player number");
+            }
+        });
     }
 
     /**
@@ -73,11 +97,13 @@ public class ClientHandlerRmi extends ClientHandler {
      */
     @Override
     public void sendPlayerTurn(String playerName) {
-        try {
-            client.onChangeTurn(playerName);
-        } catch (RemoteException e) {
-            System.out.println("impossible to send to " + nickname + "the change of turn");
-        }
+        queue.add(() -> {
+            try {
+                client.onChangeTurn(playerName);
+            } catch (RemoteException e) {
+                System.out.println("impossible to send to " + nickname + "the change of turn");
+            }
+        });
     }
 
     /**
@@ -85,12 +111,16 @@ public class ClientHandlerRmi extends ClientHandler {
      */
     @Override
     public void disconnectPlayer() {
-        try {
-            timer.cancel();
-            client.disconnectMe();
-        } catch (RemoteException e) {
-            System.out.println("Impossible to disconnect the player " + nickname);
-        }
+        queue.add(() -> {
+            if (isConnected) {
+                try {
+                    timer.cancel();
+                    client.disconnectMe();
+                } catch (RemoteException e) {
+                    System.out.println("Impossible to disconnect the player " + nickname);
+                }
+            }
+        });
     }
 
     /**
@@ -98,12 +128,14 @@ public class ClientHandlerRmi extends ClientHandler {
      */
     @Override
     public void askSelect() {
-        //chiama il metodo sul client
-        try {
-            client.onSelect();
-        } catch (RemoteException e) {
-            System.out.println("Impossible to ask to " + nickname + " to select");
-        }
+        queue.add(() -> {
+            //chiama il metodo sul client
+            try {
+                client.onSelect();
+            } catch (RemoteException e) {
+                System.out.println("Impossible to ask to " + nickname + " to select");
+            }
+        });
     }
 
     /**
@@ -111,11 +143,13 @@ public class ClientHandlerRmi extends ClientHandler {
      */
     @Override
     public void askInsert() {
-        try {
-            client.onInsert();
-        } catch (RemoteException e) {
-            System.out.println("Impossible to ask to " + nickname + " to insert the cards");
-        }
+        queue.add(() -> {
+            try {
+                client.onInsert();
+            } catch (RemoteException e) {
+                System.out.println("Impossible to ask to " + nickname + " to insert the cards");
+            }
+        });
     }
 
     /**
@@ -125,12 +159,14 @@ public class ClientHandlerRmi extends ClientHandler {
      */
     @Override
     public void sendError(String error) {
-        try {
-            client.onError(error);
-        } catch (RemoteException e) {
-            System.out.print("Impossible to send to " + nickname + "the error: ");
-            System.out.println(error);
-        }
+        queue.add(() -> {
+            try {
+                client.onError(error);
+            } catch (RemoteException e) {
+                System.out.print("Impossible to send to " + nickname + "the error: ");
+                System.out.println(error);
+            }
+        });
     }
 
     /**
@@ -141,11 +177,13 @@ public class ClientHandlerRmi extends ClientHandler {
      */
     @Override
     public void SendBookshelfChanged(String playerName, ItemCard[][] newBookshelf) {
-        try {
-            client.onBookshelfChanged(playerName, newBookshelf);
-        } catch (RemoteException e) {
-            System.out.println("Impossible to send to" + nickname + "the modified bookshelf");
-        }
+        queue.add(() -> {
+            try {
+                client.onBookshelfChanged(playerName, newBookshelf);
+            } catch (RemoteException e) {
+                System.out.println("Impossible to send to" + nickname + "the modified bookshelf");
+            }
+        });
     }
 
     /**
@@ -157,11 +195,13 @@ public class ClientHandlerRmi extends ClientHandler {
      */
     @Override
     public void sendBookshelfRenewed(String nickname, ItemCard[] tilesToAdd, int column) {
-        try {
-            client.onBookshelfRenewed(tilesToAdd, column, nickname);
-        } catch (RemoteException e) {
-            System.out.println("Impossible to send bookshelf's update to " + this.nickname);
-        }
+        queue.add(() -> {
+            try {
+                client.onBookshelfRenewed(tilesToAdd, column, nickname);
+            } catch (RemoteException e) {
+                System.out.println("Impossible to send bookshelf's update to " + this.nickname);
+            }
+        });
     }
 
     /**
@@ -172,11 +212,13 @@ public class ClientHandlerRmi extends ClientHandler {
      */
     @Override
     public void SendCommonGoalDone(String source, int[] details) {
-        try {
-            client.onCommonGoalDone(source, details);
-        } catch (RemoteException e) {
-            System.out.println("Impossible to send to " + nickname + " the commonGoal done");
-        }
+        queue.add(() -> {
+            try {
+                client.onCommonGoalDone(source, details);
+            } catch (RemoteException e) {
+                System.out.println("Impossible to send to " + nickname + " the commonGoal done");
+            }
+        });
     }
 
     /**
@@ -186,11 +228,13 @@ public class ClientHandlerRmi extends ClientHandler {
      */
     @Override
     public void SendPersGoalCreated(String persGoal) {
-        try {
-            client.onPersGoalCreated(persGoal);
-        } catch (RemoteException e) {
-            System.out.println("Impossible to send to " + nickname + " the personalGoal created");
-        }
+        queue.add(() -> {
+            try {
+                client.onPersGoalCreated(persGoal);
+            } catch (RemoteException e) {
+                System.out.println("Impossible to send to " + nickname + " the personalGoal created");
+            }
+        });
     }
 
     /**
@@ -201,11 +245,13 @@ public class ClientHandlerRmi extends ClientHandler {
      */
     @Override
     public void SendCommonGoalCreated(Integer comGoalID, Integer score) {
-        try {
-            client.onCommonGoalCreated(comGoalID, score);
-        } catch (RemoteException e) {
-            System.out.println("Impossible to send to " + nickname + " the CommonGoal created");
-        }
+        queue.add(() -> {
+            try {
+                client.onCommonGoalCreated(comGoalID, score);
+            } catch (RemoteException e) {
+                System.out.println("Impossible to send to " + nickname + " the CommonGoal created");
+            }
+        });
     }
 
     /**
@@ -215,11 +261,13 @@ public class ClientHandlerRmi extends ClientHandler {
      */
     @Override
     public void SendBoardChanged(ItemCard[][] newBoard) {
-        try {
-            client.onBoardChanged(newBoard);
-        } catch (RemoteException e) {
-            System.out.println("Impossible to send to " + nickname + " the modified board");
-        }
+        queue.add(() -> {
+            try {
+                client.onBoardChanged(newBoard);
+            } catch (RemoteException e) {
+                System.out.println("Impossible to send to " + nickname + " the modified board");
+            }
+        });
     }
 
     /**
@@ -229,12 +277,13 @@ public class ClientHandlerRmi extends ClientHandler {
      */
     @Override
     public void sendBoardRenewed(Integer[] tilesToRemove) {
-        try {
-            client.onBoardRenewed(tilesToRemove);
-        } catch (RemoteException e) {
-            System.out.println("Impossible to send to " + nickname + " the modified board.");
-        }
-
+        queue.add(() -> {
+            try {
+                client.onBoardRenewed(tilesToRemove);
+            } catch (RemoteException e) {
+                System.out.println("Impossible to send to " + nickname + " the modified board.");
+            }
+        });
     }
 
     /**
@@ -242,11 +291,13 @@ public class ClientHandlerRmi extends ClientHandler {
      */
     @Override
     public void sendGameInterrupted() {
-        try {
-            client.onGameInterrupted();
-        } catch (RemoteException e) {
-            System.out.println("Impossible to send to " + nickname + " that the game has been interrupted.");
-        }
+        queue.add(() -> {
+            try {
+                client.onGameInterrupted();
+            } catch (RemoteException e) {
+                System.out.println("Impossible to send to " + nickname + " that the game has been interrupted.");
+            }
+        });
     }
 
     /**
@@ -256,11 +307,13 @@ public class ClientHandlerRmi extends ClientHandler {
      */
     @Override
     public void sendFinalScores(LinkedHashMap<String, Integer> finalScores) {
-        try {
-            client.onFinalScores(finalScores);
-        } catch (RemoteException e) {
-            System.out.println("Impossible to send to " + this.nickname + " final scores.");
-        }
+        queue.add(() -> {
+            try {
+                client.onFinalScores(finalScores);
+            } catch (RemoteException e) {
+                System.out.println("Impossible to send to " + this.nickname + " final scores.");
+            }
+        });
     }
 
     /**
@@ -271,11 +324,13 @@ public class ClientHandlerRmi extends ClientHandler {
      */
     @Override
     public void chatToMe(String sender, String message) {
-        try {
-            client.chatToMe(sender, message);
-        } catch (RemoteException e) {
-            System.out.println("Impossible to send the chat message to " + nickname);
-        }
+        queue.add(() -> {
+            try {
+                client.chatToMe(sender, message);
+            } catch (RemoteException e) {
+                System.out.println("Impossible to send the chat message to " + nickname);
+            }
+        });
     }
 
     /**
@@ -284,11 +339,13 @@ public class ClientHandlerRmi extends ClientHandler {
 
     @Override
     public void sendGameIsStarting(ArrayList<String> playersList) {
-        try {
-            client.onGameIsStarting(playersList);
-        } catch (RemoteException e) {
-            System.out.println("Impossible to send to " + nickname + " that the game is starting");
-        }
+        queue.add(() -> {
+            try {
+                client.onGameIsStarting(playersList);
+            } catch (RemoteException e) {
+                System.out.println("Impossible to send to " + nickname + " that the game is starting");
+            }
+        });
     }
 
     /**
@@ -298,11 +355,13 @@ public class ClientHandlerRmi extends ClientHandler {
      */
     @Override
     public void sendPlayerScore(int score) {
-        try {
-            client.onPlayerScore(score);
-        } catch (RemoteException e) {
-            System.out.println("Impossible to send to " + nickname + " their points");
-        }
+        queue.add(() -> {
+            try {
+                client.onPlayerScore(score);
+            } catch (RemoteException e) {
+                System.out.println("Impossible to send to " + nickname + " their points");
+            }
+        });
     }
 
     /**
@@ -312,11 +371,13 @@ public class ClientHandlerRmi extends ClientHandler {
      */
     @Override
     public void sendBookshelfCompleted(String nickname) {
-        try {
-            client.onBookshelfCompleted(nickname);
-        } catch (RemoteException e) {
-            System.out.println("Impossible to send to " + nickname + " that they have completed their bookshelf");
-        }
+        queue.add(() -> {
+            try {
+                client.onBookshelfCompleted(nickname);
+            } catch (RemoteException e) {
+                System.out.println("Impossible to send to " + nickname + " that they have completed their bookshelf");
+            }
+        });
     }
 
     /**
@@ -326,11 +387,13 @@ public class ClientHandlerRmi extends ClientHandler {
      */
     @Override
     public void askSavedGame(List<String> savedGames) {
-        try {
-            client.onSavedGame(savedGames);
-        } catch (RemoteException e) {
-            System.out.println("Impossible to send to " + nickname + " the saved games");
-        }
+        queue.add(() -> {
+            try {
+                client.onSavedGame(savedGames);
+            } catch (RemoteException e) {
+                System.out.println("Impossible to send to " + nickname + " the saved games");
+            }
+        });
     }
 }
 

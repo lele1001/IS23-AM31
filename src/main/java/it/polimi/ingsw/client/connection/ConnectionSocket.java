@@ -12,6 +12,9 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.*;
 
+import static it.polimi.ingsw.utils.Utils.maxTimer;
+import static it.polimi.ingsw.utils.Utils.pingTimer;
+
 /**
  * Implementation of Clients Socket TCP connection
  */
@@ -59,7 +62,7 @@ public class ConnectionSocket extends ConnectionClient {
             public void run() {
                 isConnected = false;
             }
-        }, 10000);
+        }, maxTimer);
     }
 
     /**
@@ -72,7 +75,7 @@ public class ConnectionSocket extends ConnectionClient {
             public void run() {
                 send(generateStandardMessage("ping", null));
             }
-        }, 0, 5000);
+        }, 0, pingTimer);
     }
 
     /**
@@ -262,8 +265,9 @@ public class ConnectionSocket extends ConnectionClient {
                         @Override
                         public void run() {
                             isConnected = false;
+                            System.out.println("ping exceeded");
                         }
-                    }, 10000);
+                    }, maxTimer);
                 }
                 default -> getController().onError("Unknown message from server.");
 

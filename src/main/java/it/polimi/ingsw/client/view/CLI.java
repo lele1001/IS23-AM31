@@ -54,14 +54,7 @@ public class CLI implements View {
         clientController.setView(this);
         checkInput = new InputController(clientController);
         askLoginParameters();
-
-        try {
-            clientController.startConnection(select, username, address, port);
-        } catch (Exception e) {
-            printError(e.getMessage());
-            disconnectionError();
-        }
-
+        clientController.startConnection(select, username, address, port);
         new Thread(this::listen).start();
     }
 
@@ -99,12 +92,8 @@ public class CLI implements View {
         }
         address = "127.0.0.1";
 
-        try {
-            clientController.startConnection(select, username, address, port);
-        } catch (Exception e) {
-            printError(e.getMessage());
-            disconnectionError();
-        }
+        clientController.startConnection(select, username, address, port);
+
 
         new Thread(this::listen).start();
     }
@@ -118,83 +107,88 @@ public class CLI implements View {
 
         while (!stopListening) {
             if (in.hasNextLine()) {
-                choice = in.nextLine();
-                splitString = choice.split(" ");
+                try {
+                    choice = in.nextLine();
+                    splitString = choice.split(" ");
 
-                // transforms only the command given by the user to its lower case version
-                splitString[0] = splitString[0].toLowerCase();
+                    // transforms only the command given by the user to its lower case version
+                    splitString[0] = splitString[0].toLowerCase();
 
-                switch (splitString[0]) {
-                    case "@players" -> {
-                        if (clientController.isSelectNumberOfPlayers()) {
-                            int players = checkInput.checkPlayers(splitString);
-                            if (players != -1) {
+                    switch (splitString[0]) {
+                        case "@players" -> {
+                            if (clientController.isSelectNumberOfPlayers()) {
+                                int players = checkInput.checkPlayers(splitString);
+                                if (players != -1) {
+                                    try {
+                                        clientController.setPlayersNumber(players, splitString[2]);
+                                    } catch (Exception e) {
+                                        System.out.println("Impossible to connect to the server");
+                                    }
+                                }
+                            } else {
+                                System.out.println("You can not choose the number of players!");
+                            }
+                        }
+                        case "@savedgame" -> {
+                            if (splitString.length != 2)
+                                printError("Input not recognised... try again.");
+                            else
                                 try {
-                                    clientController.setPlayersNumber(players, splitString[2]);
+                                    if (splitString[1].equalsIgnoreCase("n") || splitString[1].equalsIgnoreCase("no"))
+                                        clientController.setSavedGame(false, null);
+                                    else {
+                                        clientController.setSavedGame(true, splitString[1]);
+                                    }
                                 } catch (Exception e) {
-                                    System.out.println("Impossible to connect to the server");
+                                    System.out.println("Impossible to connect to the server.");
                                 }
+                        }
+                        case "@menu" -> {
+                            if (clientController.isGameStarted()) {
+                                printMenu();
+                            } else {
+                                waitForGameMenu();
                             }
-                        } else {
-                            System.out.println("You can not choose the number of players!");
                         }
-                    }
-                    case "@savedgame" -> {
-                        if (splitString.length != 2)
-                            printError("Input not recognised... try again.");
-                        else
-                            try {
-                                if (splitString[1].equalsIgnoreCase("n") || splitString[1].equalsIgnoreCase("no"))
-                                    clientController.setSavedGame(false, null);
-                                else {
-                                    clientController.setSavedGame(true, splitString[1]);
-                                }
-                            } catch (Exception e) {
-                                System.out.println("Impossible to connect to the server.");
+                        case "@comgoal" -> printCommonGoal(clientController.getPlayerComGoal());
+                        case "@persgoal" ->
+                                printPersGoal(clientController.getMyPersGoal(), clientController.getPersGoalValue());
+                        case "@score" -> printPoints(clientController.getMyPoint());
+                        case "@board" -> {
+                            if (clientController.isGameStarted()) {
+                                printBoard(clientController.getBoard());
                             }
-                    }
-                    case "@menu" -> {
-                        if (clientController.isGameStarted()) {
-                            printMenu();
-                        } else {
-                            waitForGameMenu();
+                        }
+                        case "@take" -> {
+                            if (clientController.isMyTurn() && clientController.isGameStarted() && clientController.getPhase().equals(TurnPhase.SELECTCARDS)) {
+                                take(splitString);
+                            } else {
+                                System.out.println("It is not your turn!");
+                            }
+                        }
+                        case "@myshelf" ->
+                                printBookshelf(clientController.getPlayersBookshelves().get(clientController.getMyNickname()), clientController.getMyNickname());
+                        case "@allshelves" -> printBookshelves(clientController.getPlayersBookshelves());
+                        case "@put" -> {
+                            if (clientController.isMyTurn() && clientController.isGameStarted() && clientController.getPhase().equals(TurnPhase.INSERTCARDS)) {
+                                put(splitString);
+                            } else {
+                                System.out.println("It is not your turn!");
+                            }
+                        }
+                        case "@chat" -> chat(splitString);
+                        case "@quit" -> {
+                            System.out.println("Stopping CLI...");
+                            stopListening = true;
+                        }
+                        default -> {
+                            if (!stopListening)
+                                System.out.println("Input not recognised... try again");
                         }
                     }
-                    case "@comgoal" -> printCommonGoal(clientController.getPlayerComGoal());
-                    case "@persgoal" ->
-                            printPersGoal(clientController.getMyPersGoal(), clientController.getPersGoalValue());
-                    case "@score" -> printPoints(clientController.getMyPoint());
-                    case "@board" -> {
-                        if (clientController.isGameStarted()) {
-                            printBoard(clientController.getBoard());
-                        }
-                    }
-                    case "@take" -> {
-                        if (clientController.isMyTurn() && clientController.isGameStarted() && clientController.getPhase().equals(TurnPhase.SELECTCARDS)) {
-                            take(splitString);
-                        } else {
-                            System.out.println("It is not your turn!");
-                        }
-                    }
-                    case "@myshelf" ->
-                            printBookshelf(clientController.getPlayersBookshelves().get(clientController.getMyNickname()), clientController.getMyNickname());
-                    case "@allshelves" -> printBookshelves(clientController.getPlayersBookshelves());
-                    case "@put" -> {
-                        if (clientController.isMyTurn() && clientController.isGameStarted() && clientController.getPhase().equals(TurnPhase.INSERTCARDS)) {
-                            put(splitString);
-                        } else {
-                            System.out.println("It is not your turn!");
-                        }
-                    }
-                    case "@chat" -> chat(splitString);
-                    case "@quit" -> {
-                        System.out.println("Stopping CLI...");
-                        stopListening = true;
-                    }
-                    default -> {
-                        if (!stopListening)
-                            System.out.println("Input not recognised... try again");
-                    }
+                } catch (Exception e) {
+                    if (!stopListening)
+                        System.out.println("Input not recognised... try again");
                 }
             }
         }
@@ -209,14 +203,14 @@ public class CLI implements View {
         // Asks the username
         do {
             System.out.print(grey + "Select Username: ");
-            if (in.hasNext()) {
-                username = in.next();
+            if (in.hasNextLine()) {
+                username = in.nextLine();
                 if (username.length() > maxNameLength) {
                     System.out.println(red + "Name too long (max 18 characters)");
                     username = "";
                 }
             }
-        } while (username.equals(""));
+        } while (username.trim().equals(""));
 
         // Asks the connection type
         do {
@@ -233,13 +227,14 @@ public class CLI implements View {
         in.nextLine();
         do {
             System.out.print(grey + "Select Ip Address: ");
-            if (in.hasNext()) {
-                address = in.next();
+            if (in.hasNextLine()) {
+                address = in.nextLine();
                 if (!checkInput.isValidInet4Address(address)) {
                     System.out.println(red + "Input error");
                 }
+                System.out.println("ciao");
             }
-        } while (address.equals("") || !checkInput.isValidInet4Address(address));
+        } while (address.trim().equals("") || !checkInput.isValidInet4Address(address));
 
         // Asks the port
         do {

@@ -28,7 +28,8 @@ public abstract class Utils {
     public static final String noRightBoardSelectionResponse = "NO RIGHT BOARD SELECTION";
     public static final String notSameCardsResponse = "CARDS YOU WANT TO INSERT ARE NOT THE SAME YOU SELECTED";
     public static final int maxNumberOfSelectedCards = 3;
-    public static final int pingTimer = 3000;
+    public static final int pingTimer = 1000;
+    public static final int maxTimer = 10000;
     public static final int maxNameLength = 18;
     public static final String grey = (char) 27 + "[0;39m";
     public static final String green = (char) 27 + "[1;92m";

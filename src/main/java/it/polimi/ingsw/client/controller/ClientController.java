@@ -271,19 +271,21 @@ public class ClientController {
      * @param username player's username
      * @param address  IP of the server
      * @param port     Port of the server
-     * @throws Exception Called if there is a connection problem, close the client
      */
-    public void startConnection(int select, String username, String address, int port) throws Exception {
+    public void startConnection(int select, String username, String address, int port) {
         this.myNickname = username;
         //System.out.println("Your nickname is " + myNickname);
-
-        if (select == 0) {
-            connectionClient = new ConnectionRMI(this, address, port);
-        } else {
-            connectionClient = new ConnectionSocket(this, address, port);
+        try {
+            if (select == 0) {
+                connectionClient = new ConnectionRMI(this, address, port);
+            } else {
+                connectionClient = new ConnectionSocket(this, address, port);
+            }
+            printWaitingForGame();
+            connectionClient.startConnection();
+        } catch (Exception e) {
+            view.disconnectionError();
         }
-        printWaitingForGame();
-        connectionClient.startConnection();
 
     }
 

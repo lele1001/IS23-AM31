@@ -80,13 +80,8 @@ public class LoginScene extends GUIScene {
             printError("ERROR: insert a valid port");
             return;
         }
+        clientController.startConnection(select, username.getText(), ipAddress.getText(), port);
 
-        try {
-            clientController.startConnection(select, username.getText(), ipAddress.getText(), port);
-        } catch (Exception e) {
-            printError("ERROR: server error");
-            loginButton.setDisable(false);
-        }
     }
 
     /**
