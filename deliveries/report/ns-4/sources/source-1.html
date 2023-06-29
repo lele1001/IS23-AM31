@@ -1,0 +1,885 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > CLI</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">it.polimi.ingsw.client.view</a>
+</div>
+
+<h1>Coverage Summary for Class: CLI (it.polimi.ingsw.client.view)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">CLI</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/39)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/294)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package it.polimi.ingsw.client.view;
+&nbsp;
+&nbsp;import it.polimi.ingsw.client.controller.ClientController;
+&nbsp;import it.polimi.ingsw.client.controller.InputController;
+&nbsp;import it.polimi.ingsw.commons.TurnPhase;
+&nbsp;import it.polimi.ingsw.commons.HouseItem;
+&nbsp;import it.polimi.ingsw.commons.ItemCard;
+&nbsp;import it.polimi.ingsw.utils.Utils;
+&nbsp;
+&nbsp;import java.util.*;
+&nbsp;
+&nbsp;import static it.polimi.ingsw.utils.Utils.*;
+&nbsp;
+&nbsp;/**
+&nbsp; * Class that defines all the characteristics and methods of the CLI view
+&nbsp; */
+&nbsp;public class CLI implements View {
+&nbsp;    private static boolean stopListening;
+<b class="nc">&nbsp;    final Scanner in = new Scanner(System.in);</b>
+&nbsp;    final InputController checkInput;
+&nbsp;    final ClientController clientController;
+&nbsp;    String username, address;
+<b class="nc">&nbsp;    int port = -1, select = -1;</b>
+<b class="nc">&nbsp;    boolean disconnected = false;</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Prints the MyShelfie Logo
+&nbsp;     */
+&nbsp;    private void printLogo() {
+<b class="nc">&nbsp;        System.out.println(&quot;&quot;&quot;</b>
+&nbsp;                 __       __  __      __         ______   __    __  ________  __        ________  ______  ________\s
+&nbsp;                /  \\     /  |/  \\    /  |       /      \\ /  |  /  |/        |/  |      /        |/      |/        |
+&nbsp;                $$  \\   /$$ |$$  \\  /$$/       /$$$$$$  |$$ |  $$ |$$$$$$$$/ $$ |      $$$$$$$$/ $$$$$$/ $$$$$$$$/\s
+&nbsp;                $$$  \\ /$$$ | $$  \\/$$/        $$ \\__$$/ $$ |__$$ |$$ |__    $$ |      $$ |__      $$ |  $$ |__   \s
+&nbsp;                $$$$  /$$$$ |  $$  $$/         $$      \\ $$    $$ |$$    |   $$ |      $$    |     $$ |  $$    |  \s
+&nbsp;                $$ $$ $$/$$ |   $$$$/           $$$$$$  |$$$$$$$$ |$$$$$/    $$ |      $$$$$/      $$ |  $$$$$/   \s
+&nbsp;                $$ |$$$/ $$ |    $$ |          /  \\__$$ |$$ |  $$ |$$ |_____ $$ |_____ $$ |       _$$ |_ $$ |_____\s
+&nbsp;                $$ | $/  $$ |    $$ |          $$    $$/ $$ |  $$ |$$       |$$       |$$ |      / $$   |$$       |
+&nbsp;                $$/      $$/     $$/            $$$$$$/  $$/   $$/ $$$$$$$$/ $$$$$$$$/ $$/       $$$$$$/ $$$$$$$$/\s
+&nbsp;                                                                                                                  \s
+&nbsp;                __________________________________________________________________________________________________
+&nbsp;                &quot;&quot;&quot;);
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Initialization of the client profile asking: username, type of connection, ip and port
+&nbsp;     *
+&nbsp;     * @param clientController defines the direct contact with all the object containers sen from the server
+&nbsp;     */
+<b class="nc">&nbsp;    public CLI(ClientController clientController) {</b>
+<b class="nc">&nbsp;        this.clientController = clientController;</b>
+<b class="nc">&nbsp;        printLogo();</b>
+<b class="nc">&nbsp;        clientController.setView(this);</b>
+<b class="nc">&nbsp;        checkInput = new InputController(clientController);</b>
+<b class="nc">&nbsp;        askLoginParameters();</b>
+<b class="nc">&nbsp;        clientController.startConnection(select, username, address, port);</b>
+<b class="nc">&nbsp;        new Thread(this::listen).start();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Prepared initialization of the client profile asking: username
+&nbsp;     *
+&nbsp;     * @param clientController defines the direct contact with all the object containers sen from the server
+&nbsp;     * @param conn             defines the type of connection
+&nbsp;     * @param port             defines the port to connect to
+&nbsp;     */
+<b class="nc">&nbsp;    public CLI(ClientController clientController, int port, String conn) {</b>
+<b class="nc">&nbsp;        this.clientController = clientController;</b>
+<b class="nc">&nbsp;        printLogo();</b>
+<b class="nc">&nbsp;        clientController.setView(this);</b>
+<b class="nc">&nbsp;        checkInput = new InputController(clientController);</b>
+&nbsp;
+&nbsp;        // Asks the username
+&nbsp;        do {
+<b class="nc">&nbsp;            System.out.print(grey + &quot;Select Username: &quot;);</b>
+<b class="nc">&nbsp;            if (in.hasNext()) {</b>
+<b class="nc">&nbsp;                username = in.next();</b>
+<b class="nc">&nbsp;                if (username.length() &gt; maxNameLength) {</b>
+<b class="nc">&nbsp;                    System.out.println(red + &quot;Name too long (max 18 characters)&quot;);</b>
+<b class="nc">&nbsp;                    username = &quot;&quot;;</b>
+&nbsp;                }
+&nbsp;            }
+<b class="nc">&nbsp;        } while (username.equals(&quot;&quot;));</b>
+&nbsp;
+<b class="nc">&nbsp;        in.nextLine();</b>
+&nbsp;
+<b class="nc">&nbsp;        if (conn.equals(&quot;rmi&quot;)) {</b>
+<b class="nc">&nbsp;            select = 0;</b>
+&nbsp;        } else {
+<b class="nc">&nbsp;            select = 1;</b>
+&nbsp;        }
+<b class="nc">&nbsp;        address = &quot;127.0.0.1&quot;;</b>
+&nbsp;
+<b class="nc">&nbsp;        clientController.startConnection(select, username, address, port);</b>
+&nbsp;
+&nbsp;
+<b class="nc">&nbsp;        new Thread(this::listen).start();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Reads the choice of the user and calls the correct method
+&nbsp;     */
+&nbsp;    private void listen() {
+&nbsp;        String choice;
+&nbsp;        String[] splitString;
+&nbsp;
+<b class="nc">&nbsp;        while (!stopListening) {</b>
+<b class="nc">&nbsp;            if (in.hasNextLine()) {</b>
+&nbsp;                try {
+<b class="nc">&nbsp;                    choice = in.nextLine();</b>
+<b class="nc">&nbsp;                    splitString = choice.split(&quot; &quot;);</b>
+&nbsp;
+&nbsp;                    // transforms only the command given by the user to its lower case version
+<b class="nc">&nbsp;                    splitString[0] = splitString[0].toLowerCase();</b>
+&nbsp;
+<b class="nc">&nbsp;                    switch (splitString[0]) {</b>
+&nbsp;                        case &quot;@players&quot; -&gt; {
+<b class="nc">&nbsp;                            if (clientController.isSelectNumberOfPlayers()) {</b>
+<b class="nc">&nbsp;                                int players = checkInput.checkPlayers(splitString);</b>
+<b class="nc">&nbsp;                                if (players != -1) {</b>
+&nbsp;                                    try {
+<b class="nc">&nbsp;                                        clientController.setPlayersNumber(players, splitString[2]);</b>
+<b class="nc">&nbsp;                                    } catch (Exception e) {</b>
+<b class="nc">&nbsp;                                        System.out.println(&quot;Impossible to connect to the server&quot;);</b>
+<b class="nc">&nbsp;                                    }</b>
+&nbsp;                                }
+<b class="nc">&nbsp;                            } else {</b>
+<b class="nc">&nbsp;                                System.out.println(&quot;You can not choose the number of players!&quot;);</b>
+&nbsp;                            }
+<b class="nc">&nbsp;                        }</b>
+&nbsp;                        case &quot;@savedgame&quot; -&gt; {
+<b class="nc">&nbsp;                            if (splitString.length != 2)</b>
+<b class="nc">&nbsp;                                printError(&quot;Input not recognised... try again.&quot;);</b>
+&nbsp;                            else
+&nbsp;                                try {
+<b class="nc">&nbsp;                                    if (splitString[1].equalsIgnoreCase(&quot;n&quot;) || splitString[1].equalsIgnoreCase(&quot;no&quot;))</b>
+<b class="nc">&nbsp;                                        clientController.setSavedGame(false, null);</b>
+&nbsp;                                    else {
+<b class="nc">&nbsp;                                        clientController.setSavedGame(true, splitString[1]);</b>
+&nbsp;                                    }
+<b class="nc">&nbsp;                                } catch (Exception e) {</b>
+<b class="nc">&nbsp;                                    System.out.println(&quot;Impossible to connect to the server.&quot;);</b>
+<b class="nc">&nbsp;                                }</b>
+<b class="nc">&nbsp;                        }</b>
+&nbsp;                        case &quot;@menu&quot; -&gt; {
+<b class="nc">&nbsp;                            if (clientController.isGameStarted()) {</b>
+<b class="nc">&nbsp;                                printMenu();</b>
+&nbsp;                            } else {
+<b class="nc">&nbsp;                                waitForGameMenu();</b>
+&nbsp;                            }
+<b class="nc">&nbsp;                        }</b>
+<b class="nc">&nbsp;                        case &quot;@comgoal&quot; -&gt; printCommonGoal(clientController.getPlayerComGoal());</b>
+&nbsp;                        case &quot;@persgoal&quot; -&gt;
+<b class="nc">&nbsp;                                printPersGoal(clientController.getMyPersGoal(), clientController.getPersGoalValue());</b>
+<b class="nc">&nbsp;                        case &quot;@score&quot; -&gt; printPoints(clientController.getMyPoint());</b>
+&nbsp;                        case &quot;@board&quot; -&gt; {
+<b class="nc">&nbsp;                            if (clientController.isGameStarted()) {</b>
+<b class="nc">&nbsp;                                printBoard(clientController.getBoard());</b>
+&nbsp;                            }
+&nbsp;                        }
+&nbsp;                        case &quot;@take&quot; -&gt; {
+<b class="nc">&nbsp;                            if (clientController.isMyTurn() &amp;&amp; clientController.isGameStarted() &amp;&amp; clientController.getPhase().equals(TurnPhase.SELECTCARDS)) {</b>
+<b class="nc">&nbsp;                                take(splitString);</b>
+&nbsp;                            } else {
+<b class="nc">&nbsp;                                System.out.println(&quot;It is not your turn!&quot;);</b>
+&nbsp;                            }
+<b class="nc">&nbsp;                        }</b>
+&nbsp;                        case &quot;@myshelf&quot; -&gt;
+<b class="nc">&nbsp;                                printBookshelf(clientController.getPlayersBookshelves().get(clientController.getMyNickname()), clientController.getMyNickname());</b>
+<b class="nc">&nbsp;                        case &quot;@allshelves&quot; -&gt; printBookshelves(clientController.getPlayersBookshelves());</b>
+&nbsp;                        case &quot;@put&quot; -&gt; {
+<b class="nc">&nbsp;                            if (clientController.isMyTurn() &amp;&amp; clientController.isGameStarted() &amp;&amp; clientController.getPhase().equals(TurnPhase.INSERTCARDS)) {</b>
+<b class="nc">&nbsp;                                put(splitString);</b>
+&nbsp;                            } else {
+<b class="nc">&nbsp;                                System.out.println(&quot;It is not your turn!&quot;);</b>
+&nbsp;                            }
+<b class="nc">&nbsp;                        }</b>
+<b class="nc">&nbsp;                        case &quot;@chat&quot; -&gt; chat(splitString);</b>
+&nbsp;                        case &quot;@quit&quot; -&gt; {
+<b class="nc">&nbsp;                            System.out.println(&quot;Stopping CLI...&quot;);</b>
+<b class="nc">&nbsp;                            stopListening = true;</b>
+<b class="nc">&nbsp;                        }</b>
+&nbsp;                        default -&gt; {
+<b class="nc">&nbsp;                            if (!stopListening)</b>
+<b class="nc">&nbsp;                                System.out.println(&quot;Input not recognised... try again&quot;);</b>
+&nbsp;                        }
+&nbsp;                    }
+<b class="nc">&nbsp;                } catch (Exception e) {</b>
+<b class="nc">&nbsp;                    if (!stopListening)</b>
+<b class="nc">&nbsp;                        System.out.println(&quot;Input not recognised... try again&quot;);</b>
+<b class="nc">&nbsp;                }</b>
+&nbsp;            }
+&nbsp;        }
+&nbsp;
+<b class="nc">&nbsp;        disconnectionError();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Asks the username, the connection type (RMI or Socket), the IP Address and the Port to the client
+&nbsp;     */
+&nbsp;    private void askLoginParameters() {
+&nbsp;        // Asks the username
+&nbsp;        do {
+<b class="nc">&nbsp;            System.out.print(grey + &quot;Select Username: &quot;);</b>
+<b class="nc">&nbsp;            if (in.hasNextLine()) {</b>
+<b class="nc">&nbsp;                username = in.nextLine();</b>
+<b class="nc">&nbsp;                if (username.length() &gt; maxNameLength) {</b>
+<b class="nc">&nbsp;                    System.out.println(red + &quot;Name too long (max 18 characters)&quot;);</b>
+<b class="nc">&nbsp;                    username = &quot;&quot;;</b>
+&nbsp;                }
+&nbsp;            }
+<b class="nc">&nbsp;        } while (username.trim().equals(&quot;&quot;));</b>
+&nbsp;
+&nbsp;        // Asks the connection type
+&nbsp;        do {
+<b class="nc">&nbsp;            System.out.print(&quot;Write 0 for RMI, 1 for Socket: &quot;);</b>
+<b class="nc">&nbsp;            if (in.hasNextInt()) {</b>
+<b class="nc">&nbsp;                select = in.nextInt();</b>
+<b class="nc">&nbsp;            } else if (in.hasNextLine()) {</b>
+<b class="nc">&nbsp;                in.nextLine();</b>
+<b class="nc">&nbsp;                System.out.println(red + &quot;Input error&quot;);</b>
+&nbsp;            }
+<b class="nc">&nbsp;        } while (select != 0 &amp;&amp; select != 1);</b>
+&nbsp;
+&nbsp;        // Asks the IP
+<b class="nc">&nbsp;        in.nextLine();</b>
+&nbsp;        do {
+<b class="nc">&nbsp;            System.out.print(grey + &quot;Select Ip Address: &quot;);</b>
+<b class="nc">&nbsp;            if (in.hasNextLine()) {</b>
+<b class="nc">&nbsp;                address = in.nextLine();</b>
+<b class="nc">&nbsp;                if (!checkInput.isValidInet4Address(address)) {</b>
+<b class="nc">&nbsp;                    System.out.println(red + &quot;Input error&quot;);</b>
+&nbsp;                }
+&nbsp;            }
+<b class="nc">&nbsp;        } while (address.trim().equals(&quot;&quot;) || !checkInput.isValidInet4Address(address));</b>
+&nbsp;
+&nbsp;        // Asks the port
+&nbsp;        do {
+<b class="nc">&nbsp;            System.out.print(grey + &quot;Select Ip Port: &quot;);</b>
+<b class="nc">&nbsp;            if (in.hasNextInt()) {</b>
+<b class="nc">&nbsp;                port = in.nextInt();</b>
+<b class="nc">&nbsp;            } else if (in.hasNextLine()) {</b>
+<b class="nc">&nbsp;                in.nextLine();</b>
+<b class="nc">&nbsp;                System.out.println(red + &quot;Input error&quot;);</b>
+&nbsp;            }
+<b class="nc">&nbsp;        } while (port == -1);</b>
+&nbsp;
+<b class="nc">&nbsp;        in.nextLine();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Implementation for CLI: prints the request to join or not a saved game
+&nbsp;     *
+&nbsp;     * @param savedGames contains all the saved games in which the player was in
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void askForSavedGame(List&lt;String&gt; savedGames) {
+<b class="nc">&nbsp;        System.out.println(&quot;These are the saved games with your nickname into: &quot; + savedGames + &quot;.&quot;);</b>
+<b class="nc">&nbsp;        System.out.println(&quot;Do you want to resume one of them?&quot;);</b>
+<b class="nc">&nbsp;        System.out.println(&quot;Type @savedgame and the name of the game you want to resume (or &#39;n&#39; to start a new game).&quot;);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Implementation for CLI: prints the request for the number of players
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public synchronized void printAskPlayerNumber() {
+<b class="nc">&nbsp;        System.out.println(grey + &quot;Write @PLAYERS followed by the number of players and a name for this game.&quot;);</b>
+<b class="nc">&nbsp;        System.out.println(&quot;Please, remember it in case of server crash (you can resume the game typing its name.)&quot;);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Implementation for CLI: prints a waiting message while other players connect
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public synchronized void printLobby() {
+<b class="nc">&nbsp;        if (!clientController.isGameStarted()) {</b>
+<b class="nc">&nbsp;            System.out.println(&quot;Waiting for other players to connect...&quot;);</b>
+<b class="nc">&nbsp;            waitForGameMenu();</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Allows the user only to quit the game while waiting for it to start
+&nbsp;     */
+&nbsp;    private synchronized void waitForGameMenu() {
+<b class="nc">&nbsp;        System.out.println(&quot;GAME MENU: type the corresponding command \n\t@MENU to show again this menu \n\t@QUIT to exit from the game&quot;);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Implementation for CLI: prints the message that signals the start of the game
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public synchronized void printStartGame() {
+<b class="nc">&nbsp;        synchronized (this) {</b>
+<b class="nc">&nbsp;            System.out.print(grey + &quot;Welcome &quot; + clientController.getMyNickname() + &quot;! &quot;);</b>
+<b class="nc">&nbsp;            System.out.println(&quot;play in a &quot; + clientController.getPlayersBookshelves().keySet().size() + &quot; players game.&quot;);</b>
+<b class="nc">&nbsp;            System.out.println(&quot;Type @MENU to see the game menu.\n&quot;);</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Prints a menu on the screen to let the user choose what to do next
+&nbsp;     */
+&nbsp;    private synchronized void printMenu() {
+<b class="nc">&nbsp;        System.out.println(grey + &quot;GAME MENU: type the corresponding command \n\t@MENU to show again this menu \n\t@COMGOAL to print the Common Goal of this game \n\t@PERSGOAL to print your Personal Goal \n\t@SCORE to print your score \n\t@BOARD to print the game board \n\t@TAKE to choose from 1 to 3 tiles from the board, followed by their coordinates (xy) of the chosen tiles \n\t@MYSHELF to print you bookshelf \n\t@ALLSHELVES to print the bookshelf of all the players \n\t@PUT to choose a column for putting the cards, followed by the column number and the board coordinates of the tiles (from bottom to top) \n\t@CHAT to open the chat, followed by the nickname/all and the message \n\t@QUIT to exit from the game&quot;);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Implementation for CLI: prints the current player each time somebody ends its turn
+&nbsp;     *
+&nbsp;     * @param currPlayer is the nickname of the current player
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void onChangeTurn(String currPlayer) {
+<b class="nc">&nbsp;        if (currPlayer.equals(username)) {</b>
+<b class="nc">&nbsp;            print(grey + &quot;It is your turn\n&quot;);</b>
+&nbsp;        } else {
+<b class="nc">&nbsp;            print(grey + &quot;It is &quot; + currPlayer + &quot;&#39;s turn\n&quot;);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Implementation for CLI: prints a selection message or scene,
+&nbsp;     * then calls the methods to check and communicate the selection to the server
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void onSelect() {
+<b class="nc">&nbsp;        print(grey + &quot;Type @TAKE to choose from 1 to 3 tiles from the board, followed by their coordinates (xy)&quot;);</b>
+<b class="nc">&nbsp;        printBoard(clientController.getBoard());</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Checks the positions of the chosen tiles and, if they are accepted, sends them to the client controller
+&nbsp;     */
+&nbsp;    private void take(String[] splitString) {
+<b class="nc">&nbsp;        ArrayList&lt;Integer&gt; coords = checkInput.checkTake(splitString);</b>
+&nbsp;
+<b class="nc">&nbsp;        if (coords != null) {</b>
+<b class="nc">&nbsp;            clientController.setSelectedTiles(coords);</b>
+&nbsp;            try {
+<b class="nc">&nbsp;                clientController.selectCard();</b>
+<b class="nc">&nbsp;            } catch (Exception e) {</b>
+<b class="nc">&nbsp;                System.out.println(&quot;Impossible to connect to the server&quot;);</b>
+<b class="nc">&nbsp;            }</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Implementation for CLI: prints the Tiles chosen by the player in the last Phase of the turn
+&nbsp;     *
+&nbsp;     * @param selectedTiles contains the Tiles selected by the player and their position on the Board
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public synchronized void printSelectedTiles(Map&lt;Integer, ItemCard&gt; selectedTiles) {
+<b class="nc">&nbsp;        System.out.print(&quot;You selected: &quot;);</b>
+<b class="nc">&nbsp;        int cardNumber = selectedTiles.size();</b>
+&nbsp;
+<b class="nc">&nbsp;        for (Integer i : selectedTiles.keySet()) {</b>
+<b class="nc">&nbsp;            char itemChar = selectedTiles.get(i).getMyItem().toString().charAt(0);</b>
+<b class="nc">&nbsp;            System.out.print(grey + &quot;(&quot;);</b>
+<b class="nc">&nbsp;            System.out.print(chooseColorCode(itemChar) + itemChar);</b>
+<b class="nc">&nbsp;            System.out.print(grey + &quot; - &quot; + i + &quot;)&quot;);</b>
+&nbsp;
+<b class="nc">&nbsp;            if (cardNumber &gt; 1) {</b>
+<b class="nc">&nbsp;                System.out.print(&quot; and &quot;);</b>
+&nbsp;            }
+<b class="nc">&nbsp;            cardNumber--;</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+<b class="nc">&nbsp;        System.out.println();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Implementation for CLI: prints an insertion message or scene,
+&nbsp;     * then calls the methods to check and communicate the insertion to the server
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void onInsert() {
+<b class="nc">&nbsp;        print(grey + &quot;Type @PUT followed by the column number and the board coordinates of the tiles (from bottom to top)&quot;);</b>
+<b class="nc">&nbsp;        printSelectedTiles(clientController.getSelectedTiles());</b>
+<b class="nc">&nbsp;        printPersGoal(clientController.getMyPersGoal(), clientController.getPersGoalValue());</b>
+<b class="nc">&nbsp;        printBookshelf(clientController.getPlayersBookshelves().get(clientController.getMyNickname()), clientController.getMyNickname());</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Checks the column index and if the cards to put are the same as the selected ones
+&nbsp;     * If they are accepted, sends them to the client controller
+&nbsp;     */
+&nbsp;    private void put(String[] splitString) {
+<b class="nc">&nbsp;        ArrayList&lt;ItemCard&gt; tilesToPut = checkInput.checkPut(splitString);</b>
+<b class="nc">&nbsp;        int column = 0;</b>
+&nbsp;
+<b class="nc">&nbsp;        if (tilesToPut != null) {</b>
+&nbsp;            try {
+<b class="nc">&nbsp;                column = Integer.parseInt(splitString[1]);</b>
+<b class="nc">&nbsp;            } catch (NumberFormatException e) {</b>
+<b class="nc">&nbsp;                e.printStackTrace();</b>
+<b class="nc">&nbsp;            }</b>
+&nbsp;
+&nbsp;            try {
+<b class="nc">&nbsp;                clientController.insertCard(tilesToPut, column);</b>
+<b class="nc">&nbsp;            } catch (Exception e) {</b>
+<b class="nc">&nbsp;                System.out.println(&quot;Impossible to connect to the server&quot;);</b>
+<b class="nc">&nbsp;            }</b>
+&nbsp;
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Implementation for CLI: prints the Board
+&nbsp;     *
+&nbsp;     * @param board is the updated Board
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public synchronized void printBoard(ItemCard[][] board) {
+<b class="nc">&nbsp;        System.out.println(grey + &quot;    0   1   2   3   4   5   6   7   8&quot;);</b>
+<b class="nc">&nbsp;        printMatrix(board, DIM_BOARD, DIM_BOARD);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Implementation for CLI: updates the Board removing the given Tiles
+&nbsp;     *
+&nbsp;     * @param tilesToRemove contains the ItemCard to remove and its position on the Board
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void changeBoard(Integer[] tilesToRemove) {
+<b class="nc">&nbsp;        printBoard(clientController.getBoard());</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Prints all the bookshelves of the players in the current game
+&nbsp;     *
+&nbsp;     * @param bookshelves contains the nickname of the player and its bookshelf
+&nbsp;     */
+&nbsp;    private synchronized void printBookshelves(Map&lt;String, ItemCard[][]&gt; bookshelves) {
+&nbsp;        /*if (!bookshelves.isEmpty()) {
+&nbsp;            for (String s : bookshelves.keySet()) {
+&nbsp;                printBookshelf(bookshelves.get(s), s);
+&nbsp;            }
+&nbsp;        }*/
+<b class="nc">&nbsp;        System.out.println();</b>
+<b class="nc">&nbsp;        for (String s : bookshelves.keySet()) {</b>
+<b class="nc">&nbsp;            System.out.print(s + &quot;&#39;s bookshelf&quot;);</b>
+<b class="nc">&nbsp;            for (int i = 0; i &lt; 18 - s.length(); i++) {</b>
+<b class="nc">&nbsp;                System.out.print(&quot; &quot;);</b>
+&nbsp;            }
+<b class="nc">&nbsp;        }</b>
+<b class="nc">&nbsp;        System.out.println();</b>
+<b class="nc">&nbsp;        if (!bookshelves.isEmpty()) {</b>
+<b class="nc">&nbsp;            for (int i = 0; i &lt; bookshelves.keySet().size(); i++) {</b>
+<b class="nc">&nbsp;                System.out.print(&quot;    0   1   2   3   4         &quot;);</b>
+&nbsp;            }
+<b class="nc">&nbsp;            System.out.println();</b>
+<b class="nc">&nbsp;            for (int i = 0; i &lt; BOOKSHELF_HEIGHT; i++) {</b>
+<b class="nc">&nbsp;                for (String s : bookshelves.keySet()) {</b>
+<b class="nc">&nbsp;                    for (int j = 0; j &lt; BOOKSHELF_LENGTH; j++) {</b>
+<b class="nc">&nbsp;                        if (j == 0) {</b>
+<b class="nc">&nbsp;                            System.out.print(grey + i + &quot; | &quot;);</b>
+&nbsp;                        }
+&nbsp;
+<b class="nc">&nbsp;                        printCell(bookshelves.get(s), i, j);</b>
+&nbsp;                    }
+<b class="nc">&nbsp;                    System.out.print(&quot;      &quot;);</b>
+<b class="nc">&nbsp;                }</b>
+<b class="nc">&nbsp;                System.out.println();</b>
+&nbsp;            }
+&nbsp;
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Implementation for CLI: prints the player&#39;s Bookshelf
+&nbsp;     *
+&nbsp;     * @param bookshelf is the player&#39;s updated Bookshelf
+&nbsp;     * @param nickname  is the owner of the Bookshelf
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public synchronized void printBookshelf(ItemCard[][] bookshelf, String nickname) {
+<b class="nc">&nbsp;        System.out.println(grey + nickname + &quot;&#39;s bookshelf:&quot;);</b>
+<b class="nc">&nbsp;        System.out.println(&quot;    0   1   2   3   4&quot;);</b>
+<b class="nc">&nbsp;        printMatrix(Objects.requireNonNullElseGet(bookshelf, () -&gt; new ItemCard[BOOKSHELF_HEIGHT][BOOKSHELF_LENGTH]), BOOKSHELF_HEIGHT, BOOKSHELF_LENGTH);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Implementation for CLI: updates the player&#39;s Bookshelf adding the given Tiles
+&nbsp;     *
+&nbsp;     * @param tilesToAdd contains the ItemCard to add and its position on the Bookshelf
+&nbsp;     * @param player     is the owner of the Bookshelf to modify
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void changeBookshelf(Map&lt;Integer, ItemCard&gt; tilesToAdd, String player) {
+<b class="nc">&nbsp;        printBookshelf(clientController.getPlayersBookshelves().get(player), player);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Prints a cell from an ItemCard matrix (Bookshelf or Board)
+&nbsp;     *
+&nbsp;     * @param matrix is the Bookshelf or the Board to print
+&nbsp;     * @param height is the number of rows
+&nbsp;     * @param length is the number of columns
+&nbsp;     */
+&nbsp;    private synchronized void printMatrix(ItemCard[][] matrix, int height, int length) {
+<b class="nc">&nbsp;        for (int i = 0; i &lt; height; i++) {</b>
+<b class="nc">&nbsp;            for (int j = 0; j &lt; length; j++) {</b>
+<b class="nc">&nbsp;                if (j == 0) {</b>
+<b class="nc">&nbsp;                    System.out.print(grey + i + &quot; | &quot;);</b>
+&nbsp;                }
+&nbsp;
+<b class="nc">&nbsp;                printCell(matrix, i, j);</b>
+&nbsp;            }
+&nbsp;
+<b class="nc">&nbsp;            System.out.println();</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Prints a cell from an ItemCard matrix (Bookshelf or Board)
+&nbsp;     *
+&nbsp;     * @param matrix is the Bookshelf or the Board to print
+&nbsp;     * @param i      is the row number
+&nbsp;     * @param j      is the column number
+&nbsp;     */
+&nbsp;    private synchronized void printCell(ItemCard[][] matrix, int i, int j) {
+<b class="nc">&nbsp;        if (matrix[i][j] != null) {</b>
+<b class="nc">&nbsp;            char itemChar = matrix[i][j].getMyItem().toString().charAt(0);</b>
+&nbsp;
+<b class="nc">&nbsp;            System.out.print(chooseColorCode(itemChar) + itemChar);</b>
+<b class="nc">&nbsp;            System.out.print(grey + &quot; | &quot;);</b>
+<b class="nc">&nbsp;        } else {</b>
+<b class="nc">&nbsp;            System.out.print(&quot; &quot;);</b>
+<b class="nc">&nbsp;            System.out.print(grey + &quot; | &quot;);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Switches between CLI colors based on the ItemCard type
+&nbsp;     *
+&nbsp;     * @param itemChar is the first character of the ItemCard type
+&nbsp;     * @return the string associated with the color
+&nbsp;     */
+&nbsp;    private String chooseColorCode(char itemChar) {
+<b class="nc">&nbsp;        if (itemChar == &#39;C&#39;) {</b>
+<b class="nc">&nbsp;            return green;</b>
+<b class="nc">&nbsp;        } else if (itemChar == &#39;F&#39;) {</b>
+<b class="nc">&nbsp;            return blue;</b>
+<b class="nc">&nbsp;        } else if (itemChar == &#39;G&#39;) {</b>
+<b class="nc">&nbsp;            return yellow;</b>
+<b class="nc">&nbsp;        } else if (itemChar == &#39;B&#39;) {</b>
+<b class="nc">&nbsp;            return white;</b>
+<b class="nc">&nbsp;        } else if (itemChar == &#39;P&#39;) {</b>
+<b class="nc">&nbsp;            return purple;</b>
+<b class="nc">&nbsp;        } else if (itemChar == &#39;T&#39;) {</b>
+<b class="nc">&nbsp;            return cyan;</b>
+&nbsp;        } else {
+<b class="nc">&nbsp;            return grey;</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Implementation for CLI: prints the CommonGoal for the game
+&nbsp;     *
+&nbsp;     * @param playerComGoal contains the CommonGoalID and its available score
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public synchronized void printCommonGoal(Map&lt;Integer, Integer&gt; playerComGoal) {
+<b class="nc">&nbsp;        if (!playerComGoal.isEmpty()) {</b>
+<b class="nc">&nbsp;            for (Integer i : playerComGoal.keySet()) {</b>
+<b class="nc">&nbsp;                System.out.println(grey + &quot;Common Goal number &quot; + i + &quot;: &quot;);</b>
+<b class="nc">&nbsp;                System.out.println(Utils.comGoalDescription.valueOf(&quot;comGoal&quot; + i).getDescription());</b>
+<b class="nc">&nbsp;                System.out.println(&quot;The maximum available score for this card is &quot; + playerComGoal.get(i) + &quot;.\n&quot;);</b>
+<b class="nc">&nbsp;            }</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Implementation for CLI: updates the available score of a CommonGoal each time it is reached
+&nbsp;     *
+&nbsp;     * @param comGoalDoneID identifies the CommonGoal reached
+&nbsp;     * @param newValue      is the available score
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void onCommonGoalDone(int comGoalDoneID, int newValue) {
+<b class="nc">&nbsp;        print(&quot;The new value of CommonGoal n° &quot; + comGoalDoneID + &quot; is &quot; + newValue);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Implementation for CLI: prints the player&#39;s PersonalGoal
+&nbsp;     *
+&nbsp;     * @param myPersGoal represents the PersonalGoal of the player
+&nbsp;     * @param newValue   is the string that defines the PersonalGoal
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public synchronized void printPersGoal(Map&lt;Integer, HouseItem&gt; myPersGoal, String newValue) {
+<b class="nc">&nbsp;        System.out.println(grey + &quot;Your personal goal is: &quot;);</b>
+<b class="nc">&nbsp;        System.out.println(&quot;    0   1   2   3   4&quot;);</b>
+&nbsp;
+<b class="nc">&nbsp;        for (int i = 0; i &lt; BOOKSHELF_HEIGHT; i++) {</b>
+<b class="nc">&nbsp;            for (int j = 0; j &lt; BOOKSHELF_LENGTH; j++) {</b>
+<b class="nc">&nbsp;                int k = i * 10 + j;</b>
+&nbsp;
+<b class="nc">&nbsp;                if (j == 0) {</b>
+<b class="nc">&nbsp;                    System.out.print(grey + i + &quot; | &quot;);</b>
+&nbsp;                }
+&nbsp;
+<b class="nc">&nbsp;                if (myPersGoal.containsKey(k)) {</b>
+<b class="nc">&nbsp;                    char itemChar = myPersGoal.get(k).toString().charAt(0);</b>
+&nbsp;
+<b class="nc">&nbsp;                    System.out.print(chooseColorCode(itemChar) + itemChar);</b>
+<b class="nc">&nbsp;                } else {</b>
+<b class="nc">&nbsp;                    System.out.print(&quot; &quot;);</b>
+&nbsp;                }
+<b class="nc">&nbsp;                System.out.print(grey + &quot; | &quot;);</b>
+&nbsp;
+&nbsp;            }
+&nbsp;
+<b class="nc">&nbsp;            System.out.println();</b>
+&nbsp;        }
+&nbsp;
+<b class="nc">&nbsp;        System.out.println();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Implementation for CLI: prints the player&#39;s points
+&nbsp;     *
+&nbsp;     * @param myPoint are the points of the player
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public synchronized void printPoints(int myPoint) {
+<b class="nc">&nbsp;        System.out.println(grey + &quot;You currently have &quot; + myPoint + &quot; points.&quot;);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Implementation for CLI: prints a generic message from the server
+&nbsp;     *
+&nbsp;     * @param message is the string to print
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public synchronized void print(String message) {
+<b class="nc">&nbsp;        System.out.println(message);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Checks the recipient, and the message
+&nbsp;     * If accepted sends them to the client controller
+&nbsp;     */
+&nbsp;    private void chat(String[] splitString) {
+<b class="nc">&nbsp;        StringBuilder msg = new StringBuilder();</b>
+<b class="nc">&nbsp;        String destNickname = null;</b>
+<b class="nc">&nbsp;        int dest = checkInput.checkChat(splitString);</b>
+&nbsp;
+&nbsp;        // creating the message to send
+<b class="nc">&nbsp;        for (int i = 2; i &lt; splitString.length; i++) {</b>
+<b class="nc">&nbsp;            msg.append(splitString[i]).append(&quot; &quot;);</b>
+&nbsp;        }
+&nbsp;
+<b class="nc">&nbsp;        String message = msg.toString();</b>
+&nbsp;
+<b class="nc">&nbsp;        if (dest == 1) {</b>
+<b class="nc">&nbsp;            destNickname = splitString[1];</b>
+&nbsp;            try {
+<b class="nc">&nbsp;                clientController.chatToPlayer(destNickname, message);</b>
+<b class="nc">&nbsp;            } catch (Exception e) {</b>
+<b class="nc">&nbsp;                System.out.println(&quot;Impossible to connect to the server&quot;);</b>
+<b class="nc">&nbsp;            }</b>
+<b class="nc">&nbsp;        } else if (dest == 2) {</b>
+<b class="nc">&nbsp;            destNickname = &quot;all&quot;;</b>
+&nbsp;
+&nbsp;            try {
+<b class="nc">&nbsp;                clientController.chatToAll(message);</b>
+<b class="nc">&nbsp;            } catch (Exception e) {</b>
+<b class="nc">&nbsp;                System.out.println(&quot;Impossible to connect to the server&quot;);</b>
+<b class="nc">&nbsp;            }</b>
+&nbsp;        }
+&nbsp;
+<b class="nc">&nbsp;        System.out.println(&quot;Sending &quot; + msg + &quot;to &quot; + destNickname);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Implementation for CLI: prints the message on the chat
+&nbsp;     *
+&nbsp;     * @param sender  is the player that sent the message
+&nbsp;     * @param message is the message to print
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public synchronized void chatToMe(String sender, String message) {
+<b class="nc">&nbsp;        System.out.println(&quot;From &quot; + sender + &quot;: &quot; + message);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Implementation for CLI: prints an error message
+&nbsp;     *
+&nbsp;     * @param error is the error message to display
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public synchronized void printError(String error) {
+<b class="nc">&nbsp;        System.err.println(error);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Implementation for CLI: closes the view after an error occurs
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void disconnectionError() {
+<b class="nc">&nbsp;        if (!disconnected) {</b>
+<b class="nc">&nbsp;            disconnected = true;</b>
+<b class="nc">&nbsp;            System.out.println(&quot;\nPress ENTER to exit&quot;);</b>
+<b class="nc">&nbsp;            in.nextLine();</b>
+&nbsp;        }
+<b class="nc">&nbsp;        System.exit(1);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Implementation for CLI: prints the name(s) of the winning player(s)
+&nbsp;     *
+&nbsp;     * @param winners is(are) the winner(s) of the game
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public synchronized void printWinners(List&lt;String&gt; winners) {
+<b class="nc">&nbsp;        if (winners.size() == 1) {</b>
+<b class="nc">&nbsp;            System.out.println(&quot;The winner is &quot; + winners.get(0));</b>
+&nbsp;        } else {
+<b class="nc">&nbsp;            System.out.println(&quot;Parity: the winners are &quot; + winners);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Implementation for CLI: disconnects the client after a request done by the server
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void disconnectMe() {
+<b class="nc">&nbsp;        stopListening = true;</b>
+<b class="nc">&nbsp;        if (!disconnected) {</b>
+<b class="nc">&nbsp;            disconnected = true;</b>
+<b class="nc">&nbsp;            System.out.println(grey + &quot;You are being disconnected from the server, please press ENTER to exit&quot;);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Implementation for CLI: prints the name of each player and its score
+&nbsp;     *
+&nbsp;     * @param finalScores contains the players&#39; nicknames and their score
+&nbsp;     */
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public void finalScores(LinkedHashMap&lt;String, Integer&gt; finalScores) {
+<b class="nc">&nbsp;        print(&quot;Game is ended!&quot;);</b>
+<b class="nc">&nbsp;        print(&quot;Final rank: &quot;);</b>
+<b class="nc">&nbsp;        int i = 1, max = -1;</b>
+&nbsp;
+<b class="nc">&nbsp;        for (String s : finalScores.keySet()) {</b>
+<b class="nc">&nbsp;            if (finalScores.get(s) == max)</b>
+<b class="nc">&nbsp;                print(&quot; parity with &quot; + s);</b>
+&nbsp;            else {
+<b class="nc">&nbsp;                System.out.println();</b>
+<b class="nc">&nbsp;                print(i + &quot;) &quot; + s);</b>
+<b class="nc">&nbsp;                max = finalScores.get(s);</b>
+<b class="nc">&nbsp;                i++;</b>
+&nbsp;            }
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+<b class="nc">&nbsp;        System.out.println();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Implementation for CLI: does nothing, test already written from the Client controller
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void bookshelfCompleted() {
+&nbsp;
+<b class="nc">&nbsp;    }</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Called when the game has been interrupted because of too many absents for it.
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void gameInterrupted() {
+<b class="nc">&nbsp;        print(&quot;Game has been interrupted because of too many absents.&quot;);</b>
+<b class="nc">&nbsp;        print(&quot;Waiting for other players...&quot;);</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-06-29 22:48</div>
+</div>
+</body>
+</html>

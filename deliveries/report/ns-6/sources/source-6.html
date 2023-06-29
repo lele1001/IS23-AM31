@@ -1,0 +1,192 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > NumberOfPlayersScene</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">it.polimi.ingsw.client.view.GUI.scenes</a>
+</div>
+
+<h1>Coverage Summary for Class: NumberOfPlayersScene (it.polimi.ingsw.client.view.GUI.scenes)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">NumberOfPlayersScene</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/6)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/21)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package it.polimi.ingsw.client.view.GUI.scenes;
+&nbsp;
+&nbsp;import it.polimi.ingsw.client.controller.ClientController;
+&nbsp;import it.polimi.ingsw.commons.ItemCard;
+&nbsp;import javafx.fxml.FXML;
+&nbsp;import javafx.scene.control.Button;
+&nbsp;import javafx.scene.control.TextField;
+&nbsp;import javafx.scene.input.MouseEvent;
+&nbsp;
+&nbsp;/**
+&nbsp; * Defines the controller for the NumberOfPlayersScene
+&nbsp; */
+<b class="nc">&nbsp;public class NumberOfPlayersScene extends GUIScene {</b>
+&nbsp;    @FXML
+&nbsp;    private TextField playersNum, gameName;
+&nbsp;    @FXML
+&nbsp;    private Button submitButton, exitButton;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Initialize the numberOfPlayerScene
+&nbsp;     *
+&nbsp;     * @param clientController created for the GUI app
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void initialize(ClientController clientController) {
+<b class="nc">&nbsp;        super.initialize(clientController);</b>
+<b class="nc">&nbsp;        bindEvents();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Connects FXML items to the methods in the scene
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void bindEvents() {
+<b class="nc">&nbsp;        submitButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -&gt; submitAction());</b>
+<b class="nc">&nbsp;        exitButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -&gt; closeGame(clientController));</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Prints the player&#39;s Bookshelf in the scene
+&nbsp;     *
+&nbsp;     * @param nickname  is the owner of the Bookshelf
+&nbsp;     * @param bookshelf is the player&#39;s updated Bookshelf
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void updateBookshelf(String nickname, ItemCard[][] bookshelf) {
+<b class="nc">&nbsp;    }</b>
+&nbsp;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Form to select the number of players
+&nbsp;     */
+&nbsp;    public void submitAction() {
+&nbsp;        int players;
+&nbsp;        try {
+<b class="nc">&nbsp;            players = Integer.parseInt(playersNum.getText());</b>
+<b class="nc">&nbsp;        } catch (NumberFormatException e) {</b>
+<b class="nc">&nbsp;            printError(&quot;Error: insert a valid number of players&quot;);</b>
+&nbsp;            return;
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+<b class="nc">&nbsp;        if (players &lt;= 0 || players &gt;= 5) {</b>
+<b class="nc">&nbsp;            printError(&quot;Error: insert a valid number of players&quot;);</b>
+<b class="nc">&nbsp;            submitButton.setDisable(false);</b>
+&nbsp;        } else {
+&nbsp;
+<b class="nc">&nbsp;            if (!checkText(gameName)) {</b>
+<b class="nc">&nbsp;                printError(&quot;Error: insert a valid name for the game&quot;);</b>
+<b class="nc">&nbsp;                submitButton.setDisable(false);</b>
+&nbsp;            } else
+&nbsp;                try {
+&nbsp;                    //submitButton.setDisable(true);
+<b class="nc">&nbsp;                    clientController.setPlayersNumber(players, gameName.getText());</b>
+<b class="nc">&nbsp;                } catch (Exception e) {</b>
+<b class="nc">&nbsp;                    printError(&quot;Impossible to connect to the server&quot;);</b>
+<b class="nc">&nbsp;                }</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * CHeck if the text is empty
+&nbsp;     *
+&nbsp;     * @param text the game name
+&nbsp;     * @return true if not empty, else false
+&nbsp;     */
+&nbsp;    private boolean checkText(TextField text) {
+<b class="nc">&nbsp;        return !text.getText().isEmpty();</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-06-29 22:48</div>
+</div>
+</body>
+</html>

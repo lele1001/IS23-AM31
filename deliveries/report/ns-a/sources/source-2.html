@@ -1,0 +1,521 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > GameController</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">it.polimi.ingsw.server.controller</a>
+</div>
+
+<h1>Coverage Summary for Class: GameController (it.polimi.ingsw.server.controller)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">GameController</td>
+<td class="coverageStat">
+  <span class="percent">
+    91.7%
+  </span>
+  <span class="absValue">
+    (11/12)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    69.2%
+  </span>
+  <span class="absValue">
+    (101/146)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">GameController$1</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/2)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">GameController$2</td>
+<td class="coverageStat">
+  <span class="percent">
+    50%
+  </span>
+  <span class="absValue">
+    (1/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    50%
+  </span>
+  <span class="absValue">
+    (1/2)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    75%
+  </span>
+  <span class="absValue">
+    (12/16)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    68%
+  </span>
+  <span class="absValue">
+    (102/150)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package it.polimi.ingsw.server.controller;
+&nbsp;
+&nbsp;import com.google.gson.JsonObject;
+&nbsp;import it.polimi.ingsw.commons.TurnPhase;
+&nbsp;import it.polimi.ingsw.server.gameExceptions.NoBookshelfSpaceException;
+&nbsp;import it.polimi.ingsw.server.gameExceptions.NoRightItemCardSelection;
+&nbsp;import it.polimi.ingsw.server.gameExceptions.NotSameSelectedException;
+&nbsp;import it.polimi.ingsw.server.model.GameModel;
+&nbsp;import it.polimi.ingsw.commons.ItemCard;
+&nbsp;import it.polimi.ingsw.server.model.ModelInterface;
+&nbsp;
+&nbsp;import java.beans.PropertyChangeEvent;
+&nbsp;import java.beans.PropertyChangeListener;
+&nbsp;import java.util.*;
+&nbsp;
+&nbsp;import static it.polimi.ingsw.utils.ModelPropertyChange.*;
+&nbsp;import static it.polimi.ingsw.utils.Utils.*;
+&nbsp;
+&nbsp;/**
+&nbsp; * Defines the course of all the game, change the model and send responses to the clients
+&nbsp; */
+&nbsp;public class GameController implements PropertyChangeListener {
+&nbsp;    private final ConnectionControl connectionControl;
+<b class="fc">&nbsp;    private final ArrayList&lt;String&gt; playersList = new ArrayList&lt;&gt;();</b>
+&nbsp;    private String currPlayer;
+&nbsp;    private boolean winner;
+&nbsp;    private ModelInterface gameModel;
+&nbsp;    private TurnPhase turnPhase;
+&nbsp;    private boolean gameIsActive;
+<b class="fc">&nbsp;    private boolean timeout = false;</b>
+&nbsp;    private String gameFilePath;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * A simple constructor also used to set the reference for the ConnectionControl.
+&nbsp;     *
+&nbsp;     * @param connectionControl of the game.
+&nbsp;     */
+<b class="fc">&nbsp;    public GameController(ConnectionControl connectionControl) {</b>
+<b class="fc">&nbsp;        this.connectionControl = connectionControl;</b>
+<b class="fc">&nbsp;        gameIsActive = false;</b>
+<b class="fc">&nbsp;        winner = false;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Creates the game with all the necessary (board, bookshelves, ...) and starts it
+&nbsp;     *
+&nbsp;     * @param gameFilePath the file&#39;s path to save game into.
+&nbsp;     * @param playersList  the list of this game&#39;s players.
+&nbsp;     */
+&nbsp;    public void createGame(ArrayList&lt;String&gt; playersList, String gameFilePath) {
+<b class="fc">&nbsp;        this.gameFilePath = gameFilePath;</b>
+&nbsp;
+<b class="fc">&nbsp;        if (playersList.size() &lt; minNumberOfPlayers || playersList.size() &gt; maxNumberOfPlayers) {</b>
+<b class="fc">&nbsp;            System.out.println(&quot;Error: number of players not correct.&quot;);</b>
+&nbsp;            return;
+&nbsp;        }
+&nbsp;
+&nbsp;        // creates the list used to iterate on players
+<b class="fc">&nbsp;        this.playersList.addAll(playersList);</b>
+<b class="fc">&nbsp;        Collections.shuffle(this.playersList);</b>
+<b class="fc">&nbsp;        connectionControl.sendGameIsStarting(playersList, null);</b>
+<b class="fc">&nbsp;        gameModel = new GameModel();</b>
+&nbsp;
+&nbsp;        // sets itself as a listener of the model
+<b class="fc">&nbsp;        gameModel.setListener(this);</b>
+&nbsp;
+&nbsp;        // creates the board, and the bookshelves
+&nbsp;        // assigns personalGoals and commonGoals
+<b class="fc">&nbsp;        gameModel.CreateGame(this.playersList, gameFilePath);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Called to resume game from a file.
+&nbsp;     *
+&nbsp;     * @param onlinePlayers players already online to play their game.
+&nbsp;     * @param playersList   all the players of the game.
+&nbsp;     * @param json          the jsonObject with game&#39;s details.
+&nbsp;     * @param gameFilePath  the path of the file with game&#39;s details.
+&nbsp;     */
+&nbsp;    public void resumeGame(ArrayList&lt;String&gt; onlinePlayers, List&lt;String&gt; playersList, JsonObject json, String gameFilePath) {
+<b class="fc">&nbsp;        this.gameFilePath = gameFilePath;</b>
+<b class="fc">&nbsp;        this.playersList.addAll(playersList);</b>
+<b class="fc">&nbsp;        gameModel = new GameModel();</b>
+<b class="fc">&nbsp;        gameModel.setListener(this);</b>
+&nbsp;
+&nbsp;        try {
+<b class="fc">&nbsp;            json.get(&quot;winner&quot;).getAsString();</b>
+<b class="nc">&nbsp;            this.winner = true;</b>
+<b class="fc">&nbsp;        } catch (Exception e) {</b>
+<b class="fc">&nbsp;            System.out.println(&quot;Restored game doesn&#39;t have a winner yet.&quot;);</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+<b class="fc">&nbsp;        this.currPlayer = json.get(&quot;lastPlayer&quot;).getAsString();</b>
+<b class="fc">&nbsp;        connectionControl.sendGameIsStarting(new ArrayList&lt;&gt;(playersList), null);</b>
+<b class="fc">&nbsp;        gameModel.resumeGame(onlinePlayers, json, gameFilePath);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Calls each player&#39;s turn until somebody completes his/her Bookshelf.
+&nbsp;     *
+&nbsp;     * @param startFrom the position, in playersList array list, that indicates the first player that has to play.
+&nbsp;     */
+&nbsp;    public void run(int startFrom) {
+<b class="fc">&nbsp;        gameIsActive = true;</b>
+<b class="fc">&nbsp;        int i = (startFrom &gt;= playersList.size() ? 0 : startFrom);</b>
+&nbsp;
+<b class="fc">&nbsp;        while (!winner) {</b>
+<b class="fc">&nbsp;            checkForNumberOfOnlinePlayers();</b>
+<b class="fc">&nbsp;            if (winner)</b>
+&nbsp;                return;
+<b class="fc">&nbsp;            if (playersList.get(i).equals(currPlayer)) {</b>
+<b class="nc">&nbsp;                System.out.println(&quot;Going to the next player...&quot;);</b>
+<b class="nc">&nbsp;                i++;</b>
+&nbsp;            }
+<b class="fc">&nbsp;            playerTurn(i);</b>
+&nbsp;
+<b class="fc">&nbsp;            if (i &lt; playersList.size() - 1) {</b>
+<b class="fc">&nbsp;                i++;</b>
+&nbsp;            } else {
+<b class="fc">&nbsp;                i = 0;</b>
+&nbsp;            }
+&nbsp;        }
+&nbsp;
+<b class="fc">&nbsp;        runLastTurn(currPlayer);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * If the current player is not the first one, makes all the remaining one play their turn
+&nbsp;     * Calls the method to calculate the final score and end the game.
+&nbsp;     *
+&nbsp;     * @param nickname the nickname of the player that has just finished his turn.
+&nbsp;     */
+&nbsp;    public void runLastTurn(String nickname) {
+<b class="fc">&nbsp;        int i = playersList.indexOf(nickname) + 1;</b>
+<b class="fc">&nbsp;        winner = false;</b>
+<b class="fc">&nbsp;        checkForNumberOfOnlinePlayers();</b>
+<b class="fc">&nbsp;        if (winner)</b>
+&nbsp;            return;
+&nbsp;
+<b class="fc">&nbsp;        while (i &lt; playersList.size()) {</b>
+<b class="fc">&nbsp;            playerTurn(i);</b>
+<b class="fc">&nbsp;            i++;</b>
+&nbsp;        }
+&nbsp;
+<b class="fc">&nbsp;        connectionControl.sendFinalScores(gameModel.calcFinalScore());</b>
+<b class="fc">&nbsp;        connectionControl.onEndGame(gameFilePath);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Called at the beginning of the turn of each player, checks if available players are less than two.
+&nbsp;     * In that case, stops the game and waits for their coming back for 60 seconds: if the timeout exceeds, ends the game.
+&nbsp;     */
+&nbsp;    private void checkForNumberOfOnlinePlayers() {
+<b class="fc">&nbsp;        Timer timer = new Timer();</b>
+<b class="fc">&nbsp;        if (playersList.stream().filter(connectionControl::isOnline).count() &lt; 2) {</b>
+<b class="nc">&nbsp;            System.out.println(&quot;Too many absents for this game.. waiting for players&#39; returning in game.&quot;);</b>
+<b class="nc">&nbsp;            connectionControl.sendGameInterrupted();</b>
+<b class="nc">&nbsp;            timer.schedule(new TimerTask() {</b>
+&nbsp;                @Override
+&nbsp;                public void run() {
+<b class="nc">&nbsp;                    winner = true;</b>
+&nbsp;                }
+&nbsp;            }, timeOfReturning);
+&nbsp;
+<b class="nc">&nbsp;            while (!winner) {</b>
+<b class="nc">&nbsp;                if (playersList.stream().filter(connectionControl::isOnline).count() &gt;= 2) {</b>
+<b class="nc">&nbsp;                    break;</b>
+&nbsp;                }
+&nbsp;                try {
+<b class="nc">&nbsp;                    Thread.sleep(timeOfSleep);</b>
+<b class="nc">&nbsp;                } catch (InterruptedException e) {</b>
+<b class="nc">&nbsp;                    System.out.println(&quot;Sleep problem.&quot;);</b>
+<b class="nc">&nbsp;                    break;</b>
+<b class="nc">&nbsp;                }</b>
+&nbsp;            }
+&nbsp;
+<b class="nc">&nbsp;            timer.cancel();</b>
+&nbsp;
+<b class="nc">&nbsp;            if (winner) {</b>
+&nbsp;                // Took too long! The winner is the remaining player (if it is still online!)
+<b class="nc">&nbsp;                System.out.println(endForTimeFinished);</b>
+<b class="nc">&nbsp;                connectionControl.sendErrorToEveryone(endForTimeFinished);</b>
+<b class="nc">&nbsp;                List&lt;String&gt; remained = playersList.stream().filter(connectionControl::isOnline).toList();</b>
+&nbsp;
+<b class="nc">&nbsp;                if (remained.size() == 1) {</b>
+<b class="nc">&nbsp;                    System.out.println(oneWinnerEndPhrase + remained.get(0));</b>
+<b class="nc">&nbsp;                    LinkedHashMap&lt;String, Integer&gt; toBeSent = new LinkedHashMap&lt;&gt;();</b>
+<b class="nc">&nbsp;                    toBeSent.put(remained.get(0), gameModel.calcFinalScore().get(remained.get(0)));</b>
+<b class="nc">&nbsp;                    connectionControl.sendFinalScores(toBeSent);</b>
+&nbsp;                }
+&nbsp;
+<b class="nc">&nbsp;                connectionControl.onEndGame(gameFilePath);</b>
+&nbsp;                return;
+&nbsp;            } else {
+<b class="nc">&nbsp;                connectionControl.sendErrorToEveryone(&quot;Game is resuming...&quot;);</b>
+&nbsp;            }
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Waits for the player&#39;s action caught by ConnectionControl and calls the method to check and perform it.
+&nbsp;     * Every player has three minutes to complete his turn:
+&nbsp;     * if this timer exceeds, the player is set as offline, and the game continues with the next one.
+&nbsp;     *
+&nbsp;     * @param indexCurrPlayer the playersList&#39;s index of the nickname that has to play.
+&nbsp;     */
+&nbsp;    private void playerTurn(int indexCurrPlayer) {
+<b class="fc">&nbsp;        currPlayer = playersList.get(indexCurrPlayer);</b>
+&nbsp;
+<b class="fc">&nbsp;        if (connectionControl.isOnline(currPlayer)) {</b>
+<b class="fc">&nbsp;            Timer timer = new Timer();</b>
+<b class="fc">&nbsp;            System.out.println(playersList.get(indexCurrPlayer) + &quot;&#39;s turn&quot;);</b>
+<b class="fc">&nbsp;            connectionControl.sendPlayerTurn(currPlayer);</b>
+<b class="fc">&nbsp;            turnPhase = TurnPhase.SELECTCARDS;</b>
+<b class="fc">&nbsp;            connectionControl.askSelect(currPlayer);</b>
+&nbsp;
+<b class="fc">&nbsp;            timeout = false;</b>
+<b class="fc">&nbsp;            timer.schedule(new TimerTask() {</b>
+&nbsp;                @Override
+&nbsp;                public void run() {
+<b class="nc">&nbsp;                    timeout = true;</b>
+&nbsp;                }
+&nbsp;            }, timeOfTurn);
+&nbsp;
+<b class="fc">&nbsp;            while (!timeout) {</b>
+<b class="fc">&nbsp;                if (!connectionControl.isOnline(currPlayer) || turnPhase == TurnPhase.ENDTURN) {</b>
+<b class="fc">&nbsp;                    break;</b>
+&nbsp;                }
+&nbsp;
+&nbsp;                try {
+<b class="fc">&nbsp;                    Thread.sleep(timeOfSleep);</b>
+<b class="nc">&nbsp;                } catch (InterruptedException e) {</b>
+<b class="nc">&nbsp;                    System.out.println(&quot;Sleep problem.&quot;);</b>
+<b class="nc">&nbsp;                    break;</b>
+<b class="fc">&nbsp;                }</b>
+&nbsp;            }
+&nbsp;
+<b class="fc">&nbsp;            timer.cancel();</b>
+&nbsp;
+<b class="fc">&nbsp;            if (turnPhase == TurnPhase.ENDTURN) {</b>
+<b class="fc">&nbsp;                gameModel.EndTurn(currPlayer);</b>
+&nbsp;            } else {
+<b class="nc">&nbsp;                if (timeout) {</b>
+&nbsp;                    // Took too long: timer expired!
+<b class="nc">&nbsp;                    connectionControl.SendError(&quot;Timeout exceeded: took too long! Disconnecting you from the game...&quot;, currPlayer);</b>
+<b class="nc">&nbsp;                    connectionControl.changePlayerStatus(currPlayer, true);</b>
+&nbsp;                }
+&nbsp;
+<b class="nc">&nbsp;                if (turnPhase == TurnPhase.INSERTCARDS) {</b>
+<b class="nc">&nbsp;                    gameModel.resumeBoard();</b>
+&nbsp;                }
+&nbsp;            }
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * The method tries to insert the cards selected
+&nbsp;     *
+&nbsp;     * @param nickname who wants to insert on the bookshelf
+&nbsp;     * @param cards    to be inserted
+&nbsp;     * @param column   positions on the bookshelf
+&nbsp;     */
+&nbsp;    public void insertCard(String nickname, ArrayList&lt;ItemCard&gt; cards, int column) {
+<b class="fc">&nbsp;        if (!(nickname.equals(currPlayer)) || (turnPhase != TurnPhase.INSERTCARDS)) {</b>
+<b class="fc">&nbsp;            connectionControl.SendError(notYourTurnResponse, nickname);</b>
+&nbsp;            return;
+&nbsp;        }
+&nbsp;
+<b class="fc">&nbsp;        if (cards.size() &gt; maxNumberOfSelectedCards || cards.isEmpty()) {</b>
+<b class="nc">&nbsp;            connectionControl.SendError(notValidNumberResponse, nickname);</b>
+&nbsp;            return;
+&nbsp;        }
+&nbsp;
+&nbsp;        try {
+<b class="fc">&nbsp;            gameModel.InsertCard(nickname, cards, column);</b>
+<b class="fc">&nbsp;        } catch (NoBookshelfSpaceException e) {</b>
+<b class="fc">&nbsp;            connectionControl.SendError(noBookshelfSpaceResponse, nickname);</b>
+<b class="fc">&nbsp;            connectionControl.askInsert(nickname);</b>
+<b class="nc">&nbsp;        } catch (NotSameSelectedException e) {</b>
+<b class="nc">&nbsp;            connectionControl.SendError(notSameCardsResponse, nickname);</b>
+<b class="nc">&nbsp;            connectionControl.askInsert(nickname);</b>
+<b class="fc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * The method tries to select cards from board
+&nbsp;     *
+&nbsp;     * @param nickname  who wants to select
+&nbsp;     * @param positions of the cards to be deleted
+&nbsp;     */
+&nbsp;    public void selectCard(String nickname, ArrayList&lt;Integer&gt; positions) {
+<b class="fc">&nbsp;        if (!(nickname.equals(currPlayer)) || (turnPhase != TurnPhase.SELECTCARDS)) {</b>
+<b class="fc">&nbsp;            connectionControl.SendError(notYourTurnResponse, nickname);</b>
+&nbsp;            return;
+&nbsp;        }
+&nbsp;        try {
+<b class="fc">&nbsp;            gameModel.selectCard(nickname, positions);</b>
+<b class="fc">&nbsp;        } catch (NoRightItemCardSelection e) {</b>
+<b class="fc">&nbsp;            connectionControl.SendError(noRightBoardSelectionResponse, nickname);</b>
+<b class="fc">&nbsp;            connectionControl.askSelect(nickname);</b>
+<b class="nc">&nbsp;        } catch (NoBookshelfSpaceException e) {</b>
+<b class="nc">&nbsp;            connectionControl.SendError(noBookshelfSpaceResponse, nickname);</b>
+<b class="nc">&nbsp;            connectionControl.askSelect(nickname);</b>
+<b class="fc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Called to see if the game is active
+&nbsp;     *
+&nbsp;     * @return If the game is active
+&nbsp;     */
+&nbsp;    public boolean isGameIsActive() {
+<b class="nc">&nbsp;        return gameIsActive;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Called by the GameModel when it wants to notify its update/changes.
+&nbsp;     * This method is used to implement a listener pattern.
+&nbsp;     *
+&nbsp;     * @param evt is a PropertyChangeEvent object describing the event source, and the property that has changed.
+&nbsp;     */
+&nbsp;    public void propertyChange(PropertyChangeEvent evt) {
+<b class="fc">&nbsp;        if (evt.getPropertyName().matches(&quot;(.*)ERROR&quot;)) {</b>
+<b class="nc">&nbsp;            connectionControl.SendError(evt.getPropertyName(), (String) evt.getSource());</b>
+&nbsp;        } else {
+<b class="fc">&nbsp;            switch (evt.getPropertyName()) {</b>
+&nbsp;                case BOOKSHELF_CHANGED -&gt;
+<b class="fc">&nbsp;                        connectionControl.SendBookshelfChanged((String) evt.getSource(), (ItemCard[][]) evt.getNewValue(), (String) evt.getOldValue());</b>
+&nbsp;                case BOARD_CHANGED -&gt;
+<b class="fc">&nbsp;                        connectionControl.SendBoardChanged((ItemCard[][]) evt.getNewValue(), (String) evt.getOldValue());</b>
+&nbsp;                case BOOKSHELF_RENEWED -&gt; {
+<b class="fc">&nbsp;                    connectionControl.sendBookshelfRenewed((ItemCard[]) evt.getNewValue(), (Integer) evt.getOldValue(), (String) evt.getSource());</b>
+<b class="fc">&nbsp;                    turnPhase = TurnPhase.ENDTURN;</b>
+<b class="fc">&nbsp;                }</b>
+&nbsp;                case BOARD_RENEWED -&gt; {
+<b class="fc">&nbsp;                    connectionControl.sendBoardRenewed((Integer[]) evt.getNewValue());</b>
+<b class="fc">&nbsp;                    if (turnPhase == TurnPhase.SELECTCARDS) {</b>
+<b class="fc">&nbsp;                        turnPhase = TurnPhase.INSERTCARDS;</b>
+<b class="fc">&nbsp;                        connectionControl.askInsert(currPlayer);</b>
+&nbsp;                    }
+&nbsp;                }
+&nbsp;                case COM_GOAL_CREATED -&gt;
+<b class="fc">&nbsp;                        connectionControl.SendCommonGoalCreated((Integer) evt.getSource(), (Integer) evt.getNewValue(), (String) evt.getOldValue());</b>
+<b class="fc">&nbsp;                case EMPTY_CARD_BAG -&gt; connectionControl.SendEmptyCardBag();</b>
+&nbsp;                case PLAYER_SCORE -&gt;
+<b class="fc">&nbsp;                        connectionControl.sendPlayerScore((String) evt.getSource(), (Integer) evt.getNewValue());</b>
+&nbsp;                case COM_GOAL_DONE -&gt;
+<b class="fc">&nbsp;                        connectionControl.SendCommonGoalDone((String) evt.getSource(), (int[]) evt.getNewValue());</b>
+&nbsp;                case PERS_GOAL_CREATED -&gt;
+<b class="fc">&nbsp;                        connectionControl.SendPersGoalCreated((String) evt.getSource(), (String) evt.getNewValue());</b>
+&nbsp;                case BOOKSHELF_COMPLETED -&gt; {
+<b class="fc">&nbsp;                    winner = true;</b>
+<b class="fc">&nbsp;                    connectionControl.SendBookshelfCompleted((String) evt.getSource());</b>
+<b class="fc">&nbsp;                }</b>
+&nbsp;                case FINAL_SCORES -&gt;
+<b class="nc">&nbsp;                        connectionControl.sendErrorToEveryone(evt.getSource() + &quot; has done&quot; + evt.getNewValue() + &quot; points.&quot;);</b>
+&nbsp;                default -&gt; {
+&nbsp;                }
+&nbsp;            }
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Called when a player has come back to the game, calls the method on the GameModel to send him all the game&#39;s details.
+&nbsp;     *
+&nbsp;     * @param nickname of the client to send details to.
+&nbsp;     */
+&nbsp;    public void sendGameDetails(String nickname) {
+<b class="fc">&nbsp;        gameModel.sendGameDetails(nickname);</b>
+<b class="fc">&nbsp;        if (playersList.stream().filter(connectionControl::isOnline).count() != 1)</b>
+<b class="fc">&nbsp;            connectionControl.sendPlayerTurn(currPlayer);</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-06-29 22:48</div>
+</div>
+</body>
+</html>

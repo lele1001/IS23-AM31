@@ -1,0 +1,203 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > PersGoal</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">it.polimi.ingsw.server.model</a>
+</div>
+
+<h1>Coverage Summary for Class: PersGoal (it.polimi.ingsw.server.model)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">PersGoal</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (3/3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (9/9)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">PersGoal$1</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (4/4)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (10/10)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package it.polimi.ingsw.server.model;
+&nbsp;
+&nbsp;import com.google.gson.Gson;
+&nbsp;import com.google.gson.reflect.TypeToken;
+&nbsp;import it.polimi.ingsw.commons.HouseItem;
+&nbsp;import it.polimi.ingsw.utils.Position;
+&nbsp;
+&nbsp;import java.io.BufferedReader;
+&nbsp;import java.io.InputStreamReader;
+&nbsp;import java.lang.reflect.Type;
+&nbsp;import java.util.*;
+&nbsp;import java.util.stream.Collectors;
+&nbsp;
+&nbsp;/**
+&nbsp; * Define all the possible type of Personal Goal
+&nbsp; */
+<b class="fc">&nbsp;public enum PersGoal {</b>
+<b class="fc">&nbsp;    pg01, pg02, pg03, pg04, pg05, pg06, pg07, pg08, pg09, pg10, pg11, pg12;</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * An ordered list of different scores based on the number of correct ItemCard
+&nbsp;     */
+<b class="fc">&nbsp;    private final static List&lt;Integer&gt; scoreList = new ArrayList&lt;&gt;(List.of(0, 1, 2, 4, 6, 9, 12));</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * For any position (the integer key) indicates the correct HouseItem
+&nbsp;     */
+&nbsp;    private final Map&lt;Integer, HouseItem&gt; positions = new HashMap&lt;&gt;();
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Builds the card such as parameters indicates.
+&nbsp;     */
+&nbsp;    PersGoal() {
+&nbsp;        String json;
+&nbsp;        {
+&nbsp;            try {
+&nbsp;                json = new BufferedReader(new InputStreamReader(Objects.requireNonNull(this.getClass().getClassLoader().getResourceAsStream(&quot;PersGoalConfiguration.json&quot;)))).lines().collect(Collectors.joining(System.lineSeparator()));
+&nbsp;            } catch (Exception e) {
+&nbsp;                System.out.println(&quot;ERROR: No such PersGoalConfiguration file.&quot;);
+&nbsp;                return;
+&nbsp;            }
+&nbsp;        }
+&nbsp;        Gson gson = new Gson();
+&nbsp;
+<b class="fc">&nbsp;        Type cardsType = new TypeToken&lt;Map&lt;String, ArrayList&lt;Integer&gt;&gt;&gt;() {</b>
+&nbsp;        }.getType();
+&nbsp;        Map&lt;String, ArrayList&lt;Integer&gt;&gt; cards = gson.fromJson(json, cardsType);
+&nbsp;        List&lt;Integer&gt; index = cards.get(this.toString());
+&nbsp;
+&nbsp;        //Conventional order in which we read items from JsonConfiguration file
+&nbsp;        List&lt;HouseItem&gt; items = new ArrayList&lt;&gt;(List.of(HouseItem.Frame, HouseItem.Cat, HouseItem.Books, HouseItem.Games, HouseItem.Trophy, HouseItem.Plants));
+&nbsp;
+&nbsp;        for (int i = 0; i &lt; items.size(); i++) {
+&nbsp;            positions.put(index.get(i), items.get(i));
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Calculate the score for the Personal goal at the end of the Game
+&nbsp;     *
+&nbsp;     * @return the score reached on the library it takes as a parameter.
+&nbsp;     */
+&nbsp;    public int calcScore(Bookshelf l) {
+<b class="fc">&nbsp;        int numberOfDone = 0;</b>
+&nbsp;
+<b class="fc">&nbsp;        for (int i : positions.keySet()) {</b>
+<b class="fc">&nbsp;            if ((l.get(Position.getRow(i), Position.getColumn(i)) != null) &amp;&amp; (l.get(Position.getRow(i), Position.getColumn(i)).getMyItem() == positions.get(i))) {</b>
+<b class="fc">&nbsp;                numberOfDone++;</b>
+&nbsp;            }
+<b class="fc">&nbsp;        }</b>
+&nbsp;
+<b class="fc">&nbsp;        return scoreList.get(numberOfDone);</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-06-29 22:48</div>
+</div>
+</body>
+</html>

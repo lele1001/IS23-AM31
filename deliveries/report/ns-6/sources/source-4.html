@@ -1,0 +1,250 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > LoginScene</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">it.polimi.ingsw.client.view.GUI.scenes</a>
+</div>
+
+<h1>Coverage Summary for Class: LoginScene (it.polimi.ingsw.client.view.GUI.scenes)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">LoginScene</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/8)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/41)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package it.polimi.ingsw.client.view.GUI.scenes;
+&nbsp;
+&nbsp;import it.polimi.ingsw.client.controller.ClientController;
+&nbsp;import it.polimi.ingsw.client.controller.InputController;
+&nbsp;import javafx.fxml.FXML;
+&nbsp;import javafx.scene.control.Button;
+&nbsp;import javafx.scene.control.RadioButton;
+&nbsp;import javafx.scene.control.TextField;
+&nbsp;import javafx.scene.control.ToggleGroup;
+&nbsp;import javafx.scene.input.MouseEvent;
+&nbsp;import javafx.scene.layout.GridPane;
+&nbsp;
+&nbsp;/**
+&nbsp; * Defines the controller for the LoginScene
+&nbsp; */
+<b class="nc">&nbsp;public class LoginScene extends GUIScene {</b>
+&nbsp;    @FXML
+&nbsp;    private GridPane connectionPane;
+&nbsp;    @FXML
+&nbsp;    private Button loginButton, exitButton;
+&nbsp;    @FXML
+&nbsp;    private TextField username, ipPort, ipAddress;
+&nbsp;    @FXML
+&nbsp;    private RadioButton connectionRMI, connectionSocket;
+&nbsp;    private InputController inputController;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Initializes the login page showing the connection setup page
+&nbsp;     */
+&nbsp;    public void initialize(ClientController clientController) {
+<b class="nc">&nbsp;        super.initialize(clientController);</b>
+<b class="nc">&nbsp;        inputController = new InputController(clientController);</b>
+<b class="nc">&nbsp;        ipPort.setText(&quot;1501&quot;);</b>
+<b class="nc">&nbsp;        ipAddress.setText(&quot;127.0.0.1&quot;);</b>
+&nbsp;
+<b class="nc">&nbsp;        connectionPane.setDisable(false);</b>
+<b class="nc">&nbsp;        connectionPane.setVisible(true);</b>
+&nbsp;
+<b class="nc">&nbsp;        ToggleGroup connectionGroup = new ToggleGroup();</b>
+<b class="nc">&nbsp;        connectionRMI.setToggleGroup(connectionGroup);</b>
+<b class="nc">&nbsp;        connectionSocket.setToggleGroup(connectionGroup);</b>
+<b class="nc">&nbsp;        connectionRMI.setSelected(true);</b>
+&nbsp;
+<b class="nc">&nbsp;        bindEvents();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Connects FXML items to the methods in the scene
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void bindEvents() {
+<b class="nc">&nbsp;        loginButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -&gt; loginAction());</b>
+<b class="nc">&nbsp;        exitButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -&gt; closeGame(clientController));</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Checks the parameters inserted by the user and tries to start a connection with the server
+&nbsp;     */
+&nbsp;    public void loginAction() {
+<b class="nc">&nbsp;        int select = checkConnection();</b>
+<b class="nc">&nbsp;        int port = checkPort();</b>
+&nbsp;
+<b class="nc">&nbsp;        if (!checkText(username)) {</b>
+<b class="nc">&nbsp;            printError(&quot;ERROR: insert a valid username&quot;);</b>
+&nbsp;            return;
+&nbsp;        }
+&nbsp;
+<b class="nc">&nbsp;        if (select == -1) {</b>
+<b class="nc">&nbsp;            printError(&quot;ERROR: select a connection type&quot;);</b>
+&nbsp;            return;
+&nbsp;        }
+&nbsp;
+<b class="nc">&nbsp;        if (!checkIP(ipAddress)) {</b>
+<b class="nc">&nbsp;            printError(&quot;ERROR: insert a valid IP Address&quot;);</b>
+&nbsp;            return;
+&nbsp;        }
+&nbsp;
+<b class="nc">&nbsp;        if (port == -1) {</b>
+<b class="nc">&nbsp;            printError(&quot;ERROR: insert a valid port&quot;);</b>
+&nbsp;            return;
+&nbsp;        }
+<b class="nc">&nbsp;        clientController.startConnection(select, username.getText(), ipAddress.getText(), port);</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Check if the connection parameters are correct
+&nbsp;     *
+&nbsp;     * @return 0 if RMI, 1 if Socket, -1 if incorrect
+&nbsp;     */
+&nbsp;    private int checkConnection() {
+<b class="nc">&nbsp;        if (connectionRMI.isSelected()) {</b>
+<b class="nc">&nbsp;            return 0;</b>
+<b class="nc">&nbsp;        } else if (connectionSocket.isSelected()) {</b>
+<b class="nc">&nbsp;            return 1;</b>
+&nbsp;        } else {
+<b class="nc">&nbsp;            return -1;</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Checks if the username contains any special character
+&nbsp;     *
+&nbsp;     * @param text the username
+&nbsp;     * @return true if it does not contain special characters
+&nbsp;     */
+&nbsp;    private boolean checkText(TextField text) {
+<b class="nc">&nbsp;        String toCheck = text.getText();</b>
+&nbsp;
+<b class="nc">&nbsp;        return !toCheck.isEmpty() &amp;&amp; toCheck.matches(&quot;[a-zA-Z0-9]+&quot;);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Check if the IP is correct
+&nbsp;     *
+&nbsp;     * @param text the IP
+&nbsp;     * @return true if the IP is correct
+&nbsp;     */
+&nbsp;    private boolean checkIP(TextField text) {
+<b class="nc">&nbsp;        String toCheck = text.getText();</b>
+&nbsp;
+<b class="nc">&nbsp;        return !toCheck.isEmpty() &amp;&amp; inputController.isValidInet4Address(toCheck);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Check if the port is a number
+&nbsp;     *
+&nbsp;     * @return the port number, -1 if not a number
+&nbsp;     */
+&nbsp;    private int checkPort() {
+&nbsp;        int port;
+&nbsp;
+<b class="nc">&nbsp;        if (ipPort.getText().isEmpty()) {</b>
+<b class="nc">&nbsp;            return -1;</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        try {
+<b class="nc">&nbsp;            port = Integer.parseInt(ipPort.getText());</b>
+<b class="nc">&nbsp;        } catch (NumberFormatException e) {</b>
+<b class="nc">&nbsp;            return -1;</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+<b class="nc">&nbsp;        return port;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-06-29 22:48</div>
+</div>
+</body>
+</html>

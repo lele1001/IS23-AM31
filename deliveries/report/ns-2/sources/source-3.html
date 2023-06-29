@@ -1,0 +1,446 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > ConnectionSocket</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">it.polimi.ingsw.client.connection</a>
+</div>
+
+<h1>Coverage Summary for Class: ConnectionSocket (it.polimi.ingsw.client.connection)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">ConnectionSocket</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/13)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/91)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">ConnectionSocket$1</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/2)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">ConnectionSocket$2</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/2)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">ConnectionSocket$3</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/3)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/19)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/98)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package it.polimi.ingsw.client.connection;
+&nbsp;
+&nbsp;import com.google.gson.Gson;
+&nbsp;import com.google.gson.JsonObject;
+&nbsp;import it.polimi.ingsw.client.controller.ClientController;
+&nbsp;import it.polimi.ingsw.commons.ItemCard;
+&nbsp;
+&nbsp;import java.io.BufferedReader;
+&nbsp;import java.io.IOException;
+&nbsp;import java.io.InputStreamReader;
+&nbsp;import java.io.PrintWriter;
+&nbsp;import java.net.Socket;
+&nbsp;import java.util.*;
+&nbsp;
+&nbsp;import static it.polimi.ingsw.utils.Utils.maxTimer;
+&nbsp;import static it.polimi.ingsw.utils.Utils.pingTimer;
+&nbsp;
+&nbsp;/**
+&nbsp; * Implementation of Clients Socket TCP connection
+&nbsp; */
+&nbsp;public class ConnectionSocket extends ConnectionClient {
+<b class="nc">&nbsp;    private PrintWriter socketOut = null;</b>
+&nbsp;    private BufferedReader in;
+&nbsp;    private Socket socket;
+&nbsp;    private volatile boolean isConnected;
+&nbsp;    private Timer ping;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Initialize the Socket connection to the server
+&nbsp;     *
+&nbsp;     * @param controller ClientController, on which it will call all the methods after the server request
+&nbsp;     * @param address    IP address of the server
+&nbsp;     * @param port       IP port of the server
+&nbsp;     * @throws IOException if an error occurred during connection
+&nbsp;     */
+&nbsp;    public ConnectionSocket(ClientController controller, String address, int port) throws IOException {
+<b class="nc">&nbsp;        super(controller, address, port);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Starts socket&#39;s connection, opening the socket and the streams.
+&nbsp;     *
+&nbsp;     * @throws Exception if something has gone wrong.
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void startConnection() throws Exception {
+&nbsp;        try {
+<b class="nc">&nbsp;            socket = new Socket(address, port);</b>
+<b class="nc">&nbsp;            socketOut = new PrintWriter(socket.getOutputStream());</b>
+<b class="nc">&nbsp;            in = new BufferedReader(new InputStreamReader(socket.getInputStream()));</b>
+<b class="nc">&nbsp;        } catch (Exception e) {</b>
+<b class="nc">&nbsp;            throw new Exception(&quot;Error establishing socket connection.&quot;);</b>
+<b class="nc">&nbsp;        }</b>
+<b class="nc">&nbsp;        isConnected = true;</b>
+<b class="nc">&nbsp;        System.out.println(&quot;Connection established.&quot;);</b>
+<b class="nc">&nbsp;        send(generateStandardMessage(&quot;nickname&quot;, getController().getMyNickname()));</b>
+<b class="nc">&nbsp;        new Thread(this::listen).start();</b>
+<b class="nc">&nbsp;        new Thread(this::ping).start();</b>
+<b class="nc">&nbsp;        ping = new Timer();</b>
+<b class="nc">&nbsp;        ping.schedule(new TimerTask() {</b>
+&nbsp;            @Override
+&nbsp;            public void run() {
+<b class="nc">&nbsp;                isConnected = false;</b>
+&nbsp;            }
+&nbsp;        }, maxTimer);
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * A private method that sends a ping to the server every 5 seconds to check if it is still online.
+&nbsp;     */
+&nbsp;    private void ping() {
+&nbsp;        // Always sends a ping to the client.
+<b class="nc">&nbsp;        new Timer().scheduleAtFixedRate(new TimerTask() {</b>
+&nbsp;            @Override
+&nbsp;            public void run() {
+<b class="nc">&nbsp;                send(generateStandardMessage(&quot;ping&quot;, null));</b>
+&nbsp;            }
+&nbsp;        }, 0, pingTimer);
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Called when the client wants to select cards from the board.
+&nbsp;     *
+&nbsp;     * @param nickname      this client
+&nbsp;     * @param cardsSelected Tiles selected by the client
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void selectCard(String nickname, ArrayList&lt;Integer&gt; cardsSelected) {
+<b class="nc">&nbsp;        send(generateStandardMessage(&quot;selectCards&quot;, cardsSelected.toString()));</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Called when the client wants to insert cards in his bookshelf.
+&nbsp;     *
+&nbsp;     * @param nickname this client
+&nbsp;     * @param cards    Ordered tiles selected by the client
+&nbsp;     * @param column   column to put Tiles into
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void insertCard(String nickname, ArrayList&lt;ItemCard&gt; cards, int column) {
+<b class="nc">&nbsp;        Gson gson = new Gson();</b>
+<b class="nc">&nbsp;        JsonObject toSend = generateStandardMessage(&quot;insertCards&quot;, gson.toJson(cards.toArray()));</b>
+<b class="nc">&nbsp;        toSend.addProperty(&quot;column&quot;, column);</b>
+<b class="nc">&nbsp;        send(toSend);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Called to send a message via chat to all the players.
+&nbsp;     *
+&nbsp;     * @param nickname this client
+&nbsp;     * @param message  String to send to all the connected players
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void chatToAll(String nickname, String message) {
+<b class="nc">&nbsp;        send(generateStandardMessage(&quot;chatToAll&quot;, message));</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Called to send a message via chat to a specific player.
+&nbsp;     *
+&nbsp;     * @param sender   this client
+&nbsp;     * @param receiver the client receiver of the message.
+&nbsp;     * @param message  String to be sent as a message
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void chatToPlayer(String sender, String receiver, String message) {
+<b class="nc">&nbsp;        JsonObject toSend = generateStandardMessage(&quot;chatToPlayer&quot;, message);</b>
+<b class="nc">&nbsp;        toSend.addProperty(&quot;receiver&quot;, receiver);</b>
+<b class="nc">&nbsp;        send(toSend);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Called when the client wants to set players&#39; number.
+&nbsp;     *
+&nbsp;     * @param players is the number of players to be set.
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void setPlayersNumber(int players, String gameName) {
+<b class="nc">&nbsp;        JsonObject toSend = generateStandardMessage(&quot;playersNumber&quot;, Integer.toString(players));</b>
+<b class="nc">&nbsp;        toSend.addProperty(&quot;gameName&quot;, gameName);</b>
+<b class="nc">&nbsp;        send(toSend);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Called after client&#39;s decision about saved games.
+&nbsp;     *
+&nbsp;     * @param wantToSave true if he wants to re-start from a saved game.
+&nbsp;     * @param gameName   the name of the game he wants to resume.
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void setSavedGame(boolean wantToSave, String gameName) {
+<b class="nc">&nbsp;        JsonObject toSend = generateStandardMessage(&quot;savedGameFound&quot;, String.valueOf(wantToSave));</b>
+<b class="nc">&nbsp;        toSend.addProperty(&quot;gameName&quot;, gameName != null ? gameName : &quot;null&quot;);</b>
+<b class="nc">&nbsp;        send(toSend);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * A private method used to send throws the socket connection a json message.
+&nbsp;     *
+&nbsp;     * @param json to be sent.
+&nbsp;     */
+&nbsp;    private void send(JsonObject json) {
+<b class="nc">&nbsp;        socketOut.println(json.toString());</b>
+<b class="nc">&nbsp;        socketOut.flush();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * A private method used to generate standard messages with two fields.
+&nbsp;     *
+&nbsp;     * @param type  of the message to be sent.
+&nbsp;     * @param value the string to be set as “Value” in the json message (not always used).
+&nbsp;     * @return the jsonObject created with the two specified fields.
+&nbsp;     */
+&nbsp;    private JsonObject generateStandardMessage(String type, String value) {
+<b class="nc">&nbsp;        JsonObject json = new JsonObject();</b>
+<b class="nc">&nbsp;        json.addProperty(&quot;Type&quot;, type);</b>
+<b class="nc">&nbsp;        json.addProperty(&quot;Value&quot;, value);</b>
+<b class="nc">&nbsp;        return json;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * The infinitive loop that always listens throws socket connection until an error occurs.
+&nbsp;     * This method notifies the client if the server has disconnected for some reason.
+&nbsp;     */
+&nbsp;    public void listen() {
+<b class="nc">&nbsp;        while (isConnected) {</b>
+&nbsp;            try {
+<b class="nc">&nbsp;                String line = in.readLine();</b>
+<b class="nc">&nbsp;                if (line != null) {</b>
+&nbsp;                    //System.out.println(&quot;Received: &quot; + line);
+<b class="nc">&nbsp;                    onMessageReceived(line);</b>
+&nbsp;                }
+<b class="nc">&nbsp;            } catch (IOException e) {</b>
+<b class="nc">&nbsp;                isConnected = false;</b>
+<b class="nc">&nbsp;            }</b>
+&nbsp;        }
+&nbsp;
+<b class="nc">&nbsp;        getController().onError(&quot;Server disconnected.&quot;);</b>
+&nbsp;
+<b class="nc">&nbsp;        socketOut.close();</b>
+&nbsp;        try {
+<b class="nc">&nbsp;            in.close();</b>
+<b class="nc">&nbsp;            socket.close();</b>
+<b class="nc">&nbsp;        } catch (IOException e) {</b>
+<b class="nc">&nbsp;            getController().onError(&quot;Error closing socket interface.&quot;);</b>
+<b class="nc">&nbsp;        }</b>
+<b class="nc">&nbsp;        getController().disconnectMe();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * A private method used to de-parse json messages received from the server and to do the actions requested.
+&nbsp;     *
+&nbsp;     * @param json to be parsed.
+&nbsp;     */
+&nbsp;    private void onMessageReceived(String json) {
+<b class="nc">&nbsp;        JsonObject jsonObject = new JsonObject();</b>
+<b class="nc">&nbsp;        Gson gson = new Gson();</b>
+&nbsp;        try {
+<b class="nc">&nbsp;            jsonObject = gson.fromJson(json, jsonObject.getClass());</b>
+<b class="nc">&nbsp;            switch (jsonObject.get(&quot;Type&quot;).getAsString()) {</b>
+&nbsp;                case &quot;askPlayersNumber&quot; -&gt;
+<b class="nc">&nbsp;                        getController().onPlayerNumber(new ArrayList&lt;&gt;(Arrays.asList(gson.fromJson(jsonObject.get(&quot;Value&quot;).getAsString(), String[].class))));</b>
+<b class="nc">&nbsp;                case &quot;disconnect&quot; -&gt; in.close();</b>
+&nbsp;                case &quot;savedGameFound&quot; -&gt;
+<b class="nc">&nbsp;                        getController().onSavedGame(new ArrayList&lt;&gt;(Arrays.asList(gson.fromJson(jsonObject.get(&quot;Value&quot;).getAsString(), String[].class))));</b>
+<b class="nc">&nbsp;                case &quot;askSelect&quot; -&gt; getController().onSelect();</b>
+<b class="nc">&nbsp;                case &quot;askInsert&quot; -&gt; getController().onInsert();</b>
+&nbsp;                case &quot;boardChanged&quot; -&gt;
+<b class="nc">&nbsp;                        getController().onBoardChanged(gson.fromJson(jsonObject.get(&quot;Value&quot;).getAsString(), ItemCard[][].class));</b>
+&nbsp;                case &quot;bookshelfRenewed&quot; -&gt;
+<b class="nc">&nbsp;                        getController().onBookshelfRenewed(gson.fromJson(jsonObject.get(&quot;Value&quot;).getAsString(), ItemCard[].class), jsonObject.get(&quot;column&quot;).getAsInt(), jsonObject.get(&quot;player&quot;).getAsString());</b>
+&nbsp;                case &quot;boardRenewed&quot; -&gt;
+<b class="nc">&nbsp;                        getController().onBoardRenewed(gson.fromJson(jsonObject.get(&quot;Value&quot;).getAsString(), Integer[].class));</b>
+&nbsp;                case &quot;bookshelfChanged&quot; -&gt;
+<b class="nc">&nbsp;                        getController().onBookshelfChanged(jsonObject.get(&quot;nickname&quot;).getAsString(), gson.fromJson(jsonObject.get(&quot;Value&quot;).getAsString(), ItemCard[][].class));</b>
+<b class="nc">&nbsp;                case &quot;error&quot; -&gt; getController().onError(jsonObject.get(&quot;Value&quot;).getAsString());</b>
+&nbsp;                case &quot;comGoalCreated&quot; -&gt;
+<b class="nc">&nbsp;                        getController().onCommonGoalCreated(jsonObject.get(&quot;Value&quot;).getAsInt(), jsonObject.get(&quot;score&quot;).getAsInt());</b>
+<b class="nc">&nbsp;                case &quot;persGoalCreated&quot; -&gt; getController().onPersGoalCreated(jsonObject.get(&quot;Value&quot;).getAsString());</b>
+<b class="nc">&nbsp;                case &quot;changeTurn&quot; -&gt; getController().onChangeTurn(jsonObject.get(&quot;Value&quot;).getAsString());</b>
+&nbsp;                case &quot;winner&quot; -&gt;
+<b class="nc">&nbsp;                        getController().onWinner(new ArrayList&lt;&gt;(Arrays.asList(gson.fromJson(jsonObject.get(&quot;Value&quot;).getAsString(), String[].class))));</b>
+&nbsp;                case &quot;commonGoalDone&quot; -&gt;
+<b class="nc">&nbsp;                        getController().onCommonGoalDone(jsonObject.get(&quot;source&quot;).getAsString(), gson.fromJson(jsonObject.get(&quot;Value&quot;).getAsString(), int[].class));</b>
+&nbsp;                case &quot;gameStarted&quot; -&gt;
+<b class="nc">&nbsp;                        getController().gameStarted(new ArrayList&lt;&gt;(Arrays.asList(gson.fromJson(jsonObject.get(&quot;Value&quot;).getAsString(), String[].class))), true);</b>
+<b class="nc">&nbsp;                case &quot;player_score&quot; -&gt; getController().onPlayerScore(jsonObject.get(&quot;Value&quot;).getAsInt());</b>
+&nbsp;                case &quot;bookshelf_completed&quot; -&gt;
+<b class="nc">&nbsp;                        getController().onBookshelfCompleted(jsonObject.get(&quot;Value&quot;).getAsString());</b>
+&nbsp;                case &quot;chatToMe&quot; -&gt;
+<b class="nc">&nbsp;                        getController().chatToMe(jsonObject.get(&quot;sender&quot;).getAsString(), jsonObject.get(&quot;Value&quot;).getAsString());</b>
+&nbsp;                case &quot;finalScores&quot; -&gt; {
+<b class="nc">&nbsp;                    String[] nicknames = gson.fromJson(jsonObject.get(&quot;Value&quot;).getAsString(), String[].class);</b>
+<b class="nc">&nbsp;                    Integer[] scores = gson.fromJson(jsonObject.get(&quot;scores&quot;).getAsString(), Integer[].class);</b>
+<b class="nc">&nbsp;                    LinkedHashMap&lt;String, Integer&gt; finalScores = new LinkedHashMap&lt;&gt;();</b>
+<b class="nc">&nbsp;                    for (int i = 0; i &lt; nicknames.length; i++)</b>
+<b class="nc">&nbsp;                        finalScores.put(nicknames[i], scores[i]);</b>
+<b class="nc">&nbsp;                    getController().onFinalScores(finalScores);</b>
+<b class="nc">&nbsp;                }</b>
+<b class="nc">&nbsp;                case &quot;gameInterrupted&quot; -&gt; getController().gameInterrupted();</b>
+&nbsp;                case &quot;ping&quot; -&gt; {
+<b class="nc">&nbsp;                    ping.cancel();</b>
+<b class="nc">&nbsp;                    ping = new Timer();</b>
+<b class="nc">&nbsp;                    ping.schedule(new TimerTask() {</b>
+&nbsp;                        @Override
+&nbsp;                        public void run() {
+<b class="nc">&nbsp;                            isConnected = false;</b>
+<b class="nc">&nbsp;                            System.out.println(&quot;ping exceeded&quot;);</b>
+&nbsp;                        }
+&nbsp;                    }, maxTimer);
+<b class="nc">&nbsp;                }</b>
+<b class="nc">&nbsp;                default -&gt; getController().onError(&quot;Unknown message from server.&quot;);</b>
+&nbsp;
+&nbsp;            }
+<b class="nc">&nbsp;        } catch (IOException e) {</b>
+<b class="nc">&nbsp;            getController().onError(&quot;Error de-parsing server&#39;s message.&quot;);</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-06-29 22:48</div>
+</div>
+</body>
+</html>

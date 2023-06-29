@@ -1,0 +1,156 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > ModelInterface</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">it.polimi.ingsw.server.model</a>
+</div>
+
+<h1>Coverage Summary for Class: ModelInterface (it.polimi.ingsw.server.model)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+</tr>
+<tr>
+  <td class="name">ModelInterface</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package it.polimi.ingsw.server.model;
+&nbsp;
+&nbsp;import com.google.gson.JsonObject;
+&nbsp;import it.polimi.ingsw.commons.ItemCard;
+&nbsp;import it.polimi.ingsw.server.gameExceptions.NoBookshelfSpaceException;
+&nbsp;import it.polimi.ingsw.server.gameExceptions.NoRightItemCardSelection;
+&nbsp;import it.polimi.ingsw.server.gameExceptions.NotSameSelectedException;
+&nbsp;
+&nbsp;import java.beans.PropertyChangeListener;
+&nbsp;import java.util.ArrayList;
+&nbsp;import java.util.LinkedHashMap;
+&nbsp;
+&nbsp;/**
+&nbsp; * Defines all the methods that can be called on the Model
+&nbsp; */
+&nbsp;public interface ModelInterface {
+&nbsp;    /**
+&nbsp;     * Creates the game with all the necessary things (board, bookshelves, personal goals and common goals).
+&nbsp;     *
+&nbsp;     * @param playersList  the list with all players&#39; nicknames.
+&nbsp;     * @param gameFilePath the path to the json file of the game
+&nbsp;     */
+&nbsp;    void CreateGame(ArrayList&lt;String&gt; playersList, String gameFilePath);
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Called at the beginning of the game when the first player wants to resume one of the game he&#39;s into.
+&nbsp;     *
+&nbsp;     * @param onlinePlayers the list of the players of this game already online and ready to play.
+&nbsp;     * @param json          the jsonObject with all the details of the game (taken from the file).
+&nbsp;     * @param gameFilePath  the path of the file with all game&#39;s details.
+&nbsp;     */
+&nbsp;    void resumeGame(ArrayList&lt;String&gt; onlinePlayers, JsonObject json, String gameFilePath);
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Tries to insert cards in a nickname&#39;s bookshelf.
+&nbsp;     *
+&nbsp;     * @param nickname of the owner of the bookshelf
+&nbsp;     * @param cards    to be inserted into the bookshelf
+&nbsp;     * @param column   of the bookshelf to insert cards into
+&nbsp;     * @throws NoBookshelfSpaceException if there&#39;s no space in the column indicated
+&nbsp;     * @throws NotSameSelectedException  if the player wants to insert cards different from the ones selected.
+&nbsp;     */
+&nbsp;    void InsertCard(String nickname, ArrayList&lt;ItemCard&gt; cards, int column) throws NoBookshelfSpaceException, NotSameSelectedException;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Tries to select cards from the board.
+&nbsp;     *
+&nbsp;     * @param player    the nickname of the player
+&nbsp;     * @param positions of the cards to be selected.
+&nbsp;     * @throws NoRightItemCardSelection  if the selection is not valid.
+&nbsp;     * @throws NoBookshelfSpaceException if there&#39;s no enough space in the player&#39;s bookshelf for the number of tiles he selected.
+&nbsp;     */
+&nbsp;    void selectCard(String player, ArrayList&lt;Integer&gt; positions) throws NoRightItemCardSelection, NoBookshelfSpaceException; //chiedo conferma che sia la stessa eccezione
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Used to set GameController as a GameModel&#39;s listener.
+&nbsp;     *
+&nbsp;     * @param listener to be set.
+&nbsp;     */
+&nbsp;    void setListener(PropertyChangeListener listener);
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Calculates all the players&#39; final score and sends it to each of them
+&nbsp;     *
+&nbsp;     * @return a set (whose size is &gt; 1 only in case of parity) with all the winners.
+&nbsp;     */
+&nbsp;    LinkedHashMap&lt;String, Integer&gt; calcFinalScore();
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Called at the end of a turn, checks if common goals have been reached from the current player,
+&nbsp;     * and if the board needs to be refilled.
+&nbsp;     *
+&nbsp;     * @param nickname of the current player.
+&nbsp;     */
+&nbsp;    void EndTurn(String nickname);
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Called to resume the board when someone has selected tiles from it
+&nbsp;     * but has disconnected before inserting them in their bookshelf.
+&nbsp;     */
+&nbsp;    void resumeBoard();
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Used when a player comes back in a game and needs to have all game&#39;s information.
+&nbsp;     *
+&nbsp;     * @param nickname of the just returned player.
+&nbsp;     */
+&nbsp;    void sendGameDetails(String nickname);
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-06-29 22:48</div>
+</div>
+</body>
+</html>

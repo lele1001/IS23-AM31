@@ -1,0 +1,212 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > EndGameScene</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">it.polimi.ingsw.client.view.GUI.scenes</a>
+</div>
+
+<h1>Coverage Summary for Class: EndGameScene (it.polimi.ingsw.client.view.GUI.scenes)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">EndGameScene</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/5)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/39)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package it.polimi.ingsw.client.view.GUI.scenes;
+&nbsp;
+&nbsp;import it.polimi.ingsw.client.controller.ClientController;
+&nbsp;import javafx.fxml.FXML;
+&nbsp;import javafx.scene.control.Button;
+&nbsp;import javafx.scene.control.Label;
+&nbsp;import javafx.scene.image.ImageView;
+&nbsp;import javafx.scene.input.MouseEvent;
+&nbsp;import javafx.scene.layout.AnchorPane;
+&nbsp;import javafx.scene.layout.ColumnConstraints;
+&nbsp;import javafx.scene.layout.GridPane;
+&nbsp;import javafx.scene.layout.RowConstraints;
+&nbsp;
+&nbsp;import java.util.LinkedHashMap;
+&nbsp;
+&nbsp;/**
+&nbsp; * Defines the controller for the EndGameScene
+&nbsp; */
+<b class="nc">&nbsp;public class EndGameScene extends GUIScene {</b>
+&nbsp;    @FXML
+&nbsp;    private ImageView winnerToken;
+&nbsp;    @FXML
+&nbsp;    private Button closeButton;
+&nbsp;    @FXML
+&nbsp;    private AnchorPane rankingPane;
+&nbsp;    @FXML
+&nbsp;    private Label victoryMessage;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Initialize the endGameScene
+&nbsp;     *
+&nbsp;     * @param clientController created for the GUI app
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void initialize(ClientController clientController) {
+<b class="nc">&nbsp;        super.initialize(clientController);</b>
+<b class="nc">&nbsp;        bindEvents();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Connects FXML items to the methods in the scene
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void bindEvents() {
+<b class="nc">&nbsp;        closeButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -&gt; closeGame(clientController));</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Sets the scene based on the number of players in the game
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void setPlayers() {
+<b class="nc">&nbsp;        GridPane rankingTable = new GridPane();</b>
+&nbsp;
+<b class="nc">&nbsp;        ColumnConstraints placeCol = new ColumnConstraints();</b>
+<b class="nc">&nbsp;        ColumnConstraints nameCol = new ColumnConstraints();</b>
+<b class="nc">&nbsp;        ColumnConstraints scoreCol = new ColumnConstraints();</b>
+<b class="nc">&nbsp;        placeCol.setPrefWidth(20.0);</b>
+<b class="nc">&nbsp;        nameCol.setPrefWidth(180.0);</b>
+<b class="nc">&nbsp;        scoreCol.setPrefWidth(50.0);</b>
+&nbsp;
+<b class="nc">&nbsp;        RowConstraints headingRow = new RowConstraints();</b>
+<b class="nc">&nbsp;        headingRow.setPrefHeight(30.0);</b>
+&nbsp;
+<b class="nc">&nbsp;        rankingTable.getColumnConstraints().addAll(placeCol, nameCol, scoreCol);</b>
+<b class="nc">&nbsp;        rankingTable.getRowConstraints().add(headingRow);</b>
+<b class="nc">&nbsp;        rankingTable.setId(&quot;rankingTable&quot;);</b>
+&nbsp;
+<b class="nc">&nbsp;        rankingTable.add(new Label(&quot;pos&quot;), 0, 0);</b>
+<b class="nc">&nbsp;        rankingTable.add(new Label(&quot;nickname&quot;), 0, 1);</b>
+<b class="nc">&nbsp;        rankingTable.add(new Label(&quot;score&quot;), 0, 2);</b>
+&nbsp;
+<b class="nc">&nbsp;        for (int i = 0; i &lt; clientController.getPlayersBookshelves().size(); i++) {</b>
+<b class="nc">&nbsp;            RowConstraints row = new RowConstraints();</b>
+<b class="nc">&nbsp;            row.setPrefHeight(30.0);</b>
+<b class="nc">&nbsp;            rankingTable.getRowConstraints().add(row);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Displays the final ranking of the game, showing the score of each player
+&nbsp;     *
+&nbsp;     * @param finalScores contains the players&#39; nicknames and their score
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void finalScores(LinkedHashMap&lt;String, Integer&gt; finalScores) {
+<b class="nc">&nbsp;        int pos = 0, max = -1, index = 1;</b>
+<b class="nc">&nbsp;        GridPane rankingTable = (GridPane) rankingPane.getChildren().get(0);</b>
+<b class="nc">&nbsp;        for (String s : finalScores.keySet()) {</b>
+<b class="nc">&nbsp;            if (finalScores.get(s) != max) {</b>
+<b class="nc">&nbsp;                pos++;</b>
+&nbsp;            }
+<b class="nc">&nbsp;            if (finalScores.get(s) &gt; max) {</b>
+<b class="nc">&nbsp;                max = finalScores.get(s);</b>
+&nbsp;            }
+&nbsp;
+<b class="nc">&nbsp;            rankingTable.add(new Label(String.valueOf(pos)), 0, index);</b>
+<b class="nc">&nbsp;            rankingTable.add(new Label(s), 1, index);</b>
+<b class="nc">&nbsp;            rankingTable.add(new Label(finalScores.get(s).toString()), 2, index);</b>
+<b class="nc">&nbsp;            index++;</b>
+<b class="nc">&nbsp;        }</b>
+<b class="nc">&nbsp;        if (finalScores.get(clientController.getMyNickname()) == max) {</b>
+<b class="nc">&nbsp;            winnerToken.setVisible(true);</b>
+<b class="nc">&nbsp;            victoryMessage.setText(&quot;YOU&#39;RE THE WINNER&quot;);</b>
+&nbsp;        } else {
+<b class="nc">&nbsp;            winnerToken.setVisible(false);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-06-29 22:48</div>
+</div>
+</body>
+</html>

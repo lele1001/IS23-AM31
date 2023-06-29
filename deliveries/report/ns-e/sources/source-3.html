@@ -1,0 +1,220 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > Utils</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">it.polimi.ingsw.utils</a>
+</div>
+
+<h1>Coverage Summary for Class: Utils (it.polimi.ingsw.utils)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Utils</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">Utils$comGoalDescription</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/4)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/16)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/5)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/17)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package it.polimi.ingsw.utils;
+&nbsp;
+&nbsp;/**
+&nbsp; * Defines static value used in all the project
+&nbsp; */
+<b class="nc">&nbsp;public abstract class Utils {</b>
+&nbsp;    //TODO Connection control
+&nbsp;    /*
+&nbsp;    DONE:
+&nbsp;    gameController
+&nbsp;    MODEL (/NO STRING OF GAME MODEL)
+&nbsp;
+&nbsp;     */
+&nbsp;    public static final int BOOKSHELF_HEIGHT = 6;
+&nbsp;    public static final int BOOKSHELF_LENGTH = 5;
+&nbsp;    public static final int DIM_BOARD = 9;
+&nbsp;    public static final int minNumberOfPlayers = 2;
+&nbsp;    public static final int maxNumberOfPlayers = 4;
+&nbsp;    public static final int timeOfReturning = 60000;
+&nbsp;    public static final int timeOfTurn = 180000;
+&nbsp;    public static final int timeOfSleep = 500;
+&nbsp;    public static final String endForTimeFinished = &quot;Took too long for returning... game is ending.&quot;;
+&nbsp;    public static final String oneWinnerEndPhrase = &quot;The winner of the game is &quot;;
+&nbsp;    //public static final String moreWinnerEndPhrase = &quot;Parity: winners are &quot;;
+&nbsp;    public static final String notYourTurnResponse = &quot;NOT YOUR TURN&quot;;
+&nbsp;    public static final String notValidNumberResponse = &quot;NUMBER NOT VALID&quot;;
+&nbsp;    public static final String noBookshelfSpaceResponse = &quot;NO BOOKSHELF SPACE&quot;;
+&nbsp;    public static final String noRightBoardSelectionResponse = &quot;NO RIGHT BOARD SELECTION&quot;;
+&nbsp;    public static final String notSameCardsResponse = &quot;CARDS YOU WANT TO INSERT ARE NOT THE SAME YOU SELECTED&quot;;
+&nbsp;    public static final int maxNumberOfSelectedCards = 3;
+&nbsp;    public static final int pingTimer = 1000;
+&nbsp;    public static final int maxTimer = 10000;
+&nbsp;    public static final int maxNameLength = 18;
+&nbsp;    public static final String grey = (char) 27 + &quot;[0;39m&quot;;
+&nbsp;    public static final String green = (char) 27 + &quot;[1;92m&quot;;
+&nbsp;    public static final String blue = (char) 27 + &quot;[1;94m&quot;;
+&nbsp;    public static final String yellow = (char) 27 + &quot;[1;93m&quot;;
+&nbsp;    public static final String purple = (char) 27 + &quot;[1;95m&quot;;
+&nbsp;    public static final String cyan = (char) 27 + &quot;[1;96m&quot;;
+&nbsp;    public static final String white = (char) 27 + &quot;[1;97m&quot;;
+&nbsp;    public static final String red = (char) 27 + &quot;[0;31m&quot;;
+&nbsp;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Defines all the value for the different goal description
+&nbsp;     */
+<b class="nc">&nbsp;    public enum comGoalDescription {</b>
+<b class="nc">&nbsp;        comGoal1(&quot;Two separate groups each containing four tiles of the same type in a 2x2 square.\n&quot; + &quot;The tiles of one square can be different from those of the other square.&quot;),</b>
+<b class="nc">&nbsp;        comGoal2(&quot;Two columns each formed by 6 different types of tiles.\n&quot; + &quot;One column can show the same or a different combination of the other column.&quot;),</b>
+<b class="nc">&nbsp;        comGoal3(</b>
+&nbsp;                &quot;Four groups each containing at least 4 tiles of the same type.\n&quot; + &quot;The tiles of one group can be different from those of another group.&quot;),
+<b class="nc">&nbsp;        comGoal4(</b>
+&nbsp;                &quot;Six groups each containing at least 2 tiles of the same type.\n&quot; + &quot;The tiles of one group can be different from those of another group.&quot;),
+<b class="nc">&nbsp;        comGoal5(</b>
+&nbsp;                &quot;Three columns each formed by 6 tiles of maximum three different types.\n&quot; + &quot;One column can show the same or a different combination of another column.&quot;),
+<b class="nc">&nbsp;        comGoal6(</b>
+&nbsp;                &quot;Two lines each formed by 5 different types of tiles.\n&quot; + &quot;One line can show the same or a different combination of the other line.&quot;),
+<b class="nc">&nbsp;        comGoal7(</b>
+&nbsp;                &quot;Four lines each formed by 5 tiles of maximum three different types.\n&quot; + &quot;One line can show the same or a different combination of another line.&quot;),
+<b class="nc">&nbsp;        comGoal8(</b>
+&nbsp;                &quot;Four tiles of the same type in the four corners of the bookshelf.&quot;),
+<b class="nc">&nbsp;        comGoal9(</b>
+&nbsp;                &quot;Eight tiles of the same type.\n&quot; + &quot;There is no restriction about the position of these tiles.&quot;),
+<b class="nc">&nbsp;        comGoal10(</b>
+&nbsp;                &quot;Five tiles of the same type forming an X.&quot;),
+<b class="nc">&nbsp;        comGoal11(</b>
+&nbsp;                &quot;Five tiles of the same item forming a diagonal.&quot;),
+<b class="nc">&nbsp;        comGoal12(&quot;Five columns of increasing or decreasing height. Starting from the first column on the left or on the right, each next column must be made of exactly one more tile. Tiles can be of any type.&quot;);</b>
+&nbsp;
+&nbsp;        private final String description;
+&nbsp;
+&nbsp;        /**
+&nbsp;         * Set the description of the Common Goal
+&nbsp;         *
+&nbsp;         * @param description The description of the Common Goal
+&nbsp;         */
+<b class="nc">&nbsp;        comGoalDescription(String description) {</b>
+<b class="nc">&nbsp;            this.description = description;</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        /**
+&nbsp;         * Return the String description of the Common Goal
+&nbsp;         *
+&nbsp;         * @return Return the String description of the Common Goal
+&nbsp;         */
+&nbsp;        public String getDescription() {
+<b class="nc">&nbsp;            return description;</b>
+&nbsp;        }
+&nbsp;
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-06-29 22:48</div>
+</div>
+</body>
+</html>

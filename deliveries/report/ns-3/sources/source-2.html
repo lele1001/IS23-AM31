@@ -1,0 +1,457 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > InputController</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">it.polimi.ingsw.client.controller</a>
+</div>
+
+<h1>Coverage Summary for Class: InputController (it.polimi.ingsw.client.controller)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">InputController</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/11)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/144)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package it.polimi.ingsw.client.controller;
+&nbsp;
+&nbsp;import it.polimi.ingsw.commons.ItemCard;
+&nbsp;import it.polimi.ingsw.utils.Position;
+&nbsp;
+&nbsp;import java.util.ArrayList;
+&nbsp;import java.util.Arrays;
+&nbsp;import java.util.Collections;
+&nbsp;
+&nbsp;import static it.polimi.ingsw.utils.Utils.*;
+&nbsp;
+&nbsp;/**
+&nbsp; * Defines all the control methods of the Client input CLI or GUI
+&nbsp; */
+&nbsp;public class InputController {
+&nbsp;    private final ClientController clientController;
+<b class="nc">&nbsp;    final ArrayList&lt;Integer&gt; coords = new ArrayList&lt;&gt;();</b>
+&nbsp;    int coord;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Create the input controller
+&nbsp;     *
+&nbsp;     * @param clientController The client controller
+&nbsp;     */
+<b class="nc">&nbsp;    public InputController(ClientController clientController) {</b>
+<b class="nc">&nbsp;        this.clientController = clientController;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Checks that the user selects a correct number of cards, that they exist on the board and that they are adjacent
+&nbsp;     *
+&nbsp;     * @param input The input written from the client
+&nbsp;     * @return The Arraylist of positions of the taken ItemTiles if all control are successful, else null
+&nbsp;     */
+&nbsp;    public ArrayList&lt;Integer&gt; checkTake(String[] input) {
+&nbsp;        //System.out.println(Arrays.toString(input));
+<b class="nc">&nbsp;        if (!clientController.isMyTurn()) {</b>
+<b class="nc">&nbsp;            clientController.onError(&quot;It is not your turn!&quot;);</b>
+<b class="nc">&nbsp;            return null;</b>
+&nbsp;        }
+&nbsp;
+<b class="nc">&nbsp;        if (input.length &lt; 2 || input.length &gt; maxTilesSize() + 1) {</b>
+<b class="nc">&nbsp;            clientController.onError(&quot;You can only take from 1 to 3 cards!&quot;);</b>
+<b class="nc">&nbsp;            return null;</b>
+&nbsp;        }
+&nbsp;
+<b class="nc">&nbsp;        coords.clear();</b>
+&nbsp;
+&nbsp;        // starts from 1 because input[0] == &quot;@take&quot;
+<b class="nc">&nbsp;        for (int i = 1; i &lt; input.length; i++) {</b>
+&nbsp;            try {
+<b class="nc">&nbsp;                coord = Integer.parseInt(input[i]);</b>
+<b class="nc">&nbsp;            } catch (NumberFormatException e) {</b>
+<b class="nc">&nbsp;                clientController.onError(&quot;Parse exception!&quot;);</b>
+<b class="nc">&nbsp;                return null;</b>
+<b class="nc">&nbsp;            }</b>
+&nbsp;
+<b class="nc">&nbsp;            if (checkPosition(coord)) {</b>
+<b class="nc">&nbsp;                return null;</b>
+&nbsp;            }
+&nbsp;        }
+<b class="nc">&nbsp;        if (!checkSelection(coords)) {</b>
+<b class="nc">&nbsp;            clientController.onError(&quot;Position failed&quot;);</b>
+<b class="nc">&nbsp;            return null;</b>
+&nbsp;        }
+&nbsp;
+<b class="nc">&nbsp;        return coords;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Controls all the bookshelf and return the max number of Tiles that can be inserted
+&nbsp;     *
+&nbsp;     * @return The maximum number of a tiles that can be inserted in the client&#39;s bookshelf
+&nbsp;     */
+&nbsp;    public int maxTilesSize() {
+<b class="nc">&nbsp;        int maxTiles = 0;</b>
+&nbsp;
+<b class="nc">&nbsp;        for (int column = 0; column &lt; BOOKSHELF_LENGTH; column++) {</b>
+&nbsp;            int i;
+&nbsp;
+<b class="nc">&nbsp;            for (i = BOOKSHELF_HEIGHT - 1; i &gt;= 0; i--) {</b>
+<b class="nc">&nbsp;                if (clientController.getPlayersBookshelves().get(clientController.getMyNickname())[i][column] == null) {</b>
+<b class="nc">&nbsp;                    break;</b>
+&nbsp;                }
+&nbsp;            }
+&nbsp;
+<b class="nc">&nbsp;            if (i &gt; maxTiles) {</b>
+<b class="nc">&nbsp;                maxTiles = i;</b>
+&nbsp;            }
+&nbsp;        }
+&nbsp;
+<b class="nc">&nbsp;        maxTiles++;</b>
+<b class="nc">&nbsp;        return maxTiles;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Checks that the given coordinate is inside the board range
+&nbsp;     *
+&nbsp;     * @param coord is the number from which we can extract row and column
+&nbsp;     * @return false if the position is correct
+&nbsp;     */
+&nbsp;    private boolean checkPosition(int coord) {
+<b class="nc">&nbsp;        if (Position.getRow(coord) &lt; DIM_BOARD &amp;&amp; Position.getColumn(coord) &lt; DIM_BOARD) {</b>
+<b class="nc">&nbsp;            coords.add(coord);</b>
+<b class="nc">&nbsp;            return false;</b>
+&nbsp;        }
+<b class="nc">&nbsp;        clientController.onError(&quot;The requested cell does not exists!&quot;);</b>
+<b class="nc">&nbsp;        return true;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Check if the Itemcard can be deleted
+&nbsp;     * First check controls that the position numbers are contained in the board
+&nbsp;     * Second check controls that in the selected Cells there are the ItemCards
+&nbsp;     * Called two separate methods to do other controls
+&nbsp;     *
+&nbsp;     * @param position number from which we can extract row and column
+&nbsp;     * @return true if the Itemcard can be deleted
+&nbsp;     */
+&nbsp;    public boolean checkSelection(ArrayList&lt;Integer&gt; position) {
+<b class="nc">&nbsp;        Collections.sort(position);</b>
+&nbsp;
+<b class="nc">&nbsp;        for (Integer pos : position) {</b>
+<b class="nc">&nbsp;            if (clientController.getBoard()[Position.getRow(pos)][Position.getColumn(pos)] == null) {</b>
+<b class="nc">&nbsp;                return false;</b>
+&nbsp;            }
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+<b class="nc">&nbsp;        if (position.size() &gt; 1) {</b>
+<b class="nc">&nbsp;            return checkStraightSelection(position) &amp;&amp; checkClearSideSelection(position);</b>
+&nbsp;        } else {
+<b class="nc">&nbsp;            return checkClearSideSelection(position);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Private method called by checkSelection that controls that all the tiles
+&nbsp;     * in the ArrayList position have at least 1 clear side from other ItemCards
+&nbsp;     *
+&nbsp;     * @param position number from which we can extract row and column
+&nbsp;     * @return true if a side of an Itemcard is clear from others
+&nbsp;     */
+&nbsp;    private boolean checkClearSideSelection(ArrayList&lt;Integer&gt; position) {
+<b class="nc">&nbsp;        Collections.sort(position);</b>
+&nbsp;        int i;
+&nbsp;        int j;
+<b class="nc">&nbsp;        boolean sideClear = true;</b>
+&nbsp;
+<b class="nc">&nbsp;        for (int k = 0; k &lt; position.size() &amp;&amp; sideClear; k++) {</b>
+<b class="nc">&nbsp;            i = Position.getRow(position.get(k));</b>
+<b class="nc">&nbsp;            j = Position.getColumn(position.get(k));</b>
+&nbsp;
+<b class="nc">&nbsp;            if (i != 0 &amp;&amp; i != 8 &amp;&amp; j != 0 &amp;&amp; j != 8) {</b>
+<b class="nc">&nbsp;                sideClear = (clientController.getBoard()[i + 1][j] == null || clientController.getBoard()[i - 1][j] == null || clientController.getBoard()[i][j - 1] == null || clientController.getBoard()[i][j + 1] == null);</b>
+&nbsp;            }
+&nbsp;        }
+&nbsp;
+<b class="nc">&nbsp;        return sideClear;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Private method called by checkSelection that controls that the selected tiles
+&nbsp;     * form a straight line (change of row_position or column_position)
+&nbsp;     *
+&nbsp;     * @param position number from which we can extract row and column
+&nbsp;     * @return true if the ItemCards are in a straight line
+&nbsp;     */
+&nbsp;    private boolean checkStraightSelection(ArrayList&lt;Integer&gt; position) {
+<b class="nc">&nbsp;        int pos0 = position.get(0);</b>
+<b class="nc">&nbsp;        int pos1 = position.get(1);</b>
+&nbsp;
+<b class="nc">&nbsp;        if (position.size() == 3) {</b>
+<b class="nc">&nbsp;            int pos2 = position.get(2);</b>
+&nbsp;
+<b class="nc">&nbsp;            if ((Position.getRow(pos0) == Position.getRow(pos1) - 1) &amp;&amp; (Position.getRow(pos1) == Position.getRow(pos2) - 1) &amp;&amp; (Position.getColumn(pos0) == Position.getColumn(pos1)) &amp;&amp; (Position.getColumn(pos1) == Position.getColumn(pos2))) {</b>
+<b class="nc">&nbsp;                return true;</b>
+&nbsp;            }
+&nbsp;
+<b class="nc">&nbsp;            if ((Position.getColumn(pos0) == Position.getColumn(pos1) - 1) &amp;&amp; (Position.getColumn(pos1) == Position.getColumn(pos2) - 1) &amp;&amp; (Position.getRow(pos0) == Position.getRow(pos1)) &amp;&amp; (Position.getRow(pos1) == Position.getRow(pos2))) {</b>
+<b class="nc">&nbsp;                return true;</b>
+&nbsp;            }
+&nbsp;        }
+&nbsp;
+<b class="nc">&nbsp;        if (position.size() == 2) {</b>
+<b class="nc">&nbsp;            if ((Position.getRow(pos0) == Position.getRow(pos1) - 1) &amp;&amp; (Position.getColumn(pos0) == Position.getColumn(pos1))) {</b>
+<b class="nc">&nbsp;                return true;</b>
+&nbsp;            }
+<b class="nc">&nbsp;            return (Position.getColumn(pos0) == Position.getColumn(pos1) - 1) &amp;&amp; (Position.getRow(pos0) == Position.getRow(pos1));</b>
+&nbsp;        }
+&nbsp;
+<b class="nc">&nbsp;        return false;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Checks that the user selects a correct number of cards, that the column exists in the bookshelf
+&nbsp;     * and that the cards that he wants to put in it are the same he selected from the board
+&nbsp;     *
+&nbsp;     * @param input The input inserted by the Client
+&nbsp;     * @return The ItemCard, which has to be inserted if all controls are successful or null
+&nbsp;     */
+&nbsp;    public ArrayList&lt;ItemCard&gt; checkPut(String[] input) {
+&nbsp;        int column;
+<b class="nc">&nbsp;        ArrayList&lt;ItemCard&gt; tilesToPut = new ArrayList&lt;&gt;();</b>
+&nbsp;
+<b class="nc">&nbsp;        if (!clientController.isMyTurn()) {</b>
+<b class="nc">&nbsp;            clientController.onError(&quot;It is not your turn!&quot;);</b>
+<b class="nc">&nbsp;            return null;</b>
+&nbsp;        }
+&nbsp;
+<b class="nc">&nbsp;        if (input.length &gt; clientController.getSelectedTiles().size() + 2) {</b>
+<b class="nc">&nbsp;            clientController.onError(&quot;You are trying to put more cards than expected!&quot;);</b>
+<b class="nc">&nbsp;            return null;</b>
+&nbsp;        }
+<b class="nc">&nbsp;        if (input.length &lt; clientController.getSelectedTiles().size() + 2) {</b>
+<b class="nc">&nbsp;            clientController.onError(&quot;Some elements of the request are missing&quot;);</b>
+<b class="nc">&nbsp;            return null;</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        try {
+<b class="nc">&nbsp;            column = Integer.parseInt(input[1]);</b>
+<b class="nc">&nbsp;        } catch (NumberFormatException e) {</b>
+<b class="nc">&nbsp;            clientController.onError(&quot;Parse exception!&quot;);</b>
+<b class="nc">&nbsp;            return null;</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+<b class="nc">&nbsp;        if (column &lt; 0 || column &gt; 4) {</b>
+<b class="nc">&nbsp;            clientController.onError(&quot;Wrong column range!&quot;);</b>
+<b class="nc">&nbsp;            return null;</b>
+&nbsp;        }
+&nbsp;        int j;
+&nbsp;
+<b class="nc">&nbsp;        for (j = BOOKSHELF_HEIGHT - 1; j &gt;= 0; j--) {</b>
+<b class="nc">&nbsp;            if (clientController.getPlayersBookshelves().get(clientController.getMyNickname())[j][column] == null) {</b>
+<b class="nc">&nbsp;                break;</b>
+&nbsp;            }
+&nbsp;        }
+<b class="nc">&nbsp;        j++;</b>
+<b class="nc">&nbsp;        if (clientController.getSelectedTiles().size() &gt; j) {</b>
+<b class="nc">&nbsp;            clientController.onError(&quot;Not enough space in that column&quot;);</b>
+<b class="nc">&nbsp;            return null;</b>
+&nbsp;        }
+<b class="nc">&nbsp;        coords.clear();</b>
+&nbsp;
+&nbsp;        // starts from 2 because input[0] == &quot;@put&quot; and input[1] = column
+<b class="nc">&nbsp;        for (int i = 2; i &lt; input.length; i++) {</b>
+&nbsp;            try {
+<b class="nc">&nbsp;                coord = Integer.parseInt(input[i]);</b>
+<b class="nc">&nbsp;            } catch (NumberFormatException e) {</b>
+<b class="nc">&nbsp;                clientController.onError(&quot;Parse exception!&quot;);</b>
+<b class="nc">&nbsp;                return null;</b>
+<b class="nc">&nbsp;            }</b>
+&nbsp;
+<b class="nc">&nbsp;            if (checkPosition(coord)) {</b>
+<b class="nc">&nbsp;                clientController.onError(&quot;Wrong tiles selected&quot;);</b>
+<b class="nc">&nbsp;                return null;</b>
+&nbsp;            }
+&nbsp;
+&nbsp;        }
+&nbsp;
+<b class="nc">&nbsp;        if (!coords.containsAll(clientController.getSelectedTiles().keySet())) {</b>
+<b class="nc">&nbsp;            clientController.onError(&quot;Wrong tiles selected&quot;);</b>
+<b class="nc">&nbsp;            return null;</b>
+&nbsp;        }
+&nbsp;
+<b class="nc">&nbsp;        for (Integer i : coords) {</b>
+<b class="nc">&nbsp;            if (clientController.getSelectedTiles().containsKey(i)) {</b>
+<b class="nc">&nbsp;                tilesToPut.add(clientController.getSelectedTiles().get(i));</b>
+&nbsp;            } else {
+<b class="nc">&nbsp;                clientController.onError(&quot;Wrong tiles selected&quot;);</b>
+<b class="nc">&nbsp;                return null;</b>
+&nbsp;            }
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+<b class="nc">&nbsp;        return tilesToPut;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Checks that the chat is directed to an existing player or to all players in the game
+&nbsp;     *
+&nbsp;     * @param input The input inserted by the Client
+&nbsp;     * @return 0 if there is an error, 1 if the recipient is a player, 2 if the recipient are all players
+&nbsp;     */
+&nbsp;    public int checkChat(String[] input) {
+<b class="nc">&nbsp;        if (input.length &lt; 3) {</b>
+<b class="nc">&nbsp;            clientController.onError(&quot;You should write both a recipient and a message!&quot;);</b>
+<b class="nc">&nbsp;            return 0;</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        // starts from 1 because input[0] == &quot;@chat&quot;
+<b class="nc">&nbsp;        if (input[1].equals(clientController.getMyNickname())) {</b>
+<b class="nc">&nbsp;            clientController.onError(&quot;You can not send a message to yourself!&quot;);</b>
+<b class="nc">&nbsp;            return 0;</b>
+<b class="nc">&nbsp;        } else if (clientController.getPlayersBookshelves().containsKey(input[1])) {</b>
+<b class="nc">&nbsp;            return 1;</b>
+<b class="nc">&nbsp;        } else if (input[1].equalsIgnoreCase(&quot;all&quot;) || input[1].equalsIgnoreCase(&quot;everybody&quot;)) {</b>
+<b class="nc">&nbsp;            return 2;</b>
+&nbsp;        }
+&nbsp;
+<b class="nc">&nbsp;        clientController.onError(&quot;Recipient not accepted!&quot;);</b>
+<b class="nc">&nbsp;        return 0;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Checks that the selected number of player is in the correct range
+&nbsp;     *
+&nbsp;     * @param input The input inserted by the Client
+&nbsp;     * @return the number of players selected
+&nbsp;     */
+&nbsp;    public int checkPlayers(String[] input) {
+<b class="nc">&nbsp;        if (input.length != 3) {</b>
+<b class="nc">&nbsp;            clientController.onError(&quot;It looks like you&#39;re missing something... please, try again.&quot;);</b>
+<b class="nc">&nbsp;            return -1;</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        int playersNum;
+&nbsp;
+&nbsp;        try {
+<b class="nc">&nbsp;            playersNum = Integer.parseInt(input[1]);</b>
+<b class="nc">&nbsp;        } catch (NumberFormatException e) {</b>
+<b class="nc">&nbsp;            clientController.onError(&quot;Parse exception!&quot;);</b>
+<b class="nc">&nbsp;            return -1;</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+&nbsp;        // checks only input[1] because input[0] == &quot;@players&quot;
+<b class="nc">&nbsp;        if (playersNum &lt; 2 || playersNum &gt; 4) {</b>
+<b class="nc">&nbsp;            clientController.onError(&quot;Players number not accepted!&quot;);</b>
+<b class="nc">&nbsp;            return 0;</b>
+&nbsp;        }
+&nbsp;
+<b class="nc">&nbsp;        return playersNum;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Controls if the inserted String is a possible IP
+&nbsp;     *
+&nbsp;     * @param ip IP inserted by the user
+&nbsp;     * @return true if it is a possible ip else false
+&nbsp;     */
+&nbsp;    public boolean isValidInet4Address(String ip) {
+<b class="nc">&nbsp;        String[] groups = ip.split(&quot;\\.&quot;);</b>
+<b class="nc">&nbsp;        if (groups.length != 4) {</b>
+<b class="nc">&nbsp;            return false;</b>
+&nbsp;        }
+&nbsp;        try {
+<b class="nc">&nbsp;            return Arrays.stream(groups)</b>
+<b class="nc">&nbsp;                    .filter(s -&gt; !(s.length() &gt; 1 &amp;&amp; s.startsWith(&quot;0&quot;)))</b>
+<b class="nc">&nbsp;                    .map(Integer::parseInt)</b>
+<b class="nc">&nbsp;                    .filter(i -&gt; (i &gt;= 0 &amp;&amp; i &lt;= 255))</b>
+<b class="nc">&nbsp;                    .count() == 4;</b>
+<b class="nc">&nbsp;        } catch (NumberFormatException e) {</b>
+<b class="nc">&nbsp;            return false;</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-06-29 22:48</div>
+</div>
+</body>
+</html>

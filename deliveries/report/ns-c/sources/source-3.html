@@ -1,0 +1,482 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > GameModel</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">it.polimi.ingsw.server.model</a>
+</div>
+
+<h1>Coverage Summary for Class: GameModel (it.polimi.ingsw.server.model)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">GameModel</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    92.9%
+  </span>
+  <span class="absValue">
+    (13/14)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    91.3%
+  </span>
+  <span class="absValue">
+    (157/172)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package it.polimi.ingsw.server.model;
+&nbsp;
+&nbsp;import com.google.gson.Gson;
+&nbsp;import com.google.gson.JsonObject;
+&nbsp;import it.polimi.ingsw.commons.ItemCard;
+&nbsp;import it.polimi.ingsw.server.gameExceptions.EmptyCardBagException;
+&nbsp;import it.polimi.ingsw.server.gameExceptions.NoBookshelfSpaceException;
+&nbsp;import it.polimi.ingsw.server.gameExceptions.NoRightItemCardSelection;
+&nbsp;import it.polimi.ingsw.server.gameExceptions.NotSameSelectedException;
+&nbsp;import it.polimi.ingsw.server.model.comGoals.*;
+&nbsp;
+&nbsp;import java.beans.PropertyChangeEvent;
+&nbsp;import java.beans.PropertyChangeListener;
+&nbsp;import java.io.BufferedWriter;
+&nbsp;import java.io.FileWriter;
+&nbsp;import java.io.PrintWriter;
+&nbsp;import java.util.*;
+&nbsp;
+&nbsp;import static it.polimi.ingsw.utils.ModelPropertyChange.*;
+&nbsp;
+&nbsp;/**
+&nbsp; * Class that defines all the possible action on the Model and send response to the GameController
+&nbsp; */
+<b class="fc">&nbsp;public class GameModel implements ModelInterface {</b>
+<b class="fc">&nbsp;    private final Map&lt;String, Player&gt; playerMap = new HashMap&lt;&gt;();</b>
+&nbsp;    private Board board;
+&nbsp;    private PropertyChangeListener listener;
+<b class="fc">&nbsp;    private final ArrayList&lt;ComGoal&gt; comGoals = new ArrayList&lt;&gt;();</b>
+<b class="fc">&nbsp;    private ArrayList&lt;ItemCard&gt; selected = new ArrayList&lt;&gt;();</b>
+<b class="fc">&nbsp;    private String winner = null;</b>
+&nbsp;    private String gameFilePath;
+&nbsp;    private JsonObject gameJson;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Creates the game with all the necessary things (board, bookshelves, personal goals and common goals).
+&nbsp;     *
+&nbsp;     * @param players is the list with all the players&#39; nicknames
+&nbsp;     */
+&nbsp;    public void CreateGame(ArrayList&lt;String&gt; players, String gameFilePath) {
+<b class="fc">&nbsp;        this.gameJson = new JsonObject();</b>
+<b class="fc">&nbsp;        this.gameFilePath = gameFilePath;</b>
+<b class="fc">&nbsp;        this.gameJson.addProperty(&quot;nicknames&quot;, players.toString());</b>
+&nbsp;
+&nbsp;        PropertyChangeEvent evt;
+<b class="fc">&nbsp;        board = new Board(players.size());</b>
+<b class="fc">&nbsp;        System.out.println(&quot;Board Created&quot;);</b>
+&nbsp;
+&nbsp;        try {
+<b class="fc">&nbsp;            board.fillBoard();</b>
+<b class="fc">&nbsp;            System.out.println(&quot;Board Filled.&quot;);</b>
+<b class="fc">&nbsp;            evt = new PropertyChangeEvent(&quot;null&quot;, BOARD_CHANGED, null, board.getAsMatrix());</b>
+<b class="fc">&nbsp;            this.listener.propertyChange(evt);</b>
+<b class="nc">&nbsp;        } catch (EmptyCardBagException e) {</b>
+<b class="nc">&nbsp;            System.out.println(&quot;Impossible State&quot;);</b>
+<b class="fc">&nbsp;        }</b>
+&nbsp;
+<b class="fc">&nbsp;        Random random = new Random();</b>
+&nbsp;        int firstGoal;
+&nbsp;        int secondGoal;
+&nbsp;
+&nbsp;        do {
+<b class="fc">&nbsp;            firstGoal = random.nextInt(1, 12);</b>
+<b class="fc">&nbsp;            secondGoal = random.nextInt(1, 12);</b>
+<b class="fc">&nbsp;        } while (firstGoal == secondGoal);</b>
+&nbsp;
+<b class="fc">&nbsp;        comGoals.add(selectComGoal(firstGoal, players.size()));</b>
+<b class="fc">&nbsp;        System.out.println(&quot;ComGoals created: &quot; + firstGoal + &quot;,&quot; + secondGoal);</b>
+<b class="fc">&nbsp;        evt = new PropertyChangeEvent(firstGoal, COM_GOAL_CREATED, null, comGoals.get(0).getCurrScore());</b>
+<b class="fc">&nbsp;        this.listener.propertyChange(evt);</b>
+&nbsp;
+<b class="fc">&nbsp;        comGoals.add(selectComGoal(secondGoal, players.size()));</b>
+<b class="fc">&nbsp;        evt = new PropertyChangeEvent(secondGoal, COM_GOAL_CREATED, null, comGoals.get(1).getCurrScore());</b>
+<b class="fc">&nbsp;        this.listener.propertyChange(evt);</b>
+&nbsp;
+<b class="fc">&nbsp;        ArrayList&lt;PersGoal&gt; persGoals = new ArrayList&lt;&gt;(Arrays.asList(PersGoal.values()));</b>
+<b class="fc">&nbsp;        Collections.shuffle(persGoals);</b>
+&nbsp;
+<b class="fc">&nbsp;        for (String s : players) {</b>
+<b class="fc">&nbsp;            this.playerMap.put(s, new Player(s));</b>
+<b class="fc">&nbsp;            playerMap.get(s).assignPersGoal(persGoals.get(0));</b>
+<b class="fc">&nbsp;            System.out.println(&quot;PersGoal &quot; + persGoals.get(0) + &quot; assigned to &quot; + s);</b>
+<b class="fc">&nbsp;            evt = new PropertyChangeEvent(s, PERS_GOAL_CREATED, null, persGoals.get(0).toString());</b>
+<b class="fc">&nbsp;            this.listener.propertyChange(evt);</b>
+<b class="fc">&nbsp;            persGoals.remove(0);</b>
+<b class="fc">&nbsp;        }</b>
+&nbsp;
+<b class="fc">&nbsp;        this.gameJson.addProperty(&quot;lastPlayer&quot;, players.get(players.size() - 1));</b>
+<b class="fc">&nbsp;        saveJson(true);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Called at the beginning of the game when the first player wants to resume one of the game he&#39;s into.
+&nbsp;     *
+&nbsp;     * @param onlinePlayers the list of the players of this game already online and ready to play.
+&nbsp;     * @param json          the jsonObject with all the details of the game (taken from the file).
+&nbsp;     * @param gameFilePath  the path of the file with all game&#39;s details.
+&nbsp;     */
+&nbsp;    public void resumeGame(ArrayList&lt;String&gt; onlinePlayers, JsonObject json, String gameFilePath) {
+<b class="fc">&nbsp;        this.gameJson = json;</b>
+<b class="fc">&nbsp;        this.gameFilePath = gameFilePath;</b>
+<b class="fc">&nbsp;        Gson gson = new Gson();</b>
+&nbsp;
+&nbsp;        //Gets the players from the file and saves them in a list of Strings
+<b class="fc">&nbsp;        List&lt;String&gt; players = Arrays.asList(gson.fromJson(json.get(&quot;nicknames&quot;).getAsString(), String[].class));</b>
+&nbsp;
+<b class="fc">&nbsp;        this.board = new Board(gson.fromJson(json.get(&quot;board&quot;).getAsString(), ItemCard[][].class), new ArrayList&lt;&gt;(Arrays.asList(gson.fromJson(json.get(&quot;cardBag&quot;).getAsString(), ItemCard[].class))), players.size());</b>
+<b class="fc">&nbsp;        System.out.println(&quot;Board restored&quot;);</b>
+&nbsp;
+<b class="fc">&nbsp;        comGoals.add(gson.fromJson(json.get(&quot;firstComGoal&quot;).getAsString(), selectComGoal(gson.fromJson(json.get(&quot;firstComGoal&quot;).getAsString().replace(&quot;\\&quot;, &quot;&quot;), JsonObject.class).get(&quot;CGID&quot;).getAsInt(), 3).getClass()));</b>
+<b class="fc">&nbsp;        comGoals.add(gson.fromJson(json.get(&quot;secondComGoal&quot;).getAsString(), selectComGoal(gson.fromJson(json.get(&quot;secondComGoal&quot;).getAsString().replace(&quot;\\&quot;, &quot;&quot;), JsonObject.class).get(&quot;CGID&quot;).getAsInt(), 3).getClass()));</b>
+&nbsp;
+<b class="fc">&nbsp;        System.out.println(&quot;ComGoals restored: &quot; + comGoals.get(0).getCGID() + &quot; punti: &quot; + comGoals.get(0).getCurrScore() + &quot;,&quot; + comGoals.get(1).getCGID() + &quot; punti: &quot; + comGoals.get(1).getCurrScore() + &quot;.&quot;);</b>
+&nbsp;
+<b class="fc">&nbsp;        for (String s : players) {</b>
+<b class="fc">&nbsp;            this.playerMap.put(s, gson.fromJson(json.get(s).getAsString(), Player.class));</b>
+<b class="fc">&nbsp;        }</b>
+&nbsp;
+&nbsp;        try {
+<b class="fc">&nbsp;            this.winner = gameJson.get(&quot;winner&quot;).getAsString();</b>
+<b class="fc">&nbsp;        } catch (Exception e) {</b>
+<b class="fc">&nbsp;            System.out.println(&quot;Restored game doesn&#39;t have a winner yet.&quot;);</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+<b class="fc">&nbsp;        for (String s : onlinePlayers) {</b>
+<b class="fc">&nbsp;            this.sendGameDetails(s);</b>
+<b class="fc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Tries to insert cards in a nickname&#39;s bookshelf.
+&nbsp;     *
+&nbsp;     * @param nickname of the owner of the bookshelf
+&nbsp;     * @param cards    to be inserted into the bookshelf
+&nbsp;     * @param column   of the bookshelf to insert cards into
+&nbsp;     * @throws NoBookshelfSpaceException if there&#39;s no space in the column indicated
+&nbsp;     * @throws NotSameSelectedException  if the player wants to insert cards different from the ones selected.
+&nbsp;     */
+&nbsp;    public void InsertCard(String nickname, ArrayList&lt;ItemCard&gt; cards, int column) throws NoBookshelfSpaceException, NotSameSelectedException {
+&nbsp;        //Checks if the player wants to insert the previously selected cards
+<b class="fc">&nbsp;        if (!((cards.containsAll(selected)) &amp;&amp; (selected.containsAll(cards)) &amp;&amp; (cards.size() == selected.size()))) {</b>
+<b class="fc">&nbsp;            sendBoard(nickname);</b>
+<b class="fc">&nbsp;            sendBookshelf(nickname);</b>
+<b class="fc">&nbsp;            throw new NotSameSelectedException();</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        PropertyChangeEvent evt;
+&nbsp;        boolean a;
+&nbsp;        try {
+<b class="fc">&nbsp;            a = playerMap.get(nickname).insertCard(cards, column);</b>
+<b class="fc">&nbsp;        } catch (NoBookshelfSpaceException e) {</b>
+<b class="fc">&nbsp;            sendBookshelf(nickname);</b>
+<b class="fc">&nbsp;            throw new NoBookshelfSpaceException();</b>
+<b class="fc">&nbsp;        }</b>
+<b class="fc">&nbsp;        evt = new PropertyChangeEvent(nickname, BOOKSHELF_RENEWED, column, cards.toArray(new ItemCard[0]));</b>
+<b class="fc">&nbsp;        this.listener.propertyChange(evt);</b>
+&nbsp;
+<b class="fc">&nbsp;        if (a &amp;&amp; winner == null) {</b>
+<b class="fc">&nbsp;            winner = nickname;</b>
+<b class="fc">&nbsp;            gameJson.addProperty(&quot;winner&quot;, winner);</b>
+<b class="fc">&nbsp;            evt = new PropertyChangeEvent(nickname, BOOKSHELF_COMPLETED, null, null);</b>
+<b class="fc">&nbsp;            this.listener.propertyChange(evt);</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        //Insertion completed
+<b class="fc">&nbsp;        board.backupBoard();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Tries to select cards from the board.
+&nbsp;     *
+&nbsp;     * @param positions of the cards to be selected.
+&nbsp;     * @throws NoRightItemCardSelection  if the selection is not valid.
+&nbsp;     * @throws NoBookshelfSpaceException if there&#39;s no enough space in a player&#39;s bookshelf for the number of tiles he selected.
+&nbsp;     */
+&nbsp;    public void selectCard(String player, ArrayList&lt;Integer&gt; positions) throws NoRightItemCardSelection, NoBookshelfSpaceException {
+&nbsp;        PropertyChangeEvent evt;
+<b class="fc">&nbsp;        if (!this.playerMap.get(player).checkBookshelfSpace(positions.size())) {</b>
+<b class="nc">&nbsp;            sendBoard(player);</b>
+<b class="nc">&nbsp;            sendBookshelf(player);</b>
+<b class="nc">&nbsp;            throw new NoBookshelfSpaceException();</b>
+&nbsp;        }
+&nbsp;        try {
+<b class="fc">&nbsp;            selected = board.deleteSelection(positions);</b>
+<b class="fc">&nbsp;        } catch (NoRightItemCardSelection e) {</b>
+<b class="fc">&nbsp;            sendBoard(player);</b>
+<b class="fc">&nbsp;            throw new NoRightItemCardSelection();</b>
+<b class="fc">&nbsp;        }</b>
+<b class="fc">&nbsp;        evt = new PropertyChangeEvent(&quot;null&quot;, BOARD_RENEWED, null, positions.toArray(new Integer[0]));</b>
+<b class="fc">&nbsp;        this.listener.propertyChange(evt);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Set the controller as a GameModel&#39;s listener.
+&nbsp;     */
+&nbsp;    public void setListener(PropertyChangeListener listener) {
+<b class="fc">&nbsp;        this.listener = listener;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Calculates all the players&#39; final score and sends it to each of them
+&nbsp;     *
+&nbsp;     * @return a set (whose size is &gt; 1 only in case of parity) with all the winners.
+&nbsp;     */
+&nbsp;    public LinkedHashMap&lt;String, Integer&gt; calcFinalScore() {
+&nbsp;        int temp;
+<b class="fc">&nbsp;        Map&lt;String, Integer&gt; finalScores = new HashMap&lt;&gt;();</b>
+<b class="fc">&nbsp;        LinkedHashMap&lt;String, Integer&gt; sortedMap = new LinkedHashMap&lt;&gt;();</b>
+&nbsp;
+<b class="fc">&nbsp;        for (String s : playerMap.keySet()) {</b>
+<b class="fc">&nbsp;            temp = playerMap.get(s).calculateFinScore();</b>
+<b class="fc">&nbsp;            finalScores.put(s, s.equals(winner) ? temp + 1 : temp);</b>
+<b class="fc">&nbsp;        }</b>
+<b class="fc">&nbsp;        for (Integer i : finalScores.values().stream().sorted(Comparator.reverseOrder()).toList()) {</b>
+<b class="fc">&nbsp;            for (String s : finalScores.keySet()) {</b>
+<b class="fc">&nbsp;                if ((Objects.equals(finalScores.get(s), i)) &amp;&amp; (!sortedMap.containsKey(s))) {</b>
+<b class="fc">&nbsp;                    sortedMap.put(s, i);</b>
+<b class="fc">&nbsp;                    break;</b>
+&nbsp;                }
+<b class="fc">&nbsp;            }</b>
+<b class="fc">&nbsp;        }</b>
+<b class="fc">&nbsp;        System.out.println(&quot;Final classify: &quot; + sortedMap);</b>
+<b class="fc">&nbsp;        return sortedMap;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * A private method used to select a CommonGoal from an integer.
+&nbsp;     *
+&nbsp;     * @param numComGoal the integer that represents the common goal.
+&nbsp;     * @param numPlayers the players&#39; number of the game.
+&nbsp;     * @return the ComGoal just created.
+&nbsp;     */
+&nbsp;    private ComGoal selectComGoal(int numComGoal, int numPlayers) {
+<b class="fc">&nbsp;        return switch (numComGoal) {</b>
+<b class="fc">&nbsp;            case 1 -&gt; new CG1(numPlayers, 1);</b>
+<b class="fc">&nbsp;            case 2 -&gt; new CG2_5(numPlayers, 2);</b>
+<b class="nc">&nbsp;            case 3 -&gt; new CG3_4(numPlayers, 3);</b>
+<b class="fc">&nbsp;            case 4 -&gt; new CG3_4(numPlayers, 4);</b>
+<b class="fc">&nbsp;            case 5 -&gt; new CG2_5(numPlayers, 5);</b>
+<b class="fc">&nbsp;            case 6 -&gt; new CG6_7(numPlayers, 6);</b>
+<b class="fc">&nbsp;            case 7 -&gt; new CG6_7(numPlayers, 7);</b>
+<b class="fc">&nbsp;            case 8 -&gt; new CG8(numPlayers, 8);</b>
+<b class="fc">&nbsp;            case 9 -&gt; new CG9(numPlayers, 9);</b>
+<b class="fc">&nbsp;            case 10 -&gt; new CG10(numPlayers, 10);</b>
+<b class="fc">&nbsp;            case 11 -&gt; new CG11_12(numPlayers, 11);</b>
+<b class="nc">&nbsp;            case 12 -&gt; new CG11_12(numPlayers, 12);</b>
+<b class="nc">&nbsp;            default -&gt; null;</b>
+&nbsp;        };
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Called at the end of a turn, checks if common goals have been reached from the current player,
+&nbsp;     * and if the board needs to be refilled.
+&nbsp;     *
+&nbsp;     * @param nickname of the current player.
+&nbsp;     */
+&nbsp;    public void EndTurn(String nickname) {
+<b class="fc">&nbsp;        boolean ComGoalDone = false;</b>
+&nbsp;        //boolean playerPointUpdate = false;
+&nbsp;        PropertyChangeEvent evt;
+<b class="fc">&nbsp;        for (ComGoal c : comGoals) {</b>
+<b class="fc">&nbsp;            if (playerMap.get(nickname).checkComGoal(c)) {</b>
+<b class="fc">&nbsp;                ComGoalDone = true;</b>
+<b class="fc">&nbsp;                int[] toSend = {c.getCGID(), c.getCurrScore()};</b>
+<b class="fc">&nbsp;                evt = new PropertyChangeEvent(nickname, COM_GOAL_DONE, null, toSend);</b>
+<b class="fc">&nbsp;                this.listener.propertyChange(evt);</b>
+&nbsp;            }
+<b class="fc">&nbsp;        }</b>
+&nbsp;
+&nbsp;        try {
+<b class="fc">&nbsp;            if (board.checkRefill()) {</b>
+<b class="fc">&nbsp;                evt = new PropertyChangeEvent(&quot;null&quot;, BOARD_CHANGED, null, board.getAsMatrix());</b>
+<b class="fc">&nbsp;                this.listener.propertyChange(evt);</b>
+&nbsp;            }
+<b class="fc">&nbsp;        } catch (EmptyCardBagException e) {</b>
+<b class="fc">&nbsp;            evt = new PropertyChangeEvent(&quot;null&quot;, EMPTY_CARD_BAG, null, null); // posso anche unirlo a change board</b>
+<b class="fc">&nbsp;            this.listener.propertyChange(evt);</b>
+&nbsp;
+<b class="fc">&nbsp;            evt = new PropertyChangeEvent(&quot;null&quot;, BOARD_CHANGED, null, board.getAsMatrix()); // faccio sempre anche se non modifica fa nulla</b>
+<b class="fc">&nbsp;            this.listener.propertyChange(evt);</b>
+<b class="fc">&nbsp;        }</b>
+&nbsp;
+<b class="fc">&nbsp;        this.gameJson.addProperty(&quot;lastPlayer&quot;, nickname);</b>
+<b class="fc">&nbsp;        saveJson(ComGoalDone);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Called to resume the board when someone has selected tiles from it
+&nbsp;     * but has disconnected before inserting them in their bookshelf.
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void resumeBoard() {
+<b class="nc">&nbsp;        board.resumeBoard();</b>
+<b class="nc">&nbsp;        PropertyChangeEvent evt = new PropertyChangeEvent(&quot;null&quot;, BOARD_CHANGED, null, board.getAsMatrix());</b>
+<b class="nc">&nbsp;        this.listener.propertyChange(evt);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Used when a player comes back in a game and needs to have all game&#39;s information.
+&nbsp;     *
+&nbsp;     * @param nickname of the just returned player.
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void sendGameDetails(String nickname) {
+&nbsp;        // Sending board...
+&nbsp;        PropertyChangeEvent evt;
+<b class="fc">&nbsp;        sendBoard(nickname);</b>
+&nbsp;
+&nbsp;        //Sending all bookshelves...
+<b class="fc">&nbsp;        for (String s : playerMap.keySet()) {</b>
+<b class="fc">&nbsp;            evt = new PropertyChangeEvent(s, BOOKSHELF_CHANGED, nickname, playerMap.get(s).getBookshelfAsMatrix());</b>
+<b class="fc">&nbsp;            this.listener.propertyChange(evt);</b>
+<b class="fc">&nbsp;        }</b>
+&nbsp;
+&nbsp;        //Sending his personal goal
+<b class="fc">&nbsp;        evt = new PropertyChangeEvent(nickname, PERS_GOAL_CREATED, null, playerMap.get(nickname).getPersGoal());</b>
+<b class="fc">&nbsp;        this.listener.propertyChange(evt);</b>
+&nbsp;
+&nbsp;        //Sending common goals
+<b class="fc">&nbsp;        for (ComGoal c : comGoals) {</b>
+<b class="fc">&nbsp;            evt = new PropertyChangeEvent(c.getCGID(), COM_GOAL_CREATED, nickname, c.getCurrScore());</b>
+<b class="fc">&nbsp;            this.listener.propertyChange(evt);</b>
+<b class="fc">&nbsp;        }</b>
+&nbsp;
+&nbsp;        //Sending player&#39;s actual score
+<b class="fc">&nbsp;        evt = new PropertyChangeEvent(nickname, PLAYER_SCORE, null, (nickname.equalsIgnoreCase(winner) ? playerMap.get(nickname).getScore() + 1 : playerMap.get(nickname).getScore()));</b>
+<b class="fc">&nbsp;        this.listener.propertyChange(evt);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * A private method called at the end of the turn to save game&#39;s details on the json backup file.
+&nbsp;     *
+&nbsp;     * @param comGoalDone a boolean that indicates if a common goal has been done and needs to be saved or not.
+&nbsp;     */
+&nbsp;    private void saveJson(boolean comGoalDone) {
+<b class="fc">&nbsp;        Gson gson = new Gson();</b>
+<b class="fc">&nbsp;        gameJson.addProperty(&quot;board&quot;, gson.toJson(board.getAsMatrix()));</b>
+<b class="fc">&nbsp;        gameJson.addProperty(&quot;cardBag&quot;, gson.toJson(board.getCardBag().toArray()));</b>
+&nbsp;
+<b class="fc">&nbsp;        if (comGoalDone) {</b>
+<b class="fc">&nbsp;            gameJson.addProperty(&quot;firstComGoal&quot;, gson.toJson(comGoals.get(0), selectComGoal(comGoals.get(0).getCGID(), 3).getClass()));</b>
+<b class="fc">&nbsp;            gameJson.addProperty(&quot;secondComGoal&quot;, gson.toJson(comGoals.get(1), selectComGoal(comGoals.get(1).getCGID(), 3).getClass()));</b>
+&nbsp;        }
+&nbsp;
+<b class="fc">&nbsp;        for (String s : playerMap.keySet()) {</b>
+<b class="fc">&nbsp;            gameJson.addProperty(s, gson.toJson(playerMap.get(s), Player.class));</b>
+<b class="fc">&nbsp;        }</b>
+&nbsp;
+&nbsp;        try {
+<b class="fc">&nbsp;            PrintWriter gameFile = new PrintWriter(new BufferedWriter(new FileWriter(gameFilePath)));</b>
+<b class="fc">&nbsp;            gameFile.print(gameJson);</b>
+<b class="fc">&nbsp;            gameFile.close();</b>
+<b class="nc">&nbsp;        } catch (Exception e) {</b>
+<b class="nc">&nbsp;            e.printStackTrace();</b>
+<b class="nc">&nbsp;            System.err.println(&quot;Unable to write on game&#39;s file.&quot;);</b>
+<b class="fc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * A private method used to send all the board when the player returns in the game or there&#39;s an error in select/insert phase from him.
+&nbsp;     *
+&nbsp;     * @param player to send board to.
+&nbsp;     */
+&nbsp;    private void sendBoard(String player) {
+<b class="fc">&nbsp;        PropertyChangeEvent evt = new PropertyChangeEvent(&quot;null&quot;, BOARD_CHANGED, player, board.getAsMatrix());</b>
+<b class="fc">&nbsp;        this.listener.propertyChange(evt);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * A private method used to send all the bookshelf when the player returns in the game or there&#39;s an error in select/insert phase from him.
+&nbsp;     *
+&nbsp;     * @param player to send a bookshelf to.
+&nbsp;     */
+&nbsp;    private void sendBookshelf(String player) {
+<b class="fc">&nbsp;        PropertyChangeEvent evt = new PropertyChangeEvent(player, BOOKSHELF_CHANGED, player, playerMap.get(player).getBookshelfAsMatrix());</b>
+<b class="fc">&nbsp;        this.listener.propertyChange(evt);</b>
+&nbsp;    }
+&nbsp;}
+&nbsp;
+&nbsp;
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-06-29 22:48</div>
+</div>
+</body>
+</html>

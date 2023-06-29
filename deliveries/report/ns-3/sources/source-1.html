@@ -1,0 +1,701 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > ClientController</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">it.polimi.ingsw.client.controller</a>
+</div>
+
+<h1>Coverage Summary for Class: ClientController (it.polimi.ingsw.client.controller)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">ClientController</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/44)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/134)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">ClientController$1</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/45)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/135)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package it.polimi.ingsw.client.controller;
+&nbsp;
+&nbsp;import com.google.gson.Gson;
+&nbsp;import com.google.gson.reflect.TypeToken;
+&nbsp;import it.polimi.ingsw.client.connection.ConnectionClient;
+&nbsp;import it.polimi.ingsw.client.connection.ConnectionRMI;
+&nbsp;import it.polimi.ingsw.client.connection.ConnectionSocket;
+&nbsp;import it.polimi.ingsw.client.view.View;
+&nbsp;import it.polimi.ingsw.commons.TurnPhase;
+&nbsp;import it.polimi.ingsw.commons.HouseItem;
+&nbsp;import it.polimi.ingsw.commons.ItemCard;
+&nbsp;import it.polimi.ingsw.utils.Position;
+&nbsp;
+&nbsp;import java.io.BufferedReader;
+&nbsp;import java.io.InputStreamReader;
+&nbsp;import java.lang.reflect.Type;
+&nbsp;import java.util.*;
+&nbsp;import java.util.stream.Collectors;
+&nbsp;
+&nbsp;import static it.polimi.ingsw.commons.TurnPhase.*;
+&nbsp;import static it.polimi.ingsw.utils.Position.getColumn;
+&nbsp;import static it.polimi.ingsw.utils.Position.getRow;
+&nbsp;import static it.polimi.ingsw.utils.Utils.*;
+&nbsp;
+&nbsp;/**
+&nbsp; * Class that defines all the characteristics and methods of the Client Controller
+&nbsp; * All the main parameters for the client to operate are saved here
+&nbsp; * Define the exchange of information between the view and the connection to the server
+&nbsp; */
+<b class="nc">&nbsp;public class ClientController {</b>
+&nbsp;
+&nbsp;    private String myNickname, myPersGoalNumber;
+<b class="nc">&nbsp;    private ItemCard[][] board = new ItemCard[DIM_BOARD][DIM_BOARD];</b>
+<b class="nc">&nbsp;    private final Map&lt;String, ItemCard[][]&gt; playersBookshelf = new HashMap&lt;&gt;();</b>
+<b class="nc">&nbsp;    private final Map&lt;Integer, Integer&gt; playerComGoal = new HashMap&lt;&gt;();</b>
+<b class="nc">&nbsp;    private boolean myTurn = false;</b>
+<b class="nc">&nbsp;    private final Map&lt;Integer, ItemCard&gt; selectedTiles = new HashMap&lt;&gt;();</b>
+<b class="nc">&nbsp;    private int myPoint = 0;</b>
+&nbsp;    private View view;
+<b class="nc">&nbsp;    private final Map&lt;Integer, HouseItem&gt; myPersGoal = new HashMap&lt;&gt;();</b>
+&nbsp;    private ConnectionClient connectionClient;
+<b class="nc">&nbsp;    private TurnPhase phase = NULL;</b>
+<b class="nc">&nbsp;    private boolean selectNumberOfPlayers = false;</b>
+<b class="nc">&nbsp;    private boolean gameStarted = false;</b>
+<b class="nc">&nbsp;    private boolean selectSavedGame = false;</b>
+&nbsp;    private List&lt;String&gt; savedGames;
+&nbsp;    private List&lt;String&gt; notAvailableNames;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Method called by the server to ask for the selection of the item cards to the client
+&nbsp;     * Change turn phase and print the board to the client&#39;s view
+&nbsp;     */
+&nbsp;    public void onSelect() {
+<b class="nc">&nbsp;        phase = SELECTCARDS;</b>
+<b class="nc">&nbsp;        selectedTiles.clear();</b>
+<b class="nc">&nbsp;        view.onSelect();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Method called by the server to ask for the insertion of the item cards to the client
+&nbsp;     * Change turn phase and print the client&#39;s bookshelf to the client&#39;s view
+&nbsp;     */
+&nbsp;    public void onInsert() {
+<b class="nc">&nbsp;        phase = INSERTCARDS;</b>
+<b class="nc">&nbsp;        view.onInsert();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Method called by the view to update the Tiles selected from the player (After the input check)
+&nbsp;     *
+&nbsp;     * @param coords Coordinates of the Tiles selected from the player
+&nbsp;     */
+&nbsp;
+&nbsp;    public void setSelectedTiles(ArrayList&lt;Integer&gt; coords) {
+<b class="nc">&nbsp;        for (Integer i : coords) {</b>
+<b class="nc">&nbsp;            selectedTiles.put(i, board[getRow(i)][Position.getColumn(i)]);</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Method to get the selected tiles from the view for the insert method
+&nbsp;     *
+&nbsp;     * @return the Tiles selected by the players during the select phase
+&nbsp;     */
+&nbsp;    public Map&lt;Integer, ItemCard&gt; getSelectedTiles() {
+<b class="nc">&nbsp;        return selectedTiles;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Method called by the server when the board change
+&nbsp;     * Save the new Board and print it to the client&#39;s view
+&nbsp;     *
+&nbsp;     * @param newBoard is the updated board from the server
+&nbsp;     */
+&nbsp;    public void onBoardChanged(ItemCard[][] newBoard) {
+<b class="nc">&nbsp;        this.board = newBoard;</b>
+<b class="nc">&nbsp;        view.printBoard(board);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Method called by the server when the nickname&#39;s client bookshelf change
+&nbsp;     * Save the new bookshelf and print all the bookshelves to the client&#39;s view
+&nbsp;     *
+&nbsp;     * @param nickname     nickname of the client whose bookshelf changed
+&nbsp;     * @param newBookshelf The updated bookshelf
+&nbsp;     */
+&nbsp;    public void onBookshelfChanged(String nickname, ItemCard[][] newBookshelf) {
+<b class="nc">&nbsp;        playersBookshelf.put(nickname, newBookshelf);</b>
+<b class="nc">&nbsp;        view.printBookshelf(playersBookshelf.get(nickname), nickname);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Method called by the server when an error occurred,
+&nbsp;     * Print the error to the client&#39;s view
+&nbsp;     *
+&nbsp;     * @param error String in which is saved the error
+&nbsp;     */
+&nbsp;    public void onError(String error) {
+&nbsp;        //creates the message with the error string that will be parsed by the client.
+<b class="nc">&nbsp;        view.printError(error);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Methods called by the server to the first player of the game asking the number of players he wants in the game
+&nbsp;     * Set selectNumberOfPlayers to true, so the Cli can accept the corresponding command
+&nbsp;     *
+&nbsp;     * @param notAvailableNames the names of the name already in existence
+&nbsp;     */
+&nbsp;    public void onPlayerNumber(List&lt;String&gt; notAvailableNames) {
+<b class="nc">&nbsp;        selectNumberOfPlayers = true;</b>
+<b class="nc">&nbsp;        this.notAvailableNames = new ArrayList&lt;&gt;(notAvailableNames);</b>
+<b class="nc">&nbsp;        view.printAskPlayerNumber();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Method called by the server to ask the player if he wants to resume a game
+&nbsp;     *
+&nbsp;     * @param savedGames all the not finished games with the user nickname as a nickname of a player
+&nbsp;     */
+&nbsp;    public void onSavedGame(List&lt;String&gt; savedGames) {
+<b class="nc">&nbsp;        selectSavedGame = true;</b>
+<b class="nc">&nbsp;        this.savedGames = savedGames;</b>
+<b class="nc">&nbsp;        view.askForSavedGame(savedGames);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Method called by the server when a CommonGoal is created
+&nbsp;     * Print the CommonGoal to the client&#39;s view
+&nbsp;     *
+&nbsp;     * @param comGoalID ID that references to the defined CommonGoal
+&nbsp;     * @param score     Value of the CommonGoal if completed
+&nbsp;     */
+&nbsp;    public void onCommonGoalCreated(Integer comGoalID, Integer score) {
+<b class="nc">&nbsp;        playerComGoal.put(comGoalID, score);</b>
+<b class="nc">&nbsp;        if (playerComGoal.size() &gt; 1) {</b>
+<b class="nc">&nbsp;            view.printCommonGoal(playerComGoal);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Method called by the server when one CommonGoal is done by the player nickname
+&nbsp;     *
+&nbsp;     * @param nickname name of the player
+&nbsp;     * @param newValue new value of the CommonGoal after a player has done it
+&nbsp;     */
+&nbsp;    public void onCommonGoalDone(String nickname, int[] newValue) {
+<b class="nc">&nbsp;        if (newValue != null &amp;&amp; playerComGoal.containsKey(newValue[0])) {</b>
+<b class="nc">&nbsp;            if (myNickname.equals(nickname)) {</b>
+<b class="nc">&nbsp;                myPoint += playerComGoal.get(newValue[0]);</b>
+<b class="nc">&nbsp;                view.printPoints(myPoint);</b>
+&nbsp;            }
+&nbsp;
+<b class="nc">&nbsp;            playerComGoal.replace(newValue[0], newValue[1]);</b>
+<b class="nc">&nbsp;            view.print(nickname + &quot; has completed the CommonGoal n° &quot; + newValue[0]);</b>
+<b class="nc">&nbsp;            view.onCommonGoalDone(newValue[0], newValue[1]);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Called when the client comes back to an existing game with him into.
+&nbsp;     *
+&nbsp;     * @param score done during the game by the client.
+&nbsp;     */
+&nbsp;    public void onPlayerScore(int score) {
+<b class="nc">&nbsp;        view.printPoints(score);</b>
+<b class="nc">&nbsp;        myPoint = score;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Just notifies the client that someone has completed their bookshelf.
+&nbsp;     *
+&nbsp;     * @param nickname of the player that has just completed his bookshelf.
+&nbsp;     */
+&nbsp;    public void onBookshelfCompleted(String nickname) {
+<b class="nc">&nbsp;        if (nickname.equals(getMyNickname())) {</b>
+<b class="nc">&nbsp;            view.print(&quot;Congrats! You have just completed your bookshelf.&quot;);</b>
+<b class="nc">&nbsp;            view.print(&quot;Adding you an extra point...&quot;);</b>
+<b class="nc">&nbsp;            myPoint++;</b>
+<b class="nc">&nbsp;            view.printPoints(myPoint);</b>
+&nbsp;        } else
+<b class="nc">&nbsp;            view.print(nickname + &quot; has just completed his bookshelf!&quot;);</b>
+<b class="nc">&nbsp;        view.print(&quot;Let&#39;s go on for the last turn of the game!&quot;);</b>
+<b class="nc">&nbsp;        view.bookshelfCompleted();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Method called by the server when creating the PersonalGoal of the player
+&nbsp;     * Create from the json file the PersonalGoal and print it to the client&#39;s view
+&nbsp;     *
+&nbsp;     * @param newValue String that defines the PersonalGoal
+&nbsp;     */
+&nbsp;    public void onPersGoalCreated(String newValue) {
+&nbsp;        String json;
+&nbsp;        {
+&nbsp;            try {
+<b class="nc">&nbsp;                json = new BufferedReader(new InputStreamReader(Objects.requireNonNull(this.getClass().getClassLoader().getResourceAsStream(&quot;PersGoalConfiguration.json&quot;)))).lines().collect(Collectors.joining(System.lineSeparator()));</b>
+<b class="nc">&nbsp;            } catch (Exception e) {</b>
+<b class="nc">&nbsp;                System.out.println(&quot;ERROR: No such PersGoalConfiguration file.&quot;);</b>
+&nbsp;                return;
+<b class="nc">&nbsp;            }</b>
+&nbsp;        }
+&nbsp;
+<b class="nc">&nbsp;        Gson gson = new Gson();</b>
+&nbsp;
+<b class="nc">&nbsp;        Type cardsType = new TypeToken&lt;Map&lt;String, ArrayList&lt;Integer&gt;&gt;&gt;() {</b>
+<b class="nc">&nbsp;        }.getType();</b>
+<b class="nc">&nbsp;        Map&lt;String, ArrayList&lt;Integer&gt;&gt; cards = gson.fromJson(json, cardsType);</b>
+<b class="nc">&nbsp;        List&lt;Integer&gt; index = cards.get(newValue);</b>
+&nbsp;
+&nbsp;        // Conventional order in which we read items from JsonConfiguration file.
+<b class="nc">&nbsp;        List&lt;HouseItem&gt; items = new ArrayList&lt;&gt;(List.of(HouseItem.Frame, HouseItem.Cat, HouseItem.Books, HouseItem.Games, HouseItem.Trophy, HouseItem.Plants));</b>
+<b class="nc">&nbsp;        for (int i = 0; i &lt; items.size(); i++) {</b>
+<b class="nc">&nbsp;            myPersGoal.put(index.get(i), items.get(i));</b>
+&nbsp;        }
+&nbsp;
+<b class="nc">&nbsp;        myPersGoalNumber = newValue;</b>
+<b class="nc">&nbsp;        view.printPersGoal(myPersGoal, myPersGoalNumber);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Method called by the server after the end of a player&#39;s turn
+&nbsp;     * If it is my turn I update myTurn and print to the client&#39;s view that it is the client&#39;s turn
+&nbsp;     *
+&nbsp;     * @param nickname the nickname of the player whose turn is
+&nbsp;     */
+&nbsp;    public void onChangeTurn(String nickname) {
+<b class="nc">&nbsp;        if (nickname.equals(myNickname)) {</b>
+<b class="nc">&nbsp;            myTurn = true;</b>
+&nbsp;        } else {
+<b class="nc">&nbsp;            phase = NULL;</b>
+<b class="nc">&nbsp;            myTurn = false;</b>
+&nbsp;        }
+&nbsp;
+<b class="nc">&nbsp;        view.onChangeTurn(nickname);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Set the view to the client controller on which he will call all the methods
+&nbsp;     *
+&nbsp;     * @param view view on which the client controller will print on
+&nbsp;     */
+&nbsp;    public void setView(View view) {
+<b class="nc">&nbsp;        this.view = view;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Starting the connection with the server using all data from the view
+&nbsp;     * Saving the player&#39;s username
+&nbsp;     *
+&nbsp;     * @param select   0 for RMI, 1 for Socket
+&nbsp;     * @param username player&#39;s username
+&nbsp;     * @param address  IP of the server
+&nbsp;     * @param port     Port of the server
+&nbsp;     */
+&nbsp;    public void startConnection(int select, String username, String address, int port) {
+<b class="nc">&nbsp;        this.myNickname = username;</b>
+&nbsp;        //System.out.println(&quot;Your nickname is &quot; + myNickname);
+&nbsp;        try {
+<b class="nc">&nbsp;            if (select == 0) {</b>
+<b class="nc">&nbsp;                connectionClient = new ConnectionRMI(this, address, port);</b>
+&nbsp;            } else {
+<b class="nc">&nbsp;                connectionClient = new ConnectionSocket(this, address, port);</b>
+&nbsp;            }
+<b class="nc">&nbsp;            printWaitingForGame();</b>
+<b class="nc">&nbsp;            connectionClient.startConnection();</b>
+<b class="nc">&nbsp;        } catch (Exception e) {</b>
+<b class="nc">&nbsp;            view.disconnectionError();</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Method called by the client that pass to the server the position of the Tiles selected by the client
+&nbsp;     *
+&nbsp;     * @throws Exception if an error occurred calling the server (Socket or RMI)
+&nbsp;     */
+&nbsp;    public void selectCard() throws Exception {
+<b class="nc">&nbsp;        ArrayList&lt;Integer&gt; integerSelected = new ArrayList&lt;&gt;(selectedTiles.keySet());</b>
+<b class="nc">&nbsp;        connectionClient.selectCard(myNickname, integerSelected);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Method called from the client that pass to the server the Tiles inserted by the client and in which column he wants to put them
+&nbsp;     *
+&nbsp;     * @param selectedCards Tiles selected by the client in order
+&nbsp;     * @param column        column where to put the Tiles
+&nbsp;     * @throws Exception if an error occurred calling the server (Socket or RMI)
+&nbsp;     */
+&nbsp;    public void insertCard(ArrayList&lt;ItemCard&gt; selectedCards, int column) throws Exception {
+<b class="nc">&nbsp;        connectionClient.insertCard(myNickname, selectedCards, column);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Method called by the client that pass to the server the chat message for all connected players of the game
+&nbsp;     *
+&nbsp;     * @param message String to send to all the connected players
+&nbsp;     * @throws Exception if an error occurred calling the server (Socket or RMI)
+&nbsp;     */
+&nbsp;    public void chatToAll(String message) throws Exception {
+<b class="nc">&nbsp;        connectionClient.chatToAll(myNickname, message);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Method called by the client that pass to the server the chat message for the receiver
+&nbsp;     *
+&nbsp;     * @param receiver player that receives the message
+&nbsp;     * @param message  String to send to the receiver
+&nbsp;     * @throws Exception if an error occurred calling the server (Socket or RMI)
+&nbsp;     */
+&nbsp;    public void chatToPlayer(String receiver, String message) throws Exception {
+<b class="nc">&nbsp;        connectionClient.chatToPlayer(myNickname, receiver, message);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Method called by the server to print the message
+&nbsp;     *
+&nbsp;     * @param sender  Player that send the message
+&nbsp;     * @param message String sent by the sender
+&nbsp;     */
+&nbsp;    public void chatToMe(String sender, String message) {
+<b class="nc">&nbsp;        view.chatToMe(sender, message);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Getter method for the nickname of the player
+&nbsp;     *
+&nbsp;     * @return the player&#39;s nickname
+&nbsp;     */
+&nbsp;    public String getMyNickname() {
+<b class="nc">&nbsp;        return myNickname;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Getter method for the Board
+&nbsp;     *
+&nbsp;     * @return the Board
+&nbsp;     */
+&nbsp;    public ItemCard[][] getBoard() {
+<b class="nc">&nbsp;        return board;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Getter method for the Map of the bookshelves
+&nbsp;     *
+&nbsp;     * @return the Map of all the Bookshelves
+&nbsp;     */
+&nbsp;    public Map&lt;String, ItemCard[][]&gt; getPlayersBookshelves() {
+<b class="nc">&nbsp;        return playersBookshelf;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Getter method to see if it is the players turn
+&nbsp;     *
+&nbsp;     * @return if it is my turn
+&nbsp;     */
+&nbsp;    public boolean isMyTurn() {
+<b class="nc">&nbsp;        return myTurn;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Method called by the client only if he is the first connected to the server
+&nbsp;     *
+&nbsp;     * @param players  number of players in the game
+&nbsp;     * @param gameName the name for the game to save
+&nbsp;     * @throws Exception if an error occurred calling the server (Socket or RMI)
+&nbsp;     */
+&nbsp;    public void setPlayersNumber(int players, String gameName) throws Exception {
+<b class="nc">&nbsp;        if ((notAvailableNames.contains(gameName)) || gameName.contains(&quot;.&quot;)) {</b>
+<b class="nc">&nbsp;            view.printError(&quot;Name you want to set is not available, please try again.&quot;);</b>
+&nbsp;        } else {
+<b class="nc">&nbsp;            printWaitingForGame();</b>
+<b class="nc">&nbsp;            selectNumberOfPlayers = false;</b>
+<b class="nc">&nbsp;            connectionClient.setPlayersNumber(players, gameName);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Prints on the view that the number of players to start the game is insufficient,
+&nbsp;     * so it is waiting for enough people to start
+&nbsp;     */
+&nbsp;    public void printWaitingForGame() {
+<b class="nc">&nbsp;        view.printLobby();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Called after client&#39;s decision about saved games.
+&nbsp;     *
+&nbsp;     * @param wantToSave true if he wants to re-start from a saved game.
+&nbsp;     * @param gameName   the name of the game he wants to resume.
+&nbsp;     * @throws Exception if an error occurred calling the server
+&nbsp;     */
+&nbsp;    public void setSavedGame(boolean wantToSave, String gameName) throws Exception {
+<b class="nc">&nbsp;        if (!selectSavedGame) {</b>
+<b class="nc">&nbsp;            view.printError(&quot;Input not recognised... it&#39;s not time to set saved games.&quot;);</b>
+&nbsp;        } else {
+<b class="nc">&nbsp;            if ((wantToSave) &amp;&amp; (!savedGames.contains(gameName))) {</b>
+<b class="nc">&nbsp;                view.printError(&quot;The game you wrote doesn&#39;t exist: try again.&quot;);</b>
+&nbsp;            } else {
+<b class="nc">&nbsp;                printWaitingForGame();</b>
+<b class="nc">&nbsp;                selectSavedGame = false;</b>
+<b class="nc">&nbsp;                connectionClient.setSavedGame(wantToSave, gameName);</b>
+&nbsp;            }
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Getter method for the Common Goals
+&nbsp;     *
+&nbsp;     * @return the CommonGoals of the game
+&nbsp;     */
+&nbsp;    public Map&lt;Integer, Integer&gt; getPlayerComGoal() {
+<b class="nc">&nbsp;        return playerComGoal;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Getter method for the client&#39;s points
+&nbsp;     *
+&nbsp;     * @return the client&#39;s point
+&nbsp;     */
+&nbsp;    public int getMyPoint() {
+<b class="nc">&nbsp;        return myPoint;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Getter method for the client&#39;s personal goal
+&nbsp;     *
+&nbsp;     * @return the client&#39;s personal goal
+&nbsp;     */
+&nbsp;    public Map&lt;Integer, HouseItem&gt; getMyPersGoal() {
+<b class="nc">&nbsp;        return myPersGoal;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Getter method for the phase turn
+&nbsp;     *
+&nbsp;     * @return the game&#39;s turn phase if it is his turn, NULL all other times
+&nbsp;     */
+&nbsp;    public TurnPhase getPhase() {
+<b class="nc">&nbsp;        return phase;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Getter method to see if you can select the number of players
+&nbsp;     *
+&nbsp;     * @return true if you can use the @player function on the Cli
+&nbsp;     */
+&nbsp;    public boolean isSelectNumberOfPlayers() {
+<b class="nc">&nbsp;        return selectNumberOfPlayers;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Getter method to se if the game is started
+&nbsp;     *
+&nbsp;     * @return true if the game is started else false
+&nbsp;     */
+&nbsp;    public boolean isGameStarted() {
+<b class="nc">&nbsp;        return gameStarted;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Method called by the server to disconnect the player
+&nbsp;     */
+&nbsp;    public void disconnectMe() {
+<b class="nc">&nbsp;        view.disconnectMe();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Method called by the server when the game starts
+&nbsp;     *
+&nbsp;     * @param playersList The List of the players connected to the game
+&nbsp;     * @param gameStarted A Boolean used by the client to check the input of the user
+&nbsp;     */
+&nbsp;    public void gameStarted(ArrayList&lt;String&gt; playersList, boolean gameStarted) {
+<b class="nc">&nbsp;        for (String player : playersList) {</b>
+<b class="nc">&nbsp;            playersBookshelf.put(player, new ItemCard[BOOKSHELF_HEIGHT][BOOKSHELF_LENGTH]);</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+<b class="nc">&nbsp;        this.gameStarted = gameStarted;</b>
+<b class="nc">&nbsp;        view.printStartGame();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Called when the game has been interrupted because there are too many absents.
+&nbsp;     */
+&nbsp;    public void gameInterrupted() {
+<b class="nc">&nbsp;        view.gameInterrupted();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Method called by the server to print the name(s) of the winner(s)
+&nbsp;     *
+&nbsp;     * @param winners The player(s) tha has/have done the highest number of points
+&nbsp;     */
+&nbsp;    public void onWinner(List&lt;String&gt; winners) {
+<b class="nc">&nbsp;        view.printWinners(winners);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Getter method for the value of the personal goal
+&nbsp;     *
+&nbsp;     * @return the value that defines the personal goal
+&nbsp;     */
+&nbsp;    public String getPersGoalValue() {
+<b class="nc">&nbsp;        return myPersGoalNumber;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Called when there&#39;s a bookshelf&#39;s update.
+&nbsp;     *
+&nbsp;     * @param tilesToAdd the tiles to be added in the bookshelf.
+&nbsp;     * @param column     the column of the bookshelf to put tiles into.
+&nbsp;     * @param player     the owner of the just updated bookshelf.
+&nbsp;     */
+&nbsp;    public void onBookshelfRenewed(ItemCard[] tilesToAdd, int column, String player) {
+&nbsp;        int i;
+<b class="nc">&nbsp;        Map&lt;Integer, ItemCard&gt; added = new HashMap&lt;&gt;();</b>
+<b class="nc">&nbsp;        for (i = BOOKSHELF_HEIGHT - 1; i &gt;= 0; i--) {</b>
+<b class="nc">&nbsp;            if (this.playersBookshelf.get(player)[i][column] == null)</b>
+<b class="nc">&nbsp;                break;</b>
+&nbsp;        }
+<b class="nc">&nbsp;        for (ItemCard ic : tilesToAdd) {</b>
+<b class="nc">&nbsp;            playersBookshelf.get(player)[i][column] = ic;</b>
+<b class="nc">&nbsp;            added.put(Position.getNumber(column, i), ic);</b>
+<b class="nc">&nbsp;            i--;</b>
+&nbsp;        }
+<b class="nc">&nbsp;        view.changeBookshelf(added, player);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Called when there&#39;s a board&#39;s update.
+&nbsp;     *
+&nbsp;     * @param tilesToRemove the positions of the tiles to be removed from the board.
+&nbsp;     */
+&nbsp;    public void onBoardRenewed(Integer[] tilesToRemove) {
+<b class="nc">&nbsp;        for (Integer position : tilesToRemove) {</b>
+<b class="nc">&nbsp;            if (isMyTurn())</b>
+<b class="nc">&nbsp;                selectedTiles.put(position, board[getRow(position)][getColumn(position)]);</b>
+<b class="nc">&nbsp;            board[getRow(position)][getColumn(position)] = null;</b>
+&nbsp;        }
+<b class="nc">&nbsp;        view.changeBoard(tilesToRemove);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Called at the end of the game to send the final classification to the client.
+&nbsp;     *
+&nbsp;     * @param finalScores an ordered map with players&#39; nicknames and final scores.
+&nbsp;     */
+&nbsp;    public void onFinalScores(LinkedHashMap&lt;String, Integer&gt; finalScores) {
+<b class="nc">&nbsp;        view.finalScores(finalScores);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-06-29 22:48</div>
+</div>
+</body>
+</html>

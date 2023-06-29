@@ -1,0 +1,442 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > Board</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">it.polimi.ingsw.server.model</a>
+</div>
+
+<h1>Coverage Summary for Class: Board (it.polimi.ingsw.server.model)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Board</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    93.3%
+  </span>
+  <span class="absValue">
+    (14/15)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    96.1%
+  </span>
+  <span class="absValue">
+    (99/103)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package it.polimi.ingsw.server.model;
+&nbsp;
+&nbsp;import it.polimi.ingsw.commons.HouseItem;
+&nbsp;import it.polimi.ingsw.commons.ItemCard;
+&nbsp;import it.polimi.ingsw.commons.ItemNumber;
+&nbsp;import it.polimi.ingsw.server.gameExceptions.EmptyCardBagException;
+&nbsp;import it.polimi.ingsw.server.gameExceptions.NoRightItemCardSelection;
+&nbsp;import it.polimi.ingsw.utils.Position;
+&nbsp;
+&nbsp;import java.util.ArrayList;
+&nbsp;import java.util.Collections;
+&nbsp;import java.util.List;
+&nbsp;
+&nbsp;import static it.polimi.ingsw.utils.Utils.DIM_BOARD;
+&nbsp;
+&nbsp;/**
+&nbsp; * Class that defines all the characteristics and methods of the game model Board
+&nbsp; */
+&nbsp;public class Board {
+&nbsp;
+<b class="fc">&nbsp;    private ItemCard[][] board = new ItemCard[DIM_BOARD][DIM_BOARD];</b>
+<b class="fc">&nbsp;    private final ItemCard[][] oldBoard = new ItemCard[DIM_BOARD][DIM_BOARD];</b>
+<b class="fc">&nbsp;    private ArrayList&lt;ItemCard&gt; cardBag = new ArrayList&lt;&gt;();</b>
+&nbsp;    private final int numPlayers;
+&nbsp;
+&nbsp;    //Matrix used for creating the board using the minimum number of players required to put an Itemcard in the Cell
+<b class="fc">&nbsp;    private final int[][] numMinPlayer = new int[][]{</b>
+&nbsp;            {5, 5, 5, 3, 4, 5, 5, 5, 5},
+&nbsp;            {5, 5, 5, 2, 2, 4, 5, 5, 5},
+&nbsp;            {5, 5, 3, 2, 2, 2, 3, 5, 5},
+&nbsp;            {5, 4, 2, 2, 2, 2, 2, 2, 3},
+&nbsp;            {4, 2, 2, 2, 2, 2, 2, 2, 4},
+&nbsp;            {3, 2, 2, 2, 2, 2, 2, 4, 5},
+&nbsp;            {5, 5, 3, 2, 2, 2, 3, 5, 5},
+&nbsp;            {5, 5, 5, 4, 2, 2, 5, 5, 5},
+&nbsp;            {5, 5, 5, 5, 4, 3, 5, 5, 5}
+&nbsp;    };
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Creation of the Board with a matrix containing the minimum number of players to insert an Itemcard during the refill of the board
+&nbsp;     *
+&nbsp;     * @param numPlayers number of players in the game
+&nbsp;     */
+<b class="fc">&nbsp;    public Board(int numPlayers) {</b>
+<b class="fc">&nbsp;        this.numPlayers = numPlayers;</b>
+<b class="fc">&nbsp;        this.createcardBag();</b>
+<b class="fc">&nbsp;        Collections.shuffle(cardBag);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Set the board, and the card bag from existing ones
+&nbsp;     *
+&nbsp;     * @param board      the board to copy
+&nbsp;     * @param cardBag    the card bag to copy
+&nbsp;     * @param numPlayers the number of players
+&nbsp;     */
+<b class="fc">&nbsp;    public Board(ItemCard[][] board, ArrayList&lt;ItemCard&gt; cardBag, int numPlayers) {</b>
+<b class="fc">&nbsp;        this.board = board;</b>
+<b class="fc">&nbsp;        this.cardBag = cardBag;</b>
+<b class="fc">&nbsp;        this.numPlayers = numPlayers;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Method that fills the board with Itemcard if there is not in the correspondent Cell
+&nbsp;     * If the exception is thrown, the Game controller has to be notified
+&nbsp;     *
+&nbsp;     * @throws EmptyCardBagException if the card bag is empty
+&nbsp;     */
+&nbsp;    public void fillBoard() throws EmptyCardBagException {
+<b class="fc">&nbsp;        for (int i = 0; i &lt; DIM_BOARD; i++) {</b>
+<b class="fc">&nbsp;            for (int j = 0; j &lt; DIM_BOARD; j++) {</b>
+<b class="fc">&nbsp;                if (board[i][j] == null) {</b>
+<b class="fc">&nbsp;                    if (numMinPlayer[i][j] &lt;= numPlayers) {</b>
+<b class="fc">&nbsp;                        board[i][j] = cardBag.get(0);</b>
+<b class="fc">&nbsp;                        cardBag.remove(0);</b>
+&nbsp;
+<b class="fc">&nbsp;                        if (cardBag.isEmpty()) {</b>
+<b class="fc">&nbsp;                            throw new EmptyCardBagException();</b>
+&nbsp;                        }
+&nbsp;                    }
+&nbsp;                }
+&nbsp;            }
+&nbsp;        }
+&nbsp;
+<b class="fc">&nbsp;        for (int i = 0; i &lt; DIM_BOARD; i++) {</b>
+<b class="fc">&nbsp;            System.arraycopy(board[i], 0, oldBoard[i], 0, DIM_BOARD);</b>
+&nbsp;        }
+&nbsp;
+<b class="fc">&nbsp;        if (cardBag.isEmpty()) System.out.println(&quot;Finished Itemcard, cannot be reached&quot;);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Check if there are only isolated cards on the board
+&nbsp;     * I cannot have an edge case because edges are always null
+&nbsp;     *
+&nbsp;     * @return true if the refill of the board is done correctly
+&nbsp;     * @throws EmptyCardBagException if the card bag is empty
+&nbsp;     */
+&nbsp;    public synchronized boolean checkRefill() throws EmptyCardBagException {
+<b class="fc">&nbsp;        boolean refill = true;</b>
+&nbsp;
+<b class="fc">&nbsp;        for (int i = 0; i &lt; DIM_BOARD &amp;&amp; refill; i++) {</b>
+<b class="fc">&nbsp;            for (int j = 0; j &lt; DIM_BOARD &amp;&amp; refill; j++) {</b>
+<b class="fc">&nbsp;                if (((i == 0 || i == 8) || (j == 0 || j == 8)) &amp;&amp; board[i][j] != null &amp;&amp; numMinPlayer[i][j] &lt;= numPlayers) {</b>
+<b class="fc">&nbsp;                    refill = checkSide(i, j);</b>
+<b class="fc">&nbsp;                } else if (board[i][j] != null &amp;&amp; numMinPlayer[i][j] &lt;= numPlayers) {</b>
+<b class="fc">&nbsp;                    refill = checkPosition(i, j);</b>
+&nbsp;                }
+&nbsp;            }
+&nbsp;        }
+&nbsp;
+<b class="fc">&nbsp;        if (refill &amp;&amp; !cardBag.isEmpty()) {</b>
+<b class="fc">&nbsp;            System.out.println(&quot;REFILLING THE BOARD&quot;);</b>
+<b class="fc">&nbsp;            fillBoard();</b>
+&nbsp;        }
+&nbsp;
+<b class="fc">&nbsp;        return (refill &amp;&amp; !cardBag.isEmpty());</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Method that check the possible near Cells position
+&nbsp;     *
+&nbsp;     * @param i row
+&nbsp;     * @param j column
+&nbsp;     * @return false if it finds an Itemcard near the one passed
+&nbsp;     */
+&nbsp;
+&nbsp;    private boolean checkSide(int i, int j) {
+<b class="fc">&nbsp;        if (i == 0) {</b>
+<b class="fc">&nbsp;            if (board[i + 1][j] != null || board[i][j + 1] != null || board[i][j - 1] != null) {</b>
+<b class="fc">&nbsp;                return false;</b>
+&nbsp;            }
+&nbsp;        }
+&nbsp;
+<b class="fc">&nbsp;        if (i == 8) {</b>
+<b class="fc">&nbsp;            if (board[i - 1][j] != null || board[i][j + 1] != null || board[i][j - 1] != null) {</b>
+<b class="nc">&nbsp;                return false;</b>
+&nbsp;            }
+&nbsp;        }
+&nbsp;
+<b class="fc">&nbsp;        if (j == 0) {</b>
+<b class="fc">&nbsp;            if (board[i + 1][j] != null || board[i - 1][j] != null || board[i][j + 1] != null) {</b>
+<b class="nc">&nbsp;                return false;</b>
+&nbsp;            }
+&nbsp;        }
+&nbsp;
+<b class="fc">&nbsp;        if (j == 8) {</b>
+<b class="fc">&nbsp;            return board[i + 1][j] == null &amp;&amp; board[i - 1][j] == null &amp;&amp; board[i][j - 1] == null;</b>
+&nbsp;        }
+&nbsp;
+<b class="fc">&nbsp;        return true;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Method that check the 4 near Cells position if it finds an Itemcard it returns false, used for the internal Cells
+&nbsp;     *
+&nbsp;     * @param i row
+&nbsp;     * @param j column
+&nbsp;     * @return false if it finds an Itemcard near the one passed, true otherwise
+&nbsp;     */
+&nbsp;    private boolean checkPosition(int i, int j) {
+<b class="fc">&nbsp;        return board[i + 1][j] == null &amp;&amp; board[i - 1][j] == null &amp;&amp; board[i][j - 1] == null &amp;&amp; board[i][j + 1] == null;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Check if the Itemcard can be deleted
+&nbsp;     * First check controls that the position numbers are contained in the board
+&nbsp;     * Second check controls that in the selected Cells there are the ItemCards
+&nbsp;     * Called two separate methods to do other controls
+&nbsp;     *
+&nbsp;     * @param position is the number from which we can extract row and column
+&nbsp;     * @return true if the Itemcard can be deleted
+&nbsp;     */
+&nbsp;    public boolean checkSelection(ArrayList&lt;Integer&gt; position) {
+<b class="fc">&nbsp;        Collections.sort(position);</b>
+&nbsp;
+<b class="fc">&nbsp;        for (Integer integer : position) {</b>
+<b class="fc">&nbsp;            if (Position.getRow(integer) &gt;= DIM_BOARD || Position.getColumn(integer) &gt;= DIM_BOARD) {</b>
+<b class="fc">&nbsp;                return false;</b>
+&nbsp;            }
+<b class="fc">&nbsp;        }</b>
+&nbsp;
+<b class="fc">&nbsp;        for (Integer pos : position) {</b>
+<b class="fc">&nbsp;            if (board[Position.getRow(pos)][Position.getColumn(pos)] == null) {</b>
+<b class="fc">&nbsp;                return false;</b>
+&nbsp;            }
+<b class="fc">&nbsp;        }</b>
+&nbsp;
+<b class="fc">&nbsp;        return checkStraightSelection(position) &amp;&amp; checkClearSideSelection(position);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Private method called by checkSelection that controls that all the tiles
+&nbsp;     * in the ArrayList position have at least 1 clear side from other ItemCards
+&nbsp;     *
+&nbsp;     * @param position is the number from which we can extract row and column
+&nbsp;     * @return true if a side of an Itemcard is clear from others
+&nbsp;     */
+&nbsp;    private boolean checkClearSideSelection(ArrayList&lt;Integer&gt; position) {
+<b class="fc">&nbsp;        Collections.sort(position);</b>
+&nbsp;        int i;
+&nbsp;        int j;
+<b class="fc">&nbsp;        boolean sideClear = true;</b>
+&nbsp;
+<b class="fc">&nbsp;        for (int k = 0; k &lt; position.size() &amp;&amp; sideClear; k++) {</b>
+<b class="fc">&nbsp;            i = Position.getRow(position.get(k));</b>
+<b class="fc">&nbsp;            j = Position.getColumn(position.get(k));</b>
+&nbsp;
+<b class="fc">&nbsp;            if (i != 0 &amp;&amp; i != 8 &amp;&amp; j != 0 &amp;&amp; j != 8) {</b>
+<b class="fc">&nbsp;                sideClear = board[i + 1][j] == null || board[i - 1][j] == null || board[i][j - 1] == null || board[i][j + 1] == null;</b>
+&nbsp;            }
+&nbsp;        }
+&nbsp;
+<b class="fc">&nbsp;        return sideClear;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Private method called by checkSelection that controls that the selected tiles
+&nbsp;     * form a straight line (change of row_position or column_position)
+&nbsp;     *
+&nbsp;     * @param position is the number from which we can extract row and column
+&nbsp;     * @return true if the ItemCards are in a straight line
+&nbsp;     */
+&nbsp;    private boolean checkStraightSelection(ArrayList&lt;Integer&gt; position) {
+<b class="fc">&nbsp;        if (position.size() == 3) {</b>
+<b class="fc">&nbsp;            if ((Position.getRow(position.get(0)) == Position.getRow(position.get(1)) - 1) &amp;&amp; (Position.getRow(position.get(1)) == Position.getRow(position.get(2)) - 1) &amp;&amp; (Position.getColumn(position.get(0)) == Position.getColumn(position.get(1))) &amp;&amp; (Position.getColumn(position.get(1)) == Position.getColumn(position.get(2)))) {</b>
+<b class="fc">&nbsp;                return true;</b>
+&nbsp;            }
+&nbsp;
+<b class="fc">&nbsp;            if ((Position.getColumn(position.get(0)) == Position.getColumn(position.get(1)) - 1) &amp;&amp; (Position.getColumn(position.get(1)) == Position.getColumn(position.get(2)) - 1) &amp;&amp; (Position.getRow(position.get(0)) == Position.getRow(position.get(1))) &amp;&amp; (Position.getRow(position.get(1)) == Position.getRow(position.get(2)))) {</b>
+<b class="fc">&nbsp;                return true;</b>
+&nbsp;            }
+&nbsp;        }
+&nbsp;
+<b class="fc">&nbsp;        if (position.size() == 2) {</b>
+<b class="fc">&nbsp;            if ((Position.getRow(position.get(0)) == Position.getRow(position.get(1)) - 1) &amp;&amp; (Position.getColumn(position.get(0)) == Position.getColumn(position.get(1)))) {</b>
+<b class="fc">&nbsp;                return true;</b>
+&nbsp;            }
+&nbsp;
+<b class="fc">&nbsp;            if ((Position.getColumn(position.get(0)) == Position.getColumn(position.get(1)) - 1) &amp;&amp; (Position.getRow(position.get(0)) == Position.getRow(position.get(1)))) {</b>
+<b class="fc">&nbsp;                return true;</b>
+&nbsp;            }
+&nbsp;        }
+&nbsp;
+<b class="fc">&nbsp;        return position.size() == 1;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Delete ItemCards in the selected Cells only if all the checks are successful
+&nbsp;     *
+&nbsp;     * @param position number from which we can extract row and column
+&nbsp;     * @return the ItemCards deleted
+&nbsp;     * @throws NoRightItemCardSelection if the selected ItemCards do not pass the check selection
+&nbsp;     */
+&nbsp;
+&nbsp;    public synchronized ArrayList&lt;ItemCard&gt; deleteSelection(ArrayList&lt;Integer&gt; position) throws NoRightItemCardSelection {
+<b class="fc">&nbsp;        Collections.sort(position);</b>
+&nbsp;
+<b class="fc">&nbsp;        if (!checkSelection(position)) {</b>
+<b class="fc">&nbsp;            throw new NoRightItemCardSelection();</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        //Saves a copy of the old board
+<b class="fc">&nbsp;        for (int i = 0; i &lt; DIM_BOARD; i++) {</b>
+<b class="fc">&nbsp;            System.arraycopy(board[i], 0, oldBoard[i], 0, DIM_BOARD);</b>
+&nbsp;        }
+&nbsp;
+<b class="fc">&nbsp;        ArrayList&lt;ItemCard&gt; toBeReturned = new ArrayList&lt;&gt;();</b>
+&nbsp;
+&nbsp;        //Removes from the board the selected positions
+<b class="fc">&nbsp;        for (Integer pos : position) {</b>
+<b class="fc">&nbsp;            toBeReturned.add(board[Position.getRow(pos)][Position.getColumn(pos)]);</b>
+<b class="fc">&nbsp;            board[Position.getRow(pos)][Position.getColumn(pos)] = null;</b>
+<b class="fc">&nbsp;        }</b>
+&nbsp;
+<b class="fc">&nbsp;        return toBeReturned;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Resume the board from the old one when a player disconnects during his turn
+&nbsp;     */
+&nbsp;    public synchronized void resumeBoard() {
+<b class="nc">&nbsp;        for (int i = 0; i &lt; DIM_BOARD; i++) {</b>
+<b class="nc">&nbsp;            System.arraycopy(oldBoard[i], 0, board[i], 0, DIM_BOARD);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Backup up the board in the old one
+&nbsp;     */
+&nbsp;    public synchronized void backupBoard() {
+<b class="fc">&nbsp;        for (int i = 0; i &lt; DIM_BOARD; i++) {</b>
+<b class="fc">&nbsp;            System.arraycopy(board[i], 0, oldBoard[i], 0, DIM_BOARD);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Create the card bag using a defined number of tiles of each type
+&nbsp;     */
+&nbsp;    public void createcardBag() {
+<b class="fc">&nbsp;        for (HouseItem item : HouseItem.values()) {</b>
+<b class="fc">&nbsp;            for (int i = 0; i &lt; 8; i++) {</b>
+<b class="fc">&nbsp;                cardBag.add(new ItemCard(item, ItemNumber.First));</b>
+&nbsp;            }
+&nbsp;
+<b class="fc">&nbsp;            for (int i = 0; i &lt; 7; i++) {</b>
+<b class="fc">&nbsp;                cardBag.add(new ItemCard(item, ItemNumber.Second));</b>
+&nbsp;            }
+&nbsp;
+<b class="fc">&nbsp;            for (int i = 0; i &lt; 7; i++) {</b>
+<b class="fc">&nbsp;                cardBag.add(new ItemCard(item, ItemNumber.Third));</b>
+&nbsp;            }
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Returns a copy of the board as a matrix.
+&nbsp;     *
+&nbsp;     * @return the board as a matrix.
+&nbsp;     */
+&nbsp;    public synchronized ItemCard[][] getAsMatrix() {
+<b class="fc">&nbsp;        ItemCard[][] toBeReturned = new ItemCard[DIM_BOARD][DIM_BOARD];</b>
+&nbsp;
+<b class="fc">&nbsp;        for (int i = 0; i &lt; DIM_BOARD; i++) {</b>
+<b class="fc">&nbsp;            System.arraycopy(board[i], 0, toBeReturned[i], 0, DIM_BOARD);</b>
+&nbsp;        }
+&nbsp;
+<b class="fc">&nbsp;        return toBeReturned;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Returns a copy of the card bag.
+&nbsp;     *
+&nbsp;     * @return the card bag as an Arraylist.
+&nbsp;     */
+&nbsp;    public List&lt;ItemCard&gt; getCardBag() {
+<b class="fc">&nbsp;        return List.copyOf(cardBag);</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-06-29 22:48</div>
+</div>
+</body>
+</html>

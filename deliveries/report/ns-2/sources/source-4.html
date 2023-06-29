@@ -1,0 +1,253 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > RMIClientConnection</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">it.polimi.ingsw.client.connection</a>
+</div>
+
+<h1>Coverage Summary for Class: RMIClientConnection (it.polimi.ingsw.client.connection)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+</tr>
+<tr>
+  <td class="name">RMIClientConnection</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package it.polimi.ingsw.client.connection;
+&nbsp;
+&nbsp;import it.polimi.ingsw.commons.ItemCard;
+&nbsp;
+&nbsp;import java.rmi.Remote;
+&nbsp;import java.rmi.RemoteException;
+&nbsp;import java.util.ArrayList;
+&nbsp;import java.util.LinkedHashMap;
+&nbsp;import java.util.List;
+&nbsp;
+&nbsp;/**
+&nbsp; * Defines all the possible methods the server can call on the client using RMI
+&nbsp; */
+&nbsp;public interface RMIClientConnection extends Remote {
+&nbsp;    /**
+&nbsp;     * Method called by the server if the player is first in queue and ha to decide the number of players in the game
+&nbsp;     *
+&nbsp;     * @param notAvailableNames the name of the games that already exists
+&nbsp;     * @throws RemoteException if an error occurred calling the RMI client
+&nbsp;     */
+&nbsp;    void onPlayerNumber(List&lt;String&gt; notAvailableNames) throws RemoteException;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Method called by the server in case of error on the server side
+&nbsp;     *
+&nbsp;     * @param error String that describes the type of error
+&nbsp;     * @throws RemoteException if an error occurred calling the RMI client
+&nbsp;     */
+&nbsp;    void onError(String error) throws RemoteException;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Method called by the server to ask the player to select the Tiles
+&nbsp;     *
+&nbsp;     * @throws RemoteException if an error occurred calling the RMI client
+&nbsp;     */
+&nbsp;    void onSelect() throws RemoteException;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Method called by the server to ask the player to insert the Tiles
+&nbsp;     *
+&nbsp;     * @throws RemoteException if an error occurred calling the RMI client
+&nbsp;     */
+&nbsp;    void onInsert() throws RemoteException;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Method called by the server to update the client&#39;s side board
+&nbsp;     *
+&nbsp;     * @param newBoard the updated board
+&nbsp;     * @throws RemoteException if an error occurred calling the RMI client
+&nbsp;     */
+&nbsp;    void onBoardChanged(ItemCard[][] newBoard) throws RemoteException;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Method called by the server to update the client&#39;s side bookshelf of player nickname
+&nbsp;     *
+&nbsp;     * @param nickname     the nickname of the player
+&nbsp;     * @param newBookshelf the updated bookshelf of the player nickname
+&nbsp;     * @throws RemoteException if an error occurred calling the RMI client
+&nbsp;     */
+&nbsp;    void onBookshelfChanged(String nickname, ItemCard[][] newBookshelf) throws RemoteException;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Method called by the server when a Common goal is created
+&nbsp;     *
+&nbsp;     * @param comGoalID ID of the Common goal
+&nbsp;     * @param score     Value if the client does the Common goal
+&nbsp;     * @throws RemoteException if an error occurred calling the RMI client
+&nbsp;     */
+&nbsp;    void onCommonGoalCreated(Integer comGoalID, Integer score) throws RemoteException;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Method called by the server when a Common goal is completed by the player nickname
+&nbsp;     *
+&nbsp;     * @param nickname nickname of the player
+&nbsp;     * @param newValue Array of Common goal ID and new value of common goal
+&nbsp;     * @throws RemoteException if an error occurred calling the RMI client
+&nbsp;     */
+&nbsp;    void onCommonGoalDone(String nickname, int[] newValue) throws RemoteException;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Method called by the server when a Personal goal is created
+&nbsp;     *
+&nbsp;     * @param newValue String that determines the Personal goal from a Json file
+&nbsp;     * @throws RemoteException if an error occurred calling the RMI client
+&nbsp;     */
+&nbsp;    void onPersGoalCreated(String newValue) throws RemoteException;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Method called by the server on a new Turn
+&nbsp;     *
+&nbsp;     * @param nickname the nickname of the players whose turn is
+&nbsp;     * @throws RemoteException if an error occurred calling the RMI client
+&nbsp;     */
+&nbsp;    void onChangeTurn(String nickname) throws RemoteException;
+&nbsp;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Method called by the server when a game is starting
+&nbsp;     *
+&nbsp;     * @param playersList The list of players in the game
+&nbsp;     * @throws RemoteException if an error occurred calling the RMI client
+&nbsp;     */
+&nbsp;    void onGameIsStarting(ArrayList&lt;String&gt; playersList) throws RemoteException;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Called when the client is the only one online,
+&nbsp;     * and the game needs to be interrupted waiting for other players coming back.
+&nbsp;     *
+&nbsp;     * @throws RemoteException if an error occurred calling the RMI client
+&nbsp;     */
+&nbsp;    void onGameInterrupted() throws RemoteException;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Method called by the server to ensure the player is online and connected
+&nbsp;     *
+&nbsp;     * @throws RemoteException if an error occurred calling the RMI client
+&nbsp;     */
+&nbsp;    void pong() throws RemoteException;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Method called by the server when a player wants to send a chat message to the client
+&nbsp;     *
+&nbsp;     * @param sender  of the message
+&nbsp;     * @param message sent to somebody else
+&nbsp;     * @throws RemoteException if an error occurred calling the RMI client
+&nbsp;     */
+&nbsp;    void chatToMe(String sender, String message) throws RemoteException;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Method called by the server to disconnect the player when an error occurred, or the game is finished
+&nbsp;     *
+&nbsp;     * @throws RemoteException if an error occurred calling the RMI client
+&nbsp;     */
+&nbsp;    void disconnectMe() throws RemoteException;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Method called by the server to update the player score when a player reconnects
+&nbsp;     *
+&nbsp;     * @param score The score of the player
+&nbsp;     * @throws RemoteException if an error occurred calling the RMI client
+&nbsp;     */
+&nbsp;
+&nbsp;    void onPlayerScore(int score) throws RemoteException;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Method called by the server when a player completes his bookshelf
+&nbsp;     *
+&nbsp;     * @param nickname of the player that has completed the bookshelf.
+&nbsp;     * @throws RemoteException if an error occurred calling the RMI client
+&nbsp;     */
+&nbsp;    void onBookshelfCompleted(String nickname) throws RemoteException;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Called when there are some saved games with a client&#39;s nicknames, to ask him if he wants to resume one of them.
+&nbsp;     *
+&nbsp;     * @param savedGames the list of saved games&#39; names.
+&nbsp;     * @throws RemoteException if an error occurred calling the RMI client
+&nbsp;     */
+&nbsp;    void onSavedGame(List&lt;String&gt; savedGames) throws RemoteException;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Called when there&#39;s a bookshelf&#39;s update.
+&nbsp;     *
+&nbsp;     * @param tilesToAdd the tiles to be added in the bookshelf.
+&nbsp;     * @param column     the column of the bookshelf to put tiles into.
+&nbsp;     * @param player     the owner of the just updated bookshelf.
+&nbsp;     * @throws RemoteException if an error occurred calling the RMI client.
+&nbsp;     */
+&nbsp;    void onBookshelfRenewed(ItemCard[] tilesToAdd, int column, String player) throws RemoteException;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Called when there&#39;s a board&#39;s update.
+&nbsp;     *
+&nbsp;     * @param tilesToRemove the positions of the tiles to be removed from the board.
+&nbsp;     * @throws RemoteException if an error occurred calling the RMI client.
+&nbsp;     */
+&nbsp;    void onBoardRenewed(Integer[] tilesToRemove) throws RemoteException;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Called at the end of the game to send the final classification to the client.
+&nbsp;     *
+&nbsp;     * @param finalScores an ordered map with players&#39; nicknames and final scores.
+&nbsp;     * @throws RemoteException if an error occurred calling the RMI client.
+&nbsp;     */
+&nbsp;    void onFinalScores(LinkedHashMap&lt;String, Integer&gt; finalScores) throws RemoteException;
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-06-29 22:48</div>
+</div>
+</body>
+</html>

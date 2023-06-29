@@ -1,0 +1,224 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > ConnectionClient</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">it.polimi.ingsw.client.connection</a>
+</div>
+
+<h1>Coverage Summary for Class: ConnectionClient (it.polimi.ingsw.client.connection)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">ConnectionClient</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/4)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/7)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package it.polimi.ingsw.client.connection;
+&nbsp;
+&nbsp;import it.polimi.ingsw.client.controller.ClientController;
+&nbsp;import it.polimi.ingsw.commons.ItemCard;
+&nbsp;
+&nbsp;import java.rmi.RemoteException;
+&nbsp;import java.rmi.server.UnicastRemoteObject;
+&nbsp;import java.util.ArrayList;
+&nbsp;
+&nbsp;/**
+&nbsp; * Defines the methods used to communicate to the Server
+&nbsp; */
+&nbsp;public abstract class ConnectionClient extends UnicastRemoteObject {
+&nbsp;    final ClientController controller;
+&nbsp;    final String address;
+&nbsp;    final int port;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Initialize the connection to the server
+&nbsp;     *
+&nbsp;     * @param controller ClientController, on which it will call all the methods after the server request
+&nbsp;     * @param address    IP address of the server
+&nbsp;     * @param port       IP port of the server
+&nbsp;     */
+<b class="nc">&nbsp;    ConnectionClient(ClientController controller, String address, int port) throws RemoteException {</b>
+<b class="nc">&nbsp;        this.controller = controller;</b>
+<b class="nc">&nbsp;        this.address = address;</b>
+<b class="nc">&nbsp;        this.port = port;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Start the connection in RMI/Socket chosen by the client
+&nbsp;     *
+&nbsp;     * @throws Exception thrown by RMI or Socket during the calls
+&nbsp;     */
+&nbsp;    public abstract void startConnection() throws Exception;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Return the Client controller
+&nbsp;     *
+&nbsp;     * @return the ClientController for all the methods called by RMI/Socket
+&nbsp;     */
+&nbsp;    public ClientController getController() {
+<b class="nc">&nbsp;        return controller;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Return the IP Address
+&nbsp;     *
+&nbsp;     * @return the server Address written by the player
+&nbsp;     */
+&nbsp;    public String getAddress() {
+<b class="nc">&nbsp;        return address;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Return the IP port
+&nbsp;     *
+&nbsp;     * @return the server port written by the client
+&nbsp;     */
+&nbsp;    public int getPort() {
+<b class="nc">&nbsp;        return port;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Method called from the client that pass to the server the position of the Tiles selected by the client
+&nbsp;     *
+&nbsp;     * @param nickname      this client
+&nbsp;     * @param cardsSelected Tiles selected by the client
+&nbsp;     * @throws Exception if an error occurred calling the server (Socket or RMI)
+&nbsp;     */
+&nbsp;    public abstract void selectCard(String nickname, ArrayList&lt;Integer&gt; cardsSelected) throws Exception;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Method called from the client that pass to the server the Tiles inserted by the client and in which column he wants to put them
+&nbsp;     *
+&nbsp;     * @param nickname this client
+&nbsp;     * @param cards    Tiles selected by the client in order
+&nbsp;     * @param column   column where to put the Tiles
+&nbsp;     * @throws Exception if an error occurred calling the server (Socket or RMI)
+&nbsp;     */
+&nbsp;    public abstract void insertCard(String nickname, ArrayList&lt;ItemCard&gt; cards, int column) throws Exception;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Method called from the client that pass to the server the chat message for all connected players of the game
+&nbsp;     *
+&nbsp;     * @param nickname this client
+&nbsp;     * @param message  String to send to all the connected players
+&nbsp;     * @throws Exception if an error occurred calling the server (Socket or RMI)
+&nbsp;     */
+&nbsp;    public abstract void chatToAll(String nickname, String message) throws Exception;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Method called from the client that pass to the server the chat message for the receiver
+&nbsp;     *
+&nbsp;     * @param sender   this client
+&nbsp;     * @param receiver player that receives the message
+&nbsp;     * @param message  String to send to the receiver
+&nbsp;     * @throws Exception if an error occurred calling the server (Socket or RMI)
+&nbsp;     */
+&nbsp;    public abstract void chatToPlayer(String sender, String receiver, String message) throws Exception;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Method called by the client only if he is the first connected to the server
+&nbsp;     *
+&nbsp;     * @param players  number of players in the game
+&nbsp;     * @param gameName The name the player wants to save the game with
+&nbsp;     * @throws Exception if an error occurred calling the server (Socket or RMI)
+&nbsp;     */
+&nbsp;    public abstract void setPlayersNumber(int players, String gameName) throws Exception;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Called by the client after his decision about saved games.
+&nbsp;     *
+&nbsp;     * @param wantToSave true if he wants to re-start from a saved game.
+&nbsp;     * @param gameName   the name of the game he wants to resume.
+&nbsp;     * @throws Exception if an error occurred calling the server (Socket or RMI)
+&nbsp;     */
+&nbsp;    public abstract void setSavedGame(boolean wantToSave, String gameName) throws Exception;
+&nbsp;
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-06-29 22:48</div>
+</div>
+</body>
+</html>

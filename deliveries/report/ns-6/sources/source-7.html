@@ -1,0 +1,433 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > PutCardsScene</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">it.polimi.ingsw.client.view.GUI.scenes</a>
+</div>
+
+<h1>Coverage Summary for Class: PutCardsScene (it.polimi.ingsw.client.view.GUI.scenes)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">PutCardsScene</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/19)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/119)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package it.polimi.ingsw.client.view.GUI.scenes;
+&nbsp;
+&nbsp;import it.polimi.ingsw.client.controller.ClientController;
+&nbsp;import it.polimi.ingsw.client.controller.InputController;
+&nbsp;import it.polimi.ingsw.client.view.GUI.GUIResources;
+&nbsp;import it.polimi.ingsw.commons.ItemCard;
+&nbsp;import it.polimi.ingsw.utils.Position;
+&nbsp;import it.polimi.ingsw.utils.Utils;
+&nbsp;import javafx.fxml.FXML;
+&nbsp;import javafx.scene.Cursor;
+&nbsp;import javafx.scene.Node;
+&nbsp;import javafx.scene.control.*;
+&nbsp;import javafx.scene.image.ImageView;
+&nbsp;import javafx.scene.input.MouseEvent;
+&nbsp;import javafx.scene.layout.GridPane;
+&nbsp;
+&nbsp;import java.util.ArrayList;
+&nbsp;import java.util.Map;
+&nbsp;
+&nbsp;/**
+&nbsp; * Defines the controller for the PutCardScene
+&nbsp; */
+<b class="nc">&nbsp;public class PutCardsScene extends GUIScene {</b>
+&nbsp;    @FXML
+&nbsp;    private TextField writtenMessage;
+&nbsp;    @FXML
+&nbsp;    private MenuButton destinationMenu;
+&nbsp;    @FXML
+&nbsp;    private GridPane bookshelfPane, comGoals, persGoal, score_0, score_1, youSelectedThis, youPutThis;
+&nbsp;    @FXML
+&nbsp;    private TextArea chatHistory;
+&nbsp;    @FXML
+&nbsp;    private Button undoSelection, selectTiles, sendMessage, exitButton;
+&nbsp;    @FXML
+&nbsp;    private Label yourPoints;
+&nbsp;    @FXML
+&nbsp;    private RadioButton col0, col1, col2, col3, col4;
+&nbsp;    @FXML
+&nbsp;    private ToggleGroup columns;
+&nbsp;    @FXML
+&nbsp;    private Button helpButton;
+&nbsp;    private InputController inputController;
+&nbsp;    private ArrayList&lt;Integer&gt; selectedTiles;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Initialize the putCardScene
+&nbsp;     *
+&nbsp;     * @param clientController created for the GUI app
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void initialize(ClientController clientController) {
+<b class="nc">&nbsp;        super.initialize(clientController);</b>
+<b class="nc">&nbsp;        this.inputController = new InputController(clientController);</b>
+<b class="nc">&nbsp;        yourPoints.setText(&quot;You have 0 points&quot;);</b>
+&nbsp;
+<b class="nc">&nbsp;        columns = new ToggleGroup();</b>
+<b class="nc">&nbsp;        col0.setToggleGroup(columns);</b>
+<b class="nc">&nbsp;        col1.setToggleGroup(columns);</b>
+<b class="nc">&nbsp;        col2.setToggleGroup(columns);</b>
+<b class="nc">&nbsp;        col3.setToggleGroup(columns);</b>
+<b class="nc">&nbsp;        col4.setToggleGroup(columns);</b>
+&nbsp;
+<b class="nc">&nbsp;        selectedTiles = new ArrayList&lt;&gt;();</b>
+<b class="nc">&nbsp;        bindEvents();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Connects FXML items to the methods in the scene
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void bindEvents() {
+<b class="nc">&nbsp;        youSelectedThis.addEventHandler(MouseEvent.MOUSE_CLICKED, this::remove);</b>
+<b class="nc">&nbsp;        sendMessage.addEventHandler(MouseEvent.MOUSE_CLICKED, event -&gt; sendChat(inputController, clientController, destinationMenu, writtenMessage));</b>
+<b class="nc">&nbsp;        undoSelection.addEventHandler(MouseEvent.MOUSE_CLICKED, event -&gt; revert());</b>
+<b class="nc">&nbsp;        selectTiles.addEventHandler(MouseEvent.MOUSE_CLICKED, event -&gt; putTiles());</b>
+<b class="nc">&nbsp;        exitButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -&gt; closeGame(clientController));</b>
+<b class="nc">&nbsp;        helpButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -&gt; help());</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Sets the scene based on the number of players in the game
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void setPlayers() {
+<b class="nc">&nbsp;        setPlayersShared(clientController, destinationMenu, sendMessage);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Shows the Tiles selected from the player in the TakeCard scene
+&nbsp;     *
+&nbsp;     * @param selectedTiles contains the Tiles selected by the player and their position on the Board
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void updateSelectedTiles(Map&lt;Integer, ItemCard&gt; selectedTiles) {
+<b class="nc">&nbsp;        int i = 0;</b>
+<b class="nc">&nbsp;        for (ItemCard itemCard : selectedTiles.values()) {</b>
+<b class="nc">&nbsp;            String itemName = itemCard.getMyItem().toString().toLowerCase();</b>
+<b class="nc">&nbsp;            String itemNumber = itemCard.getMyNum().toString();</b>
+<b class="nc">&nbsp;            String myItem = itemName + itemNumber;</b>
+&nbsp;
+<b class="nc">&nbsp;            ImageView tileImage = new ImageView(GUIResources.getItem(myItem));</b>
+<b class="nc">&nbsp;            tileImage.setPreserveRatio(true);</b>
+<b class="nc">&nbsp;            tileImage.setFitWidth(50);</b>
+<b class="nc">&nbsp;            tileImage.setFitHeight(50);</b>
+<b class="nc">&nbsp;            tileImage.setCursor(Cursor.HAND);</b>
+&nbsp;
+<b class="nc">&nbsp;            youSelectedThis.add(tileImage, i, 0);</b>
+<b class="nc">&nbsp;            i++;</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Prints the player&#39;s Bookshelf in the scene
+&nbsp;     *
+&nbsp;     * @param bookshelf is the player&#39;s updated Bookshelf
+&nbsp;     * @param nickname  is the owner of the Bookshelf
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void updateBookshelf(String nickname, ItemCard[][] bookshelf) {
+<b class="nc">&nbsp;        if (clientController.getMyNickname().equals(nickname)) {</b>
+<b class="nc">&nbsp;            bookshelfPane.getChildren().clear();</b>
+&nbsp;
+<b class="nc">&nbsp;            for (int i = 0; i &lt; Utils.BOOKSHELF_HEIGHT; i++) {</b>
+<b class="nc">&nbsp;                for (int j = 0; j &lt; Utils.BOOKSHELF_LENGTH; j++) {</b>
+<b class="nc">&nbsp;                    if (bookshelf[i][j] != null) {</b>
+<b class="nc">&nbsp;                        String itemName = bookshelf[i][j].getMyItem().toString().toLowerCase();</b>
+<b class="nc">&nbsp;                        String itemNumber = bookshelf[i][j].getMyNum().toString();</b>
+<b class="nc">&nbsp;                        String myItem = itemName + itemNumber;</b>
+&nbsp;
+<b class="nc">&nbsp;                        ImageView tileImage = new ImageView(GUIResources.getItem(myItem));</b>
+<b class="nc">&nbsp;                        tileImage.setPreserveRatio(true);</b>
+<b class="nc">&nbsp;                        tileImage.setFitHeight(60);</b>
+<b class="nc">&nbsp;                        tileImage.setFitWidth(60);</b>
+&nbsp;
+<b class="nc">&nbsp;                        bookshelfPane.add(tileImage, j, i);</b>
+&nbsp;                    }
+&nbsp;                }
+&nbsp;            }
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Updates the player&#39;s Bookshelf adding the given Tiles
+&nbsp;     *
+&nbsp;     * @param tilesToAdd contains the ItemCard to add and its position on the Bookshelf
+&nbsp;     * @param player     is the owner of the Bookshelf to modify
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void changeBookshelf(Map&lt;Integer, ItemCard&gt; tilesToAdd, String player) {
+<b class="nc">&nbsp;        if (clientController.getMyNickname().equals(player)) {</b>
+<b class="nc">&nbsp;            for (Integer i : tilesToAdd.keySet()) {</b>
+<b class="nc">&nbsp;                String itemName = tilesToAdd.get(i).getMyItem().toString().toLowerCase();</b>
+<b class="nc">&nbsp;                String itemNumber = tilesToAdd.get(i).getMyNum().toString();</b>
+<b class="nc">&nbsp;                String myItem = itemName + itemNumber;</b>
+&nbsp;
+<b class="nc">&nbsp;                ImageView tileImage = new ImageView(GUIResources.getItem(myItem));</b>
+<b class="nc">&nbsp;                tileImage.setPreserveRatio(true);</b>
+<b class="nc">&nbsp;                tileImage.setFitHeight(60);</b>
+<b class="nc">&nbsp;                tileImage.setFitWidth(60);</b>
+&nbsp;
+<b class="nc">&nbsp;                bookshelfPane.add(tileImage, Position.getColumn(i), Position.getRow(i));</b>
+<b class="nc">&nbsp;            }</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Prints the CommonGoals and its available score in the scene
+&nbsp;     *
+&nbsp;     * @param playerCommonGoal contains the CommonGoalID and its available score
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void comGoal(Map&lt;Integer, Integer&gt; playerCommonGoal) {
+<b class="nc">&nbsp;        comGoalCreated(playerCommonGoal, score_0, score_1, comGoals, false, 150, 200, 60);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Updates the available score of a CommonGoal each time it is reached and in the scene
+&nbsp;     *
+&nbsp;     * @param comGoalDoneID identifies the CommonGoal reached
+&nbsp;     * @param newValue      is the available score
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void updateCommonGoal(int comGoalDoneID, int newValue) {
+<b class="nc">&nbsp;        comGoalDone(comGoalDoneID, newValue, score_0, score_1, 60);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Prints the PersonalGoal assigned to the player
+&nbsp;     *
+&nbsp;     * @param newValue is the PersonalGoal name
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void persGoal(String newValue) {
+<b class="nc">&nbsp;        ImageView persGoalImage = new ImageView(GUIResources.getPersGoal(newValue));</b>
+<b class="nc">&nbsp;        persGoalImage.setFitHeight(200);</b>
+<b class="nc">&nbsp;        persGoalImage.setFitWidth(150);</b>
+&nbsp;
+<b class="nc">&nbsp;        persGoal.add(persGoalImage, 0, 0);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Prints the player&#39;s points in the scene
+&nbsp;     *
+&nbsp;     * @param myPoint are the points of the player
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void printPoints(int myPoint) {
+<b class="nc">&nbsp;        yourPoints.setText(&quot;You have &quot; + myPoint + &quot; points&quot;);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Prints the message in the chat field of the scene
+&nbsp;     *
+&nbsp;     * @param sender  is the player that sent the message
+&nbsp;     * @param message is the message to print
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void receiveMessage(String sender, String message) {
+<b class="nc">&nbsp;        chatHistory.appendText(&quot;&gt; &quot; + sender + &quot;: &quot; + message + &quot;\n&quot;);</b>
+<b class="nc">&nbsp;        writtenMessage.setText(&quot;&quot;);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Checks the Tiles to put in the Bookshelf and eventually communicates the change to the server
+&nbsp;     */
+&nbsp;    private void putTiles() {
+&nbsp;        int i;
+&nbsp;        String column;
+&nbsp;        try {
+<b class="nc">&nbsp;            column = ((RadioButton) columns.getSelectedToggle()).getId();</b>
+<b class="nc">&nbsp;            i = Integer.parseInt(String.valueOf(column.charAt(column.length() - 1)));</b>
+<b class="nc">&nbsp;        } catch (Exception e) {</b>
+<b class="nc">&nbsp;            printError(&quot;ERROR: please select a valid column.&quot;);</b>
+&nbsp;            return;
+<b class="nc">&nbsp;        }</b>
+<b class="nc">&nbsp;        String[] checkToPut = {&quot;@put&quot;, String.valueOf(i)};</b>
+<b class="nc">&nbsp;        for (Integer sel : selectedTiles) {</b>
+<b class="nc">&nbsp;            int n = checkToPut.length;</b>
+<b class="nc">&nbsp;            String[] newel = new String[n + 1];</b>
+<b class="nc">&nbsp;            System.arraycopy(checkToPut, 0, newel, 0, n);</b>
+<b class="nc">&nbsp;            newel[n] = sel.toString();</b>
+<b class="nc">&nbsp;            checkToPut = newel;</b>
+<b class="nc">&nbsp;        }</b>
+<b class="nc">&nbsp;        ArrayList&lt;ItemCard&gt; tilesToPut = inputController.checkPut(checkToPut);</b>
+&nbsp;        //System.out.println(tilesToPut);
+<b class="nc">&nbsp;        if (tilesToPut != null) {</b>
+&nbsp;            try {
+<b class="nc">&nbsp;                clientController.insertCard(tilesToPut, i);</b>
+<b class="nc">&nbsp;            } catch (Exception e) {</b>
+<b class="nc">&nbsp;                printError(&quot;ERROR: serverError&quot;);</b>
+<b class="nc">&nbsp;            }</b>
+&nbsp;        } else {
+<b class="nc">&nbsp;            printError(&quot;ERROR: wrong selection&quot;);</b>
+<b class="nc">&nbsp;            youSelectedThis.getChildren().clear();</b>
+<b class="nc">&nbsp;            updateSelectedTiles(clientController.getSelectedTiles());</b>
+&nbsp;        }
+<b class="nc">&nbsp;        selectedTiles.clear();</b>
+<b class="nc">&nbsp;        youPutThis.getChildren().clear();</b>
+<b class="nc">&nbsp;        columns.getSelectedToggle().setSelected(false);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Removes the clicked image from the SelectedTiles pane and puts it in the PutTiles pane
+&nbsp;     *
+&nbsp;     * @param event is the click on the image
+&nbsp;     */
+&nbsp;    private void remove(MouseEvent event) {
+<b class="nc">&nbsp;        Node clickedNode = event.getPickResult().getIntersectedNode();</b>
+&nbsp;
+<b class="nc">&nbsp;        if (youSelectedThis.getChildren().contains(clickedNode)) {</b>
+<b class="nc">&nbsp;            ImageView imageView = (ImageView) clickedNode;</b>
+<b class="nc">&nbsp;            imageView.setCursor(Cursor.DEFAULT);</b>
+&nbsp;
+<b class="nc">&nbsp;            if (youPutThis.getChildren().size() &lt; 3) {</b>
+<b class="nc">&nbsp;                imageView.setPreserveRatio(true);</b>
+<b class="nc">&nbsp;                imageView.setFitWidth(50);</b>
+<b class="nc">&nbsp;                imageView.setFitWidth(50);</b>
+<b class="nc">&nbsp;                youPutThis.add(imageView, 0, 2 - youPutThis.getChildren().size());</b>
+&nbsp;
+<b class="nc">&nbsp;                String[] splitString = imageView.getImage().getUrl().split(&quot;/&quot;);</b>
+<b class="nc">&nbsp;                String itemIdentifiers = splitString[splitString.length - 1];</b>
+<b class="nc">&nbsp;                splitString = itemIdentifiers.split(&quot;(?=\\p{Upper})&quot;);</b>
+<b class="nc">&nbsp;                splitString[1] = splitString[1].split(&quot;\\.&quot;)[0];</b>
+&nbsp;
+<b class="nc">&nbsp;                for (Integer i : clientController.getSelectedTiles().keySet()) {</b>
+<b class="nc">&nbsp;                    ItemCard itemCard = clientController.getSelectedTiles().get(i);</b>
+&nbsp;
+<b class="nc">&nbsp;                    if (itemCard.getMyItem().toString().equalsIgnoreCase(splitString[0]) &amp;&amp; itemCard.getMyNum().toString().equalsIgnoreCase(splitString[1])) {</b>
+<b class="nc">&nbsp;                        if (!selectedTiles.contains(i)) {</b>
+<b class="nc">&nbsp;                            selectedTiles.add(i);</b>
+<b class="nc">&nbsp;                            break;</b>
+&nbsp;                        }
+&nbsp;                    }
+<b class="nc">&nbsp;                }</b>
+&nbsp;            }
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Removes all the images from the PutTiles pane and puts them back in the SelectedTiles pane
+&nbsp;     */
+&nbsp;    private void revert() {
+<b class="nc">&nbsp;        youSelectedThis.getChildren().clear();</b>
+<b class="nc">&nbsp;        youPutThis.getChildren().clear();</b>
+<b class="nc">&nbsp;        updateSelectedTiles(clientController.getSelectedTiles());</b>
+<b class="nc">&nbsp;        selectedTiles.clear();</b>
+<b class="nc">&nbsp;        columns.getSelectedToggle().setSelected(false);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public String getChatMessage() {
+<b class="nc">&nbsp;        return writtenMessage.getText();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public String getChatReceiver() {
+<b class="nc">&nbsp;        return destinationMenu.getText();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public void putChatMessage(String message) {
+<b class="nc">&nbsp;        writtenMessage.setText(message);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public void putChatReceiver(String Receiver) {
+<b class="nc">&nbsp;        destinationMenu.setText(Receiver);</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-06-29 22:48</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,158 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > RMI</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">it.polimi.ingsw.server.connection</a>
+</div>
+
+<h1>Coverage Summary for Class: RMI (it.polimi.ingsw.server.connection)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+</tr>
+<tr>
+  <td class="name">RMI</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package it.polimi.ingsw.server.connection;
+&nbsp;
+&nbsp;import it.polimi.ingsw.client.connection.RMIClientConnection;
+&nbsp;import it.polimi.ingsw.commons.ItemCard;
+&nbsp;
+&nbsp;import java.rmi.Remote;
+&nbsp;import java.rmi.RemoteException;
+&nbsp;import java.util.ArrayList;
+&nbsp;
+&nbsp;/**
+&nbsp; * Defines the methods the client can use to call the Server using RMI
+&nbsp; */
+&nbsp;public interface RMI extends Remote {
+&nbsp;    /**
+&nbsp;     * Method called by the client to start the connection to the server
+&nbsp;     * Create a ClientHandlerRMI for the client and start the checking procedure, sending a request to the connection client
+&nbsp;     *
+&nbsp;     * @param nickname of the client
+&nbsp;     * @param client   is a pointer to the client connectionRMI
+&nbsp;     * @throws RemoteException if an error occurred calling the server RMI
+&nbsp;     */
+&nbsp;    void login(String nickname, RMIClientConnection client) throws RemoteException;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Method called from the client that pass to the server the Tiles inserted by the client and in which column he wants to put them
+&nbsp;     * Send a request for the checking procedure in the gameController and update the Model if the controls are successfully done
+&nbsp;     *
+&nbsp;     * @param nickname of this client
+&nbsp;     * @param cards    are the Tiles selected by the client in order
+&nbsp;     * @param column   where to put the Tiles
+&nbsp;     * @throws RemoteException if an error occurred calling the server RMI
+&nbsp;     */
+&nbsp;    void insertCard(String nickname, ArrayList&lt;ItemCard&gt; cards, int column) throws RemoteException;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Method called from the client that pass to the server the position of the Tiles selected by the client
+&nbsp;     * Send a request for the checking procedure in the gameController and update the Model if the controls are successfully done
+&nbsp;     *
+&nbsp;     * @param nickname  of this client
+&nbsp;     * @param positions of Tiles selected by the client
+&nbsp;     * @throws RemoteException if an error occurred calling the server RMI
+&nbsp;     */
+&nbsp;    void selectCard(String nickname, ArrayList&lt;Integer&gt; positions) throws RemoteException;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Method called by the client only if he is the first connected to the server
+&nbsp;     * Check that he is the first and then set the number of players for the game
+&nbsp;     *
+&nbsp;     * @param client that sends the request
+&nbsp;     * @param number of players in the game
+&nbsp;     * @throws RemoteException if an error occurred calling the server RMI
+&nbsp;     */
+&nbsp;    void setPlayerNumber(String client, int number, String gameName) throws RemoteException;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Method called from the client that pass to the server the chat message for all connected players of the game
+&nbsp;     * The server sends to all the other clients the message
+&nbsp;     *
+&nbsp;     * @param nickname of this client
+&nbsp;     * @param message  to send to all the connected players
+&nbsp;     * @throws RemoteException if an error occurred calling the server RMI
+&nbsp;     */
+&nbsp;    void chatToAll(String nickname, String message) throws RemoteException;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Method called from the client that pass to the server the chat message for all connected players of the game
+&nbsp;     * The server sends to all the other clients the message
+&nbsp;     *
+&nbsp;     * @param sender   of the message
+&nbsp;     * @param receiver of the message
+&nbsp;     * @param message  to send to all the connected players
+&nbsp;     * @throws RemoteException if an error occurred calling the server RMI
+&nbsp;     */
+&nbsp;    void chatToPlayer(String sender, String receiver, String message) throws RemoteException;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Method called by the client to see if the server is online
+&nbsp;     *
+&nbsp;     * @throws RemoteException if an error occurred calling the server RMI
+&nbsp;     */
+&nbsp;    void pong() throws RemoteException;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Called when the player wants to resume a saved game.
+&nbsp;     *
+&nbsp;     * @param wantToSave true if he wants to resume a game.
+&nbsp;     * @param gameName   the name of the game to be resumed.
+&nbsp;     * @throws RemoteException if an error occurred calling the server RMI
+&nbsp;     */
+&nbsp;    void setSavedGames(boolean wantToSave, String gameName) throws RemoteException;
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-06-29 22:48</div>
+</div>
+</body>
+</html>

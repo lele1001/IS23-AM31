@@ -1,0 +1,534 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > Server</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">it.polimi.ingsw.server</a>
+</div>
+
+<h1>Coverage Summary for Class: Server (it.polimi.ingsw.server)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Server</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    28.6%
+  </span>
+  <span class="absValue">
+    (4/14)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    13.2%
+  </span>
+  <span class="absValue">
+    (26/197)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package it.polimi.ingsw.server;
+&nbsp;
+&nbsp;import com.google.gson.Gson;
+&nbsp;import com.google.gson.JsonObject;
+&nbsp;import it.polimi.ingsw.server.connection.ClientHandlerSocket;
+&nbsp;import it.polimi.ingsw.server.connection.RMI;
+&nbsp;import it.polimi.ingsw.server.connection.RMIInterface;
+&nbsp;import it.polimi.ingsw.server.controller.ConnectionControl;
+&nbsp;import it.polimi.ingsw.server.controller.GameController;
+&nbsp;
+&nbsp;import java.io.File;
+&nbsp;import java.io.IOException;
+&nbsp;import java.net.ServerSocket;
+&nbsp;import java.net.Socket;
+&nbsp;import java.net.SocketException;
+&nbsp;import java.net.URISyntaxException;
+&nbsp;import java.nio.file.Files;
+&nbsp;import java.nio.file.Paths;
+&nbsp;import java.rmi.AlreadyBoundException;
+&nbsp;import java.rmi.RemoteException;
+&nbsp;import java.rmi.registry.LocateRegistry;
+&nbsp;import java.rmi.registry.Registry;
+&nbsp;import java.rmi.server.UnicastRemoteObject;
+&nbsp;import java.util.*;
+&nbsp;import java.util.concurrent.ExecutorService;
+&nbsp;import java.util.concurrent.Executors;
+&nbsp;
+&nbsp;/**
+&nbsp; * Start class for the server side of the project
+&nbsp; */
+&nbsp;public class Server {
+&nbsp;    private static int port;
+&nbsp;    private int availablePlayers;
+&nbsp;    private ConnectionControl connectionControl;
+&nbsp;    private GameController gameController;
+&nbsp;    private ArrayList&lt;String&gt; queue;
+&nbsp;    private static boolean stop;
+&nbsp;    private RMIInterface rmiInterface;
+<b class="fc">&nbsp;    private boolean playersNumberAsked = false;</b>
+&nbsp;    private boolean savedGameAsked;
+&nbsp;    private boolean wantToSave;
+&nbsp;    private boolean firstAsked;
+&nbsp;    private String gameName;
+<b class="fc">&nbsp;    private final Map&lt;String, JsonObject&gt; savedGames = new HashMap&lt;&gt;();</b>
+&nbsp;    private static String savedGamesPath;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Used to create the server
+&nbsp;     */
+<b class="fc">&nbsp;    public Server() {</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * The start method for the server: checks the system name to select saved games&#39; directory and sets socket and rmi ports based on parameters (or using default ports).
+&nbsp;     *
+&nbsp;     * @param args Arguments inserted by the player on start
+&nbsp;     */
+&nbsp;    public static void main(String[] args) {
+<b class="nc">&nbsp;        System.out.println(&quot;Hello! Starting server...&quot;);</b>
+<b class="nc">&nbsp;        System.out.println(&quot;Type \&quot;stop\&quot; to stop server.&quot;);</b>
+&nbsp;
+&nbsp;        try {
+<b class="nc">&nbsp;            if (System.getProperty(&quot;os.name&quot;).startsWith(&quot;Windows&quot;))</b>
+<b class="nc">&nbsp;                Server.savedGamesPath = new File(Server.class.getProtectionDomain().getCodeSource()</b>
+<b class="nc">&nbsp;                        .getLocation().toURI().getPath()).getParent() + &quot;\\MyShelfieSavedGames\\&quot;;</b>
+&nbsp;            else
+<b class="nc">&nbsp;                Server.savedGamesPath = new File(Server.class.getProtectionDomain().getCodeSource()</b>
+<b class="nc">&nbsp;                        .getLocation().toURI().getPath()).getParent() + &quot;/MyShelfieSavedGames/&quot;;</b>
+<b class="nc">&nbsp;        } catch (URISyntaxException e) {</b>
+<b class="nc">&nbsp;            System.out.println(&quot;Impossible to read current path: using standard path for saved games.&quot;);</b>
+<b class="nc">&nbsp;        }</b>
+<b class="nc">&nbsp;        System.out.println(&quot;Current saved games&#39; path: &quot; + Server.savedGamesPath);</b>
+&nbsp;
+<b class="nc">&nbsp;        new Thread(Server::listen).start();</b>
+&nbsp;
+&nbsp;        try {
+<b class="nc">&nbsp;            Server.port = Integer.parseInt(args[0]);</b>
+<b class="nc">&nbsp;            int rmiPort = Server.port + 1;</b>
+<b class="nc">&nbsp;            System.out.println(&quot;Ports correctly set: socket &quot; + Server.port + &quot;, RMI &quot; + rmiPort + &quot;.&quot;);</b>
+<b class="nc">&nbsp;        } catch (Exception e) {</b>
+<b class="nc">&nbsp;            System.out.println(&quot;Error: missing parameters.&quot;);</b>
+<b class="nc">&nbsp;            System.out.println(&quot;Setting default ports: socket 1500, RMI 1501.&quot;);</b>
+<b class="nc">&nbsp;            Server.port = 1500;</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+<b class="nc">&nbsp;        Server server = new Server();</b>
+<b class="nc">&nbsp;        server.start();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Initializes the server&#39;s attributes (not only at the beginning but also at the end of a game).
+&nbsp;     */
+&nbsp;    public void initialize() {
+<b class="fc">&nbsp;        System.out.println(&quot;Initializing server...&quot;);</b>
+<b class="fc">&nbsp;        stop = false;</b>
+<b class="fc">&nbsp;        availablePlayers = -1;</b>
+&nbsp;
+<b class="fc">&nbsp;        this.connectionControl = new ConnectionControl(this);</b>
+<b class="fc">&nbsp;        this.gameController = new GameController(this.connectionControl);</b>
+<b class="fc">&nbsp;        this.connectionControl.setGameController(gameController);</b>
+<b class="fc">&nbsp;        this.queue = new ArrayList&lt;&gt;();</b>
+&nbsp;
+<b class="fc">&nbsp;        playersNumberAsked = false;</b>
+<b class="fc">&nbsp;        wantToSave = false;</b>
+<b class="fc">&nbsp;        savedGameAsked = false;</b>
+<b class="fc">&nbsp;        firstAsked = false;</b>
+<b class="fc">&nbsp;        gameName = null;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Starts server&#39;s features, creating RMI and Socket interfaces.
+&nbsp;     */
+&nbsp;    public void start() {
+<b class="nc">&nbsp;        initialize();</b>
+<b class="nc">&nbsp;        findSavedGames();</b>
+<b class="nc">&nbsp;        new Thread(this::setGame).start();</b>
+&nbsp;
+<b class="nc">&nbsp;        if (!startRMI()) {</b>
+<b class="nc">&nbsp;            System.out.println(&quot;Error creating RMI interface.&quot;);</b>
+&nbsp;        } else {
+<b class="nc">&nbsp;            System.out.println(&quot;Server RMI is ready.&quot;);</b>
+&nbsp;        }
+&nbsp;
+<b class="nc">&nbsp;        startSocket();</b>
+<b class="nc">&nbsp;        System.out.println(&quot;Server stopped.&quot;);</b>
+<b class="nc">&nbsp;        System.exit(0);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Opens RMI interface to accept connections with this technology.
+&nbsp;     *
+&nbsp;     * @return false if an error occurs.
+&nbsp;     */
+&nbsp;    public boolean startRMI() {
+<b class="nc">&nbsp;        rmiInterface = new RMIInterface(this.connectionControl);</b>
+&nbsp;        RMI stub;
+&nbsp;
+&nbsp;        try {
+<b class="nc">&nbsp;            stub = (RMI) UnicastRemoteObject.exportObject(</b>
+&nbsp;                    rmiInterface, port + 1);
+<b class="nc">&nbsp;        } catch (RemoteException e) {</b>
+<b class="nc">&nbsp;            System.out.println(&quot;Error during stub&quot;);</b>
+<b class="nc">&nbsp;            e.printStackTrace();</b>
+<b class="nc">&nbsp;            return false;</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+&nbsp;        Registry registry;
+&nbsp;
+&nbsp;        try {
+<b class="nc">&nbsp;            registry = LocateRegistry.createRegistry(port + 1);</b>
+<b class="nc">&nbsp;        } catch (RemoteException e) {</b>
+<b class="nc">&nbsp;            System.out.println(&quot;Error during registry&quot;);</b>
+<b class="nc">&nbsp;            e.printStackTrace();</b>
+<b class="nc">&nbsp;            return false;</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+&nbsp;        try {
+<b class="nc">&nbsp;            registry.bind(&quot;MyShelfieServer&quot;, stub);</b>
+<b class="nc">&nbsp;        } catch (RemoteException | AlreadyBoundException e) {</b>
+<b class="nc">&nbsp;            System.out.println(&quot;Error during binding&quot;);</b>
+<b class="nc">&nbsp;            e.printStackTrace();</b>
+<b class="nc">&nbsp;            return false;</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+<b class="nc">&nbsp;        return true;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * A loop that always listens from the server&#39;s terminal (useful if a user wants to stop server).
+&nbsp;     */
+&nbsp;    public static void listen() {
+<b class="nc">&nbsp;        Scanner in = new Scanner(System.in);</b>
+&nbsp;
+&nbsp;        while (true) {
+<b class="nc">&nbsp;            String s = in.nextLine();</b>
+&nbsp;
+<b class="nc">&nbsp;            if (s.equalsIgnoreCase(&quot;stop&quot;)) {</b>
+<b class="nc">&nbsp;                System.out.println(&quot;Stopping server...&quot;);</b>
+<b class="nc">&nbsp;                stop = true;</b>
+<b class="nc">&nbsp;                break;</b>
+&nbsp;            }
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Opens socket interface, with the infinitive loop that accepts socket&#39;s connection (every 20 ms, while stop == false).
+&nbsp;     */
+&nbsp;    public void startSocket() {
+&nbsp;        ExecutorService executor;
+&nbsp;
+&nbsp;        try {
+<b class="nc">&nbsp;            executor = Executors.newCachedThreadPool();</b>
+<b class="nc">&nbsp;        } catch (Exception e) {</b>
+<b class="nc">&nbsp;            System.out.println(&quot;Socket error: creating threads.&quot;);</b>
+&nbsp;            return;
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+&nbsp;        ServerSocket serverSocket;
+&nbsp;
+&nbsp;        try {
+<b class="nc">&nbsp;            serverSocket = new ServerSocket(port);</b>
+<b class="nc">&nbsp;        } catch (Exception e) {</b>
+<b class="nc">&nbsp;            System.err.println(&quot;Socket error: the specified port is not available.&quot;);</b>
+&nbsp;            return;
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+<b class="nc">&nbsp;        System.out.println(&quot;Server socket is ready.&quot;);</b>
+&nbsp;
+&nbsp;        try {
+<b class="nc">&nbsp;            serverSocket.setSoTimeout(20);</b>
+<b class="nc">&nbsp;        } catch (SocketException e) {</b>
+<b class="nc">&nbsp;            System.err.println(&quot;Socket timeout error.&quot;);</b>
+<b class="nc">&nbsp;            stop = true;</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+<b class="nc">&nbsp;        while (!stop) {</b>
+&nbsp;            try {
+<b class="nc">&nbsp;                Socket socket = serverSocket.accept();</b>
+<b class="nc">&nbsp;                System.out.println(&quot;There&#39;s a new socket client online!&quot;);</b>
+<b class="nc">&nbsp;                ClientHandlerSocket clientHandlerSocket = new ClientHandlerSocket(socket, this.connectionControl);</b>
+<b class="nc">&nbsp;                executor.submit(clientHandlerSocket);</b>
+<b class="nc">&nbsp;            } catch (IOException e) {</b>
+&nbsp;                //break;
+<b class="nc">&nbsp;            }</b>
+&nbsp;        }
+&nbsp;
+<b class="nc">&nbsp;        this.connectionControl.disconnectAll();</b>
+<b class="nc">&nbsp;        System.out.println(&quot;Closing socket...&quot;);</b>
+&nbsp;
+&nbsp;        try {
+<b class="nc">&nbsp;            serverSocket.close();</b>
+<b class="nc">&nbsp;        } catch (IOException e) {</b>
+<b class="nc">&nbsp;            throw new RuntimeException(e);</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+<b class="nc">&nbsp;        executor.shutdown();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Find if there are game files, if not it creates the directory
+&nbsp;     */
+&nbsp;    public void findSavedGames() {
+&nbsp;        File directory;
+<b class="nc">&nbsp;        Gson gson = new Gson();</b>
+&nbsp;
+&nbsp;        try {
+<b class="nc">&nbsp;            directory = new File(savedGamesPath);</b>
+&nbsp;
+<b class="nc">&nbsp;            for (File file : Objects.requireNonNull(directory.listFiles())) {</b>
+<b class="nc">&nbsp;                savedGames.put(file.getName().split(&quot;\\.&quot;)[0], gson.fromJson(Files.readString(file.toPath()), JsonObject.class));</b>
+&nbsp;            }
+<b class="nc">&nbsp;        } catch (Exception e) {</b>
+<b class="nc">&nbsp;            System.out.println(&quot;Unable to read from savedGames file... creating its directory.&quot;);</b>
+&nbsp;            try {
+<b class="nc">&nbsp;                Files.createDirectory(Paths.get(savedGamesPath));</b>
+<b class="nc">&nbsp;            } catch (IOException ex) {</b>
+<b class="nc">&nbsp;                System.out.println(&quot;Impossible to create directory.&quot;);</b>
+<b class="nc">&nbsp;            }</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Allows the first player to set the number of available players.
+&nbsp;     * Notifies setGame() method that was waiting for the first.
+&nbsp;     *
+&nbsp;     * @param availablePlayers to set.
+&nbsp;     * @param gameName         the name to be set for this game.
+&nbsp;     * @param nickname         the nickname of the client that wants to set players.
+&nbsp;     */
+&nbsp;    public synchronized void setAvailablePlayers(String nickname, int availablePlayers, String gameName) {
+<b class="nc">&nbsp;        if (availablePlayers &lt; 2 || availablePlayers &gt; 4) {</b>
+<b class="nc">&nbsp;            this.connectionControl.SendError(nickname, &quot;Players&#39; number not correct.&quot;);</b>
+<b class="nc">&nbsp;            this.connectionControl.askPlayerNumber(nickname, new ArrayList&lt;&gt;(this.savedGames.keySet()));</b>
+&nbsp;            return;
+&nbsp;        }
+&nbsp;
+<b class="nc">&nbsp;        this.availablePlayers = availablePlayers;</b>
+<b class="nc">&nbsp;        this.gameName = gameName;</b>
+<b class="nc">&nbsp;        this.notifyAll();</b>
+&nbsp;
+<b class="nc">&nbsp;        System.out.println(&quot;Players&#39; number set to &quot; + availablePlayers);</b>
+<b class="nc">&nbsp;        System.out.println(&quot;Game name set to &quot; + gameName);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Called when the player wants to resume a saved game.
+&nbsp;     *
+&nbsp;     * @param wantToSave true if he wants to resume a game.
+&nbsp;     * @param gameName   the name of the game to be resumed.
+&nbsp;     */
+&nbsp;    public synchronized void setSavedGame(boolean wantToSave, String gameName) {
+<b class="nc">&nbsp;        this.wantToSave = wantToSave;</b>
+<b class="nc">&nbsp;        this.gameName = gameName;</b>
+<b class="nc">&nbsp;        firstAsked = false;</b>
+<b class="nc">&nbsp;        this.notifyAll();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Adds a new client in the queue and notifies setGame() method that was waiting for clients.
+&nbsp;     *
+&nbsp;     * @param nickname of the new user.
+&nbsp;     */
+&nbsp;    public synchronized void addInQueue(String nickname) {
+<b class="nc">&nbsp;        System.out.println(&quot;Server: adding in queue.&quot;);</b>
+<b class="nc">&nbsp;        this.queue.add(nickname);</b>
+<b class="nc">&nbsp;        this.notifyAll();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Removes a client from the queue.
+&nbsp;     * Useful at the beginning of the game:
+&nbsp;     * if the game is not still started, the queue is used to manage clients that go out before the game.
+&nbsp;     *
+&nbsp;     * @param nickname of the client that has gone out.
+&nbsp;     */
+&nbsp;    public synchronized void removeFromQueue(String nickname) {
+<b class="nc">&nbsp;        if (this.queue != null) {</b>
+<b class="nc">&nbsp;            if ((this.queue.indexOf(nickname) == 0)) {  // it was the first player: let&#39;s notify setGame method.</b>
+<b class="nc">&nbsp;                this.queue.remove(nickname);</b>
+<b class="nc">&nbsp;                playersNumberAsked = false;</b>
+<b class="nc">&nbsp;                savedGameAsked = false;</b>
+<b class="nc">&nbsp;                firstAsked = false;</b>
+<b class="nc">&nbsp;                wantToSave = false;</b>
+<b class="nc">&nbsp;                availablePlayers = -1;</b>
+<b class="nc">&nbsp;                this.notifyAll();</b>
+&nbsp;            } else {
+<b class="nc">&nbsp;                this.queue.remove(nickname);</b>
+&nbsp;            }
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * A loop used at the beginning of the game with the aim of waiting for the first (to ask him players&#39; number or saved games) and for the other clients.
+&nbsp;     * When the game is complete (and, if it is a new game, all the clients are online), it starts the game, calling methods on GameController.
+&nbsp;     */
+&nbsp;    public synchronized void setGame() {
+<b class="fc">&nbsp;        Gson gson = new Gson();</b>
+&nbsp;
+<b class="fc">&nbsp;        while ((!wantToSave) &amp;&amp; (availablePlayers == -1) || (this.queue.size() &lt; availablePlayers)) {</b>
+<b class="fc">&nbsp;            if (!this.queue.isEmpty()) {</b>
+<b class="nc">&nbsp;                if (!firstAsked) {</b>
+<b class="nc">&nbsp;                    List&lt;String&gt; savedNames = new ArrayList&lt;&gt;();</b>
+&nbsp;
+<b class="nc">&nbsp;                    for (String s : savedGames.keySet()) {</b>
+&nbsp;                        try {
+<b class="nc">&nbsp;                            if (Arrays.asList(gson.fromJson(savedGames.get(s).get(&quot;nicknames&quot;).getAsString(), String[].class)).contains(this.queue.get(0)) &amp;&amp; !savedGameAsked) {</b>
+<b class="nc">&nbsp;                                savedNames.add(s);</b>
+&nbsp;                            }
+<b class="nc">&nbsp;                        } catch (Exception e) {</b>
+<b class="nc">&nbsp;                            e.printStackTrace();</b>
+<b class="nc">&nbsp;                            System.out.println(s + &quot; non valid as a gameJson.&quot;);</b>
+<b class="nc">&nbsp;                        }</b>
+<b class="nc">&nbsp;                    }</b>
+&nbsp;
+<b class="nc">&nbsp;                    if (!savedGameAsked &amp;&amp; !savedNames.isEmpty()) {</b>
+<b class="nc">&nbsp;                        System.out.println(&quot;Found some saved games with client&#39;s nickname.. asking him if he wants to resume it.&quot;);</b>
+<b class="nc">&nbsp;                        System.out.println(savedNames);</b>
+<b class="nc">&nbsp;                        this.connectionControl.askSavedGame(this.queue.get(0), savedNames);     //passare tutti i nomi possibili</b>
+<b class="nc">&nbsp;                        savedGameAsked = true;</b>
+<b class="nc">&nbsp;                        firstAsked = true;</b>
+<b class="nc">&nbsp;                    } else if (!playersNumberAsked) {</b>
+<b class="nc">&nbsp;                        this.connectionControl.askPlayerNumber(this.queue.get(0), savedGames.keySet().stream().toList());</b>
+<b class="nc">&nbsp;                        playersNumberAsked = true;</b>
+<b class="nc">&nbsp;                        firstAsked = true;</b>
+&nbsp;                    }
+&nbsp;                }
+&nbsp;            }
+&nbsp;            try {
+<b class="fc">&nbsp;                this.wait();</b>
+<b class="nc">&nbsp;            } catch (InterruptedException e) {</b>
+<b class="nc">&nbsp;                throw new RuntimeException(e);</b>
+<b class="nc">&nbsp;            }</b>
+&nbsp;        }
+&nbsp;
+<b class="nc">&nbsp;        if (wantToSave) {</b>
+<b class="nc">&nbsp;            List&lt;String&gt; players = Arrays.asList(gson.fromJson(savedGames.get(gameName).get(&quot;nicknames&quot;).getAsString(), String[].class));</b>
+&nbsp;            //System.out.println(&quot;ok. wants to save.&quot;);
+<b class="nc">&nbsp;            ArrayList&lt;String&gt; onlinePlayers = new ArrayList&lt;&gt;();</b>
+&nbsp;
+<b class="nc">&nbsp;            for (String s : queue) {</b>
+<b class="nc">&nbsp;                if (players.contains(s)) {</b>
+<b class="nc">&nbsp;                    onlinePlayers.add(s);</b>
+&nbsp;                } else {
+<b class="nc">&nbsp;                    connectionControl.SendError(&quot;Game not available.&quot;, s);</b>
+<b class="nc">&nbsp;                    connectionControl.removeClient(s);</b>
+&nbsp;                }
+<b class="nc">&nbsp;            }</b>
+&nbsp;
+<b class="nc">&nbsp;            for (String s : players) {</b>
+<b class="nc">&nbsp;                if (!onlinePlayers.contains(s)) {</b>
+<b class="nc">&nbsp;                    this.connectionControl.changePlayerStatus(s, false);</b>
+&nbsp;                }
+<b class="nc">&nbsp;            }</b>
+&nbsp;
+<b class="nc">&nbsp;            this.gameController.resumeGame(onlinePlayers, players, savedGames.get(gameName), Server.savedGamesPath + gameName + &quot;.json&quot;);</b>
+<b class="nc">&nbsp;            new Thread(() -&gt; this.gameController.run(players.indexOf(savedGames.get(gameName).get(&quot;lastPlayer&quot;).getAsString()) + 1)).start();</b>
+<b class="nc">&nbsp;        } else {</b>
+&nbsp;            // Saying other players that game is not available for them.
+<b class="nc">&nbsp;            for (String s : queue) {</b>
+<b class="nc">&nbsp;                if (queue.indexOf(s) &gt;= availablePlayers) {</b>
+<b class="nc">&nbsp;                    connectionControl.SendError(&quot;Game not available.&quot;, s);</b>
+<b class="nc">&nbsp;                    connectionControl.removeClient(s);</b>
+&nbsp;                }
+<b class="nc">&nbsp;            }</b>
+&nbsp;
+<b class="nc">&nbsp;            queue.removeIf(x -&gt; queue.indexOf(x) &gt;= availablePlayers);</b>
+<b class="nc">&nbsp;            this.gameController.createGame(queue, savedGamesPath + gameName + &quot;.json&quot;);</b>
+<b class="nc">&nbsp;            new Thread(() -&gt; this.gameController.run(0)).start();</b>
+&nbsp;        }
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Re-initializes server at the end of a game to let it be ready for new games.
+&nbsp;     */
+&nbsp;    public void onEndGame(String gameFilePath) {
+<b class="fc">&nbsp;        File file = new File(gameFilePath);</b>
+<b class="fc">&nbsp;        if (file.delete()) {</b>
+<b class="fc">&nbsp;            System.out.println(&quot;Game file successfully deleted.&quot;);</b>
+&nbsp;        } else {
+<b class="nc">&nbsp;            System.out.println(&quot;Game file deletion failed.&quot;);</b>
+&nbsp;        }
+<b class="fc">&nbsp;        savedGames.remove(file.getName().split(&quot;\\.&quot;)[0]);</b>
+&nbsp;
+<b class="fc">&nbsp;        initialize();</b>
+<b class="fc">&nbsp;        if (rmiInterface != null) {</b>
+<b class="nc">&nbsp;            rmiInterface.setConnectionControl(connectionControl);</b>
+&nbsp;        }
+<b class="fc">&nbsp;        new Thread(this::setGame).start();</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-06-29 22:48</div>
+</div>
+</body>
+</html>

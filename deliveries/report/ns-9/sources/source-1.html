@@ -1,0 +1,264 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > ClientHandler</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">it.polimi.ingsw.server.connection</a>
+</div>
+
+<h1>Coverage Summary for Class: ClientHandler (it.polimi.ingsw.server.connection)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">ClientHandler</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package it.polimi.ingsw.server.connection;
+&nbsp;
+&nbsp;import it.polimi.ingsw.server.controller.ConnectionControl;
+&nbsp;import it.polimi.ingsw.commons.ItemCard;
+&nbsp;
+&nbsp;import java.util.ArrayList;
+&nbsp;import java.util.LinkedHashMap;
+&nbsp;import java.util.List;
+&nbsp;
+&nbsp;/**
+&nbsp; * Define methods used to communicate to the client
+&nbsp; */
+<b class="nc">&nbsp;public abstract class ClientHandler {</b>
+&nbsp;    /**
+&nbsp;     * Nickname of the player
+&nbsp;     */
+&nbsp;    protected volatile String nickname;
+&nbsp;    /**
+&nbsp;     * Connection controller of the Game
+&nbsp;     */
+&nbsp;    protected ConnectionControl connectionControl;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * The server calls the client&#39;s method to ask the player to select the Tiles
+&nbsp;     */
+&nbsp;    public abstract void askSelect();
+&nbsp;
+&nbsp;    /**
+&nbsp;     * The server calls the client&#39;s method to ask the player to insert the Tiles
+&nbsp;     */
+&nbsp;    public abstract void askInsert();
+&nbsp;
+&nbsp;    /**
+&nbsp;     * The server calls the client&#39;s method if the player is first in queue and ha to decide the number of players in the game
+&nbsp;     *
+&nbsp;     * @param notAvailableNames the name of the games already in existence
+&nbsp;     */
+&nbsp;    public abstract void askPlayerNumber(List&lt;String&gt; notAvailableNames);
+&nbsp;
+&nbsp;    /**
+&nbsp;     * The server calls the client&#39;s method on a new Turn
+&nbsp;     *
+&nbsp;     * @param nickname of the players whose turn is
+&nbsp;     */
+&nbsp;    public abstract void sendPlayerTurn(String nickname);
+&nbsp;
+&nbsp;    /**
+&nbsp;     * The server calls the client&#39;s method to disconnect the player when an error occurred, or the game is finished
+&nbsp;     */
+&nbsp;    public abstract void disconnectPlayer();
+&nbsp;
+&nbsp;    /**
+&nbsp;     * The server calls the client&#39;s method when a game is starting
+&nbsp;     *
+&nbsp;     * @param playersList the list that contains the name of the players
+&nbsp;     */
+&nbsp;    public abstract void sendGameIsStarting(ArrayList&lt;String&gt; playersList);
+&nbsp;
+&nbsp;    /**
+&nbsp;     * The server calls the client&#39;s method in case of error on the server side
+&nbsp;     *
+&nbsp;     * @param error is the String that describes the type of error
+&nbsp;     */
+&nbsp;    public abstract void sendError(String error);
+&nbsp;
+&nbsp;    /**
+&nbsp;     * The server calls the client&#39;s method when a CommonGoal is completed by the player nickname
+&nbsp;     *
+&nbsp;     * @param source  is the nickname of the player
+&nbsp;     * @param details is an Array with the CommonGoal ID and its new value
+&nbsp;     */
+&nbsp;    public abstract void SendCommonGoalDone(String source, int[] details);
+&nbsp;
+&nbsp;    /**
+&nbsp;     * The server calls the client&#39;s method when a PersonalGoal is created
+&nbsp;     *
+&nbsp;     * @param persGoal is the String that determines the PersonalGoal from a Json file
+&nbsp;     */
+&nbsp;    public abstract void SendPersGoalCreated(String persGoal);
+&nbsp;
+&nbsp;    /**
+&nbsp;     * The server calls the client&#39;s method when a CommonGoal is created
+&nbsp;     *
+&nbsp;     * @param comGoalID is the ID of the CommonGoal
+&nbsp;     * @param score     is the value assigned if the client reaches the CommonGoal
+&nbsp;     */
+&nbsp;    public abstract void SendCommonGoalCreated(Integer comGoalID, Integer score);
+&nbsp;
+&nbsp;    /**
+&nbsp;     * The server calls the client&#39;s method to update the client&#39;s side bookshelf of player nickname
+&nbsp;     *
+&nbsp;     * @param nickname     of the player
+&nbsp;     * @param newBookshelf is the updated bookshelf of the player
+&nbsp;     */
+&nbsp;    public abstract void SendBookshelfChanged(String nickname, ItemCard[][] newBookshelf);
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Sends a bookshelf&#39;s update to the client.
+&nbsp;     *
+&nbsp;     * @param nickname   the player whose bookshelf has changed.
+&nbsp;     * @param tilesToAdd the ordered array of tiles to add in the player&#39;s bookshelf.
+&nbsp;     * @param column     the column of the bookshelf to add tiles into.
+&nbsp;     */
+&nbsp;    public abstract void sendBookshelfRenewed(String nickname, ItemCard[] tilesToAdd, int column);
+&nbsp;
+&nbsp;    /**
+&nbsp;     * The server calls the client&#39;s method to update the client&#39;s side board
+&nbsp;     *
+&nbsp;     * @param newBoard is the updated board
+&nbsp;     */
+&nbsp;    public abstract void SendBoardChanged(ItemCard[][] newBoard);
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Sends board&#39;s update to the client.
+&nbsp;     *
+&nbsp;     * @param tilesToRemove the array of board&#39;s positions to remove tiles from.
+&nbsp;     */
+&nbsp;    public abstract void sendBoardRenewed(Integer[] tilesToRemove);
+&nbsp;
+&nbsp;    /**
+&nbsp;     * The server calls the client&#39;s method when a player wins
+&nbsp;     *
+&nbsp;     * @param finalScores contains all the players&#39; scores.
+&nbsp;     */
+&nbsp;    public abstract void sendFinalScores(LinkedHashMap&lt;String, Integer&gt; finalScores);
+&nbsp;
+&nbsp;    /**
+&nbsp;     * The server calls the client&#39;s method when a player wants to send a chat message to the client
+&nbsp;     *
+&nbsp;     * @param sender  of the message
+&nbsp;     * @param message sent to somebody else
+&nbsp;     */
+&nbsp;    public abstract void chatToMe(String sender, String message);
+&nbsp;
+&nbsp;    /**
+&nbsp;     * The server calls the client&#39;s method to update the player score when a player reconnects
+&nbsp;     *
+&nbsp;     * @param score of the player
+&nbsp;     */
+&nbsp;
+&nbsp;    public abstract void sendPlayerScore(int score);
+&nbsp;
+&nbsp;    /**
+&nbsp;     * The server calls the client&#39;s method when a player completes his bookshelf
+&nbsp;     *
+&nbsp;     * @param nickname of the player that has completed the bookshelf.
+&nbsp;     */
+&nbsp;    public abstract void sendBookshelfCompleted(String nickname);
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Called when there are too many absents for the game: it needs to be interrupted waiting for them.
+&nbsp;     */
+&nbsp;    public abstract void sendGameInterrupted();
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Asks the client if he wants to resume one of the game he was into.
+&nbsp;     *
+&nbsp;     * @param savedGames the list of saved games&#39; names the client is into.
+&nbsp;     */
+&nbsp;    public abstract void askSavedGame(List&lt;String&gt; savedGames);
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-06-29 22:48</div>
+</div>
+</body>
+</html>

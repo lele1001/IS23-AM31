@@ -1,0 +1,374 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > GUIResources</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">it.polimi.ingsw.client.view.GUI</a>
+</div>
+
+<h1>Coverage Summary for Class: GUIResources (it.polimi.ingsw.client.view.GUI)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">GUIResources</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/5)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/58)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">GUIResources$1</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/19)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">GUIResources$2</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/13)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">GUIResources$3</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/13)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">GUIResources$4</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/7)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/9)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/110)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package it.polimi.ingsw.client.view.GUI;
+&nbsp;
+&nbsp;import javafx.scene.image.Image;
+&nbsp;
+&nbsp;import java.util.HashMap;
+&nbsp;import java.util.Map;
+&nbsp;import java.util.Objects;
+&nbsp;
+&nbsp;/**
+&nbsp; * Class used to cache all necessary Images for the javafx project
+&nbsp; */
+&nbsp;public final class GUIResources {
+&nbsp;    //fxml files
+&nbsp;    public final static String loginFXML = &quot;FXML/login.fxml&quot;;
+&nbsp;    public final static String askSavedGamesFXML = &quot;FXML/savedGamesScene.fxml&quot;;
+&nbsp;    public final static String numberOfPlayerFXML = &quot;FXML/numberOfPlayers.fxml&quot;;
+&nbsp;    public final static String lobbyFXML = &quot;FXML/lobby.fxml&quot;;
+&nbsp;    public final static String notMyTurnFXML = &quot;FXML/NotYourTurnScene.fxml&quot;;
+&nbsp;    public final static String endGameFXML = &quot;FXML/endGame.fxml&quot;;
+&nbsp;    public final static String putCardsFXML = &quot;FXML/PutCards.fxml&quot;;
+&nbsp;    public final static String takeCardsFXML = &quot;FXML/TakingCards.fxml&quot;;
+&nbsp;    public final static String errorFXML = &quot;FXML/error.fxml&quot;;
+&nbsp;    public final static String helpFXML = &quot;FXML/InstructionsScene.fxml&quot;;
+&nbsp;
+&nbsp;    //images
+<b class="nc">&nbsp;    public static final Image bookshelfImage = new Image(Objects.requireNonNull(GUIResources.class.getResource(&quot;/images/boards/bookshelf.png&quot;)).toString());</b>
+&nbsp;    // Utility images
+<b class="nc">&nbsp;    public final static Image icon = new Image(Objects.requireNonNull(GUIResources.class.getResource(&quot;/images/publisherMaterial/Icon.png&quot;)).toString());</b>
+&nbsp;
+&nbsp;    // Item Tiles
+<b class="nc">&nbsp;    public final static Image frameFirst = new Image(Objects.requireNonNull(GUIResources.class.getResource(&quot;/images/itemTiles/frameFirst.png&quot;)).toString());</b>
+<b class="nc">&nbsp;    public final static Image frameSecond = new Image(Objects.requireNonNull(GUIResources.class.getResource(&quot;/images/itemTiles/frameSecond.png&quot;)).toString());</b>
+<b class="nc">&nbsp;    public final static Image franeThird = new Image(Objects.requireNonNull(GUIResources.class.getResource(&quot;/images/itemTiles/frameThird.png&quot;)).toString());</b>
+<b class="nc">&nbsp;    public final static Image catFirst = new Image(Objects.requireNonNull(GUIResources.class.getResource(&quot;/images/itemTiles/catFirst.png&quot;)).toString());</b>
+<b class="nc">&nbsp;    public final static Image catSecond = new Image(Objects.requireNonNull(GUIResources.class.getResource(&quot;/images/itemTiles/catSecond.png&quot;)).toString());</b>
+<b class="nc">&nbsp;    public final static Image catThird = new Image(Objects.requireNonNull(GUIResources.class.getResource(&quot;/images/itemTiles/catThird.png&quot;)).toString());</b>
+<b class="nc">&nbsp;    public final static Image gamesFirst = new Image(Objects.requireNonNull(GUIResources.class.getResource(&quot;/images/itemTiles/gamesFirst.png&quot;)).toString());</b>
+<b class="nc">&nbsp;    public final static Image gamesSecond = new Image(Objects.requireNonNull(GUIResources.class.getResource(&quot;/images/itemTiles/gamesSecond.png&quot;)).toString());</b>
+<b class="nc">&nbsp;    public final static Image gamesThird = new Image(Objects.requireNonNull(GUIResources.class.getResource(&quot;/images/itemTiles/gamesThird.png&quot;)).toString());</b>
+<b class="nc">&nbsp;    public final static Image booksFirst = new Image(Objects.requireNonNull(GUIResources.class.getResource(&quot;/images/itemTiles/booksFirst.png&quot;)).toString());</b>
+<b class="nc">&nbsp;    public final static Image booksSecond = new Image(Objects.requireNonNull(GUIResources.class.getResource(&quot;/images/itemTiles/booksSecond.png&quot;)).toString());</b>
+<b class="nc">&nbsp;    public final static Image booksThird = new Image(Objects.requireNonNull(GUIResources.class.getResource(&quot;/images/itemTiles/booksThird.png&quot;)).toString());</b>
+<b class="nc">&nbsp;    public final static Image plantsFirst = new Image(Objects.requireNonNull(GUIResources.class.getResource(&quot;/images/itemTiles/plantsFirst.png&quot;)).toString());</b>
+<b class="nc">&nbsp;    public final static Image plantsSecond = new Image(Objects.requireNonNull(GUIResources.class.getResource(&quot;/images/itemTiles/plantsSecond.png&quot;)).toString());</b>
+<b class="nc">&nbsp;    public final static Image plantsThird = new Image(Objects.requireNonNull(GUIResources.class.getResource(&quot;/images/itemTiles/plantsThird.png&quot;)).toString());</b>
+<b class="nc">&nbsp;    public final static Image trophyFirst = new Image(Objects.requireNonNull(GUIResources.class.getResource(&quot;/images/itemTiles/trophyFirst.png&quot;)).toString());</b>
+<b class="nc">&nbsp;    public final static Image trophySecond = new Image(Objects.requireNonNull(GUIResources.class.getResource(&quot;/images/itemTiles/trophySecond.png&quot;)).toString());</b>
+<b class="nc">&nbsp;    public final static Image trophyThird = new Image(Objects.requireNonNull(GUIResources.class.getResource(&quot;/images/itemTiles/trophyThird.png&quot;)).toString());</b>
+&nbsp;
+&nbsp;    //common goals
+<b class="nc">&nbsp;    public final static Image cg01 = new Image(Objects.requireNonNull(GUIResources.class.getResource(&quot;/images/commonGoalCards/1.jpg&quot;)).toString());</b>
+<b class="nc">&nbsp;    public final static Image cg02 = new Image(Objects.requireNonNull(GUIResources.class.getResource(&quot;/images/commonGoalCards/2.jpg&quot;)).toString());</b>
+<b class="nc">&nbsp;    public final static Image cg03 = new Image(Objects.requireNonNull(GUIResources.class.getResource(&quot;/images/commonGoalCards/3.jpg&quot;)).toString());</b>
+<b class="nc">&nbsp;    public final static Image cg04 = new Image(Objects.requireNonNull(GUIResources.class.getResource(&quot;/images/commonGoalCards/4.jpg&quot;)).toString());</b>
+<b class="nc">&nbsp;    public final static Image cg05 = new Image(Objects.requireNonNull(GUIResources.class.getResource(&quot;/images/commonGoalCards/5.jpg&quot;)).toString());</b>
+<b class="nc">&nbsp;    public final static Image cg06 = new Image(Objects.requireNonNull(GUIResources.class.getResource(&quot;/images/commonGoalCards/6.jpg&quot;)).toString());</b>
+<b class="nc">&nbsp;    public final static Image cg07 = new Image(Objects.requireNonNull(GUIResources.class.getResource(&quot;/images/commonGoalCards/7.jpg&quot;)).toString());</b>
+<b class="nc">&nbsp;    public final static Image cg08 = new Image(Objects.requireNonNull(GUIResources.class.getResource(&quot;/images/commonGoalCards/8.jpg&quot;)).toString());</b>
+<b class="nc">&nbsp;    public final static Image cg09 = new Image(Objects.requireNonNull(GUIResources.class.getResource(&quot;/images/commonGoalCards/9.jpg&quot;)).toString());</b>
+<b class="nc">&nbsp;    public final static Image cg10 = new Image(Objects.requireNonNull(GUIResources.class.getResource(&quot;/images/commonGoalCards/10.jpg&quot;)).toString());</b>
+<b class="nc">&nbsp;    public final static Image cg11 = new Image(Objects.requireNonNull(GUIResources.class.getResource(&quot;/images/commonGoalCards/11.jpg&quot;)).toString());</b>
+<b class="nc">&nbsp;    public final static Image cg12 = new Image(Objects.requireNonNull(GUIResources.class.getResource(&quot;/images/commonGoalCards/12.jpg&quot;)).toString());</b>
+&nbsp;
+&nbsp;    //personal goals
+<b class="nc">&nbsp;    public final static Image pg01 = new Image(Objects.requireNonNull(GUIResources.class.getResource(&quot;/images/personalGoalCards/Personal_Goals.png&quot;)).toString());</b>
+<b class="nc">&nbsp;    public final static Image pg02 = new Image(Objects.requireNonNull(GUIResources.class.getResource(&quot;/images/personalGoalCards/Personal_Goals2.png&quot;)).toString());</b>
+<b class="nc">&nbsp;    public final static Image pg03 = new Image(Objects.requireNonNull(GUIResources.class.getResource(&quot;/images/personalGoalCards/Personal_Goals3.png&quot;)).toString());</b>
+<b class="nc">&nbsp;    public final static Image pg04 = new Image(Objects.requireNonNull(GUIResources.class.getResource(&quot;/images/personalGoalCards/Personal_Goals4.png&quot;)).toString());</b>
+<b class="nc">&nbsp;    public final static Image pg05 = new Image(Objects.requireNonNull(GUIResources.class.getResource(&quot;/images/personalGoalCards/Personal_Goals5.png&quot;)).toString());</b>
+<b class="nc">&nbsp;    public final static Image pg06 = new Image(Objects.requireNonNull(GUIResources.class.getResource(&quot;/images/personalGoalCards/Personal_Goals6.png&quot;)).toString());</b>
+<b class="nc">&nbsp;    public final static Image pg07 = new Image(Objects.requireNonNull(GUIResources.class.getResource(&quot;/images/personalGoalCards/Personal_Goals7.png&quot;)).toString());</b>
+<b class="nc">&nbsp;    public final static Image pg08 = new Image(Objects.requireNonNull(GUIResources.class.getResource(&quot;/images/personalGoalCards/Personal_Goals8.png&quot;)).toString());</b>
+<b class="nc">&nbsp;    public final static Image pg09 = new Image(Objects.requireNonNull(GUIResources.class.getResource(&quot;/images/personalGoalCards/Personal_Goals9.png&quot;)).toString());</b>
+<b class="nc">&nbsp;    public final static Image pg10 = new Image(Objects.requireNonNull(GUIResources.class.getResource(&quot;/images/personalGoalCards/Personal_Goals10.png&quot;)).toString());</b>
+<b class="nc">&nbsp;    public final static Image pg11 = new Image(Objects.requireNonNull(GUIResources.class.getResource(&quot;/images/personalGoalCards/Personal_Goals11.png&quot;)).toString());</b>
+<b class="nc">&nbsp;    public final static Image pg12 = new Image(Objects.requireNonNull(GUIResources.class.getResource(&quot;/images/personalGoalCards/Personal_Goals12.png&quot;)).toString());</b>
+&nbsp;
+&nbsp;    //scoring
+<b class="nc">&nbsp;    public final static Image sc00 = new Image(Objects.requireNonNull(GUIResources.class.getResource(&quot;/images/scoringTokens/scoring.jpg&quot;)).toString());</b>
+<b class="nc">&nbsp;    public final static Image sc01 = new Image(Objects.requireNonNull(GUIResources.class.getResource(&quot;/images/scoringTokens/endGame.jpg&quot;)).toString());</b>
+<b class="nc">&nbsp;    public final static Image sc02 = new Image(Objects.requireNonNull(GUIResources.class.getResource(&quot;/images/scoringTokens/scoring_2.jpg&quot;)).toString());</b>
+<b class="nc">&nbsp;    public final static Image sc04 = new Image(Objects.requireNonNull(GUIResources.class.getResource(&quot;/images/scoringTokens/scoring_4.jpg&quot;)).toString());</b>
+<b class="nc">&nbsp;    public final static Image sc06 = new Image(Objects.requireNonNull(GUIResources.class.getResource(&quot;/images/scoringTokens/scoring_6.jpg&quot;)).toString());</b>
+<b class="nc">&nbsp;    public final static Image sc08 = new Image(Objects.requireNonNull(GUIResources.class.getResource(&quot;/images/scoringTokens/scoring_8.jpg&quot;)).toString());</b>
+&nbsp;
+&nbsp;    // maps that associate a string to the image
+<b class="nc">&nbsp;    private static final Map&lt;String, Image&gt; itemTiles = new HashMap&lt;&gt;() {{</b>
+<b class="nc">&nbsp;        put(&quot;frameFirst&quot;, frameFirst);</b>
+<b class="nc">&nbsp;        put(&quot;frameSecond&quot;, frameSecond);</b>
+<b class="nc">&nbsp;        put(&quot;frameThird&quot;, franeThird);</b>
+<b class="nc">&nbsp;        put(&quot;catFirst&quot;, catFirst);</b>
+<b class="nc">&nbsp;        put(&quot;catSecond&quot;, catSecond);</b>
+<b class="nc">&nbsp;        put(&quot;catThird&quot;, catThird);</b>
+<b class="nc">&nbsp;        put(&quot;gamesFirst&quot;, gamesFirst);</b>
+<b class="nc">&nbsp;        put(&quot;gamesSecond&quot;, gamesSecond);</b>
+<b class="nc">&nbsp;        put(&quot;gamesThird&quot;, gamesThird);</b>
+<b class="nc">&nbsp;        put(&quot;booksFirst&quot;, booksFirst);</b>
+<b class="nc">&nbsp;        put(&quot;booksSecond&quot;, booksSecond);</b>
+<b class="nc">&nbsp;        put(&quot;booksThird&quot;, booksThird);</b>
+<b class="nc">&nbsp;        put(&quot;plantsFirst&quot;, plantsFirst);</b>
+<b class="nc">&nbsp;        put(&quot;plantsSecond&quot;, plantsSecond);</b>
+<b class="nc">&nbsp;        put(&quot;plantsThird&quot;, plantsThird);</b>
+<b class="nc">&nbsp;        put(&quot;trophyFirst&quot;, trophyFirst);</b>
+<b class="nc">&nbsp;        put(&quot;trophySecond&quot;, trophySecond);</b>
+<b class="nc">&nbsp;        put(&quot;trophyThird&quot;, trophyThird);</b>
+&nbsp;    }};
+<b class="nc">&nbsp;    private static final Map&lt;String, Image&gt; comGoals = new HashMap&lt;&gt;() {{</b>
+<b class="nc">&nbsp;        put(&quot;cg01&quot;, cg01);</b>
+<b class="nc">&nbsp;        put(&quot;cg02&quot;, cg02);</b>
+<b class="nc">&nbsp;        put(&quot;cg03&quot;, cg03);</b>
+<b class="nc">&nbsp;        put(&quot;cg04&quot;, cg04);</b>
+<b class="nc">&nbsp;        put(&quot;cg05&quot;, cg05);</b>
+<b class="nc">&nbsp;        put(&quot;cg06&quot;, cg06);</b>
+<b class="nc">&nbsp;        put(&quot;cg07&quot;, cg07);</b>
+<b class="nc">&nbsp;        put(&quot;cg08&quot;, cg08);</b>
+<b class="nc">&nbsp;        put(&quot;cg09&quot;, cg09);</b>
+<b class="nc">&nbsp;        put(&quot;cg10&quot;, cg10);</b>
+<b class="nc">&nbsp;        put(&quot;cg11&quot;, cg11);</b>
+<b class="nc">&nbsp;        put(&quot;cg12&quot;, cg12);</b>
+&nbsp;    }};
+&nbsp;
+<b class="nc">&nbsp;    private static final Map&lt;String, Image&gt; persGoals = new HashMap&lt;&gt;() {{</b>
+<b class="nc">&nbsp;        put(&quot;pg01&quot;, pg01);</b>
+<b class="nc">&nbsp;        put(&quot;pg02&quot;, pg02);</b>
+<b class="nc">&nbsp;        put(&quot;pg03&quot;, pg03);</b>
+<b class="nc">&nbsp;        put(&quot;pg04&quot;, pg04);</b>
+<b class="nc">&nbsp;        put(&quot;pg05&quot;, pg05);</b>
+<b class="nc">&nbsp;        put(&quot;pg06&quot;, pg06);</b>
+<b class="nc">&nbsp;        put(&quot;pg07&quot;, pg07);</b>
+<b class="nc">&nbsp;        put(&quot;pg08&quot;, pg08);</b>
+<b class="nc">&nbsp;        put(&quot;pg09&quot;, pg09);</b>
+<b class="nc">&nbsp;        put(&quot;pg10&quot;, pg10);</b>
+<b class="nc">&nbsp;        put(&quot;pg11&quot;, pg11);</b>
+<b class="nc">&nbsp;        put(&quot;pg12&quot;, pg12);</b>
+&nbsp;    }};
+<b class="nc">&nbsp;    private static final Map&lt;String, Image&gt; scoringTokens = new HashMap&lt;&gt;() {{</b>
+<b class="nc">&nbsp;        put(&quot;sc00&quot;, sc00);</b>
+<b class="nc">&nbsp;        put(&quot;sc01&quot;, sc01);</b>
+<b class="nc">&nbsp;        put(&quot;sc02&quot;, sc02);</b>
+<b class="nc">&nbsp;        put(&quot;sc04&quot;, sc04);</b>
+<b class="nc">&nbsp;        put(&quot;sc06&quot;, sc06);</b>
+<b class="nc">&nbsp;        put(&quot;sc08&quot;, sc08);</b>
+&nbsp;    }};
+&nbsp;
+&nbsp;
+&nbsp;    private GUIResources() {
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Called to get an Item Tiles Image
+&nbsp;     *
+&nbsp;     * @param myItem String that symbolizes the item
+&nbsp;     * @return The image of the Item
+&nbsp;     */
+&nbsp;    public static Image getItem(String myItem) {
+<b class="nc">&nbsp;        return itemTiles.get(myItem);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Called to get a Common Goal Image
+&nbsp;     *
+&nbsp;     * @param comGoal String that symbolizes the Common Goal
+&nbsp;     * @return The image of the Common Goal
+&nbsp;     */
+&nbsp;    public static Image getComGoal(String comGoal) {
+<b class="nc">&nbsp;        return comGoals.get(comGoal);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Called to get a Personal Goal Image
+&nbsp;     *
+&nbsp;     * @param persGoal String that symbolizes the Personal Goal
+&nbsp;     * @return The image of the Personal Goal
+&nbsp;     */
+&nbsp;    public static Image getPersGoal(String persGoal) {
+<b class="nc">&nbsp;        return persGoals.get(persGoal);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Called to get a Score Image
+&nbsp;     *
+&nbsp;     * @param s String that symbolizes the Score Tile
+&nbsp;     * @return The image of the Score Tile
+&nbsp;     */
+&nbsp;    public static Image getScore(String s) {
+<b class="nc">&nbsp;        return scoringTokens.get(s);</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-06-29 22:48</div>
+</div>
+</body>
+</html>

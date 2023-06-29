@@ -1,0 +1,461 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > TakeCardsScene</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">it.polimi.ingsw.client.view.GUI.scenes</a>
+</div>
+
+<h1>Coverage Summary for Class: TakeCardsScene (it.polimi.ingsw.client.view.GUI.scenes)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">TakeCardsScene</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/23)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/122)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package it.polimi.ingsw.client.view.GUI.scenes;
+&nbsp;
+&nbsp;import it.polimi.ingsw.client.controller.ClientController;
+&nbsp;import it.polimi.ingsw.client.controller.InputController;
+&nbsp;import it.polimi.ingsw.client.view.GUI.GUIResources;
+&nbsp;import it.polimi.ingsw.commons.ItemCard;
+&nbsp;import it.polimi.ingsw.utils.Position;
+&nbsp;import it.polimi.ingsw.utils.Utils;
+&nbsp;import javafx.fxml.FXML;
+&nbsp;import javafx.scene.Cursor;
+&nbsp;import javafx.scene.Node;
+&nbsp;import javafx.scene.control.*;
+&nbsp;import javafx.scene.image.ImageView;
+&nbsp;import javafx.scene.input.MouseEvent;
+&nbsp;import javafx.scene.layout.GridPane;
+&nbsp;
+&nbsp;import java.util.ArrayList;
+&nbsp;import java.util.Map;
+&nbsp;
+&nbsp;import static it.polimi.ingsw.utils.Position.getColumn;
+&nbsp;import static it.polimi.ingsw.utils.Position.getRow;
+&nbsp;
+&nbsp;/**
+&nbsp; * Defines the controller for the TakeCardsScene
+&nbsp; */
+<b class="nc">&nbsp;public class TakeCardsScene extends GUIScene {</b>
+&nbsp;    @FXML
+&nbsp;    private TextField writtenMessage;
+&nbsp;    @FXML
+&nbsp;    private MenuButton destinationMenu;
+&nbsp;    @FXML
+&nbsp;    private GridPane boardPane, comGoals, bookshelfPane, persGoal, youSelectedThis, score_0, score_1, winnerScore;
+&nbsp;    @FXML
+&nbsp;    private Label yourPoints;
+&nbsp;    @FXML
+&nbsp;    private Button selectTiles, undoSelection, sendMessage, exitButton;
+&nbsp;    @FXML
+&nbsp;    private TextArea chatHistory;
+&nbsp;    @FXML
+&nbsp;    private Button helpButton;
+&nbsp;    private ArrayList&lt;Integer&gt; selectedTiles;
+&nbsp;    private InputController inputController;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Initialize the takeCardsScene
+&nbsp;     *
+&nbsp;     * @param clientController created for the GUI app
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void initialize(ClientController clientController) {
+<b class="nc">&nbsp;        super.initialize(clientController);</b>
+<b class="nc">&nbsp;        inputController = new InputController(clientController);</b>
+<b class="nc">&nbsp;        yourPoints.setText(&quot;You have 0 points&quot;);</b>
+<b class="nc">&nbsp;        selectedTiles = new ArrayList&lt;&gt;();</b>
+<b class="nc">&nbsp;        setWinnerPointImage();</b>
+<b class="nc">&nbsp;        bindEvents();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Connects FXML items to the methods in the scene
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void bindEvents() {
+<b class="nc">&nbsp;        boardPane.addEventHandler(MouseEvent.MOUSE_CLICKED, this::remove);</b>
+<b class="nc">&nbsp;        selectTiles.addEventHandler(MouseEvent.MOUSE_CLICKED, event -&gt; selectTiles());</b>
+<b class="nc">&nbsp;        undoSelection.addEventHandler(MouseEvent.MOUSE_CLICKED, event -&gt; revert());</b>
+<b class="nc">&nbsp;        sendMessage.addEventHandler(MouseEvent.MOUSE_CLICKED, event -&gt; sendChat(inputController, clientController, destinationMenu, writtenMessage));</b>
+<b class="nc">&nbsp;        exitButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -&gt; closeGame(clientController));</b>
+<b class="nc">&nbsp;        helpButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -&gt; help());</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Put the image of the completed bookshelf point in the defined place
+&nbsp;     */
+&nbsp;    public void setWinnerPointImage() {
+<b class="nc">&nbsp;        ImageView scoreImage = new ImageView(GUIResources.getScore(&quot;sc01&quot;));</b>
+<b class="nc">&nbsp;        scoreImage.setFitHeight(55);</b>
+<b class="nc">&nbsp;        scoreImage.setFitWidth(55);</b>
+<b class="nc">&nbsp;        winnerScore.add(scoreImage, 0, 0);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Sets the scene based on the number of players in the game
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void setPlayers() {
+<b class="nc">&nbsp;        setPlayersShared(clientController, destinationMenu, sendMessage);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Updates the current player
+&nbsp;     *
+&nbsp;     * @param player is the curren player
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void updateCurrPlayer(String player) {
+<b class="nc">&nbsp;        selectedTiles.clear();</b>
+<b class="nc">&nbsp;        selectTiles.setDisable(false);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Prints the Board in the scene
+&nbsp;     *
+&nbsp;     * @param board is the updated Board
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void updateBoard(ItemCard[][] board) {
+<b class="nc">&nbsp;        boardPane.getChildren().clear();</b>
+&nbsp;
+<b class="nc">&nbsp;        for (int i = 0; i &lt; Utils.DIM_BOARD; i++) {</b>
+<b class="nc">&nbsp;            for (int j = 0; j &lt; Utils.DIM_BOARD; j++) {</b>
+<b class="nc">&nbsp;                if (board[i][j] != null) {</b>
+<b class="nc">&nbsp;                    String itemName = board[i][j].getMyItem().toString().toLowerCase();</b>
+<b class="nc">&nbsp;                    String itemNumber = board[i][j].getMyNum().toString();</b>
+<b class="nc">&nbsp;                    String myItem = itemName + itemNumber;</b>
+&nbsp;
+<b class="nc">&nbsp;                    ImageView tileImage = new ImageView(GUIResources.getItem(myItem));</b>
+<b class="nc">&nbsp;                    tileImage.setPreserveRatio(true);</b>
+<b class="nc">&nbsp;                    tileImage.setFitHeight(50);</b>
+<b class="nc">&nbsp;                    tileImage.setFitWidth(50);</b>
+<b class="nc">&nbsp;                    tileImage.setCursor(Cursor.HAND);</b>
+&nbsp;
+<b class="nc">&nbsp;                    boardPane.add(tileImage, j, i);</b>
+&nbsp;                }
+&nbsp;            }
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Updates the Board removing the given Tiles
+&nbsp;     *
+&nbsp;     * @param tilesToRemove contains the positions of the tiles to be removed from the board
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void changeBoard(Integer[] tilesToRemove) {
+<b class="nc">&nbsp;        for (Integer i : tilesToRemove)</b>
+<b class="nc">&nbsp;            boardPane.getChildren().removeIf(n -&gt; GridPane.getRowIndex(n) == getRow(i) &amp;&amp; GridPane.getColumnIndex(n) == getColumn(i));</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Prints the player&#39;s Bookshelf in the scene
+&nbsp;     *
+&nbsp;     * @param bookshelf is the player&#39;s updated Bookshelf
+&nbsp;     * @param nickname  is the owner of the Bookshelf
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void updateBookshelf(String nickname, ItemCard[][] bookshelf) {
+<b class="nc">&nbsp;        if (clientController.getMyNickname().equals(nickname)) {</b>
+<b class="nc">&nbsp;            bookshelfPane.getChildren().clear();</b>
+<b class="nc">&nbsp;            for (int i = 0; i &lt; Utils.BOOKSHELF_HEIGHT; i++) {</b>
+<b class="nc">&nbsp;                for (int j = 0; j &lt; Utils.BOOKSHELF_LENGTH; j++) {</b>
+<b class="nc">&nbsp;                    if (bookshelf[i][j] != null) {</b>
+<b class="nc">&nbsp;                        String itemName = bookshelf[i][j].getMyItem().toString().toLowerCase();</b>
+<b class="nc">&nbsp;                        String itemNumber = bookshelf[i][j].getMyNum().toString();</b>
+<b class="nc">&nbsp;                        String myItem = itemName + itemNumber;</b>
+&nbsp;
+<b class="nc">&nbsp;                        ImageView tileImage = new ImageView(GUIResources.getItem(myItem));</b>
+<b class="nc">&nbsp;                        tileImage.setPreserveRatio(true);</b>
+<b class="nc">&nbsp;                        tileImage.setFitHeight(28);</b>
+<b class="nc">&nbsp;                        tileImage.setFitWidth(28);</b>
+&nbsp;
+<b class="nc">&nbsp;                        bookshelfPane.add(tileImage, j, i);</b>
+&nbsp;                    }
+&nbsp;                }
+&nbsp;            }
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Updates the player&#39;s Bookshelf adding the given Tiles
+&nbsp;     *
+&nbsp;     * @param tilesToAdd contains the ItemCard to add and its position on the Bookshelf
+&nbsp;     * @param player     is the owner of the Bookshelf to modify
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void changeBookshelf(Map&lt;Integer, ItemCard&gt; tilesToAdd, String player) {
+<b class="nc">&nbsp;        if (clientController.getMyNickname().equals(player)) {</b>
+<b class="nc">&nbsp;            for (Integer i : tilesToAdd.keySet()) {</b>
+<b class="nc">&nbsp;                ImageView tileImage = new ImageView(GUIResources.getItem(tilesToAdd.get(i).getMyItem().toString().toLowerCase() + tilesToAdd.get(i).getMyNum().toString()));</b>
+<b class="nc">&nbsp;                tileImage.setPreserveRatio(true);</b>
+<b class="nc">&nbsp;                tileImage.setFitHeight(28);</b>
+<b class="nc">&nbsp;                tileImage.setFitWidth(28);</b>
+&nbsp;
+<b class="nc">&nbsp;                bookshelfPane.add(tileImage, Position.getColumn(i), Position.getRow(i));</b>
+<b class="nc">&nbsp;            }</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Prints the CommonGoals and its available score in the scene
+&nbsp;     *
+&nbsp;     * @param playerCommonGoal contains the CommonGoalID and its available score
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void comGoal(Map&lt;Integer, Integer&gt; playerCommonGoal) {
+<b class="nc">&nbsp;        comGoalCreated(playerCommonGoal, score_0, score_1, comGoals, true, 150, 200, 60);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Updates the available score of a CommonGoal each time it is reached and in the scene
+&nbsp;     *
+&nbsp;     * @param comGoalDoneID identifies the CommonGoal reached
+&nbsp;     * @param newValue      is the available score
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void updateCommonGoal(int comGoalDoneID, int newValue) {
+<b class="nc">&nbsp;        comGoalDone(comGoalDoneID, newValue, score_0, score_1, 60);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Prints the PersonalGoal assigned to the player
+&nbsp;     *
+&nbsp;     * @param newValue is the PersonalGoal name
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void persGoal(String newValue) {
+<b class="nc">&nbsp;        ImageView persGoalImage = new ImageView(GUIResources.getPersGoal(newValue));</b>
+<b class="nc">&nbsp;        persGoalImage.setFitHeight(200);</b>
+<b class="nc">&nbsp;        persGoalImage.setFitWidth(150);</b>
+&nbsp;
+<b class="nc">&nbsp;        persGoal.add(persGoalImage, 0, 0);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Prints the player&#39;s points in the scene
+&nbsp;     *
+&nbsp;     * @param myPoint are the points of the player
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void printPoints(int myPoint) {
+<b class="nc">&nbsp;        yourPoints.setText(&quot;You have &quot; + myPoint + &quot; points&quot;);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Prints the message in the chat field of the scene
+&nbsp;     *
+&nbsp;     * @param sender  is the player that sent the message
+&nbsp;     * @param message is the message to print
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void receiveMessage(String sender, String message) {
+<b class="nc">&nbsp;        chatHistory.appendText(&quot;&gt; &quot; + sender + &quot;: &quot; + message + &quot;\n&quot;);</b>
+<b class="nc">&nbsp;        writtenMessage.setText(&quot;&quot;);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Checks the selected Tiles from the Board and eventually communicates the change to the server
+&nbsp;     */
+&nbsp;    private void selectTiles() {
+<b class="nc">&nbsp;        String[] checkToTake = {&quot;@take&quot;};</b>
+<b class="nc">&nbsp;        for (Integer sel : selectedTiles) {</b>
+<b class="nc">&nbsp;            int n = checkToTake.length;</b>
+<b class="nc">&nbsp;            String[] newel = new String[n + 1];</b>
+<b class="nc">&nbsp;            newel[n] = sel.toString();</b>
+<b class="nc">&nbsp;            System.arraycopy(checkToTake, 0, newel, 0, n);</b>
+<b class="nc">&nbsp;            checkToTake = newel;</b>
+<b class="nc">&nbsp;        }</b>
+<b class="nc">&nbsp;        ArrayList&lt;Integer&gt; tilesToTake = inputController.checkTake(checkToTake);</b>
+<b class="nc">&nbsp;        if (tilesToTake == null) {</b>
+<b class="nc">&nbsp;            printError(&quot;ERROR: wrong selection&quot;);</b>
+<b class="nc">&nbsp;            revert();</b>
+<b class="nc">&nbsp;            selectTiles.setDisable(false);</b>
+&nbsp;        } else {
+<b class="nc">&nbsp;            clientController.setSelectedTiles(selectedTiles);</b>
+&nbsp;
+&nbsp;            try {
+<b class="nc">&nbsp;                clientController.selectCard();</b>
+&nbsp;                //selectTiles.setDisable(true);
+<b class="nc">&nbsp;            } catch (Exception e) {</b>
+<b class="nc">&nbsp;                e.printStackTrace();</b>
+<b class="nc">&nbsp;                printError(&quot;ERROR: server error&quot;);</b>
+<b class="nc">&nbsp;                revert();</b>
+<b class="nc">&nbsp;                selectTiles.setDisable(false);</b>
+<b class="nc">&nbsp;            }</b>
+&nbsp;        }
+<b class="nc">&nbsp;        selectedTiles.clear();</b>
+<b class="nc">&nbsp;        youSelectedThis.getChildren().clear();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Removes the clicked image from the Board pane and puts it in the SelectedTiles pane
+&nbsp;     *
+&nbsp;     * @param event is the click on the image
+&nbsp;     */
+&nbsp;    private void remove(MouseEvent event) {
+<b class="nc">&nbsp;        Node clickedNode = event.getPickResult().getIntersectedNode();</b>
+<b class="nc">&nbsp;        if (GridPane.getColumnIndex(clickedNode) != null) {</b>
+<b class="nc">&nbsp;            int clickedColumn = GridPane.getColumnIndex(clickedNode);</b>
+<b class="nc">&nbsp;            int clickedRow = GridPane.getRowIndex(clickedNode);</b>
+&nbsp;
+<b class="nc">&nbsp;            if (boardPane.getChildren().contains(clickedNode)) {</b>
+<b class="nc">&nbsp;                ImageView imageView = (ImageView) clickedNode;</b>
+<b class="nc">&nbsp;                imageView.setCursor(Cursor.DEFAULT);</b>
+&nbsp;
+<b class="nc">&nbsp;                if (selectedTiles.size() &lt; 3) {</b>
+<b class="nc">&nbsp;                    int coord = Position.getNumber(clickedColumn, clickedRow);</b>
+<b class="nc">&nbsp;                    selectedTiles.add(coord);</b>
+<b class="nc">&nbsp;                    if (selectedTiles.size() == 3)</b>
+<b class="nc">&nbsp;                        boardPane.getChildren().forEach(x -&gt; x.setCursor(Cursor.DEFAULT));</b>
+<b class="nc">&nbsp;                    imageView.setPreserveRatio(true);</b>
+<b class="nc">&nbsp;                    imageView.setFitWidth(50);</b>
+<b class="nc">&nbsp;                    imageView.setFitWidth(50);</b>
+&nbsp;
+<b class="nc">&nbsp;                    youSelectedThis.add(imageView, selectedTiles.size() - 1, 0);</b>
+&nbsp;                }
+&nbsp;            }
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Removes all the images from the SelectedTiles pane and puts them back in the Board pane
+&nbsp;     */
+&nbsp;    private void revert() {
+<b class="nc">&nbsp;        youSelectedThis.getChildren().clear();</b>
+<b class="nc">&nbsp;        ItemCard[][] board = clientController.getBoard();</b>
+<b class="nc">&nbsp;        for (Integer i : selectedTiles) {</b>
+<b class="nc">&nbsp;            ImageView tileImage = new ImageView(GUIResources.getItem(board[Position.getRow(i)][Position.getColumn(i)].getMyItem().toString().toLowerCase() + board[Position.getRow(i)][Position.getColumn(i)].getMyNum().toString()));</b>
+<b class="nc">&nbsp;            tileImage.setPreserveRatio(true);</b>
+<b class="nc">&nbsp;            tileImage.setFitHeight(50);</b>
+<b class="nc">&nbsp;            tileImage.setFitWidth(50);</b>
+<b class="nc">&nbsp;            tileImage.setCursor(Cursor.HAND);</b>
+<b class="nc">&nbsp;            boardPane.add(tileImage, Position.getColumn(i), Position.getRow(i));</b>
+<b class="nc">&nbsp;        }</b>
+<b class="nc">&nbsp;        if (selectedTiles.size() == 3)</b>
+<b class="nc">&nbsp;            boardPane.getChildren().forEach(x -&gt; x.setCursor(Cursor.HAND));</b>
+<b class="nc">&nbsp;        selectedTiles.clear();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Remove the completion point image
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void bookshelfCompleted() {
+<b class="nc">&nbsp;        winnerScore.getChildren().clear();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public String getChatMessage() {
+<b class="nc">&nbsp;        return writtenMessage.getText();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public String getChatReceiver() {
+<b class="nc">&nbsp;        return destinationMenu.getText();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public void putChatMessage(String message) {
+<b class="nc">&nbsp;        writtenMessage.setText(message);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public void putChatReceiver(String Receiver) {
+<b class="nc">&nbsp;        destinationMenu.setText(Receiver);</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-06-29 22:48</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,239 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > RMIInterface</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">it.polimi.ingsw.server.connection</a>
+</div>
+
+<h1>Coverage Summary for Class: RMIInterface (it.polimi.ingsw.server.connection)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">RMIInterface</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/10)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/14)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package it.polimi.ingsw.server.connection;
+&nbsp;
+&nbsp;import it.polimi.ingsw.client.connection.RMIClientConnection;
+&nbsp;import it.polimi.ingsw.server.controller.ConnectionControl;
+&nbsp;import it.polimi.ingsw.commons.ItemCard;
+&nbsp;
+&nbsp;import java.rmi.RemoteException;
+&nbsp;import java.util.ArrayList;
+&nbsp;
+&nbsp;/**
+&nbsp; * Implementation of the RMI interface
+&nbsp; */
+&nbsp;public class RMIInterface implements RMI {
+&nbsp;    private ConnectionControl connectionControl;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Set up the RMI interface
+&nbsp;     *
+&nbsp;     * @param connectionControl the connection control of the game
+&nbsp;     */
+<b class="nc">&nbsp;    public RMIInterface(ConnectionControl connectionControl) {</b>
+<b class="nc">&nbsp;        this.connectionControl = connectionControl;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Set up the connection control of the game
+&nbsp;     *
+&nbsp;     * @param connectionControl the connection control of the game
+&nbsp;     */
+&nbsp;    public void setConnectionControl(ConnectionControl connectionControl) {
+<b class="nc">&nbsp;        this.connectionControl = connectionControl;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Method called from the client that pass to the server the position of the Tiles selected by the client
+&nbsp;     * Send a request for the checking procedure in the gameController and update the Model if the controls are successfully done
+&nbsp;     *
+&nbsp;     * @param nickname  of this client
+&nbsp;     * @param positions of the Tiles selected by the client
+&nbsp;     * @throws RemoteException if an error occurred calling the server RMI
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void selectCard(String nickname, ArrayList&lt;Integer&gt; positions) throws RemoteException {
+<b class="nc">&nbsp;        connectionControl.selectCard(nickname, positions);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Method called by the client only if he is the first connected to the server
+&nbsp;     * Check that he is the first and then set the number of players for the game
+&nbsp;     *
+&nbsp;     * @param client that sends the request
+&nbsp;     * @param number of players in the game
+&nbsp;     * @throws RemoteException if an error occurred calling the server RMI
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void setPlayerNumber(String client, int number, String gameName) throws RemoteException {
+<b class="nc">&nbsp;        connectionControl.setAvailablePlayers(client, number, gameName);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Method called from the client that pass to the server the chat message for all connected players of the game
+&nbsp;     * The server sends to all the other clients the message
+&nbsp;     *
+&nbsp;     * @param nickname of this client
+&nbsp;     * @param message  to send to all the connected players
+&nbsp;     * @throws RemoteException if an error occurred calling the server RMI
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void chatToAll(String nickname, String message) throws RemoteException {
+<b class="nc">&nbsp;        connectionControl.chatToAll(nickname, message);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Method called from the client that pass to the server the chat message for all connected players of the game
+&nbsp;     * The server sends to all the other clients the message
+&nbsp;     *
+&nbsp;     * @param sender   is the player that sends the message
+&nbsp;     * @param receiver is the player that has to receive the message
+&nbsp;     * @param message  to send to all the connected players
+&nbsp;     * @throws RemoteException if an error occurred calling the server RMI
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void chatToPlayer(String sender, String receiver, String message) throws RemoteException {
+<b class="nc">&nbsp;        connectionControl.chatToPlayer(sender, receiver, message);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Used only by the client to check if the server in Online
+&nbsp;     *
+&nbsp;     * @throws RemoteException if the client cannot connect to the server
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void pong() throws RemoteException {
+<b class="nc">&nbsp;    }</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Called when the player wants to resume a saved game.
+&nbsp;     *
+&nbsp;     * @param wantToSave true if he wants to resume a game.
+&nbsp;     * @param gameName   the name of the game to be resumed.
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void setSavedGames(boolean wantToSave, String gameName) throws RemoteException {
+<b class="nc">&nbsp;        connectionControl.setSavedGame(wantToSave, gameName);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Method called from the client that pass to the server the position of the Tiles selected by the client
+&nbsp;     * Send a request for the checking procedure in the gameController and update the Model if the controls are successfully done
+&nbsp;     *
+&nbsp;     * @param nickname of the client
+&nbsp;     * @param cards    selected by the client that will be inserted in the bookshelf
+&nbsp;     * @param column   where the client wants to put the selected ItemCards
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void insertCard(String nickname, ArrayList&lt;ItemCard&gt; cards, int column) throws RemoteException {
+<b class="nc">&nbsp;        connectionControl.insertCard(nickname, cards, column);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Waits for the client&#39;s nickname and RMI interface, then, tries to insert it into the game.
+&nbsp;     * If the game is not available, sends the error and disconnects it.
+&nbsp;     *
+&nbsp;     * @param nickname of the client
+&nbsp;     * @param client   is the client interface
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void login(String nickname, RMIClientConnection client) {        //deve prendere anche la classe del client
+<b class="nc">&nbsp;        ClientHandlerRmi clientHandlerRmi = new ClientHandlerRmi(connectionControl, nickname, client); //deve passargli la classe dell&#39;interfaccia rmi client</b>
+&nbsp;
+<b class="nc">&nbsp;        if (!connectionControl.tryAddInQueue(clientHandlerRmi, nickname)) {</b>
+<b class="nc">&nbsp;            clientHandlerRmi.sendError(&quot;Game not available.&quot;);</b>
+<b class="nc">&nbsp;            clientHandlerRmi.disconnectPlayer();</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-06-29 22:48</div>
+</div>
+</body>
+</html>
