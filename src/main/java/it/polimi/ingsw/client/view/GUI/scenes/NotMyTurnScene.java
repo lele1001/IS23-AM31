@@ -67,6 +67,9 @@ public class NotMyTurnScene extends GUIScene {
         helpButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> help());
     }
 
+    /**
+     * Set the image of the completion point
+     */
     public void setWinnerPointImage() {
         ImageView scoreImage = new ImageView(GUIResources.getScore("sc01"));
         scoreImage.setFitHeight(45);

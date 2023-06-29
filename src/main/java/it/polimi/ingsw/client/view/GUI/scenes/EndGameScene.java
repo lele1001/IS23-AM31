@@ -99,11 +99,10 @@ public class EndGameScene extends GUIScene {
             rankingTable.add(new Label(finalScores.get(s).toString()), 2, index);
             index++;
         }
-        if (finalScores.get(clientController.getMyNickname())==max) {
+        if (finalScores.get(clientController.getMyNickname()) == max) {
             winnerToken.setVisible(true);
             victoryMessage.setText("YOU'RE THE WINNER");
-        }
-        else{
+        } else {
             winnerToken.setVisible(false);
         }
     }

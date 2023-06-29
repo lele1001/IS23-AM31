@@ -21,7 +21,7 @@ public class CLI implements View {
     final ClientController clientController;
     String username, address;
     int port = -1, select = -1;
-    boolean disconnected=false;
+    boolean disconnected = false;
 
     /**
      * Prints the MyShelfie Logo
@@ -83,9 +83,9 @@ public class CLI implements View {
             System.out.print(grey + "Select Username: ");
             if (in.hasNext()) {
                 username = in.next();
-                if(username.length()>maxNameLength){
-                    System.out.println( red+"Name too long (max 18 characters)");
-                    username="";
+                if (username.length() > maxNameLength) {
+                    System.out.println(red + "Name too long (max 18 characters)");
+                    username = "";
                 }
             }
         } while (username.equals(""));
@@ -208,12 +208,12 @@ public class CLI implements View {
     private void askLoginParameters() {
         // Asks the username
         do {
-            System.out.print(grey+"Select Username: ");
+            System.out.print(grey + "Select Username: ");
             if (in.hasNext()) {
                 username = in.next();
-                if(username.length()>maxNameLength){
-                    System.out.println(red+"Name too long (max 18 characters)");
-                    username="";
+                if (username.length() > maxNameLength) {
+                    System.out.println(red + "Name too long (max 18 characters)");
+                    username = "";
                 }
             }
         } while (username.equals(""));
@@ -225,30 +225,30 @@ public class CLI implements View {
                 select = in.nextInt();
             } else if (in.hasNextLine()) {
                 in.nextLine();
-                System.out.println(red+"Input error");
+                System.out.println(red + "Input error");
             }
         } while (select != 0 && select != 1);
 
         // Asks the IP
         in.nextLine();
         do {
-            System.out.print(grey+"Select Ip Address: ");
+            System.out.print(grey + "Select Ip Address: ");
             if (in.hasNext()) {
                 address = in.next();
-                if(!checkInput.isValidInet4Address(address)){
-                    System.out.println(red+"Input error");
+                if (!checkInput.isValidInet4Address(address)) {
+                    System.out.println(red + "Input error");
                 }
             }
         } while (address.equals("") || !checkInput.isValidInet4Address(address));
 
         // Asks the port
         do {
-            System.out.print(grey+"Select Ip Port: ");
+            System.out.print(grey + "Select Ip Port: ");
             if (in.hasNextInt()) {
                 port = in.nextInt();
             } else if (in.hasNextLine()) {
                 in.nextLine();
-                System.out.println(red+"Input error");
+                System.out.println(red + "Input error");
             }
         } while (port == -1);
 
@@ -323,7 +323,7 @@ public class CLI implements View {
         if (currPlayer.equals(username)) {
             print(grey + "It is your turn\n");
         } else {
-            print(grey+ "It is " + currPlayer + "'s turn\n");
+            print(grey + "It is " + currPlayer + "'s turn\n");
         }
     }
 
@@ -333,7 +333,7 @@ public class CLI implements View {
      */
     @Override
     public void onSelect() {
-        print(grey+ "Type @TAKE to choose from 1 to 3 tiles from the board, followed by their coordinates (xy)");
+        print(grey + "Type @TAKE to choose from 1 to 3 tiles from the board, followed by their coordinates (xy)");
         printBoard(clientController.getBoard());
     }
 
@@ -365,7 +365,7 @@ public class CLI implements View {
 
         for (Integer i : selectedTiles.keySet()) {
             char itemChar = selectedTiles.get(i).getMyItem().toString().charAt(0);
-            System.out.print(grey+ "(");
+            System.out.print(grey + "(");
             System.out.print(chooseColorCode(itemChar) + itemChar);
             System.out.print(grey + " - " + i + ")");
 
@@ -448,14 +448,14 @@ public class CLI implements View {
         }*/
         System.out.println();
         for (String s : bookshelves.keySet()) {
-            System.out.print(s+"'s bookshelf");
-            for(int i=0;i<18-s.length();i++){
+            System.out.print(s + "'s bookshelf");
+            for (int i = 0; i < 18 - s.length(); i++) {
                 System.out.print(" ");
             }
         }
         System.out.println();
         if (!bookshelves.isEmpty()) {
-            for (int i=0;i< bookshelves.keySet().size();i++) {
+            for (int i = 0; i < bookshelves.keySet().size(); i++) {
                 System.out.print("    0   1   2   3   4         ");
             }
             System.out.println();
@@ -463,7 +463,7 @@ public class CLI implements View {
                 for (String s : bookshelves.keySet()) {
                     for (int j = 0; j < BOOKSHELF_LENGTH; j++) {
                         if (j == 0) {
-                            System.out.print(grey+ i + " | ");
+                            System.out.print(grey + i + " | ");
                         }
 
                         printCell(bookshelves.get(s), i, j);
@@ -617,7 +617,7 @@ public class CLI implements View {
                 } else {
                     System.out.print(" ");
                 }
-                    System.out.print(grey + " | ");
+                System.out.print(grey + " | ");
 
             }
 
@@ -709,8 +709,8 @@ public class CLI implements View {
      */
     @Override
     public void disconnectionError() {
-        if(!disconnected) {
-            disconnected=true;
+        if (!disconnected) {
+            disconnected = true;
             System.out.println("\nPress ENTER to exit");
             in.nextLine();
         }
@@ -737,7 +737,7 @@ public class CLI implements View {
     @Override
     public void disconnectMe() {
         stopListening = true;
-        if(!disconnected) {
+        if (!disconnected) {
             disconnected = true;
             System.out.println(grey + "You are being disconnected from the server, please press ENTER to exit");
         }

@@ -9,7 +9,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  * This class tests the {@link ComGoal} methods
  */
 public class ComGoalTest {
-
+    /**
+     * Test if the Common Goal is created correctly
+     */
     @Test
     public void getCurrScore() {
         ComGoal comGoal = new CG1(2, 1);

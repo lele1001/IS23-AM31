@@ -1,0 +1,14 @@
+it.polimi.ingsw.client
+it.polimi.ingsw.client.connection
+it.polimi.ingsw.client.controller
+it.polimi.ingsw.client.view
+it.polimi.ingsw.client.view.GUI
+it.polimi.ingsw.client.view.GUI.scenes
+it.polimi.ingsw.commons
+it.polimi.ingsw.server
+it.polimi.ingsw.server.connection
+it.polimi.ingsw.server.controller
+it.polimi.ingsw.server.gameExceptions
+it.polimi.ingsw.server.model
+it.polimi.ingsw.server.model.comGoals
+it.polimi.ingsw.utils

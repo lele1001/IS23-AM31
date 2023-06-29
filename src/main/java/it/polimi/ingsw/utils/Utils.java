@@ -30,14 +30,14 @@ public abstract class Utils {
     public static final int maxNumberOfSelectedCards = 3;
     public static final int pingTimer = 3000;
     public static final int maxNameLength = 18;
-    public static final String grey=(char) 27 + "[0;39m";
-    public static final String green=(char) 27 + "[1;92m";
-    public static final String blue=(char) 27 + "[1;94m";
-    public static final String yellow=(char) 27 + "[1;93m";
-    public static final String purple=(char) 27 + "[1;95m";
-    public static final String cyan=(char) 27 + "[1;96m";
-    public static final String white=(char) 27 + "[1;97m";
-    public static final String red=(char) 27 + "[0;31m";
+    public static final String grey = (char) 27 + "[0;39m";
+    public static final String green = (char) 27 + "[1;92m";
+    public static final String blue = (char) 27 + "[1;94m";
+    public static final String yellow = (char) 27 + "[1;93m";
+    public static final String purple = (char) 27 + "[1;95m";
+    public static final String cyan = (char) 27 + "[1;96m";
+    public static final String white = (char) 27 + "[1;97m";
+    public static final String red = (char) 27 + "[0;31m";
 
 
     /**

@@ -159,8 +159,8 @@ public class SceneController {
      * Shows the Board and all the Bookshelves
      */
     public void notMyTurn() {
-        String message=this.currentController.getChatMessage();
-        String receiver=this.currentController.getChatReceiver();
+        String message = this.currentController.getChatMessage();
+        String receiver = this.currentController.getChatReceiver();
         this.currentController = this.scenesMap.get("notMyTurnScene");
         this.currentController.putChatMessage(message);
         this.currentController.putChatReceiver(receiver);
@@ -172,8 +172,8 @@ public class SceneController {
      * Allows the player to select some ItemCards from the Board
      */
     public void loadTake() {
-        String message=this.currentController.getChatMessage();
-        String receiver=this.currentController.getChatReceiver();
+        String message = this.currentController.getChatMessage();
+        String receiver = this.currentController.getChatReceiver();
         this.currentController = this.scenesMap.get("takeCardsScene");
         this.currentController.putChatMessage(message);
         this.currentController.putChatReceiver(receiver);
@@ -196,8 +196,8 @@ public class SceneController {
      * Allows the player to put the ItemCards in its Bookshelf
      */
     public void loadPut() {
-        String message=this.currentController.getChatMessage();
-        String receiver=this.currentController.getChatReceiver();
+        String message = this.currentController.getChatMessage();
+        String receiver = this.currentController.getChatReceiver();
         this.currentController = this.scenesMap.get("putCardsScene");
         this.currentController.putChatMessage(message);
         this.currentController.putChatReceiver(receiver);
