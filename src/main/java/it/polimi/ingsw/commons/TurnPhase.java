@@ -1,4 +1,4 @@
-package it.polimi.ingsw.server.controller;
+package it.polimi.ingsw.commons;
 
 /**
  * Defines the phases of a Turn

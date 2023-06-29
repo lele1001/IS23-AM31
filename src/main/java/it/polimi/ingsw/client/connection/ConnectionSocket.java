@@ -3,7 +3,7 @@ package it.polimi.ingsw.client.connection;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import it.polimi.ingsw.client.controller.ClientController;
-import it.polimi.ingsw.server.model.ItemCard;
+import it.polimi.ingsw.commons.ItemCard;
 
 import java.io.BufferedReader;
 import java.io.IOException;

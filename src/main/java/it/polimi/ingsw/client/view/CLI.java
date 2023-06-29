@@ -2,9 +2,9 @@ package it.polimi.ingsw.client.view;
 
 import it.polimi.ingsw.client.controller.ClientController;
 import it.polimi.ingsw.client.controller.InputController;
-import it.polimi.ingsw.server.controller.TurnPhase;
-import it.polimi.ingsw.server.model.HouseItem;
-import it.polimi.ingsw.server.model.ItemCard;
+import it.polimi.ingsw.commons.TurnPhase;
+import it.polimi.ingsw.commons.HouseItem;
+import it.polimi.ingsw.commons.ItemCard;
 import it.polimi.ingsw.utils.Utils;
 
 import java.util.*;

@@ -1,6 +1,6 @@
 package it.polimi.ingsw.client.controller;
 
-import it.polimi.ingsw.server.model.ItemCard;
+import it.polimi.ingsw.commons.ItemCard;
 import it.polimi.ingsw.utils.Position;
 
 import java.util.ArrayList;

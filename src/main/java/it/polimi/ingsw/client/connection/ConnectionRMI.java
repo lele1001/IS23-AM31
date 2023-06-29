@@ -2,7 +2,7 @@ package it.polimi.ingsw.client.connection;
 
 import it.polimi.ingsw.client.controller.ClientController;
 import it.polimi.ingsw.server.connection.RMI;
-import it.polimi.ingsw.server.model.ItemCard;
+import it.polimi.ingsw.commons.ItemCard;
 
 import java.io.IOException;
 import java.rmi.NotBoundException;

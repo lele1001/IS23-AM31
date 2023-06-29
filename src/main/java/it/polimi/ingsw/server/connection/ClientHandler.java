@@ -1,7 +1,7 @@
 package it.polimi.ingsw.server.connection;
 
 import it.polimi.ingsw.server.controller.ConnectionControl;
-import it.polimi.ingsw.server.model.ItemCard;
+import it.polimi.ingsw.commons.ItemCard;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;

@@ -5,12 +5,10 @@ import com.google.gson.reflect.TypeToken;
 import it.polimi.ingsw.client.connection.ConnectionClient;
 import it.polimi.ingsw.client.connection.ConnectionRMI;
 import it.polimi.ingsw.client.connection.ConnectionSocket;
-import it.polimi.ingsw.client.view.CLI;
-import it.polimi.ingsw.client.view.GUI.GUI;
 import it.polimi.ingsw.client.view.View;
-import it.polimi.ingsw.server.controller.TurnPhase;
-import it.polimi.ingsw.server.model.HouseItem;
-import it.polimi.ingsw.server.model.ItemCard;
+import it.polimi.ingsw.commons.TurnPhase;
+import it.polimi.ingsw.commons.HouseItem;
+import it.polimi.ingsw.commons.ItemCard;
 import it.polimi.ingsw.utils.Position;
 
 import java.io.BufferedReader;
@@ -19,7 +17,7 @@ import java.lang.reflect.Type;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static it.polimi.ingsw.server.controller.TurnPhase.*;
+import static it.polimi.ingsw.commons.TurnPhase.*;
 import static it.polimi.ingsw.utils.Position.getColumn;
 import static it.polimi.ingsw.utils.Position.getRow;
 import static it.polimi.ingsw.utils.Utils.*;

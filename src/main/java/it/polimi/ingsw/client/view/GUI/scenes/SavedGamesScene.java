@@ -1,7 +1,7 @@
 package it.polimi.ingsw.client.view.GUI.scenes;
 
 import it.polimi.ingsw.client.controller.ClientController;
-import it.polimi.ingsw.server.model.ItemCard;
+import it.polimi.ingsw.commons.ItemCard;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.MenuButton;

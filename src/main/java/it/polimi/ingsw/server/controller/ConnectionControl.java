@@ -2,7 +2,7 @@ package it.polimi.ingsw.server.controller;
 
 import it.polimi.ingsw.server.Server;
 import it.polimi.ingsw.server.connection.ClientHandler;
-import it.polimi.ingsw.server.model.ItemCard;
+import it.polimi.ingsw.commons.ItemCard;
 import it.polimi.ingsw.utils.Utils;
 
 import java.util.*;

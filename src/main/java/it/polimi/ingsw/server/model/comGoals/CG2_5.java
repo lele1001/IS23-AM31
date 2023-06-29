@@ -1,7 +1,7 @@
 package it.polimi.ingsw.server.model.comGoals;
 
 import it.polimi.ingsw.server.model.Bookshelf;
-import it.polimi.ingsw.server.model.HouseItem;
+import it.polimi.ingsw.commons.HouseItem;
 
 import java.util.ArrayList;
 

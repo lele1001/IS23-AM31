@@ -2,6 +2,7 @@ package it.polimi.ingsw.server.model;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import it.polimi.ingsw.commons.HouseItem;
 import it.polimi.ingsw.utils.Position;
 
 import java.io.BufferedReader;

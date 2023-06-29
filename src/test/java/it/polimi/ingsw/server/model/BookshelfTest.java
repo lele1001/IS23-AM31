@@ -1,12 +1,13 @@
 package it.polimi.ingsw.server.model;
 
+import it.polimi.ingsw.commons.ItemCard;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static it.polimi.ingsw.server.model.HouseItem.*;
-import static it.polimi.ingsw.server.model.ItemNumber.*;
+import static it.polimi.ingsw.commons.HouseItem.*;
+import static it.polimi.ingsw.commons.ItemNumber.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 class BookshelfTest {

@@ -1,5 +1,6 @@
 package it.polimi.ingsw.server.model;
 
+import it.polimi.ingsw.commons.ItemCard;
 import it.polimi.ingsw.server.gameExceptions.NoBookshelfSpaceException;
 import it.polimi.ingsw.server.model.comGoals.*;
 import org.junit.jupiter.api.Test;
@@ -7,8 +8,8 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.List;
 
-import static it.polimi.ingsw.server.model.HouseItem.*;
-import static it.polimi.ingsw.server.model.ItemNumber.*;
+import static it.polimi.ingsw.commons.HouseItem.*;
+import static it.polimi.ingsw.commons.ItemNumber.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 class PlayerTest {

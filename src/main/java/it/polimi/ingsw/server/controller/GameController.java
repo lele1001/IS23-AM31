@@ -1,11 +1,12 @@
 package it.polimi.ingsw.server.controller;
 
 import com.google.gson.JsonObject;
+import it.polimi.ingsw.commons.TurnPhase;
 import it.polimi.ingsw.server.gameExceptions.NoBookshelfSpaceException;
 import it.polimi.ingsw.server.gameExceptions.NoRightItemCardSelection;
 import it.polimi.ingsw.server.gameExceptions.NotSameSelectedException;
 import it.polimi.ingsw.server.model.GameModel;
-import it.polimi.ingsw.server.model.ItemCard;
+import it.polimi.ingsw.commons.ItemCard;
 import it.polimi.ingsw.server.model.ModelInterface;
 
 import java.beans.PropertyChangeEvent;

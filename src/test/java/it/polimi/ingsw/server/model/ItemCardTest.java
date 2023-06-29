@@ -1,5 +1,8 @@
 package it.polimi.ingsw.server.model;
 
+import it.polimi.ingsw.commons.HouseItem;
+import it.polimi.ingsw.commons.ItemCard;
+import it.polimi.ingsw.commons.ItemNumber;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

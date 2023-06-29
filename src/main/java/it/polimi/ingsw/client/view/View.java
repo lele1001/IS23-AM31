@@ -1,7 +1,7 @@
 package it.polimi.ingsw.client.view;
 
-import it.polimi.ingsw.server.model.HouseItem;
-import it.polimi.ingsw.server.model.ItemCard;
+import it.polimi.ingsw.commons.HouseItem;
+import it.polimi.ingsw.commons.ItemCard;
 
 import java.util.LinkedHashMap;
 import java.util.List;

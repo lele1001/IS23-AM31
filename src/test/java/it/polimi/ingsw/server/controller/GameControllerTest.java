@@ -3,9 +3,9 @@ package it.polimi.ingsw.server.controller;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import it.polimi.ingsw.server.Server;
-import it.polimi.ingsw.server.model.HouseItem;
-import it.polimi.ingsw.server.model.ItemCard;
-import it.polimi.ingsw.server.model.ItemNumber;
+import it.polimi.ingsw.commons.HouseItem;
+import it.polimi.ingsw.commons.ItemCard;
+import it.polimi.ingsw.commons.ItemNumber;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;

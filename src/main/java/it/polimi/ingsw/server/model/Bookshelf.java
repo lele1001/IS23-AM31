@@ -1,5 +1,7 @@
 package it.polimi.ingsw.server.model;
 
+import it.polimi.ingsw.commons.ItemCard;
+
 import java.util.List;
 
 import static it.polimi.ingsw.utils.Utils.BOOKSHELF_HEIGHT;

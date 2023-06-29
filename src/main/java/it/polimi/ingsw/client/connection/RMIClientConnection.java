@@ -1,6 +1,6 @@
 package it.polimi.ingsw.client.connection;
 
-import it.polimi.ingsw.server.model.ItemCard;
+import it.polimi.ingsw.commons.ItemCard;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;

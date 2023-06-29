@@ -3,7 +3,7 @@ package it.polimi.ingsw.client.view.GUI.scenes;
 import it.polimi.ingsw.client.controller.ClientController;
 import it.polimi.ingsw.client.controller.InputController;
 import it.polimi.ingsw.client.view.GUI.GUIResources;
-import it.polimi.ingsw.server.model.ItemCard;
+import it.polimi.ingsw.commons.ItemCard;
 import it.polimi.ingsw.utils.Position;
 import it.polimi.ingsw.utils.Utils;
 import javafx.fxml.FXML;

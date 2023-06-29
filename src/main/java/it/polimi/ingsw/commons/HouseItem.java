@@ -1,4 +1,4 @@
-package it.polimi.ingsw.server.model;
+package it.polimi.ingsw.commons;
 
 /**
  * Defines all the type of Item Cards
