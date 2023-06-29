@@ -232,7 +232,6 @@ public class CLI implements View {
                 if (!checkInput.isValidInet4Address(address)) {
                     System.out.println(red + "Input error");
                 }
-                System.out.println("ciao");
             }
         } while (address.trim().equals("") || !checkInput.isValidInet4Address(address));
 
