@@ -75,7 +75,7 @@ public class ConnectionControl {
                     clientHandler.sendError("Welcome back " + nickname + "!");
                     clientHandlerMap.put(nickname, clientHandler);
                     clientStatusMap.replace(nickname, true);
-                    System.out.println(nickname + " is back!");
+                    this.sendErrorToEveryone(nickname + " is back!");
 
                     System.out.println("Sending him game details...");
                     this.sendGameIsStarting(new ArrayList<>(clientStatusMap.keySet()), nickname);
