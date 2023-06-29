@@ -1,5 +1,6 @@
 package it.polimi.ingsw.server.model.comGoals;
 
+import it.polimi.ingsw.server.model.Board;
 import it.polimi.ingsw.server.model.Bookshelf;
 import it.polimi.ingsw.commons.ItemCard;
 import org.junit.jupiter.api.Test;
@@ -11,7 +12,10 @@ import static it.polimi.ingsw.commons.HouseItem.*;
 import static it.polimi.ingsw.commons.ItemNumber.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class CG677Test {
+/**
+ * This class tests the {@link CG6_7} methods
+ */
+public class CG677Test {
     private final Bookshelf l1 = new Bookshelf();
     private final Bookshelf l2 = new Bookshelf();
     private final Bookshelf l3 = new Bookshelf();
@@ -34,7 +38,7 @@ class CG677Test {
      * 2nd player - zero rows: returns 0
      */
     @Test
-    void twoPlayers_zero() {
+    public void twoPlayers_zero() {
         CG6_7 comG7 = new CG6_7(2, 7);
 
         l1.insertCard(col1, 0);
@@ -54,7 +58,7 @@ class CG677Test {
      * 2nd player - zero rows: returns 0
      */
     @Test
-    void twoPlayers_one() {
+    public void twoPlayers_one() {
         CG6_7 comG7 = new CG6_7(2, 7);
 
         l1.insertCard(col1, 0);
@@ -77,7 +81,7 @@ class CG677Test {
      * 2nd player - four rows: returns 4
      */
     @Test
-    void twoPlayers_two() {
+    public void twoPlayers_two() {
         CG6_7 comG7 = new CG6_7(2, 7);
 
         l1.insertCard(col2, 0);
@@ -103,7 +107,7 @@ class CG677Test {
      * 3rd player - zero rows: returns 0
      */
     @Test
-    void threePlayers_zero() {
+    public void threePlayers_zero() {
         CG6_7 comG7 = new CG6_7(3, 7);
 
         l1.insertCard(col1, 0);
@@ -129,7 +133,7 @@ class CG677Test {
      * 3rd player - zero rows: returns 0
      */
     @Test
-    void threePlayers_one() {
+    public void threePlayers_one() {
         CG6_7 comG7 = new CG6_7(3, 7);
 
         l1.insertCard(col2, 0);
@@ -158,7 +162,7 @@ class CG677Test {
      * 3rd player - four rows: returns 6
      */
     @Test
-    void threePlayers_two() {
+    public void threePlayers_two() {
         CG6_7 comG7 = new CG6_7(3, 7);
 
         l1.insertCard(col2, 0);
@@ -189,7 +193,7 @@ class CG677Test {
      * 3rd player - four rows: returns 4
      */
     @Test
-    void threePlayers_three() {
+    public void threePlayers_three() {
         CG6_7 comG7 = new CG6_7(3, 7);
 
         l1.insertCard(col2, 0);
@@ -223,7 +227,7 @@ class CG677Test {
      * 4th player - zero rows: returns 0
      */
     @Test
-    void fourPlayers_zero() {
+    public void fourPlayers_zero() {
         CG6_7 comG7 = new CG6_7(4, 7);
 
         l1.insertCard(col1, 0);
@@ -255,7 +259,7 @@ class CG677Test {
      * 4th player - zero rows: returns 0
      */
     @Test
-    void fourPlayers_one() {
+    public void fourPlayers_one() {
         CG6_7 comG7 = new CG6_7(4, 7);
 
         l1.insertCard(col1, 0);
@@ -289,7 +293,7 @@ class CG677Test {
      * 4th player - zero rows: returns 0
      */
     @Test
-    void fourPlayers_two() {
+    public void fourPlayers_two() {
         CG6_7 comG7 = new CG6_7(4, 7);
 
         l1.insertCard(col2, 0);
@@ -326,7 +330,7 @@ class CG677Test {
      * 4th player - four rows: returns 4
      */
     @Test
-    void fourPlayers_three() {
+    public void fourPlayers_three() {
         CG6_7 comG7 = new CG6_7(4, 7);
 
         l1.insertCard(col2, 0);
@@ -365,7 +369,7 @@ class CG677Test {
      * 4th player - four rows: returns 2
      */
     @Test
-    void fourPlayers_four() {
+    public void fourPlayers_four() {
         CG6_7 comG7 = new CG6_7(4, 7);
 
         l1.insertCard(col2, 0);

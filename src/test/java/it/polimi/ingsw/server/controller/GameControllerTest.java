@@ -6,6 +6,7 @@ import it.polimi.ingsw.server.Server;
 import it.polimi.ingsw.commons.HouseItem;
 import it.polimi.ingsw.commons.ItemCard;
 import it.polimi.ingsw.commons.ItemNumber;
+import it.polimi.ingsw.server.model.Board;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
@@ -15,13 +16,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-class GameControllerTest {
+/**
+ * This class tests the {@link GameController} methods
+ */
+public class GameControllerTest {
 
     /**
      * Used to test "createGame" method, in different number of players' cases.
      */
     @Test
-    void createGame() {
+    public void createGame() {
         File file = new File("target/MyShelfieSavedGames/testCreate.json");
         System.out.println("Case: 2 players");
 
@@ -55,7 +59,7 @@ class GameControllerTest {
      * @throws IOException if an error occurs.
      */
     @Test
-    void gameFlow() throws IOException {
+    public void gameFlow() throws IOException {
         GameController gameController4 = new GameController(new ConnectionControl(new Server()));
         File file = new File("target/MyShelfieSavedGames/test.json");
         gameController4.createGame(new ArrayList<>(List.of("Topolino", "Eleonora", "Luigi", "Niccolò")), "target/MyShelfieSavedGames/test.json");
@@ -667,7 +671,7 @@ class GameControllerTest {
      * @throws IOException if an error occurs.
      */
     @Test
-    void resumeGame() throws IOException {
+    public void resumeGame() throws IOException {
         File file = new File("target/MyShelfieSavedGames/testResume.json");
         System.out.println("Case: 2 players");
 
@@ -697,7 +701,7 @@ class GameControllerTest {
      * @throws IOException if an error occurs.
      */
     @Test
-    void sendGameDetails() throws IOException {
+    public void sendGameDetails() throws IOException {
         File file = new File("target/MyShelfieSavedGames/testDetails.json");
         GameController gameController = new GameController(new ConnectionControl(new Server()));
         gameController.createGame(new ArrayList<>(List.of("Andrea", "Luca", "Alice", "Paolo")), "target/MyShelfieSavedGames/testDetails.json");

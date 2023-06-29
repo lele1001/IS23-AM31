@@ -19,13 +19,16 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-class GameModelTest {
+/**
+ * This class tests the {@link GameModel} methods
+ */
+public class GameModelTest {
 
     /**
      * Testing insertCard method, with its exceptions, taking the board from the test.json file (where the game model saves game's details).
      */
     @Test
-    void insertCard() throws IOException, NoBookshelfSpaceException, NoRightItemCardSelection, NotSameSelectedException {
+    public void insertCard() throws IOException, NoBookshelfSpaceException, NoRightItemCardSelection, NotSameSelectedException {
         File file = new File("target/MyShelfieSavedGames/test.json");
         GameModel gameModel = new GameModel();
         ConnectionControl connectionControl = new ConnectionControl(new Server());
@@ -55,7 +58,7 @@ class GameModelTest {
      * Tests selectCard method with its exceptions.
      */
     @Test
-    void selectCard() throws NoBookshelfSpaceException, NoRightItemCardSelection {
+    public void selectCard() throws NoBookshelfSpaceException, NoRightItemCardSelection {
         GameModel gameModel = new GameModel();
         ConnectionControl connectionControl = new ConnectionControl(new Server());
         GameController gameController = new GameController(connectionControl);

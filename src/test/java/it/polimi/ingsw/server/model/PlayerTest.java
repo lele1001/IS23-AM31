@@ -12,12 +12,15 @@ import static it.polimi.ingsw.commons.HouseItem.*;
 import static it.polimi.ingsw.commons.ItemNumber.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-class PlayerTest {
+/**
+ * This class tests the {@link Player} methods
+ */
+public class PlayerTest {
     /**
      * This method tests the insertCard and all the exceptions that this method can throw.
      */
     @Test
-    void insertCard() {
+    public void insertCard() {
         Player p = new Player("Paolo");
 
         try {
@@ -84,7 +87,7 @@ class PlayerTest {
      * @throws NoBookshelfSpaceException if the insertCard throws this exception.
      */
     @Test
-    void checkComGoal1() throws NoBookshelfSpaceException {
+    public void checkComGoal1() throws NoBookshelfSpaceException {
         // Creating the game
         Player p = new Player("Pippo");
         ArrayList<ComGoal> comGoals = new ArrayList<>(List.of(new CG2_5(3, 2), new CG1(3, 1)));
@@ -119,7 +122,7 @@ class PlayerTest {
      * @throws NoBookshelfSpaceException if the insertCard throws this exception.
      */
     @Test
-    void checkComGoal2() throws NoBookshelfSpaceException {
+    public void checkComGoal2() throws NoBookshelfSpaceException {
         // Creating the game
         Player p = new Player("Luigi");
         Player p2 = new Player("Nico");
@@ -170,7 +173,7 @@ class PlayerTest {
      * @throws NoBookshelfSpaceException if the insertCard throws this exception.
      */
     @Test
-    void checkComGoal3() throws NoBookshelfSpaceException {
+    public void checkComGoal3() throws NoBookshelfSpaceException {
         // Creating the game
         Player p = new Player("Luigi");
         Player p2 = new Player("Nico");
@@ -225,7 +228,7 @@ class PlayerTest {
      * @throws NoBookshelfSpaceException if an error occurs during the insert phase.
      */
     @Test
-    void checkEnd() throws NoBookshelfSpaceException {
+    public void checkEnd() throws NoBookshelfSpaceException {
         Player p = new Player("Nick");
 
         p.insertCard(new ArrayList<>(List.of(new ItemCard(Frame, First), new ItemCard(Books, Second), new ItemCard(Cat, First))), 1);

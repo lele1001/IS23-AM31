@@ -1,5 +1,6 @@
 package it.polimi.ingsw.server.model.comGoals;
 
+import it.polimi.ingsw.server.model.Board;
 import it.polimi.ingsw.server.model.Bookshelf;
 import it.polimi.ingsw.commons.ItemCard;
 import org.junit.jupiter.api.Test;
@@ -11,7 +12,10 @@ import static it.polimi.ingsw.commons.HouseItem.*;
 import static it.polimi.ingsw.commons.ItemNumber.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class CG9Test {
+/**
+ * This class tests the {@link CG9} methods
+ */
+public class CG9Test {
     private final Bookshelf l0 = new Bookshelf();
     private final Bookshelf l3 = new Bookshelf();
     private final Bookshelf l5 = new Bookshelf();
@@ -36,7 +40,7 @@ class CG9Test {
      * 2nd player - five occurrences: returns 0
      */
     @Test
-    void twoPlayers_zero() {
+    public void twoPlayers_zero() {
         CG9 comG9 = new CG9(2, 9);
 
         l0.insertCard(col1, 0);
@@ -56,7 +60,7 @@ class CG9Test {
      * 2nd player - five occurrences: returns 0
      */
     @Test
-    void twoPlayers_one() {
+    public void twoPlayers_one() {
         CG9 comG9 = new CG9(2, 9);
 
         l8.insertCard(col5, 0);
@@ -79,7 +83,7 @@ class CG9Test {
      * 2nd player - nine occurrences: returns 4
      */
     @Test
-    void twoPlayers_two() {
+    public void twoPlayers_two() {
         CG9 comG9 = new CG9(2, 9);
 
         l8.insertCard(col5, 0);
@@ -105,7 +109,7 @@ class CG9Test {
      * 3rd player - three occurrences: returns 0
      */
     @Test
-    void threePlayers_zero() {
+    public void threePlayers_zero() {
         CG9 comG9 = new CG9(3, 9);
 
         l0.insertCard(col1, 0);
@@ -130,7 +134,7 @@ class CG9Test {
      * 3rd player - three occurrences: returns 0
      */
     @Test
-    void threePlayers_one() {
+    public void threePlayers_one() {
         CG9 comG9 = new CG9(3, 9);
 
         l8.insertCard(col5, 0);
@@ -158,7 +162,7 @@ class CG9Test {
      * 3rd player - nine occurrences: returns 6
      */
     @Test
-    void threePlayers_two() {
+    public void threePlayers_two() {
         CG9 comG9 = new CG9(3, 9);
 
         l8.insertCard(col5, 0);
@@ -189,7 +193,7 @@ class CG9Test {
      * 3rd player - nine occurrences: returns 4
      */
     @Test
-    void threePlayers_three() {
+    public void threePlayers_three() {
         CG9 comG9 = new CG9(3, 9);
 
         l8.insertCard(col5, 0);
@@ -217,7 +221,7 @@ class CG9Test {
      * 4th player - zero occurrences: returns 0
      */
     @Test
-    void fourPlayers_zero() {
+    public void fourPlayers_zero() {
         CG9 comG9 = new CG9(4, 9);
 
         l0.insertCard(col1, 0);
@@ -244,7 +248,7 @@ class CG9Test {
      * 4th player - zero occurrences: returns 0
      */
     @Test
-    void fourPlayers_one() {
+    public void fourPlayers_one() {
         CG9 comG9 = new CG9(4, 9);
 
         l0.insertCard(col1, 0);
@@ -274,7 +278,7 @@ class CG9Test {
      * 4th player - zero occurrences: returns 0
      */
     @Test
-    void fourPlayers_two() {
+    public void fourPlayers_two() {
         CG9 comG9 = new CG9(4, 9);
 
         l0.insertCard(col1, 0);
@@ -304,7 +308,7 @@ class CG9Test {
      * 4th player - nine occurrences: returns 4
      */
     @Test
-    void fourPlayers_three() {
+    public void fourPlayers_three() {
         CG9 comG9 = new CG9(4, 9);
 
         l5.insertCard(col5, 1);
@@ -337,7 +341,7 @@ class CG9Test {
      * 4th player - nine occurrences: returns 2
      */
     @Test
-    void fourPlayers_four() {
+    public void fourPlayers_four() {
         CG9 comG9 = new CG9(4, 9);
 
         l8.insertCard(col5, 0);

@@ -1,5 +1,6 @@
 package it.polimi.ingsw.server.model.comGoals;
 
+import it.polimi.ingsw.server.model.Board;
 import it.polimi.ingsw.server.model.Bookshelf;
 import it.polimi.ingsw.commons.ItemCard;
 import org.junit.jupiter.api.Test;
@@ -11,7 +12,10 @@ import static it.polimi.ingsw.commons.HouseItem.*;
 import static it.polimi.ingsw.commons.ItemNumber.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class CG344Test {
+/**
+ * This class tests the {@link CG3_4} methods
+ */
+public class CG344Test {
     private final Bookshelf l1 = new Bookshelf();
     private final Bookshelf l2 = new Bookshelf();
     private final Bookshelf l3 = new Bookshelf();
@@ -41,7 +45,7 @@ class CG344Test {
      * 2nd player - three groups: returns 0
      */
     @Test
-    void twoPlayers_zero() {
+    public void twoPlayers_zero() {
         CG3_4 comG4 = new CG3_4(2, 4);
 
         l1.insertCard(colA, 0);
@@ -66,7 +70,7 @@ class CG344Test {
      * 2nd player - three groups: returns 0
      */
     @Test
-    void twoPlayers_one() {
+    public void twoPlayers_one() {
         CG3_4 comG4 = new CG3_4(2, 4);
 
         l1.insertCard(colA, 0);
@@ -91,7 +95,7 @@ class CG344Test {
      * 2nd player - six groups: returns 4
      */
     @Test
-    void twoPlayers_two() {
+    public void twoPlayers_two() {
         CG3_4 comG4 = new CG3_4(2, 4);
 
         l1.insertCard(colA, 0);
@@ -117,7 +121,7 @@ class CG344Test {
      * 3rd player - four groups: returns 0
      */
     @Test
-    void threePlayers_zero() {
+    public void threePlayers_zero() {
         CG3_4 comG4 = new CG3_4(3, 4);
 
         l1.insertCard(colA, 0);
@@ -150,7 +154,7 @@ class CG344Test {
      * 3rd player - four groups: returns 0
      */
     @Test
-    void threePlayers_one() {
+    public void threePlayers_one() {
         CG3_4 comG4 = new CG3_4(3, 4);
 
         l1.insertCard(colA, 0);
@@ -183,7 +187,7 @@ class CG344Test {
      * 3rd player - six groups: returns 6
      */
     @Test
-    void threePlayers_two() {
+    public void threePlayers_two() {
         CG3_4 comG4 = new CG3_4(3, 4);
 
         l1.insertCard(colA, 0);
@@ -216,7 +220,7 @@ class CG344Test {
      * 3rd player - six groups: returns 4
      */
     @Test
-    void threePlayers_three() {
+    public void threePlayers_three() {
         CG3_4 comG4 = new CG3_4(3, 4);
 
         l1.insertCard(colA, 0);
@@ -250,7 +254,7 @@ class CG344Test {
      * 4th player - two groups: returns 0
      */
     @Test
-    void fourPlayers_zero() {
+    public void fourPlayers_zero() {
         CG3_4 comG4 = new CG3_4(4, 4);
 
         l1.insertCard(colA, 0);
@@ -290,7 +294,7 @@ class CG344Test {
      * 4th player - two groups: returns 0
      */
     @Test
-    void fourPlayers_one() {
+    public void fourPlayers_one() {
         CG3_4 comG4 = new CG3_4(4, 4);
 
         l1.insertCard(colA, 0);
@@ -330,7 +334,7 @@ class CG344Test {
      * 4th player - two groups: returns 0
      */
     @Test
-    void fourPlayers_two() {
+    public void fourPlayers_two() {
         CG3_4 comG4 = new CG3_4(4, 4);
 
         l1.insertCard(colA, 0);
@@ -370,7 +374,7 @@ class CG344Test {
      * 4th player - six groups: returns 4
      */
     @Test
-    void fourPlayers_three() {
+    public void fourPlayers_three() {
         CG3_4 comG4 = new CG3_4(4, 4);
 
         l1.insertCard(colA, 0);
@@ -410,7 +414,7 @@ class CG344Test {
      * 4th player - six groups: returns 2
      */
     @Test
-    void fourPlayers_four() {
+    public void fourPlayers_four() {
         CG3_4 comG4 = new CG3_4(4, 4);
 
         l1.insertCard(colA, 0);

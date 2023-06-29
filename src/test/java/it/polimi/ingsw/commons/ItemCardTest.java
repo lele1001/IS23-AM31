@@ -1,20 +1,21 @@
-package it.polimi.ingsw.server.model;
+package it.polimi.ingsw.commons;
 
-import it.polimi.ingsw.commons.HouseItem;
-import it.polimi.ingsw.commons.ItemCard;
-import it.polimi.ingsw.commons.ItemNumber;
+import it.polimi.ingsw.server.model.Board;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
-class ItemCardTest {
+/**
+ * This class tests the {@link ItemCard} methods
+ */
+public class ItemCardTest {
 
     /**
      * Just to test the correct creation of itemcards and its getter to get the item type.
      */
     @Test
-    void getMyItem() {
+    public void getMyItem() {
         ItemCard itemCard = new ItemCard(HouseItem.Frame, ItemNumber.Third);
         assertEquals(itemCard.getMyItem(), HouseItem.Frame);
         itemCard = new ItemCard(HouseItem.Cat, ItemNumber.First);
@@ -30,7 +31,7 @@ class ItemCardTest {
      * Just to test the correct creation of itemcards and its getter to get the item number.
      */
     @Test
-    void getMyNum() {
+    public void getMyNum() {
         ItemCard itemCard = new ItemCard(HouseItem.Plants, ItemNumber.Second);
         assertEquals(itemCard.getMyNum(), ItemNumber.Second);
         assertNotEquals(itemCard.getMyNum(), ItemNumber.First);

@@ -1,5 +1,6 @@
 package it.polimi.ingsw.server.model.comGoals;
 
+import it.polimi.ingsw.server.model.Board;
 import it.polimi.ingsw.server.model.Bookshelf;
 import it.polimi.ingsw.commons.ItemCard;
 import org.junit.jupiter.api.Test;
@@ -11,7 +12,10 @@ import static it.polimi.ingsw.commons.HouseItem.*;
 import static it.polimi.ingsw.commons.ItemNumber.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class CG1Test {
+/**
+ * This class tests the {@link CG1} methods
+ */
+public class CG1Test {
     private final Bookshelf l1 = new Bookshelf();
     private final Bookshelf l2 = new Bookshelf();
     private final Bookshelf l3 = new Bookshelf();
@@ -40,7 +44,7 @@ class CG1Test {
      * 2nd player - zero squares: returns 0
      */
     @Test
-    void twoPlayers_zero() {
+    public void twoPlayers_zero() {
         CG1 comG1 = new CG1(2, 1);
 
         l1.insertCard(colA, 0);
@@ -65,7 +69,7 @@ class CG1Test {
      * 2nd player - zero squares: returns 0
      */
     @Test
-    void twoPlayers_one() {
+    public void twoPlayers_one() {
         CG1 comG1 = new CG1(2, 1);
 
         l1.insertCard(colF, 0);
@@ -90,7 +94,7 @@ class CG1Test {
      * 2nd player - two squares: returns 4
      */
     @Test
-    void twoPlayers_two() {
+    public void twoPlayers_two() {
         CG1 comG1 = new CG1(2, 1);
 
         l1.insertCard(colF, 0);
@@ -115,7 +119,7 @@ class CG1Test {
      * 3rd player - one square in 3×3 config: returns 0
      */
     @Test
-    void threePlayers_zero() {
+    public void threePlayers_zero() {
         CG1 comG1 = new CG1(3, 1);
 
         l1.insertCard(colA, 0);
@@ -148,7 +152,7 @@ class CG1Test {
      * 3rd player - zero squares: returns 0
      */
     @Test
-    void threePlayers_one() {
+    public void threePlayers_one() {
         CG1 comG1 = new CG1(3, 1);
 
         l1.insertCard(colF, 0);
@@ -181,7 +185,7 @@ class CG1Test {
      * 3rd player - two squares: returns 6
      */
     @Test
-    void threePlayers_two() {
+    public void threePlayers_two() {
         CG1 comG1 = new CG1(3, 1);
 
         l1.insertCard(colF, 0);
@@ -213,7 +217,7 @@ class CG1Test {
      * 3rd player - two squares: returns 4
      */
     @Test
-    void threePlayers_three() {
+    public void threePlayers_three() {
         CG1 comG1 = new CG1(3, 1);
 
         l1.insertCard(colF, 0);
@@ -245,7 +249,7 @@ class CG1Test {
      * 4th player - one square: returns 0
      */
     @Test
-    void fourPlayers_zero() {
+    public void fourPlayers_zero() {
         CG1 comG1 = new CG1(4, 1);
 
         l1.insertCard(colA, 0);
@@ -286,7 +290,7 @@ class CG1Test {
      * 4th player - one square: returns 0
      */
     @Test
-    void fourPlayers_one() {
+    public void fourPlayers_one() {
         CG1 comG1 = new CG1(4, 1);
 
         l1.insertCard(colA, 0);
@@ -326,7 +330,7 @@ class CG1Test {
      * 4th player - one square: returns 0
      */
     @Test
-    void fourPlayers_two() {
+    public void fourPlayers_two() {
         CG1 comG1 = new CG1(4, 1);
 
         l1.insertCard(colF, 0);
@@ -366,7 +370,7 @@ class CG1Test {
      * 4th player - four squares: returns 4
      */
     @Test
-    void fourPlayers_three() {
+    public void fourPlayers_three() {
         CG1 comG1 = new CG1(4, 1);
 
         l1.insertCard(colF, 0);
@@ -406,7 +410,7 @@ class CG1Test {
      * 4th player - four squares: returns 2
      */
     @Test
-    void fourPlayers_four() {
+    public void fourPlayers_four() {
         CG1 comG1 = new CG1(4, 1);
 
         l1.insertCard(colF, 0);

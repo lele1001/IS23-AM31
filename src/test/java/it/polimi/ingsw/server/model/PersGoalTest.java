@@ -10,7 +10,10 @@ import static it.polimi.ingsw.commons.HouseItem.*;
 import static it.polimi.ingsw.commons.ItemNumber.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class PersGoalTest {
+/**
+ * This class tests the {@link PersGoal} methods
+ */
+public class PersGoalTest {
     /**
      * Tests the calculation of the score on Personal Goal card n. 1.
      */

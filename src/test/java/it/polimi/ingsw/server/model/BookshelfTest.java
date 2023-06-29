@@ -10,13 +10,16 @@ import static it.polimi.ingsw.commons.HouseItem.*;
 import static it.polimi.ingsw.commons.ItemNumber.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-class BookshelfTest {
+/**
+ * This class tests the {@link Bookshelf} methods
+ */
+public class BookshelfTest {
 
     /**
      * Tests insertCard method checking if it inserts cards in the right positions.
      */
     @Test
-    void insertCard() {
+    public void insertCard() {
         Bookshelf l = new Bookshelf();
         int i;
         l.insertCard(new ArrayList<>(List.of(new ItemCard(Cat, First), new ItemCard(Frame, Second))), 2);
@@ -50,7 +53,7 @@ class BookshelfTest {
      * Tests checkSpace method, in case of full library.
      */
     @Test
-    void checkSpace1() {
+    public void checkSpace1() {
         Bookshelf l = new Bookshelf();
         l.insertCard(new ArrayList<>(List.of(new ItemCard(Cat, First), new ItemCard(Frame, Second), new ItemCard(Books, Third), new ItemCard(Cat, First), new ItemCard(Frame, Second), new ItemCard(Books, Third))), 0);
         l.insertCard(new ArrayList<>(List.of(new ItemCard(Cat, First), new ItemCard(Frame, Second), new ItemCard(Books, Third), new ItemCard(Cat, First), new ItemCard(Frame, Second), new ItemCard(Books, Third))), 1);
@@ -75,7 +78,7 @@ class BookshelfTest {
      * Tests the checkSpace method, in case of empty library.
      */
     @Test
-    void checkSpace2() {
+    public void checkSpace2() {
         Bookshelf l = new Bookshelf();
         assertTrue(l.checkSpace(0, 1));
         assertTrue(l.checkSpace(0, 3));
@@ -93,7 +96,7 @@ class BookshelfTest {
      * Tests the checkSpace method in general conditions.
      */
     @Test
-    void checkSpace3() {
+    public void checkSpace3() {
         Bookshelf l = new Bookshelf();
         l.insertCard(new ArrayList<>(List.of(new ItemCard(Cat, First), new ItemCard(Frame, Second), new ItemCard(Books, Third))), 0);
         l.insertCard(new ArrayList<>(List.of(new ItemCard(Cat, First), new ItemCard(Frame, Second), new ItemCard(Books, Third), new ItemCard(Cat, First), new ItemCard(Frame, Second))), 1);
@@ -131,7 +134,7 @@ class BookshelfTest {
      * Tests the calculation of the total score reached by a player thanks to its bookshelf.
      */
     @Test
-    void calcScore1() {
+    public void calcScore1() {
         Bookshelf l = new Bookshelf();
         l.insertCard(new ArrayList<>(List.of(new ItemCard(Frame, First), new ItemCard(Games, First), new ItemCard(Cat, First))), 0);
         l.insertCard(new ArrayList<>(List.of(new ItemCard(Cat, First), new ItemCard(Plants, First), new ItemCard(Games, First))), 0);
@@ -152,7 +155,7 @@ class BookshelfTest {
      * Tests the calculation of the total score reached by a player thanks to its bookshelf.
      */
     @Test
-    void calcScore2() {
+    public void calcScore2() {
         Bookshelf l = new Bookshelf();
         l.insertCard(new ArrayList<>(List.of(new ItemCard(Cat, First), new ItemCard(Books, First), new ItemCard(Frame, First))), 0);
         l.insertCard(new ArrayList<>(List.of(new ItemCard(Frame, First), new ItemCard(Frame, First), new ItemCard(Books, First))), 0);
@@ -172,7 +175,7 @@ class BookshelfTest {
      * Tests the calculation of the total score reached by a player thanks to its bookshelf.
      */
     @Test
-    void calcScore3() {
+    public void calcScore3() {
         Bookshelf l = new Bookshelf();
         l.insertCard(new ArrayList<>(List.of(new ItemCard(Cat, First), new ItemCard(Cat, First), new ItemCard(Cat, First))), 0);
         l.insertCard(new ArrayList<>(List.of(new ItemCard(Cat, First))), 0);

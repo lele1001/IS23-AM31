@@ -12,7 +12,10 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class BoardTest {
+/**
+ * This class tests the {@link Board} methods
+ */
+public class BoardTest {
     private final int[][] numMinPlayer = new int[][]{
             {5, 5, 5, 3, 4, 5, 5, 5, 5},
             {5, 5, 5, 2, 2, 4, 5, 5, 5},
@@ -61,7 +64,7 @@ class BoardTest {
      * Testing the Filling of the board for all possible number of players
      */
     @Test
-    void fillBoardFromScratch() throws EmptyCardBagException {
+    public void fillBoardFromScratch() throws EmptyCardBagException {
         int numPlayer;
         for (numPlayer = 2; numPlayer < 5; numPlayer++) {
             Board boardTest1 = new Board(numPlayer);
@@ -96,7 +99,7 @@ class BoardTest {
      */
 
     @Test
-    void checkSideRefill() throws EmptyCardBagException, NoRightItemCardSelection {
+    public void checkSideRefill() throws EmptyCardBagException, NoRightItemCardSelection {
         int numPlayer = 3;
         ItemCard prima;
         Board boardTest1 = new Board(numPlayer);
@@ -134,7 +137,7 @@ class BoardTest {
      */
 
     @Test
-    void checkCardBagException() throws EmptyCardBagException, NoRightItemCardSelection {
+    public void checkCardBagException() throws EmptyCardBagException, NoRightItemCardSelection {
         int numPlayer = 4;
         Board boardTest1 = new Board(numPlayer);
         boardTest1.fillBoard();
@@ -204,7 +207,7 @@ class BoardTest {
      * Testing if the algorithm see that the board doesn't need a refill if the last Tiles are on the side
      */
     @Test
-    void checkSideNotRefill() throws EmptyCardBagException, NoRightItemCardSelection {
+    public void checkSideNotRefill() throws EmptyCardBagException, NoRightItemCardSelection {
         int numPlayer = 3;
         ItemCard[][] prima;
         Board boardTest1 = new Board(numPlayer);
@@ -250,7 +253,7 @@ class BoardTest {
      */
 
     @Test
-    void checkCenterRefill() throws EmptyCardBagException, NoRightItemCardSelection {
+    public void checkCenterRefill() throws EmptyCardBagException, NoRightItemCardSelection {
         int numPlayer = 2;
         ItemCard prima;
         Board boardTest1 = new Board(numPlayer);
@@ -285,7 +288,7 @@ class BoardTest {
      * Testing if the algorithm see that the board doesn't need a refill if the last Tiles are in the centre
      */
     @Test
-    void checkCenterNotRefill() throws EmptyCardBagException, NoRightItemCardSelection {
+    public void checkCenterNotRefill() throws EmptyCardBagException, NoRightItemCardSelection {
         int numPlayer = 2;
         ItemCard[][] prima;
         Board boardTest1 = new Board(numPlayer);
@@ -319,7 +322,7 @@ class BoardTest {
      * Testing the check for the possibility that the chosen 2 tiles are near each other or not
      */
     @Test
-    void checkSelection2integer() throws EmptyCardBagException {
+    public void checkSelection2integer() throws EmptyCardBagException {
         int numPlayer = 4;
         Board boardTest1 = new Board(numPlayer);
         boardTest1.fillBoard();
@@ -339,7 +342,7 @@ class BoardTest {
      * Testing the check for the possibility that the chosen 3 tiles are near each other or not
      */
     @Test
-    void checkSelection3integer() {
+    public void checkSelection3integer() {
         Board boardTest1 = new Board(4);
         boolean res;
         ArrayList<Integer> pos = new ArrayList<>(List.of(20, 30, 40));
@@ -358,7 +361,7 @@ class BoardTest {
      * I don't need to check the Tiles, this part of the check is done in the Check selection method
      */
     @Test
-    void deleteSelectionTestGoodSelection() throws NoRightItemCardSelection, EmptyCardBagException {
+    public void deleteSelectionTestGoodSelection() throws NoRightItemCardSelection, EmptyCardBagException {
         int numPlayer = 2;
         Board boardTest1 = new Board(numPlayer);
         ArrayList<Integer> pos = new ArrayList<>(List.of(74, 75));
@@ -389,7 +392,7 @@ class BoardTest {
      * Caused by the not straight tiles position or because the Tiles have not a free side from other Tiles
      */
     @Test
-    void deleteSelectionTestBadSelection() throws EmptyCardBagException {
+    public void deleteSelectionTestBadSelection() throws EmptyCardBagException {
         int numPlayer = 2;
         Board boardTest1 = new Board(numPlayer);
         ArrayList<Integer> pos = new ArrayList<>(List.of(64, 74));
@@ -406,7 +409,7 @@ class BoardTest {
      * Testing the creation of the card bag.
      */
     @Test
-    void createCardBag() {
+    public void createCardBag() {
         Board board = new Board(4);
         ItemCard test;
         int[] prova = new int[6];

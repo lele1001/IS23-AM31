@@ -1,5 +1,6 @@
 package it.polimi.ingsw.server.model.comGoals;
 
+import it.polimi.ingsw.server.model.Board;
 import it.polimi.ingsw.server.model.Bookshelf;
 import it.polimi.ingsw.commons.ItemCard;
 import org.junit.jupiter.api.Test;
@@ -11,7 +12,10 @@ import static it.polimi.ingsw.commons.HouseItem.*;
 import static it.polimi.ingsw.commons.ItemNumber.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class CG111212Test {
+/**
+ * This class tests the {@link CG11_12} methods
+ */
+public class CG111212Test {
     private final Bookshelf l1 = new Bookshelf();
     private final Bookshelf l2 = new Bookshelf();
     private final Bookshelf l3 = new Bookshelf();
@@ -34,7 +38,7 @@ class CG111212Test {
      * 2nd player - five mixed columns: returns 0
      */
     @Test
-    void twoPlayers_zero() {
+    public void twoPlayers_zero() {
         CG11_12 comG11 = new CG11_12(2, 12);
 
         l1.insertCard(col1, 0);
@@ -56,7 +60,7 @@ class CG111212Test {
      * 2nd player - five mixed columns: returns 0
      */
     @Test
-    void twoPlayers_one() {
+    public void twoPlayers_one() {
         CG11_12 comG11 = new CG11_12(2, 12);
 
         l1.insertCard(col2, 0);
@@ -81,7 +85,7 @@ class CG111212Test {
      * 2nd player - five ordered columns, offset 1, direction 0: returns 4
      */
     @Test
-    void twoPlayers_two() {
+    public void twoPlayers_two() {
         CG11_12 comG11 = new CG11_12(2, 12);
 
         l1.insertCard(col2, 0);
@@ -107,7 +111,7 @@ class CG111212Test {
      * 3rd player - only three columns: returns 0
      */
     @Test
-    void threePlayers_zero() {
+    public void threePlayers_zero() {
         CG11_12 comG11 = new CG11_12(3, 12);
 
 
@@ -133,7 +137,7 @@ class CG111212Test {
      * 3rd player - only three columns: returns 0
      */
     @Test
-    void threePlayers_one() {
+    public void threePlayers_one() {
         CG11_12 comG11 = new CG11_12(3, 12);
 
         l1.insertCard(col2, 0);
@@ -164,7 +168,7 @@ class CG111212Test {
      * 3rd player - five ordered columns, offset 1, direction 0: returns 6
      */
     @Test
-    void threePlayers_two() {
+    public void threePlayers_two() {
         CG11_12 comG11 = new CG11_12(3, 12);
 
         l1.insertCard(col2, 0);
@@ -197,7 +201,7 @@ class CG111212Test {
      * 3rd player - five ordered columns, offset 1, direction 0: returns 4
      */
     @Test
-    void threePlayers_three() {
+    public void threePlayers_three() {
         CG11_12 comG11 = new CG11_12(3, 12);
 
         l1.insertCard(col2, 0);
@@ -231,7 +235,7 @@ class CG111212Test {
      * 4th player - five mixed columns: returns 0
      */
     @Test
-    void fourPlayers_zero() {
+    public void fourPlayers_zero() {
         CG11_12 comG11 = new CG11_12(4, 12);
 
         l1.insertCard(col1, 0);
@@ -267,7 +271,7 @@ class CG111212Test {
      * 4th player - five mixed columns: returns 0
      */
     @Test
-    void fourPlayers_one() {
+    public void fourPlayers_one() {
         CG11_12 comG11 = new CG11_12(4, 12);
 
         l1.insertCard(col1, 0);
@@ -305,7 +309,7 @@ class CG111212Test {
      * 4th player - five mixed columns: returns 0
      */
     @Test
-    void fourPlayers_two() {
+    public void fourPlayers_two() {
         CG11_12 comG11 = new CG11_12(4, 12);
 
         l1.insertCard(col2, 0);
@@ -346,7 +350,7 @@ class CG111212Test {
      * 4th player - five ordered columns, offset 1, direction 1: returns 4
      */
     @Test
-    void fourPlayers_three() {
+    public void fourPlayers_three() {
         CG11_12 comG11 = new CG11_12(4, 12);
 
         l1.insertCard(col2, 0);
@@ -387,7 +391,7 @@ class CG111212Test {
      * 4th player - five ordered columns, offset 1, direction 1: returns 2
      */
     @Test
-    void fourPlayers_four() {
+    public void fourPlayers_four() {
         CG11_12 comG11 = new CG11_12(4, 12);
 
         l1.insertCard(col2, 0);
