@@ -432,4 +432,35 @@ public abstract class GUIScene {
         alert.setContentText(Utils.comGoalDescription.valueOf("comGoal" + comGoalID).getDescription());
         alert.showAndWait();
     }
+
+    /**
+     * Return the chat message box for the next scene
+     * @return the chat message box for the next scene
+     */
+    public String getChatMessage(){
+        return "";
+    }
+    /**
+     * Return the chat recipient for the next scene
+     * @return the chat recipient box for the next scene
+     */
+    public String getChatReceiver(){
+        return "destination";
+    }
+
+    /**
+     * Set the chat message in the chat box
+     * @param message the message got in the other scene
+     */
+    public void putChatMessage(String message){
+
+    }
+    /**
+     * Set the recipient in the receiver box
+     * @param Receiver the recipient got in the other scene
+     */
+    public void putChatReceiver(String Receiver){
+
+    }
+
 }

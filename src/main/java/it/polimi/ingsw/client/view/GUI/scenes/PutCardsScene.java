@@ -308,4 +308,23 @@ public class PutCardsScene extends GUIScene {
         columns.getSelectedToggle().setSelected(false);
     }
 
+    @Override
+    public String getChatMessage() {
+        return writtenMessage.getText();
+    }
+
+    @Override
+    public String getChatReceiver() {
+        return destinationMenu.getText();
+    }
+
+    @Override
+    public void putChatMessage(String message) {
+        writtenMessage.setText(message);
+    }
+
+    @Override
+    public void putChatReceiver(String Receiver) {
+        destinationMenu.setText(Receiver);
+    }
 }
