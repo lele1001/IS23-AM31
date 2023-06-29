@@ -43,7 +43,10 @@ public class ClientHandlerRmi extends ClientHandler {
         new Thread(this::send).start();
     }
 
-    public void send() {
+    /**
+     * Runs methods' calls to client taken from blocking queue
+     */
+    private void send() {
         while (!Thread.currentThread().isInterrupted()) {
             try {
                 if (isConnected)
