@@ -16,14 +16,20 @@ at Politecnico di Milano (2022/2023).
 
 The project consists of a Java version of the board game *MyShelfie*, made by Cranio Creations.
 
+## Documentation
+
 The final version includes:
 
 * [Initial UML diagrams](https://github.com/lele1001/IS23-AM31/tree/main/deliveries/UML/initial).
 * [Final UML diagrams](https://github.com/lele1001/IS23-AM31/tree/main/deliveries/UML/final).
 * Working game implementation, which has to be rules compliant.
+* [Peer reviews' documentation](https://github.com/lele1001/IS23-AM31/blob/2bdea8f1548380aa7f29bc48cd04437a40734267/PeerReview).
 * Source code of the implementation.
-* Source code of unity tests.
 * [JavaDoc documentation]().
+* Source code of unity tests.
+
+The UML diagrams' folders contain also the sequence diagrams to explain the communication protocol between server and client.
+> **NOTE**: the diagrams show the method invocations (in both directions) as happens for RMI-type connections; for socket, the parameters are exactly the same but are encapsulated and sent in json-formatted messages.
 
 ## Implemented functionalities
 
