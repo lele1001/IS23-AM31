@@ -26,7 +26,7 @@ The final version includes:
 * [Peer reviews' documentation](https://github.com/lele1001/IS23-AM31/tree/main/PeerReview).
 * Source code of the implementation.
 * [Jar files](https://github.com/lele1001/IS23-AM31/tree/main/JAR).
-* [JavaDoc documentation]().
+* [JavaDoc documentation](https://github.com/lele1001/IS23-AM31/tree/main/deliveries/javadoc).
 * Source code of unity tests.
 
 The UML diagrams' folders contain also the sequence diagrams to explain the communication protocol between server and client.
