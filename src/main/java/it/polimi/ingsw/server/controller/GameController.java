@@ -260,7 +260,7 @@ public class GameController implements PropertyChangeListener {
      * @param cards    to be inserted
      * @param column   positions on the bookshelf
      */
-    public void insertCard(String nickname, ArrayList<ItemCard> cards, int column) {
+    public synchronized void insertCard(String nickname, ArrayList<ItemCard> cards, int column) {
         if (!(nickname.equals(currPlayer)) || (turnPhase != TurnPhase.INSERTCARDS)) {
             connectionControl.SendError(notYourTurnResponse, nickname);
             return;
@@ -288,7 +288,7 @@ public class GameController implements PropertyChangeListener {
      * @param nickname  who wants to select
      * @param positions of the cards to be deleted
      */
-    public void selectCard(String nickname, ArrayList<Integer> positions) {
+    public synchronized void selectCard(String nickname, ArrayList<Integer> positions) {
         if (!(nickname.equals(currPlayer)) || (turnPhase != TurnPhase.SELECTCARDS)) {
             connectionControl.SendError(notYourTurnResponse, nickname);
             return;
@@ -365,7 +365,7 @@ public class GameController implements PropertyChangeListener {
      *
      * @param nickname of the client to send details to.
      */
-    public void sendGameDetails(String nickname) {
+    public synchronized void sendGameDetails(String nickname) {
         gameModel.sendGameDetails(nickname);
         if (playersList.stream().filter(connectionControl::isOnline).count() != 1)
             connectionControl.sendPlayerTurn(currPlayer);
