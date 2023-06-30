@@ -25,7 +25,7 @@ The final version includes:
 * Working game implementation, which has to be rules compliant.
 * [Peer reviews' documentation](https://github.com/lele1001/IS23-AM31/tree/main/PeerReview).
 * Source code of the implementation.
-* [Jar files](https://github.com/lele1001/IS23-AM31/tree/main/JAR).
+* [Jar files](https://github.com/lele1001/IS23-AM31/tree/main/deliveries/JAR).
 * [JavaDoc documentation](https://github.com/lele1001/IS23-AM31/tree/main/deliveries/javadoc).
 * Source code of unity tests.
 
