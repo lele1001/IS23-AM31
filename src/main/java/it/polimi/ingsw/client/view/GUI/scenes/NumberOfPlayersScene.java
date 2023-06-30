@@ -68,12 +68,7 @@ public class NumberOfPlayersScene extends GUIScene {
                 printError("Error: insert a valid name for the game");
                 submitButton.setDisable(false);
             } else
-                try {
-                    //submitButton.setDisable(true);
-                    clientController.setPlayersNumber(players, gameName.getText());
-                } catch (Exception e) {
-                    printError("Impossible to connect to the server");
-                }
+                clientController.setPlayersNumber(players, gameName.getText());
         }
     }
 

@@ -119,11 +119,7 @@ public class CLI implements View {
                             if (clientController.isSelectNumberOfPlayers()) {
                                 int players = checkInput.checkPlayers(splitString);
                                 if (players != -1) {
-                                    try {
-                                        clientController.setPlayersNumber(players, splitString[2]);
-                                    } catch (Exception e) {
-                                        System.out.println("Impossible to connect to the server");
-                                    }
+                                    clientController.setPlayersNumber(players, splitString[2]);
                                 }
                             } else {
                                 System.out.println("You can not choose the number of players!");
@@ -132,16 +128,13 @@ public class CLI implements View {
                         case "@savedgame" -> {
                             if (splitString.length != 2)
                                 printError("Input not recognised... try again.");
-                            else
-                                try {
-                                    if (splitString[1].equalsIgnoreCase("n") || splitString[1].equalsIgnoreCase("no"))
-                                        clientController.setSavedGame(false, null);
-                                    else {
-                                        clientController.setSavedGame(true, splitString[1]);
-                                    }
-                                } catch (Exception e) {
-                                    System.out.println("Impossible to connect to the server.");
+                            else {
+                                if (splitString[1].equalsIgnoreCase("n") || splitString[1].equalsIgnoreCase("no"))
+                                    clientController.setSavedGame(false, null);
+                                else {
+                                    clientController.setSavedGame(true, splitString[1]);
                                 }
+                            }
                         }
                         case "@menu" -> {
                             if (clientController.isGameStarted()) {
@@ -339,11 +332,7 @@ public class CLI implements View {
 
         if (coords != null) {
             clientController.setSelectedTiles(coords);
-            try {
                 clientController.selectCard();
-            } catch (Exception e) {
-                System.out.println("Impossible to connect to the server");
-            }
         }
     }
 
@@ -398,13 +387,7 @@ public class CLI implements View {
             } catch (NumberFormatException e) {
                 e.printStackTrace();
             }
-
-            try {
-                clientController.insertCard(tilesToPut, column);
-            } catch (Exception e) {
-                System.out.println("Impossible to connect to the server");
-            }
-
+            clientController.insertCard(tilesToPut, column);
         }
     }
 
@@ -659,19 +642,10 @@ public class CLI implements View {
 
         if (dest == 1) {
             destNickname = splitString[1];
-            try {
-                clientController.chatToPlayer(destNickname, message);
-            } catch (Exception e) {
-                System.out.println("Impossible to connect to the server");
-            }
+            clientController.chatToPlayer(destNickname, message);
         } else if (dest == 2) {
             destNickname = "all";
-
-            try {
                 clientController.chatToAll(message);
-            } catch (Exception e) {
-                System.out.println("Impossible to connect to the server");
-            }
         }
 
         System.out.println("Sending " + msg + "to " + destNickname);

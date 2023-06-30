@@ -75,11 +75,7 @@ public class SavedGamesScene extends GUIScene {
      * @param name the name of the game
      */
     private void sendSavedGames(boolean val, String name) {
-        try {
             clientController.setSavedGame(val, name);
-        } catch (Exception e) {
-            printError("Impossible to connect to the server.");
-        }
     }
 
     /**

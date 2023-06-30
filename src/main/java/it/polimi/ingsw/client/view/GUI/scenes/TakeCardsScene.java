@@ -263,16 +263,7 @@ public class TakeCardsScene extends GUIScene {
             selectTiles.setDisable(false);
         } else {
             clientController.setSelectedTiles(selectedTiles);
-
-            try {
-                clientController.selectCard();
-                //selectTiles.setDisable(true);
-            } catch (Exception e) {
-                e.printStackTrace();
-                printError("ERROR: server error");
-                revert();
-                selectTiles.setDisable(false);
-            }
+            clientController.selectCard();
         }
         selectedTiles.clear();
         youSelectedThis.getChildren().clear();

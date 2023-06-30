@@ -10,6 +10,8 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.*;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 import static it.polimi.ingsw.utils.Utils.pingTimer;
 
@@ -19,7 +21,7 @@ import static it.polimi.ingsw.utils.Utils.pingTimer;
 public class ConnectionRMI extends ConnectionClient implements RMIClientConnection {
     private RMI server;
     final Timer timer = new Timer();
-
+    private final BlockingQueue<Runnable> queue = new LinkedBlockingQueue<>();
     /**
      * Initialize the RMI connection to the server
      *
@@ -30,6 +32,25 @@ public class ConnectionRMI extends ConnectionClient implements RMIClientConnecti
      */
     public ConnectionRMI(ClientController controller, String address, int port) throws RemoteException {
         super(controller, address, port);
+    }
+
+    /**
+     * Runs methods' calls to server taken from blocking queue
+     */
+    private void send(){
+        while (!Thread.currentThread().isInterrupted()) {
+            try {
+                if(server!=null)
+                    queue.take().run();
+                else {
+                    queue.clear();
+                    break;
+                }
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                timer.cancel();
+            }
+        }
     }
 
     /**
@@ -50,6 +71,7 @@ public class ConnectionRMI extends ConnectionClient implements RMIClientConnecti
             }
         };
         timer.scheduleAtFixedRate(task, 0, pingTimer);
+        new Thread(this::send).start();
         System.out.println("Connection established.");
         server.login(getController().getMyNickname(), this);
     }
@@ -59,12 +81,16 @@ public class ConnectionRMI extends ConnectionClient implements RMIClientConnecti
      *
      * @param nickname      this client
      * @param cardsSelected Tiles selected by the client
-     * @throws RemoteException      if an error occurred calling the server RMI
-     * @throws NullPointerException throws if it has an error with the server instance
-     */
+  */
     @Override
-    public void selectCard(String nickname, ArrayList<Integer> cardsSelected) throws RemoteException, NullPointerException {
-        server.selectCard(nickname, cardsSelected);
+    public void selectCard(String nickname, ArrayList<Integer> cardsSelected){
+        queue.add(() -> {
+            try {
+                server.selectCard(nickname, cardsSelected);
+            } catch (RemoteException e) {
+                getController().onError("Impossible to connect to the Server");
+            }
+        });
     }
 
     /**
@@ -73,12 +99,16 @@ public class ConnectionRMI extends ConnectionClient implements RMIClientConnecti
      * @param nickname this client
      * @param cards    Tiles selected by the client in order
      * @param column   column where to put the Tiles
-     * @throws RemoteException      if an error occurred calling the server RMI
-     * @throws NullPointerException throws if it has an error with the server instance
      */
     @Override
-    public void insertCard(String nickname, ArrayList<ItemCard> cards, int column) throws RemoteException, NullPointerException {
-        server.insertCard(nickname, cards, column);
+    public void insertCard(String nickname, ArrayList<ItemCard> cards, int column) {
+        queue.add(() -> {
+            try {
+                server.insertCard(nickname, cards, column);
+            } catch (Exception e) {
+                getController().onError("Impossible to connect to the Server");
+            }
+        });
     }
 
     /**
@@ -86,12 +116,16 @@ public class ConnectionRMI extends ConnectionClient implements RMIClientConnecti
      *
      * @param nickname this client
      * @param message  String to send to all the connected players
-     * @throws RemoteException      if an error occurred calling the server RMI
-     * @throws NullPointerException throws if it has an error with the server instance
      */
     @Override
-    public void chatToAll(String nickname, String message) throws RemoteException, NullPointerException {
+    public void chatToAll(String nickname, String message) {
+        queue.add(() -> {
+            try {
         server.chatToAll(nickname, message);
+            } catch (Exception e) {
+                getController().onError("Impossible to connect to the Server");
+            }
+        });
     }
 
     /**
@@ -100,24 +134,32 @@ public class ConnectionRMI extends ConnectionClient implements RMIClientConnecti
      * @param sender   this client
      * @param receiver player that receives the message
      * @param message  String to send to the receiver
-     * @throws RemoteException      if an error occurred calling the server RMI
-     * @throws NullPointerException throws if it has an error with the server instance
      */
     @Override
-    public void chatToPlayer(String sender, String receiver, String message) throws RemoteException, NullPointerException {
+    public void chatToPlayer(String sender, String receiver, String message)  {
+        queue.add(() -> {
+            try {
         server.chatToPlayer(sender, receiver, message);
+            } catch (Exception e) {
+                getController().onError("Impossible to connect to the Server");
+            }
+        });
     }
 
     /**
      * Method called by the client only if he is the first connected to the server
      *
      * @param players number of players in the game
-     * @throws RemoteException      if an error occurred calling the server RMI
-     * @throws NullPointerException throws if it has an error with the server instance
      */
     @Override
-    public void setPlayersNumber(int players, String gameName) throws RemoteException, NullPointerException {
+    public void setPlayersNumber(int players, String gameName)  {
+        queue.add(() -> {
+            try {
         server.setPlayerNumber(getController().getMyNickname(), players, gameName);
+    } catch (Exception e) {
+        getController().onError("Impossible to connect to the Server");
+    }
+});
     }
 
     /**
@@ -125,11 +167,16 @@ public class ConnectionRMI extends ConnectionClient implements RMIClientConnecti
      *
      * @param wantToSave true if he wants to re-start from a saved game.
      * @param gameName   the name of the game he wants to resume.
-     * @throws Exception if an error occurred calling the RMI server
      */
     @Override
-    public void setSavedGame(boolean wantToSave, String gameName) throws Exception {
+    public void setSavedGame(boolean wantToSave, String gameName){
+        queue.add(() -> {
+            try {
         server.setSavedGames(wantToSave, gameName);
+            } catch (Exception e) {
+                getController().onError("Impossible to connect to the Server");
+            }
+        });
     }
 
 

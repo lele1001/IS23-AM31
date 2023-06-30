@@ -296,17 +296,9 @@ public abstract class GUIScene {
             String message = writtenMessage.getText();
 
             if (destination.equalsIgnoreCase("Everybody")) {
-                try {
-                    clientController.chatToAll(message);
-                } catch (Exception e) {
-                    printError("ERRROR: server error");
-                }
+                clientController.chatToAll(message);
             } else {
-                try {
-                    clientController.chatToPlayer(destination, message);
-                } catch (Exception e) {
-                    printError("ERROR: server error");
-                }
+                clientController.chatToPlayer(destination, message);
             }
 
             try {

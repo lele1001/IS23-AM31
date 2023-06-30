@@ -67,9 +67,8 @@ public abstract class ConnectionClient extends UnicastRemoteObject {
      *
      * @param nickname      this client
      * @param cardsSelected Tiles selected by the client
-     * @throws Exception if an error occurred calling the server (Socket or RMI)
      */
-    public abstract void selectCard(String nickname, ArrayList<Integer> cardsSelected) throws Exception;
+    public abstract void selectCard(String nickname, ArrayList<Integer> cardsSelected);
 
     /**
      * Method called from the client that pass to the server the Tiles inserted by the client and in which column he wants to put them
@@ -77,18 +76,16 @@ public abstract class ConnectionClient extends UnicastRemoteObject {
      * @param nickname this client
      * @param cards    Tiles selected by the client in order
      * @param column   column where to put the Tiles
-     * @throws Exception if an error occurred calling the server (Socket or RMI)
      */
-    public abstract void insertCard(String nickname, ArrayList<ItemCard> cards, int column) throws Exception;
+    public abstract void insertCard(String nickname, ArrayList<ItemCard> cards, int column);
 
     /**
      * Method called from the client that pass to the server the chat message for all connected players of the game
      *
      * @param nickname this client
      * @param message  String to send to all the connected players
-     * @throws Exception if an error occurred calling the server (Socket or RMI)
      */
-    public abstract void chatToAll(String nickname, String message) throws Exception;
+    public abstract void chatToAll(String nickname, String message);
 
     /**
      * Method called from the client that pass to the server the chat message for the receiver
@@ -96,26 +93,23 @@ public abstract class ConnectionClient extends UnicastRemoteObject {
      * @param sender   this client
      * @param receiver player that receives the message
      * @param message  String to send to the receiver
-     * @throws Exception if an error occurred calling the server (Socket or RMI)
      */
-    public abstract void chatToPlayer(String sender, String receiver, String message) throws Exception;
+    public abstract void chatToPlayer(String sender, String receiver, String message);
 
     /**
      * Method called by the client only if he is the first connected to the server
      *
      * @param players  number of players in the game
      * @param gameName The name the player wants to save the game with
-     * @throws Exception if an error occurred calling the server (Socket or RMI)
      */
-    public abstract void setPlayersNumber(int players, String gameName) throws Exception;
+    public abstract void setPlayersNumber(int players, String gameName) ;
 
     /**
      * Called by the client after his decision about saved games.
      *
      * @param wantToSave true if he wants to re-start from a saved game.
      * @param gameName   the name of the game he wants to resume.
-     * @throws Exception if an error occurred calling the server (Socket or RMI)
      */
-    public abstract void setSavedGame(boolean wantToSave, String gameName) throws Exception;
+    public abstract void setSavedGame(boolean wantToSave, String gameName);
 
 }

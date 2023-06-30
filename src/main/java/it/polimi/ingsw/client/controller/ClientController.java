@@ -291,10 +291,8 @@ public class ClientController {
 
     /**
      * Method called by the client that pass to the server the position of the Tiles selected by the client
-     *
-     * @throws Exception if an error occurred calling the server (Socket or RMI)
      */
-    public void selectCard() throws Exception {
+    public void selectCard() {
         ArrayList<Integer> integerSelected = new ArrayList<>(selectedTiles.keySet());
         connectionClient.selectCard(myNickname, integerSelected);
     }
@@ -304,9 +302,8 @@ public class ClientController {
      *
      * @param selectedCards Tiles selected by the client in order
      * @param column        column where to put the Tiles
-     * @throws Exception if an error occurred calling the server (Socket or RMI)
      */
-    public void insertCard(ArrayList<ItemCard> selectedCards, int column) throws Exception {
+    public void insertCard(ArrayList<ItemCard> selectedCards, int column){
         connectionClient.insertCard(myNickname, selectedCards, column);
     }
 
@@ -314,9 +311,8 @@ public class ClientController {
      * Method called by the client that pass to the server the chat message for all connected players of the game
      *
      * @param message String to send to all the connected players
-     * @throws Exception if an error occurred calling the server (Socket or RMI)
      */
-    public void chatToAll(String message) throws Exception {
+    public void chatToAll(String message) {
         connectionClient.chatToAll(myNickname, message);
     }
 
@@ -325,9 +321,8 @@ public class ClientController {
      *
      * @param receiver player that receives the message
      * @param message  String to send to the receiver
-     * @throws Exception if an error occurred calling the server (Socket or RMI)
      */
-    public void chatToPlayer(String receiver, String message) throws Exception {
+    public void chatToPlayer(String receiver, String message){
         connectionClient.chatToPlayer(myNickname, receiver, message);
     }
 
@@ -382,9 +377,8 @@ public class ClientController {
      *
      * @param players  number of players in the game
      * @param gameName the name for the game to save
-     * @throws Exception if an error occurred calling the server (Socket or RMI)
      */
-    public void setPlayersNumber(int players, String gameName) throws Exception {
+    public void setPlayersNumber(int players, String gameName)  {
         if ((notAvailableNames.contains(gameName)) || gameName.contains(".")) {
             view.printError("Name you want to set is not available, please try again.");
         } else {
@@ -407,9 +401,8 @@ public class ClientController {
      *
      * @param wantToSave true if he wants to re-start from a saved game.
      * @param gameName   the name of the game he wants to resume.
-     * @throws Exception if an error occurred calling the server
      */
-    public void setSavedGame(boolean wantToSave, String gameName) throws Exception {
+    public void setSavedGame(boolean wantToSave, String gameName){
         if (!selectSavedGame) {
             view.printError("Input not recognised... it's not time to set saved games.");
         } else {

@@ -245,11 +245,7 @@ public class PutCardsScene extends GUIScene {
         ArrayList<ItemCard> tilesToPut = inputController.checkPut(checkToPut);
         //System.out.println(tilesToPut);
         if (tilesToPut != null) {
-            try {
-                clientController.insertCard(tilesToPut, i);
-            } catch (Exception e) {
-                printError("ERROR: serverError");
-            }
+            clientController.insertCard(tilesToPut, i);
         } else {
             printError("ERROR: wrong selection");
             youSelectedThis.getChildren().clear();

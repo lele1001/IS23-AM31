@@ -39,8 +39,12 @@ public class InputController {
             return null;
         }
 
-        if (input.length < 2 || input.length > maxTilesSize() + 1) {
+        if (input.length < 2 ) {
             clientController.onError("You can only take from 1 to 3 cards!");
+            return null;
+        }
+        if(input.length > maxTilesSize() + 1){
+            clientController.onError("You have taken too many cards");
             return null;
         }
 
