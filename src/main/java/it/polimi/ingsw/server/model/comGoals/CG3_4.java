@@ -13,7 +13,7 @@ import static it.polimi.ingsw.utils.Utils.BOOKSHELF_LENGTH;
  * The tiles of one group can be different from those of another group.
  */
 public class CG3_4 extends ComGoal {
-    int multiplier;
+    private int multiplier;
 
     /**
      * Set the Common Goal based on the number of players

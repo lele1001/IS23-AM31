@@ -15,7 +15,7 @@ import static it.polimi.ingsw.utils.Utils.BOOKSHELF_LENGTH;
  * One column can show the same or a different combination of another column.
  */
 public class CG2_5 extends ComGoal {
-    int numDiff;
+    private int numDiff;
 
     /**
      * Set the Common Goal based on the number of players

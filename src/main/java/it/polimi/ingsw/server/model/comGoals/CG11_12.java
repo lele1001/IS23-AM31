@@ -13,7 +13,7 @@ import static it.polimi.ingsw.utils.Utils.BOOKSHELF_LENGTH;
  * Tiles can be of any type.
  */
 public class CG11_12 extends ComGoal {
-    boolean color;
+    private boolean color;
 
     /**
      * Set the Common Goal based on the number of players

@@ -15,8 +15,8 @@ import static it.polimi.ingsw.utils.Utils.pingTimer;
  * Extension of Client Handler for RMI connections
  */
 public class ClientHandlerRmi extends ClientHandler {
-    final RMIClientConnection client;
-    final Timer timer = new Timer();
+    private final RMIClientConnection client;
+    private final Timer timer = new Timer();
     private boolean isConnected = true;
     private final BlockingQueue<Runnable> queue = new LinkedBlockingQueue<>();
 
